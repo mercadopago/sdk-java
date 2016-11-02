@@ -80,7 +80,7 @@ public class Configuration {
             overrideBaseUrl(baseUrl);
     }
 
-    static String getValueFromHashMap(HashMap<String, String> hashMap, String key) {
+    private static String getValueFromHashMap(HashMap<String, String> hashMap, String key) {
         if (hashMap.containsKey(key) &&
                 StringUtils.isNotEmpty(hashMap.get(key)))
             return hashMap.get(key);
