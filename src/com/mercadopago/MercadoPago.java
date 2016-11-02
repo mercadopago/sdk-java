@@ -16,12 +16,12 @@ public class MercadoPago {
         settings = new Configuration();
     }
 
-
+/*
     @Override
     public String toString() {
         return new StringBuilder()
                 .append(String.format("Settings:\n%s\n", settings.toString()))
                 .toString();
     }
-
+*/
 }
