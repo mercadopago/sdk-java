@@ -1,4 +1,4 @@
-package com.mercadopago.exception;
+package com.mercadopago.exceptions;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -8,24 +8,24 @@ import org.apache.commons.lang3.StringUtils;
  *
  * Created by Eduardo Paoletta on 11/1/16.
  */
-abstract class MercadoPagoException extends Exception {
+abstract class MPException extends Exception {
 
     private String requestId;
     private Integer statusCode;
 
-    MercadoPagoException(String message, String requestId, Integer statusCode) {
+    MPException(String message, String requestId, Integer statusCode) {
         super(message, null);
         this.requestId = requestId;
         this.statusCode = statusCode;
     }
 
-    MercadoPagoException(String message, String requestId, Integer statusCode, Throwable cause) {
+    MPException(String message, String requestId, Integer statusCode, Throwable cause) {
         super(message, cause);
         this.requestId = requestId;
         this.statusCode = statusCode;
     }
 
-    MercadoPagoException(Throwable cause) {
+    MPException(Throwable cause) {
         super(cause);
     }
 

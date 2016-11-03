@@ -1,6 +1,6 @@
-package com.mercadopago.conf;
+package com.mercadopago;
 
-import com.mercadopago.exception.MercadoPagoConfigurationException;
+import com.mercadopago.exceptions.MPConfException;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.InputStream;
@@ -9,11 +9,11 @@ import java.util.Properties;
 
 /**
  * Mercado Pago SDK
- * Configuration Class
+ * Conf Class
  *
  * Created by Eduardo Paoletta on 11/1/16.
  */
-public class Configuration {
+public class Conf {
 
     private static final String DEFAULT_BASE_URL = "https://api.mercadopago.com";
 
@@ -27,36 +27,36 @@ public class Configuration {
     public String getClientSecret() {
         return clientSecret;
     }
-    public void setClientSecret(String clientSecret) throws MercadoPagoConfigurationException {
+    public void setClientSecret(String clientSecret) throws MPConfException {
         if (StringUtils.isNotEmpty(this.clientSecret))
-            throw new MercadoPagoConfigurationException("clientSecret setting can not be changed");
+            throw new MPConfException("clientSecret setting can not be changed");
         this.clientSecret = clientSecret;
     }
 
     public String getClientId() {
         return clientId;
     }
-    public void setClientId(String clientId) throws MercadoPagoConfigurationException {
+    public void setClientId(String clientId) throws MPConfException {
         if (StringUtils.isNotEmpty(this.clientId))
-            throw new MercadoPagoConfigurationException("clientId setting can not be changed");
+            throw new MPConfException("clientId setting can not be changed");
         this.clientId = clientId;
     }
 
     public String getAccessToken() {
         return accessToken;
     }
-    public void setAccessToken(String accessToken) throws MercadoPagoConfigurationException {
+    public void setAccessToken(String accessToken) throws MPConfException {
         if (StringUtils.isNotEmpty(this.accessToken))
-            throw new MercadoPagoConfigurationException("accessToken setting can not be changed");
+            throw new MPConfException("accessToken setting can not be changed");
         this.accessToken = accessToken;
     }
 
     public String getAppId() {
         return appId;
     }
-    public void setAppId(String appId) throws MercadoPagoConfigurationException {
+    public void setAppId(String appId) throws MPConfException {
         if (StringUtils.isNotEmpty(this.appId))
-            throw new MercadoPagoConfigurationException("appId setting can not be changed");
+            throw new MPConfException("appId setting can not be changed");
         this.appId = appId;
     }
 
@@ -69,7 +69,7 @@ public class Configuration {
     }
 
     // HashMap
-    public void setConfiguration(HashMap<String, String> hashConfigurationParams) throws MercadoPagoConfigurationException {
+    public void setConfiguration(HashMap<String, String> hashConfigurationParams) throws MPConfException {
         setClientSecret(getValueFromHashMap(hashConfigurationParams, "clientSecret"));
         setClientId(getValueFromHashMap(hashConfigurationParams, "clientId"));
         setAccessToken(getValueFromHashMap(hashConfigurationParams, "accessToken"));
@@ -88,7 +88,7 @@ public class Configuration {
     }
 
     // Properties file
-    public void setConfiguration(String filePath) throws MercadoPagoConfigurationException {
+    public void setConfiguration(String filePath) throws MPConfException {
         InputStream inputStream = null;
         try {
             Properties properties = new Properties();
@@ -97,7 +97,7 @@ public class Configuration {
             if (inputStream != null)
                 properties.load(inputStream);
             else
-                throw new MercadoPagoConfigurationException("File not found.");
+                throw new MPConfException("File not found.");
 
             setClientSecret(properties.getProperty("clientSecret"));
             setClientId(properties.getProperty("clientId"));
@@ -109,7 +109,7 @@ public class Configuration {
                 overrideBaseUrl(baseUrl);
 
         } catch (Exception exception) {
-            throw new MercadoPagoConfigurationException(exception);
+            throw new MPConfException(exception);
         } finally {
             try {
                 inputStream.close();

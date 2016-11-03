@@ -1,0 +1,18 @@
+package com.mercadopago.exceptions;
+
+/**
+ * Mercado Pago SDK
+ * Mercado Pago Conf Exception Class
+ *
+ * Created by Eduardo Paoletta on 11/1/16.
+ */
+public class MPConfException extends MPException {
+
+    public MPConfException(String message) {
+        super(message, null, null);
+    }
+
+    public MPConfException(Throwable cause) {
+        super(cause);
+    }
+}

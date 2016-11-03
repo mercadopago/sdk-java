@@ -1,6 +1,6 @@
-package com.mercadopago;
+package com.mercadopago.core;
 
-import com.mercadopago.conf.Configuration;
+import com.mercadopago.Conf;
 
 /**
  * Mercado Pago SDK
@@ -8,12 +8,12 @@ import com.mercadopago.conf.Configuration;
  *
  * Created by Eduardo Paoletta on 11/1/16.
  */
-public class MercadoPago {
+public class MP {
 
-    public Configuration settings;
+    public Conf settings;
 
-    public MercadoPago() {
-        settings = new Configuration();
+    public MP() {
+        settings = new Conf();
     }
 
 /*
