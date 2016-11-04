@@ -9,11 +9,36 @@ import java.util.Properties;
 
 /**
  * Mercado Pago SDK
- * Conf Class
+ * MPConf Class
  *
  * Created by Eduardo Paoletta on 11/1/16.
  */
-public class Conf {
+public class MPConf {
+
+    // Singleton instance
+    private static MPConf instance = null;
+
+    protected MPConf() {
+        // Exists only to defeat instantiation.
+    }
+
+    /**
+     * Singleton instance getter
+     */
+    public static MPConf getInstance() {
+        if(instance == null)
+            instance = new MPConf();
+        return instance;
+    }
+
+    /**
+     * Singleton instance destroyer
+     * (FOR TESTING ONLY)
+     */
+    public static void destroyInstance() {
+        if(instance != null)
+            instance = null;
+    }
 
     private static final String DEFAULT_BASE_URL = "https://api.mercadopago.com";
 
@@ -21,74 +46,111 @@ public class Conf {
     private String clientId = null;
     private String accessToken = null;
     private String appId = null;
-    private static String baseUrl = DEFAULT_BASE_URL;
+    private String baseUrl = DEFAULT_BASE_URL;
 
-    // Attributes getters/setters
+    /**
+     * Getter/Setter for ClientSecret
+     */
     public String getClientSecret() {
         return clientSecret;
     }
+
     public void setClientSecret(String clientSecret) throws MPConfException {
         if (StringUtils.isNotEmpty(this.clientSecret))
             throw new MPConfException("clientSecret setting can not be changed");
         this.clientSecret = clientSecret;
     }
 
+    /**
+     * Getter/Setter for ClientId
+     */
     public String getClientId() {
         return clientId;
     }
+
     public void setClientId(String clientId) throws MPConfException {
         if (StringUtils.isNotEmpty(this.clientId))
             throw new MPConfException("clientId setting can not be changed");
         this.clientId = clientId;
     }
 
+    /**
+     * Getter/Setter for AccessToken
+     */
     public String getAccessToken() {
         return accessToken;
     }
+
     public void setAccessToken(String accessToken) throws MPConfException {
         if (StringUtils.isNotEmpty(this.accessToken))
             throw new MPConfException("accessToken setting can not be changed");
         this.accessToken = accessToken;
     }
 
+    /**
+     * Getter/Setter for AppId
+     */
     public String getAppId() {
         return appId;
     }
+
     public void setAppId(String appId) throws MPConfException {
         if (StringUtils.isNotEmpty(this.appId))
             throw new MPConfException("appId setting can not be changed");
         this.appId = appId;
     }
 
+    /**
+     * Getter/Setter for BaseUrl
+     * (FOR TESTING ONLY)
+     */
     public String getBaseUrl() {
         return baseUrl;
     }
 
-    public static void overrideBaseUrl(final String overriddenBaseUrl) {
-        baseUrl = overriddenBaseUrl;
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
     }
 
-    // HashMap
+    /**
+     * Set configuration params with a hashmap.
+     * Valid keys are: clientSecret, clientId, accessToken, appId
+     * @param hashConfigurationParams a <String, String> hashmap with the configuration params
+     * @throws MPConfException
+     */
     public void setConfiguration(HashMap<String, String> hashConfigurationParams) throws MPConfException {
+        if (hashConfigurationParams == null)
+            throw new IllegalArgumentException("Invalid hashConfigurationParams parameter");
+
         setClientSecret(getValueFromHashMap(hashConfigurationParams, "clientSecret"));
         setClientId(getValueFromHashMap(hashConfigurationParams, "clientId"));
         setAccessToken(getValueFromHashMap(hashConfigurationParams, "accessToken"));
         setAppId(getValueFromHashMap(hashConfigurationParams, "appId"));
-
-        String baseUrl = getValueFromHashMap(hashConfigurationParams, "baseUrl");
-        if (StringUtils.isNotEmpty(baseUrl))
-            overrideBaseUrl(baseUrl);
     }
 
+    /**
+     * Extract a value from a HashMap and validate that is not null or empty
+     * @param hashMap a <String, String> hashmap with the configuration params.
+     * @param key value key
+     * @return the configuration param
+     */
     private static String getValueFromHashMap(HashMap<String, String> hashMap, String key) {
         if (hashMap.containsKey(key) &&
                 StringUtils.isNotEmpty(hashMap.get(key)))
             return hashMap.get(key);
-        return null;
+        else
+            throw new IllegalArgumentException(String.format("Invalid %s value", key));
     }
 
-    // Properties file
+    /**
+     * Set configuration params with a properties file
+     * @param filePath the path of the properties file
+     * @throws MPConfException
+     */
     public void setConfiguration(String filePath) throws MPConfException {
+        if (StringUtils.isEmpty(filePath))
+            throw new IllegalArgumentException("File path can not be empty");
+
         InputStream inputStream = null;
         try {
             Properties properties = new Properties();
@@ -97,17 +159,15 @@ public class Conf {
             if (inputStream != null)
                 properties.load(inputStream);
             else
-                throw new MPConfException("File not found.");
+                throw new IllegalArgumentException("File not found");
 
-            setClientSecret(properties.getProperty("clientSecret"));
-            setClientId(properties.getProperty("clientId"));
-            setAccessToken(properties.getProperty("accessToken"));
-            setAppId(properties.getProperty("appId"));
+            setClientSecret(getValueFromProperties(properties, "clientSecret"));
+            setClientId(getValueFromProperties(properties, "clientId"));
+            setAccessToken(getValueFromProperties(properties, "accessToken"));
+            setAppId(getValueFromProperties(properties, "appId"));
 
-            String baseUrl = properties.getProperty("baseUrl");
-            if (StringUtils.isNotEmpty(baseUrl))
-                overrideBaseUrl(baseUrl);
-
+        } catch (IllegalArgumentException iaException) {
+            throw iaException;
         } catch (Exception exception) {
             throw new MPConfException(exception);
         } finally {
@@ -116,6 +176,20 @@ public class Conf {
             } catch (Exception ex) {
             }
         }
+    }
+
+    /**
+     * Extract a value from a Properties object and validate that is not null or empty
+     * @param properties
+     * @param key value key
+     * @return the configuration param
+     */
+    private static String getValueFromProperties(Properties properties, String key) {
+        if (properties.containsKey(key) &&
+                StringUtils.isNotEmpty(properties.getProperty(key)))
+            return properties.getProperty(key);
+        else
+            throw new IllegalArgumentException(String.format("Invalid %s value", key));
     }
 
 /*

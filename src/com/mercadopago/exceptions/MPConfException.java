@@ -2,7 +2,7 @@ package com.mercadopago.exceptions;
 
 /**
  * Mercado Pago SDK
- * Mercado Pago Conf Exception Class
+ * Mercado Pago MPConf Exception Class
  *
  * Created by Eduardo Paoletta on 11/1/16.
  */
