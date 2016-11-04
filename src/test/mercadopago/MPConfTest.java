@@ -34,10 +34,12 @@ public class MPConfTest {
         assertNotNull("MPConf object can not be null at this point", conf);
 
         // Test attribute value asignation
-        conf.setClientSecret("CLIENT_SECRET");
-        conf.setClientId("CLIENT_ID");
-        conf.setAccessToken("ACCESS_TOKEN");
-        conf.setAppId("APP_ID");
+        conf
+                .setClientSecret("CLIENT_SECRET")
+                .setClientId("CLIENT_ID")
+                .setAccessToken("ACCESS_TOKEN")
+                .setAppId("APP_ID");
+
         assertEquals("Client Secret must be \"CLIENT_SECRET\" at this point", conf.getClientSecret(), "CLIENT_SECRET");
         assertEquals("Client Id must be \"CLIENT_ID\" at this point", conf.getClientId(), "CLIENT_ID");
         assertEquals("Access Token must be \"ACCESS_TOKEN\" at this point", conf.getAccessToken(), "ACCESS_TOKEN");

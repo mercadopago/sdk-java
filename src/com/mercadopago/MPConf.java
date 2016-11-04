@@ -55,10 +55,11 @@ public class MPConf {
         return clientSecret;
     }
 
-    public void setClientSecret(String clientSecret) throws MPConfException {
+    public MPConf setClientSecret(String clientSecret) throws MPConfException {
         if (StringUtils.isNotEmpty(this.clientSecret))
             throw new MPConfException("clientSecret setting can not be changed");
         this.clientSecret = clientSecret;
+        return this;
     }
 
     /**
@@ -68,10 +69,11 @@ public class MPConf {
         return clientId;
     }
 
-    public void setClientId(String clientId) throws MPConfException {
+    public MPConf setClientId(String clientId) throws MPConfException {
         if (StringUtils.isNotEmpty(this.clientId))
             throw new MPConfException("clientId setting can not be changed");
         this.clientId = clientId;
+        return this;
     }
 
     /**
@@ -81,10 +83,11 @@ public class MPConf {
         return accessToken;
     }
 
-    public void setAccessToken(String accessToken) throws MPConfException {
+    public MPConf setAccessToken(String accessToken) throws MPConfException {
         if (StringUtils.isNotEmpty(this.accessToken))
             throw new MPConfException("accessToken setting can not be changed");
         this.accessToken = accessToken;
+        return this;
     }
 
     /**
@@ -94,10 +97,11 @@ public class MPConf {
         return appId;
     }
 
-    public void setAppId(String appId) throws MPConfException {
+    public MPConf setAppId(String appId) throws MPConfException {
         if (StringUtils.isNotEmpty(this.appId))
             throw new MPConfException("appId setting can not be changed");
         this.appId = appId;
+        return this;
     }
 
     /**
@@ -108,8 +112,9 @@ public class MPConf {
         return baseUrl;
     }
 
-    public void setBaseUrl(String baseUrl) {
+    public MPConf setBaseUrl(String baseUrl) {
         this.baseUrl = baseUrl;
+        return this;
     }
 
     /**
