@@ -16,80 +16,69 @@ import static org.junit.Assert.*;
  */
 public class MPConfTest {
 
-    @Test
-    /**
-     * Test for singleton object
-     */
-    public void singletonTest() throws Exception {
-        assertSame("MPConf must always be the same object", MPConf.getInstance(), MPConf.getInstance());
-    }
-
     /**
      * Test for attributes getters/setters
      */
     @Test
     public void attributesConfigurationTests() throws Exception {
-        MPConf.destroyInstance();
-        MPConf conf = MPConf.getInstance();
-        assertNotNull("MPConf object can not be null at this point", conf);
+        MPConf.cleanConfiguration();
 
         // Test attribute value asignation
-        conf
-                .setClientSecret("CLIENT_SECRET")
-                .setClientId("CLIENT_ID")
-                .setAccessToken("ACCESS_TOKEN")
-                .setAppId("APP_ID");
+        MPConf.setClientSecret("CLIENT_SECRET");
+        MPConf.setClientId("CLIENT_ID");
+        MPConf.setAccessToken("ACCESS_TOKEN");
+        MPConf.setAppId("APP_ID");
 
-        assertEquals("Client Secret must be \"CLIENT_SECRET\" at this point", conf.getClientSecret(), "CLIENT_SECRET");
-        assertEquals("Client Id must be \"CLIENT_ID\" at this point", conf.getClientId(), "CLIENT_ID");
-        assertEquals("Access Token must be \"ACCESS_TOKEN\" at this point", conf.getAccessToken(), "ACCESS_TOKEN");
-        assertEquals("App Id must be \"APP_ID\" at this point", conf.getAppId(), "APP_ID");
-        assertEquals("Base url must be default \"https://api.mercadopago.com\" at this point", conf.getBaseUrl(), "https://api.mercadopago.com");
+        assertEquals("Client Secret must be \"CLIENT_SECRET\" at this point", MPConf.getClientSecret(), "CLIENT_SECRET");
+        assertEquals("Client Id must be \"CLIENT_ID\" at this point", MPConf.getClientId(), "CLIENT_ID");
+        assertEquals("Access Token must be \"ACCESS_TOKEN\" at this point", MPConf.getAccessToken(), "ACCESS_TOKEN");
+        assertEquals("App Id must be \"APP_ID\" at this point", MPConf.getAppId(), "APP_ID");
+        assertEquals("Base url must be default \"https://api.mercadopago.com\" at this point", MPConf.getBaseUrl(), "https://api.mercadopago.com");
 
         // Test override Url method
-        conf.setBaseUrl("https://overriden.mercadopago.com");
-        assertEquals("Base url must be default \"https://overriden.mercadopago.com\" at this point", conf.getBaseUrl(), "https://overriden.mercadopago.com");
+        MPConf.setBaseUrl("https://overriden.mercadopago.com");
+        assertEquals("Base url must be default \"https://overriden.mercadopago.com\" at this point", MPConf.getBaseUrl(), "https://overriden.mercadopago.com");
 
         // Test for value locking
         Exception auxException = null;
         try {
-            conf.setClientSecret("CHANGED_CLIENT_SECRET");
+            MPConf.setClientSecret("CHANGED_CLIENT_SECRET");
         } catch (MPConfException mpConfException) {
             assertEquals("Exception must have \"clientSecret setting can not be changed\" message", mpConfException.getMessage(), "clientSecret setting can not be changed");
             auxException = mpConfException;
         }
         assertSame("Exception type must be \"MPConfException\"", MPConfException.class, auxException.getClass());
-        assertEquals("Client Secret must be \"CLIENT_SECRET\" at this point", conf.getClientSecret(), "CLIENT_SECRET");
+        assertEquals("Client Secret must be \"CLIENT_SECRET\" at this point", MPConf.getClientSecret(), "CLIENT_SECRET");
 
         auxException = null;
         try {
-            conf.setClientId("CHANGED_CLIENT_ID");
+            MPConf.setClientId("CHANGED_CLIENT_ID");
         } catch (MPConfException mpConfException) {
             assertEquals("Exception must have \"clientId setting can not be changed\" message", mpConfException.getMessage(), "clientId setting can not be changed");
             auxException = mpConfException;
         }
         assertSame("Exception type must be \"MPConfException\"", MPConfException.class, auxException.getClass());
-        assertEquals("Client Id must be \"CLIENT_ID\" at this point", conf.getClientId(), "CLIENT_ID");
+        assertEquals("Client Id must be \"CLIENT_ID\" at this point", MPConf.getClientId(), "CLIENT_ID");
 
         auxException = null;
         try {
-            conf.setAccessToken("CHANGED_ACCESS_TOKEN");
+            MPConf.setAccessToken("CHANGED_ACCESS_TOKEN");
         } catch (MPConfException mpConfException) {
             assertEquals("Exception must have \"accessToken setting can not be changed\" message", mpConfException.getMessage(), "accessToken setting can not be changed");
             auxException = mpConfException;
         }
         assertSame("Exception type must be \"MPConfException\"", MPConfException.class, auxException.getClass());
-        assertEquals("Access Token must be \"ACCESS_TOKEN\" at this point", conf.getAccessToken(), "ACCESS_TOKEN");
+        assertEquals("Access Token must be \"ACCESS_TOKEN\" at this point", MPConf.getAccessToken(), "ACCESS_TOKEN");
 
         auxException = null;
         try {
-            conf.setAppId("CHANGED_APP_ID");
+            MPConf.setAppId("CHANGED_APP_ID");
         } catch (MPConfException mpConfException) {
             assertEquals("Exception must have \"appId setting can not be changed\" message", mpConfException.getMessage(), "appId setting can not be changed");
             auxException = mpConfException;
         }
         assertSame("Exception type must be \"MPConfException\"", MPConfException.class, auxException.getClass());
-        assertEquals("App Id must be \"APP_ID\" at this point", conf.getAppId(), "APP_ID");
+        assertEquals("App Id must be \"APP_ID\" at this point", MPConf.getAppId(), "APP_ID");
     }
 
     /**
@@ -97,14 +86,12 @@ public class MPConfTest {
      */
     @Test
     public void invalidHashMapConfigurationTests() throws Exception {
-        MPConf.destroyInstance();
-        MPConf conf = MPConf.getInstance();
-        assertNotNull("MPConf object can not be null at this point", conf);
+        MPConf.cleanConfiguration();
 
         HashMap<String, String> hashConfigurations = null;
         Exception auxException = null;
         try {
-            conf.setConfiguration(hashConfigurations);
+            MPConf.setConfiguration(hashConfigurations);
         } catch (IllegalArgumentException exception) {
             assertEquals("Exception must have \"Invalid hashConfigurationParams parameter\" message", exception.getMessage(), "Invalid hashConfigurationParams parameter");
             auxException = exception;
@@ -115,7 +102,7 @@ public class MPConfTest {
         hashConfigurations.put("clientSecret", null);
         auxException = null;
         try {
-            conf.setConfiguration(hashConfigurations);
+            MPConf.setConfiguration(hashConfigurations);
         } catch (IllegalArgumentException exception) {
             assertEquals("Exception must have \"Invalid clientSecret value\" message", exception.getMessage(), "Invalid clientSecret value");
             auxException = exception;
@@ -126,7 +113,7 @@ public class MPConfTest {
         hashConfigurations.put("clientId", "");
         auxException = null;
         try {
-            conf.setConfiguration(hashConfigurations);
+            MPConf.setConfiguration(hashConfigurations);
         } catch (IllegalArgumentException exception) {
             assertEquals("Exception must have \"Invalid clientId value\" message", exception.getMessage(), "Invalid clientId value");
             auxException = exception;
@@ -136,9 +123,7 @@ public class MPConfTest {
 
     @Test
     public void hashMapConfigurationTests() throws Exception {
-        MPConf.destroyInstance();
-        MPConf conf = MPConf.getInstance();
-        assertNotNull("MPConf object can not be null at this point", conf);
+        MPConf.cleanConfiguration();
 
         HashMap<String, String> hashConfigurations = new HashMap<>();
         hashConfigurations.put("clientSecret", "CLIENT_SECRET");
@@ -146,12 +131,12 @@ public class MPConfTest {
         hashConfigurations.put("accessToken", "ACCESS_TOKEN");
         hashConfigurations.put("appId", "APP_ID");
         hashConfigurations.put("ignoredKey", "IGNORED_DATA");
-        conf.setConfiguration(hashConfigurations);
+        MPConf.setConfiguration(hashConfigurations);
 
-        assertEquals("Client Secret must be \"CLIENT_SECRET\" at this point", conf.getClientSecret(), "CLIENT_SECRET");
-        assertEquals("Client Id must be \"CLIENT_ID\" at this point", conf.getClientId(), "CLIENT_ID");
-        assertEquals("Access Token must be \"ACCESS_TOKEN\" at this point", conf.getAccessToken(), "ACCESS_TOKEN");
-        assertEquals("App Id must be \"APP_ID\" at this point", conf.getAppId(), "APP_ID");
+        assertEquals("Client Secret must be \"CLIENT_SECRET\" at this point", MPConf.getClientSecret(), "CLIENT_SECRET");
+        assertEquals("Client Id must be \"CLIENT_ID\" at this point", MPConf.getClientId(), "CLIENT_ID");
+        assertEquals("Access Token must be \"ACCESS_TOKEN\" at this point", MPConf.getAccessToken(), "ACCESS_TOKEN");
+        assertEquals("App Id must be \"APP_ID\" at this point", MPConf.getAppId(), "APP_ID");
     }
 
     /**
@@ -159,13 +144,11 @@ public class MPConfTest {
      */
     @Test
     public void propertiesFileInvalidConfigurationTests() throws Exception {
-        MPConf.destroyInstance();
-        MPConf conf = MPConf.getInstance();
-        assertNotNull("MPConf object can not be null at this point", conf);
+        MPConf.cleanConfiguration();
 
         Exception auxException = null;
         try {
-            conf.setConfiguration("");
+            MPConf.setConfiguration("");
         } catch (IllegalArgumentException exception) {
             assertEquals("Exception must have \"File path can not be empty\" message", exception.getMessage(), "File path can not be empty");
             auxException = exception;
@@ -174,7 +157,7 @@ public class MPConfTest {
 
         auxException = null;
         try {
-            conf.setConfiguration("nonexistent.properties");
+            MPConf.setConfiguration("nonexistent.properties");
         } catch (IllegalArgumentException exception) {
             assertEquals("Exception must have \"File not found\" message", exception.getMessage(), "File not found");
             auxException = exception;
@@ -183,7 +166,7 @@ public class MPConfTest {
 
         auxException = null;
         try {
-            conf.setConfiguration("testinvalidnull.properties");
+            MPConf.setConfiguration("testinvalidnull.properties");
         } catch (IllegalArgumentException exception) {
             assertEquals("Exception must have \"Invalid clientSecret value\" message", exception.getMessage(), "Invalid clientSecret value");
             auxException = exception;
@@ -192,30 +175,28 @@ public class MPConfTest {
 
         auxException = null;
         try {
-            conf.setConfiguration("testinvalidempty.properties");
+            MPConf.setConfiguration("testinvalidempty.properties");
         } catch (IllegalArgumentException exception) {
             assertEquals("Exception must have \"Invalid clientSecret value\" message", exception.getMessage(), "Invalid clientSecret value");
             auxException = exception;
         }
         assertSame("Exception type must be \"IllegalArgumentException\"", IllegalArgumentException.class, auxException.getClass());
 
-        assertEquals("Client Secret must be \"null\" at this point", conf.getClientSecret(), null);
-        assertEquals("Client Id must be \"null\" at this point", conf.getClientId(), null);
-        assertEquals("Access Token must be \"null\" at this point", conf.getAccessToken(), null);
-        assertEquals("App Id must be \"null\" at this point", conf.getAppId(), null);
+        assertEquals("Client Secret must be \"null\" at this point", MPConf.getClientSecret(), null);
+        assertEquals("Client Id must be \"null\" at this point", MPConf.getClientId(), null);
+        assertEquals("Access Token must be \"null\" at this point", MPConf.getAccessToken(), null);
+        assertEquals("App Id must be \"null\" at this point", MPConf.getAppId(), null);
     }
 
     @Test
     public void propertiesFileValidConfigurationTests() throws Exception {
-        MPConf.destroyInstance();
-        MPConf conf = MPConf.getInstance();
-        assertNotNull("MPConf object can not be null at this point", conf);
+        MPConf.cleanConfiguration();
 
-        conf.setConfiguration("testvalid.properties");
-        assertEquals("Client Secret must be \"CLIENT_SECRET\" at this point", conf.getClientSecret(), "CLIENT_SECRET");
-        assertEquals("Client Id must be \"CLIENT_ID\" at this point", conf.getClientId(), "CLIENT_ID");
-        assertEquals("Access Token must be \"ACCESS_TOKEN\" at this point", conf.getAccessToken(), "ACCESS_TOKEN");
-        assertEquals("App Id must be \"APP_ID\" at this point", conf.getAppId(), "APP_ID");
+        MPConf.setConfiguration("testvalid.properties");
+        assertEquals("Client Secret must be \"CLIENT_SECRET\" at this point", MPConf.getClientSecret(), "CLIENT_SECRET");
+        assertEquals("Client Id must be \"CLIENT_ID\" at this point", MPConf.getClientId(), "CLIENT_ID");
+        assertEquals("Access Token must be \"ACCESS_TOKEN\" at this point", MPConf.getAccessToken(), "ACCESS_TOKEN");
+        assertEquals("App Id must be \"APP_ID\" at this point", MPConf.getAppId(), "APP_ID");
     }
 
 }
