@@ -103,22 +103,20 @@ public class MPConfTest {
         auxException = null;
         try {
             MPConf.setConfiguration(hashConfigurations);
-        } catch (IllegalArgumentException exception) {
-            assertEquals("Exception must have \"Invalid clientSecret value\" message", exception.getMessage(), "Invalid clientSecret value");
+        } catch (Exception exception) {
             auxException = exception;
         }
-        assertSame("Exception type must be \"IllegalArgumentException\"", IllegalArgumentException.class, auxException.getClass());
+        assertSame("Exception must be \"null\"", null, auxException);
 
         hashConfigurations.put("clientSecret", "CLIENT_SECRET");
         hashConfigurations.put("clientId", "");
         auxException = null;
         try {
             MPConf.setConfiguration(hashConfigurations);
-        } catch (IllegalArgumentException exception) {
-            assertEquals("Exception must have \"Invalid clientId value\" message", exception.getMessage(), "Invalid clientId value");
+        } catch (Exception exception) {
             auxException = exception;
         }
-        assertSame("Exception type must be \"IllegalArgumentException\"", IllegalArgumentException.class, auxException.getClass());
+        assertSame("Exception must be \"null\"", null, auxException);
     }
 
     @Test
@@ -148,6 +146,16 @@ public class MPConfTest {
 
         Exception auxException = null;
         try {
+            String nullFilePath = null;
+            MPConf.setConfiguration(nullFilePath);
+        } catch (IllegalArgumentException exception) {
+            assertEquals("Exception must have \"File path can not be empty\" message", exception.getMessage(), "File path can not be empty");
+            auxException = exception;
+        }
+        assertSame("Exception type must be \"IllegalArgumentException\"", IllegalArgumentException.class, auxException.getClass());
+
+        auxException = null;
+        try {
             MPConf.setConfiguration("");
         } catch (IllegalArgumentException exception) {
             assertEquals("Exception must have \"File path can not be empty\" message", exception.getMessage(), "File path can not be empty");
@@ -167,20 +175,18 @@ public class MPConfTest {
         auxException = null;
         try {
             MPConf.setConfiguration("test/mercadopago/data/testinvalidnull.properties");
-        } catch (IllegalArgumentException exception) {
-            assertEquals("Exception must have \"Invalid clientSecret value\" message", exception.getMessage(), "Invalid clientSecret value");
+        } catch (Exception exception) {
             auxException = exception;
         }
-        assertSame("Exception type must be \"IllegalArgumentException\"", IllegalArgumentException.class, auxException.getClass());
+        assertSame("Exception must be \"null\"", null, auxException);
 
         auxException = null;
         try {
             MPConf.setConfiguration("test/mercadopago/data/testinvalidempty.properties");
-        } catch (IllegalArgumentException exception) {
-            assertEquals("Exception must have \"Invalid clientSecret value\" message", exception.getMessage(), "Invalid clientSecret value");
+        } catch (Exception exception) {
             auxException = exception;
         }
-        assertSame("Exception type must be \"IllegalArgumentException\"", IllegalArgumentException.class, auxException.getClass());
+        assertSame("Exception must be \"null\"", null, auxException);
 
         assertEquals("Client Secret must be \"null\" at this point", MPConf.getClientSecret(), null);
         assertEquals("Client Id must be \"null\" at this point", MPConf.getClientId(), null);
