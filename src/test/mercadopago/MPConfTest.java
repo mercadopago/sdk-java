@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 
 /**
  * Mercado Pago SDK
- * Mercado Pago configuration class test
+ * Mercado Pago configuration test class
  *
  * Created by Eduardo Paoletta on 11/1/16.
  */
@@ -33,11 +33,11 @@ public class MPConfTest {
         assertEquals("Client Id must be \"CLIENT_ID\" at this point", MPConf.getClientId(), "CLIENT_ID");
         assertEquals("Access Token must be \"ACCESS_TOKEN\" at this point", MPConf.getAccessToken(), "ACCESS_TOKEN");
         assertEquals("App Id must be \"APP_ID\" at this point", MPConf.getAppId(), "APP_ID");
-        assertEquals("Base url must be default \"https://api.mercadopago.com\" at this point", MPConf.getBaseUrl(), "https://api.mercadopago.com");
+        assertEquals("MPBase url must be default \"https://api.mercadopago.com\" at this point", MPConf.getBaseUrl(), "https://api.mercadopago.com");
 
         // Test override Url method
         MPConf.setBaseUrl("https://overriden.mercadopago.com");
-        assertEquals("Base url must be default \"https://overriden.mercadopago.com\" at this point", MPConf.getBaseUrl(), "https://overriden.mercadopago.com");
+        assertEquals("MPBase url must be default \"https://overriden.mercadopago.com\" at this point", MPConf.getBaseUrl(), "https://overriden.mercadopago.com");
 
         // Test for value locking
         Exception auxException = null;
@@ -166,7 +166,7 @@ public class MPConfTest {
 
         auxException = null;
         try {
-            MPConf.setConfiguration("testinvalidnull.properties");
+            MPConf.setConfiguration("test/mercadopago/data/testinvalidnull.properties");
         } catch (IllegalArgumentException exception) {
             assertEquals("Exception must have \"Invalid clientSecret value\" message", exception.getMessage(), "Invalid clientSecret value");
             auxException = exception;
@@ -175,7 +175,7 @@ public class MPConfTest {
 
         auxException = null;
         try {
-            MPConf.setConfiguration("testinvalidempty.properties");
+            MPConf.setConfiguration("test/mercadopago/data/testinvalidempty.properties");
         } catch (IllegalArgumentException exception) {
             assertEquals("Exception must have \"Invalid clientSecret value\" message", exception.getMessage(), "Invalid clientSecret value");
             auxException = exception;
@@ -192,7 +192,7 @@ public class MPConfTest {
     public void propertiesFileValidConfigurationTests() throws Exception {
         MPConf.cleanConfiguration();
 
-        MPConf.setConfiguration("testvalid.properties");
+        MPConf.setConfiguration("test/mercadopago/data/testvalid.properties");
         assertEquals("Client Secret must be \"CLIENT_SECRET\" at this point", MPConf.getClientSecret(), "CLIENT_SECRET");
         assertEquals("Client Id must be \"CLIENT_ID\" at this point", MPConf.getClientId(), "CLIENT_ID");
         assertEquals("Access Token must be \"ACCESS_TOKEN\" at this point", MPConf.getAccessToken(), "ACCESS_TOKEN");

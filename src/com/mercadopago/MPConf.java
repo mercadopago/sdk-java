@@ -131,10 +131,10 @@ public class MPConf {
             Properties properties = new Properties();
 
             inputStream = MPConf.class.getClassLoader().getResourceAsStream(filePath);
-            if (inputStream != null)
-                properties.load(inputStream);
-            else
+            if (inputStream == null)
                 throw new IllegalArgumentException("File not found");
+
+            properties.load(inputStream);
 
             setClientSecret(getValueFromProperties(properties, "clientSecret"));
             setClientId(getValueFromProperties(properties, "clientId"));
