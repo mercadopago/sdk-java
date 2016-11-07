@@ -4,14 +4,18 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * Mercado Pago SDK
- * Mercado Pago Base Exception Class
+ * Mercado Pago MPBase Exception Class
  *
  * Created by Eduardo Paoletta on 11/1/16.
  */
-abstract class MPException extends Exception {
+public class MPException extends Exception {
 
     private String requestId;
     private Integer statusCode;
+
+    public MPException(String message) {
+        this(message, null, null);
+    }
 
     MPException(String message, String requestId, Integer statusCode) {
         super(message, null);
@@ -25,7 +29,7 @@ abstract class MPException extends Exception {
         this.statusCode = statusCode;
     }
 
-    MPException(Throwable cause) {
+    public MPException(Throwable cause) {
         super(cause);
     }
 
