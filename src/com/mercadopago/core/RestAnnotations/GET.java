@@ -4,9 +4,7 @@ import java.lang.annotation.*;
 
 /**
  * Mercado Pago SDK
- * Rest Information annotation interfase
- *
- * Indicates the rest method and the path
+ * Rest Information annotation interface for GET
  *
  * Created by Eduardo Paoletta on 11/4/16.
  */
