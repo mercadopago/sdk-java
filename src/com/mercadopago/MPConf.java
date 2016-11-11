@@ -104,17 +104,16 @@ public class MPConf {
     }
 
     /**
-     * Extract a value from a HashMap and validate that is not null or empty
+     * Extract a value from a HashMap if is not null or empty
      * @param hashMap a <String, String> hashmap with the configuration params.
      * @param key value key
-     * @return the configuration param
+     * @return the configuration param or null if the key does not exists or value is empty
      */
     private static String getValueFromHashMap(HashMap<String, String> hashMap, String key) {
         if (hashMap.containsKey(key) &&
                 StringUtils.isNotEmpty(hashMap.get(key)))
             return hashMap.get(key);
-        else
-            throw new IllegalArgumentException(String.format("Invalid %s value", key));
+        return null;
     }
 
     /**
@@ -131,10 +130,10 @@ public class MPConf {
             Properties properties = new Properties();
 
             inputStream = MPConf.class.getClassLoader().getResourceAsStream(filePath);
-            if (inputStream != null)
-                properties.load(inputStream);
-            else
+            if (inputStream == null)
                 throw new IllegalArgumentException("File not found");
+
+            properties.load(inputStream);
 
             setClientSecret(getValueFromProperties(properties, "clientSecret"));
             setClientId(getValueFromProperties(properties, "clientId"));
@@ -156,17 +155,16 @@ public class MPConf {
     }
 
     /**
-     * Extract a value from a Properties object and validate that is not null or empty
+     * Extract a value from a Properties object if is not null or empty
      * @param properties Properties object
      * @param key value key
-     * @return the configuration param
+     * @return the configuration param or null if the key does not exists or value is empty
      */
     private static String getValueFromProperties(Properties properties, String key) {
         if (properties.containsKey(key) &&
                 StringUtils.isNotEmpty(properties.getProperty(key)))
             return properties.getProperty(key);
-        else
-            throw new IllegalArgumentException(String.format("Invalid %s value", key));
+        return null;
     }
 
     /**
