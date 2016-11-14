@@ -9,7 +9,7 @@ package com.mercadopago.exceptions;
 public class MPConfException extends MPException {
 
     public MPConfException(String message) {
-        super(message, null, null);
+        super(message);
     }
 
     public MPConfException(Throwable cause) {
