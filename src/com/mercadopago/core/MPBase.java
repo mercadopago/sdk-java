@@ -80,7 +80,7 @@ public abstract class MPBase {
      */
     protected String processMethod(String methodName, HashMap<String, String> mapParams) throws MPException {
         //Validates the method executed
-        if (!new HashSet<String>(Arrays.asList(new String[]{"load", "loadAll", "save", "create", "update", "delete"})).contains(methodName))
+        if (!new HashSet<String>(Arrays.asList("load", "loadAll", "save", "create", "update", "delete")).contains(methodName))
             throw new MPException("Method \"" + methodName + "\" not allowed");
 
         AnnotatedElement annotatedMethod = getAnnotatedMethod(methodName);
