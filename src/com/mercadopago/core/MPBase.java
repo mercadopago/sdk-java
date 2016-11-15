@@ -36,18 +36,57 @@ public abstract class MPBase {
      * @throws MPException
      */
     protected String processMethod(String methodName) throws MPException {
-        return processMethod(methodName, null);
+        HashMap<String, String> mapParams = null;
+        return processMethod(methodName, mapParams);
     }
 
-    protected String processMethod(String methodName, String args) throws MPException {
+    /**
+     * Process the method to call the api
+     *
+     * @param methodName        a String with the decorated method to be processed
+     * @param param1            a String with the arg passed in the call of the method
+     * @return                  a String with the response of the method processed by the api
+     * @throws MPException
+     */
+    protected String processMethod(String methodName, String param1) throws MPException {
+        HashMap<String, String> mapParams = new HashMap<String, String>();
+        mapParams.put("param1", param1);
+        return processMethod(methodName, mapParams);
+    }
+
+    /**
+     * Process the method to call the api
+     *
+     * @param methodName        a String with the decorated method to be processed
+     * @param param1            a String with the arg passed in the call of the method
+     * @param param2            a String with the arg passed in the call of the method
+     * @return                  a String with the response of the method processed by the api
+     * @throws MPException
+     */
+    protected String processMethod(String methodName, String param1, String param2) throws MPException {
+        HashMap<String, String> mapParams = new HashMap<String, String>();
+        mapParams.put("param1", param1);
+        mapParams.put("param2", param2);
+        return processMethod(methodName, mapParams);
+    }
+
+    /**
+     * Process the method to call the api
+     *
+     * @param methodName        a String with the decorated method to be processed
+     * @param mapParams         a hashmap with the args passed in the call of the method
+     * @return                  a String with the response of the method processed by the api
+     * @throws MPException
+     */
+    protected String processMethod(String methodName, HashMap<String, String> mapParams) throws MPException {
         //Validates the method executed
-        if (!new HashSet<>(Arrays.asList(new String[]{"load", "loadAll", "save", "create", "update", "delete"})).contains(methodName))
+        if (!new HashSet<String>(Arrays.asList(new String[]{"load", "loadAll", "save", "create", "update", "delete"})).contains(methodName))
             throw new MPException("Method \"" + methodName + "\" not allowed");
 
         AnnotatedElement annotatedMethod = getAnnotatedMethod(methodName);
         HashMap<String, String> hashAnnotation = getRestInformation(annotatedMethod);
         String restMethod = hashAnnotation.get("method");
-        String path = parsePath(hashAnnotation.get("path"), args);
+        String path = parsePath(hashAnnotation.get("path"), mapParams);
         String payload = generatePayload(restMethod);
 
         String response = callApi(restMethod, path, payload);
@@ -67,24 +106,79 @@ public abstract class MPBase {
     /**
      * Evaluates the path of the resourse and use the args or the attributes members of the instance to complete it.
      * @param path              a String with the path as stated in the declaration of the method caller
-     * @param args              a String with the arg passed in the call of the method
+     * @param mapParams         a HashMap with the args passed in the call of the method
      * @return                  a String with the final path to call the API
      * @throws MPException
      */
-    private String parsePath(String path, String args) throws MPException {
+    private String parsePath(String path, HashMap<String, String> mapParams) throws MPException {
+        String processedPath = "";
         if (path.contains(":")) {
-            String param = path.substring(path.indexOf(":") + 1);
-            path = path.substring(0, path.indexOf(":"));
-            if (StringUtils.isNotEmpty(args))
-                path = path.concat(args);
-            else {
-                JsonObject json = getJson();
-                if (json.get(param) == null)
+            int paramIterator = 0;
+            while (path.contains(":")) {
+                paramIterator++;
+
+                processedPath = processedPath + path.substring(0, path.indexOf(":"));
+                path = path.substring(path.indexOf(":") + 1);
+                String param = path;
+                if (path.contains("/"))
+                    param = path.substring(0, path.indexOf("/"));
+
+                String value = null;
+                if (paramIterator <= 2 &&
+                        StringUtils.isNotEmpty(mapParams.get("param" + String.valueOf(paramIterator))))
+                    value = mapParams.get("param" + String.valueOf(paramIterator));
+                else if (StringUtils.isNotEmpty(mapParams.get(param)))
+                    value = mapParams.get(param);
+                else {
+                    JsonObject json = getJson();
+                    if (json.get(param) != null)
+                        value = json.get(param).getAsString();
+                }
+                if (StringUtils.isEmpty(value))
                     throw new MPException("No argument supplied/found for method path");
-                path = path.concat(json.get(param).getAsString());
+
+                processedPath = processedPath + value;
+                if (path.contains("/"))
+                    path = path.substring(path.indexOf("/"));
             }
-        }
-        return path;
+
+            /*
+            processedPath = path.substring(0, path.indexOf(":"));
+            path = path.substring(path.indexOf(":"));
+
+            int paramIterator = 0;
+            while (path.contains(":")) {
+                paramIterator++;
+
+                path = path.substring(1);
+                String param = path;
+                if (path.contains("/"))
+                    param = path.substring(0, path.indexOf("/"));
+
+                String value = null;
+                if (paramIterator <= 2 &&
+                        StringUtils.isNotEmpty(mapParams.get("param" + String.valueOf(paramIterator))))
+                    value = mapParams.get("param" + String.valueOf(paramIterator));
+                else if (StringUtils.isNotEmpty(mapParams.get(param)))
+                    value = mapParams.get(param);
+                else {
+                    JsonObject json = getJson();
+                    if (json.get(param) != null)
+                        value = json.get(param).getAsString();
+                }
+                if (StringUtils.isEmpty(value))
+                    throw new MPException("No argument supplied/found for method path");
+
+                processedPath = processedPath + value;
+                if (path.contains("/")) {
+                    path = path.substring(path.indexOf("/"));
+                    processedPath = processedPath + "/";
+                }
+            }
+            */
+        } else
+            processedPath = path;
+        return processedPath;
     }
 
     /**
@@ -138,7 +232,7 @@ public abstract class MPBase {
         if (element.getAnnotations().length == 0)
             throw new MPException("No rest method found");
 
-        HashMap<String, String> hashAnnotation = new HashMap<>();
+        HashMap<String, String> hashAnnotation = new HashMap<String, String>();
         for (Annotation annotation : element.getAnnotations()) {
             if (annotation instanceof DELETE) {
                 DELETE delete = (DELETE) annotation;
