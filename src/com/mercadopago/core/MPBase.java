@@ -82,7 +82,7 @@ public abstract class MPBase {
      */
     protected String processMethod(String methodName, HashMap<String, String> mapParams) throws MPException {
         //Validates the method executed
-        if (!new HashSet<String>(ALLOWED_METHODS).contains(methodName))
+        if (!ALLOWED_METHODS.contains(methodName))
             throw new MPException("Method \"" + methodName + "\" not allowed");
 
         AnnotatedElement annotatedMethod = getAnnotatedMethod(methodName);
@@ -127,9 +127,11 @@ public abstract class MPBase {
 
                 String value = null;
                 if (paramIterator <= 2 &&
+                        mapParams != null &&
                         StringUtils.isNotEmpty(mapParams.get("param" + String.valueOf(paramIterator))))
                     value = mapParams.get("param" + String.valueOf(paramIterator));
-                else if (StringUtils.isNotEmpty(mapParams.get(param)))
+                else if (mapParams != null &&
+                        StringUtils.isNotEmpty(mapParams.get(param)))
                     value = mapParams.get(param);
                 else {
                     JsonObject json = getJson();
