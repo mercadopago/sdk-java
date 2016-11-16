@@ -144,40 +144,6 @@ public abstract class MPBase {
                     path = path.substring(path.indexOf("/"));
             }
 
-            /*
-            processedPath = path.substring(0, path.indexOf(":"));
-            path = path.substring(path.indexOf(":"));
-
-            int paramIterator = 0;
-            while (path.contains(":")) {
-                paramIterator++;
-
-                path = path.substring(1);
-                String param = path;
-                if (path.contains("/"))
-                    param = path.substring(0, path.indexOf("/"));
-
-                String value = null;
-                if (paramIterator <= 2 &&
-                        StringUtils.isNotEmpty(mapParams.get("param" + String.valueOf(paramIterator))))
-                    value = mapParams.get("param" + String.valueOf(paramIterator));
-                else if (StringUtils.isNotEmpty(mapParams.get(param)))
-                    value = mapParams.get(param);
-                else {
-                    JsonObject json = getJson();
-                    if (json.get(param) != null)
-                        value = json.get(param).getAsString();
-                }
-                if (StringUtils.isEmpty(value))
-                    throw new MPException("No argument supplied/found for method path");
-
-                processedPath = processedPath + value;
-                if (path.contains("/")) {
-                    path = path.substring(path.indexOf("/"));
-                    processedPath = processedPath + "/";
-                }
-            }
-            */
         } else
             processedPath = path;
         return processedPath;
