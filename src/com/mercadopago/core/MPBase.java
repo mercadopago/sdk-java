@@ -10,6 +10,7 @@ import com.mercadopago.core.RestAnnotations.GET;
 import com.mercadopago.core.RestAnnotations.POST;
 import com.mercadopago.core.RestAnnotations.PUT;
 import com.mercadopago.exceptions.MPException;
+import com.mercadopago.net.*;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.annotation.Annotation;
@@ -98,11 +99,27 @@ public abstract class MPBase {
     }
 
     private String callApi(String restMethod, String path, String payload) throws MPException {
+        MPRestClient restClient = getRestClient(restMethod);
+
         String response = "{\"method\":\"" + restMethod + "\",\"path\":\"" + path + "\"";
         if (StringUtils.isNotEmpty(payload))
             response += ",\"payload\":" + payload;
         response += "}";
         return response;
+    }
+
+    private MPRestClient getRestClient(String restMethod) {
+        MPRestClient restClient = null;
+        if (restMethod == "GET")
+            restClient = new MPRestGet();
+        else if (restMethod == "POST")
+            restClient = new MPRestPost();
+        else if (restMethod == "PUT")
+            restClient = new MPRestPut();
+        else if (restMethod == "DELETE")
+            restClient = new MPRestDelete();
+
+        return restClient;
     }
 
     /**
