@@ -3,7 +3,6 @@ package test.mercadopago.core;
 import com.mercadopago.core.RestAnnotations.GET;
 import com.mercadopago.core.RestAnnotations.POST;
 import com.mercadopago.core.RestAnnotations.PUT;
-import com.mercadopago.core.RestAnnotations.DELETE;
 import com.mercadopago.core.MPBase;
 import com.mercadopago.exceptions.MPException;
 import org.junit.Test;
@@ -19,48 +18,59 @@ import static org.junit.Assert.assertSame;
  */
 public class MPBaseTest extends MPBase {
 
-
+    private String id = null;
     private String testString = "Test String";
     private Integer testInteger = 666;
 
-
-    public void notExistentMethod() throws MPException {
-        super.processMethod("notExistentMethodName");
+    @GET(path="/getpath/slug/:id")
+    public String load(String id) throws MPException {
+        return super.processMethod("load", id);
     }
 
-    public void notAnnotatedMethod() throws MPException {
-        super.processMethod("notAnnotatedMethod");
+    @GET(path="/getpath/slug/")
+    @PUT(path="/putpath/slug/")
+    public String loadAll() throws MPException {
+        return super.processMethod("loadAll");
     }
 
-    @DELETE(path="")
-    public void deleteWithoutPath() throws MPException {
-        super.processMethod("deleteWithoutPath");
+    //Save method will be used to test non annotated method
+    //@POST(path="/postpath/slug")
+    public String save() throws MPException {
+        return super.processMethod("save");
     }
 
-    @GET(path="")
-    public void getWithoutPath() throws MPException {
-        super.processMethod("getWithoutPath");
+    @POST(path="/postpath/slug")
+    public String create() throws MPException {
+        return super.processMethod("create");
     }
 
-    @POST(path="")
-    public void postWithoutPath() throws MPException {
-        super.processMethod("postWithoutPath");
+    @PUT(path="/putpath/slug/:id")
+    public String update(String id) throws MPException {
+        return super.processMethod("update", id);
     }
 
-    @PUT(path="")
-    public void putWithoutPath() throws MPException {
-        super.processMethod("putWithoutPath");
+    //Delete method will be used to test non existing method
+    /*
+    @DELETE(path="/deletepath/slug/:id")
+    public String delete(String id) throws MPException {
+        return super.processMethod("delete", id);
     }
+    */
 
-    @POST(path="/somepath/")
-    @GET(path="/someotherpath/")
-    public void multipleAnnotationMethod() throws MPException {
-        super.processMethod("multipleAnnotationMethod");
-    }
-
-    @GET(path="/somepath/:param")
-    public void methodWithNoArgument() throws MPException {
-        super.processMethod("methodWithNoArgument");
+    /**
+     * Test MPBase using a not allowed method to call processMethod.
+     * It should return an MPException
+     */
+    @Test
+    public void nonAllowedMethodTest() throws Exception {
+        Exception auxException = null;
+        try {
+            super.processMethod("nonallowedmethod");
+        } catch (MPException mpException) {
+            assertEquals("Exception must have \"Method \"nonallowedmethod\" not allowed\" message", mpException.getMessage(), "Method \"nonallowedmethod\" not allowed");
+            auxException = mpException;
+        }
+        assertSame("Exception type must be \"MPException\"", MPException.class, auxException.getClass());
     }
 
     /**
@@ -71,7 +81,7 @@ public class MPBaseTest extends MPBase {
     public void notExistentMethodTest() throws Exception {
         Exception auxException = null;
         try {
-            notExistentMethod();
+            super.processMethod("delete", "test_id");
         } catch (MPException mpException) {
             assertEquals("Exception must have \"No method found\" message", mpException.getMessage(), "No method found");
             auxException = mpException;
@@ -87,52 +97,9 @@ public class MPBaseTest extends MPBase {
     public void notAnnotatedMethodTest() throws Exception {
         Exception auxException = null;
         try {
-            notAnnotatedMethod();
+            save();
         } catch (MPException mpException) {
             assertEquals("Exception must have \"No rest method found\" message", mpException.getMessage(), "No rest method found");
-            auxException = mpException;
-        }
-        assertSame("Exception type must be \"MPException\"", MPException.class, auxException.getClass());
-    }
-
-    /**
-     * Test MPBase using methods decorated without the path
-     * It should return an MPException
-     */
-    @Test
-    public void withoutPathMethodsTest() throws Exception {
-        Exception auxException = null;
-        try {
-            deleteWithoutPath();
-        } catch (MPException mpException) {
-            assertEquals("Exception must have \"Path not found for DELETE method\" message", mpException.getMessage(), "Path not found for DELETE method");
-            auxException = mpException;
-        }
-        assertSame("Exception type must be \"MPException\"", MPException.class, auxException.getClass());
-
-        auxException = null;
-        try {
-            getWithoutPath();
-        } catch (MPException mpException) {
-            assertEquals("Exception must have \"Path not found for GET method\" message", mpException.getMessage(), "Path not found for GET method");
-            auxException = mpException;
-        }
-        assertSame("Exception type must be \"MPException\"", MPException.class, auxException.getClass());
-
-        auxException = null;
-        try {
-            postWithoutPath();
-        } catch (MPException mpException) {
-            assertEquals("Exception must have \"Path not found for POST method\" message", mpException.getMessage(), "Path not found for POST method");
-            auxException = mpException;
-        }
-        assertSame("Exception type must be \"MPException\"", MPException.class, auxException.getClass());
-
-        auxException = null;
-        try {
-            putWithoutPath();
-        } catch (MPException mpException) {
-            assertEquals("Exception must have \"Path not found for PUT method\" message", mpException.getMessage(), "Path not found for PUT method");
             auxException = mpException;
         }
         assertSame("Exception type must be \"MPException\"", MPException.class, auxException.getClass());
@@ -146,7 +113,7 @@ public class MPBaseTest extends MPBase {
     public void multipleAnnotationMethodTest() throws Exception {
         Exception auxException = null;
         try {
-            multipleAnnotationMethod();
+            loadAll();
         } catch (MPException mpException) {
             assertEquals("Exception must have \"Multiple rest methods found\" message", mpException.getMessage(), "Multiple rest methods found");
             auxException = mpException;
@@ -162,42 +129,12 @@ public class MPBaseTest extends MPBase {
     public void methodWithNoArgumentTest() throws  Exception {
         Exception auxException = null;
         try {
-            methodWithNoArgument();
+            load(null);
         } catch (MPException mpException) {
-            assertEquals("Exception must have \"No argument supplied for method\" message", mpException.getMessage(), "No argument supplied for method");
+            assertEquals("Exception must have \"No argument supplied for method\" message", mpException.getMessage(), "No argument supplied/found for method path");
             auxException = mpException;
         }
         assertSame("Exception type must be \"MPException\"", MPException.class, auxException.getClass());
-    }
-
-    @GET(path="/getpath/slug/:param")
-    public String load(String id) throws MPException {
-        return super.processMethod("load", id);
-    }
-
-    @GET(path="/getpath/slug/")
-    public String loadAll() throws MPException {
-        return super.processMethod("loadAll");
-    }
-
-    @POST(path="/postpath/slug")
-    public String save() throws MPException {
-        return super.processMethod("save");
-    }
-
-    @POST(path="/postpath/slug")
-    public String create() throws MPException {
-        return super.processMethod("create");
-    }
-
-    @PUT(path="/putpath/slug/:param")
-    public String update(String id) throws MPException {
-        return super.processMethod("update", id);
-    }
-
-    @DELETE(path="/deletepath/slug/:param")
-    public String delete(String id) throws MPException {
-        return super.processMethod("delete", id);
     }
 
     //TODO: This test will change with future features implementations on MPBase
@@ -207,11 +144,15 @@ public class MPBaseTest extends MPBase {
     @Test
     public void methodPathTest() throws Exception {
         assertEquals("{\"method\":\"GET\",\"path\":\"/getpath/slug/test_id\"}", load("test_id"));
-        assertEquals("{\"method\":\"GET\",\"path\":\"/getpath/slug/\"}", loadAll());
-        assertEquals("{\"method\":\"POST\",\"path\":\"/postpath/slug\",\"payload\":{\"testString\":\"Test String\",\"testInteger\":666}}", save());
         assertEquals("{\"method\":\"POST\",\"path\":\"/postpath/slug\",\"payload\":{\"testString\":\"Test String\",\"testInteger\":666}}", create());
-        assertEquals("{\"method\":\"PUT\",\"path\":\"/putpath/slug/test_id\",\"payload\":{\"testString\":\"Test String\",\"testInteger\":666}}", update("test_id"));
-        assertEquals("{\"method\":\"DELETE\",\"path\":\"/deletepath/slug/test_id\"}", delete("test_id"));
+        assertEquals("{\"method\":\"PUT\",\"path\":\"/putpath/slug/test_id\",\"payload\":{}}", update("test_id"));
+
+        MPBaseTest resource = new MPBaseTest();
+        resource.id = "5";
+        resource.load(null);
+        resource.testString = "TestUpdate";
+        assertEquals("{\"method\":\"PUT\",\"path\":\"/putpath/slug/5\",\"payload\":{\"testString\":\"TestUpdate\"}}", resource.update(null));
+
     }
 
 }

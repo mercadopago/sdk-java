@@ -1,6 +1,10 @@
 package com.mercadopago.core;
 
+import com.google.common.collect.MapDifference;
+import com.google.common.collect.Maps;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.mercadopago.core.RestAnnotations.DELETE;
 import com.mercadopago.core.RestAnnotations.GET;
 import com.mercadopago.core.RestAnnotations.POST;
@@ -11,7 +15,8 @@ import org.apache.commons.lang3.StringUtils;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
-import java.util.HashMap;
+import java.lang.reflect.Type;
+import java.util.*;
 
 /**
  * Mercado Pago SDK
@@ -21,38 +26,79 @@ import java.util.HashMap;
  */
 public abstract class MPBase {
 
+    private transient JsonObject lastKnownJson = null;
+
+    private static final List<String> ALLOWED_METHODS = Arrays.asList("load", "loadAll", "save", "create", "update", "delete");
+
     /**
      * Process the method to call the api
      *
-     * @param methodName        A String with the decorated method to be processed
-     * @return                  A String with the response of the method processed by the api
+     * @param methodName        a String with the decorated method to be processed
+     * @return                  a String with the response of the method processed by the api
      * @throws MPException
      */
     protected String processMethod(String methodName) throws MPException {
-        return processMethod(methodName, null);
+        HashMap<String, String> mapParams = null;
+        return processMethod(methodName, mapParams);
     }
 
-    protected String processMethod(String methodName, String args) throws MPException {
+    /**
+     * Process the method to call the api
+     *
+     * @param methodName        a String with the decorated method to be processed
+     * @param param1            a String with the arg passed in the call of the method
+     * @return                  a String with the response of the method processed by the api
+     * @throws MPException
+     */
+    protected String processMethod(String methodName, String param1) throws MPException {
+        HashMap<String, String> mapParams = new HashMap<String, String>();
+        mapParams.put("param1", param1);
+        return processMethod(methodName, mapParams);
+    }
+
+    /**
+     * Process the method to call the api
+     *
+     * @param methodName        a String with the decorated method to be processed
+     * @param param1            a String with the arg passed in the call of the method
+     * @param param2            a String with the arg passed in the call of the method
+     * @return                  a String with the response of the method processed by the api
+     * @throws MPException
+     */
+    protected String processMethod(String methodName, String param1, String param2) throws MPException {
+        HashMap<String, String> mapParams = new HashMap<String, String>();
+        mapParams.put("param1", param1);
+        mapParams.put("param2", param2);
+        return processMethod(methodName, mapParams);
+    }
+
+    /**
+     * Process the method to call the api
+     *
+     * @param methodName        a String with the decorated method to be processed
+     * @param mapParams         a hashmap with the args passed in the call of the method
+     * @return                  a String with the response of the method processed by the api
+     * @throws MPException
+     */
+    protected String processMethod(String methodName, HashMap<String, String> mapParams) throws MPException {
+        //Validates the method executed
+        if (!ALLOWED_METHODS.contains(methodName))
+            throw new MPException("Method \"" + methodName + "\" not allowed");
+
         AnnotatedElement annotatedMethod = getAnnotatedMethod(methodName);
         HashMap<String, String> hashAnnotation = getRestInformation(annotatedMethod);
-        String method = hashAnnotation.get("method");
-        String path = hashAnnotation.get("path");
-        if (path.contains(":param")) {
-            if (StringUtils.isEmpty(args))
-                throw new MPException("No argument supplied for method");
-            path = path.replace(":param", args);
-        }
-        String payload = "";
-        if (method.equals("POST") ||
-                method.equals("PUT"))
-            payload = generatePayload(this);
+        String restMethod = hashAnnotation.get("method");
+        String path = parsePath(hashAnnotation.get("path"), mapParams);
+        String payload = generatePayload(restMethod);
 
-        String response = callApi(method, path, payload);
+        String response = callApi(restMethod, path, payload);
+
+        lastKnownJson = getJson();
         return response;
     }
 
-    private String callApi(String method, String path, String payload) throws MPException {
-        String response = "{\"method\":\"" + method + "\",\"path\":\"" + path + "\"";
+    private String callApi(String restMethod, String path, String payload) throws MPException {
+        String response = "{\"method\":\"" + restMethod + "\",\"path\":\"" + path + "\"";
         if (StringUtils.isNotEmpty(payload))
             response += ",\"payload\":" + payload;
         response += "}";
@@ -60,19 +106,88 @@ public abstract class MPBase {
     }
 
     /**
-     * Transforms all attributes members of an object in a JSON String.
-     *
-     * @param object            An object of a class that extends MPBase
-     * @return                  A JSON String with the attributes members of the param object
+     * Evaluates the path of the resourse and use the args or the attributes members of the instance to complete it.
+     * @param path              a String with the path as stated in the declaration of the method caller
+     * @param mapParams         a HashMap with the args passed in the call of the method
+     * @return                  a String with the final path to call the API
      * @throws MPException
      */
-    private String generatePayload(Object object) throws MPException {
-        try {
-            return new Gson().toJson(object);
+    private String parsePath(String path, HashMap<String, String> mapParams) throws MPException {
+        String processedPath = "";
+        if (path.contains(":")) {
+            int paramIterator = 0;
+            while (path.contains(":")) {
+                paramIterator++;
 
-        } catch (Exception ex){
-            throw new MPException(ex);
+                processedPath = processedPath + path.substring(0, path.indexOf(":"));
+                path = path.substring(path.indexOf(":") + 1);
+                String param = path;
+                if (path.contains("/"))
+                    param = path.substring(0, path.indexOf("/"));
+
+                String value = null;
+                if (paramIterator <= 2 &&
+                        mapParams != null &&
+                        StringUtils.isNotEmpty(mapParams.get("param" + String.valueOf(paramIterator))))
+                    value = mapParams.get("param" + String.valueOf(paramIterator));
+                else if (mapParams != null &&
+                        StringUtils.isNotEmpty(mapParams.get(param)))
+                    value = mapParams.get(param);
+                else {
+                    JsonObject json = getJson();
+                    if (json.get(param) != null)
+                        value = json.get(param).getAsString();
+                }
+                if (StringUtils.isEmpty(value))
+                    throw new MPException("No argument supplied/found for method path");
+
+                processedPath = processedPath + value;
+                if (path.contains("/"))
+                    path = path.substring(path.indexOf("/"));
+            }
+
+        } else
+            processedPath = path;
+        return processedPath;
+    }
+
+    /**
+     * Transforms all attributes members of the instance in a JSON String. Only for POST and PUT methods.
+     * POST gets the full object in a JSON object.
+     * PUT gets only the differences with the last known state of the object.
+     *
+     * @return                  a JSON Object with the attributes members of the instance. Null for GET and DELETE methods
+     */
+    private String generatePayload(String restMethod) {
+        String payload = null;
+        if (restMethod.equals("POST"))
+            payload = getJson().toString();
+        else if (restMethod.equals("PUT")) {
+            JsonObject actualJson = getJson();
+
+            Type mapType = new TypeToken<Map<String, Object>>(){}.getType();
+            Gson gson = new Gson();
+            Map<String, Object> oldMap = gson.fromJson(this.lastKnownJson, mapType);
+            Map<String, Object> newMap = gson.fromJson(actualJson, mapType);
+            MapDifference<String, Object> mapDifferences = Maps.difference(oldMap, newMap);
+
+            JsonObject jsonPayload = new JsonObject();
+
+            mapDifferences.entriesDiffering().size();
+            for (Map.Entry<String, MapDifference.ValueDifference<Object>> entry : mapDifferences.entriesDiffering().entrySet())
+                jsonPayload.addProperty(entry.getKey(), entry.getValue().rightValue().toString());
+
+            payload = jsonPayload.toString();
         }
+        return payload;
+    }
+
+    /**
+     * Transforms all attributes members of the instance in a JSON Element.
+     * @return                  a JSON Object with the attributes members of the instance
+     */
+    private JsonObject getJson() {
+        return (JsonObject) new Gson().toJsonTree(this);
     }
 
     /**
@@ -87,7 +202,7 @@ public abstract class MPBase {
         if (element.getAnnotations().length == 0)
             throw new MPException("No rest method found");
 
-        HashMap<String, String> hashAnnotation = new HashMap<>();
+        HashMap<String, String> hashAnnotation = new HashMap<String, String>();
         for (Annotation annotation : element.getAnnotations()) {
             if (annotation instanceof DELETE) {
                 DELETE delete = (DELETE) annotation;

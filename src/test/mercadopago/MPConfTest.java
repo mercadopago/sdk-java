@@ -98,7 +98,7 @@ public class MPConfTest {
         }
         assertSame("Exception type must be \"IllegalArgumentException\"", IllegalArgumentException.class, auxException.getClass());
 
-        hashConfigurations = new HashMap<>();
+        hashConfigurations = new HashMap<String, String>();
         hashConfigurations.put("clientSecret", null);
         auxException = null;
         try {
@@ -123,7 +123,7 @@ public class MPConfTest {
     public void hashMapConfigurationTests() throws Exception {
         MPConf.cleanConfiguration();
 
-        HashMap<String, String> hashConfigurations = new HashMap<>();
+        HashMap<String, String> hashConfigurations = new HashMap<String, String>();
         hashConfigurations.put("clientSecret", "CLIENT_SECRET");
         hashConfigurations.put("clientId", "CLIENT_ID");
         hashConfigurations.put("accessToken", "ACCESS_TOKEN");

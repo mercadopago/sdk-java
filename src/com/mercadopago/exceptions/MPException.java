@@ -17,13 +17,13 @@ public class MPException extends Exception {
         this(message, null, null);
     }
 
-    MPException(String message, String requestId, Integer statusCode) {
+    public MPException(String message, String requestId, Integer statusCode) {
         super(message, null);
         this.requestId = requestId;
         this.statusCode = statusCode;
     }
 
-    MPException(String message, String requestId, Integer statusCode, Throwable cause) {
+    public MPException(String message, String requestId, Integer statusCode, Throwable cause) {
         super(message, cause);
         this.requestId = requestId;
         this.statusCode = statusCode;
