@@ -13,4 +13,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface POST {
     String path();
+    PayloadType payloadType() default PayloadType.JSON;
 }

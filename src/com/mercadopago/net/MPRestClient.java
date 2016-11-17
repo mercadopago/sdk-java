@@ -1,24 +1,27 @@
 package com.mercadopago.net;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+import com.mercadopago.core.RestAnnotations.PayloadType;
 import com.mercadopago.exceptions.MPRestException;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpResponse;
+import org.apache.http.*;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.*;
 import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.entity.EntitySerializer;
 import org.apache.http.message.BasicHeader;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 
 import java.io.InputStream;
-import java.util.Collection;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * Mercado Pago SDK
@@ -26,57 +29,43 @@ import java.util.Vector;
  *
  * Created by Eduardo Paoletta on 11/11/16.
  */
-public abstract class MPRestClient {
+public class MPRestClient {
 
     private static String proxyHostName = null;
     private static int proxyPort = -1;
 
-    public static void setProxyHostName(String proxyHostName) {
-        MPRestClient.proxyHostName = proxyHostName;
+
+    public MPRestClient() {
+        new MPRestClient(null, -1);
     }
 
-    public static void setProxyPort(int proxyPort) {
-        MPRestClient.proxyPort = proxyPort;
+    public MPRestClient(String proxyHostName, int proxyPort) {
+        this.proxyHostName = proxyHostName;
+        this.proxyPort = proxyPort;
     }
 
-    public HttpResponse executeRequest(String url, Collection<Header> colHeaders) throws MPRestException {
-        HttpEntity payload = null;
-        return executeRequest(url, payload, colHeaders);
-    }
-
-    public HttpResponse executeRequest(String url, JsonObject payload, Collection<Header> colHeaders) throws MPRestException {
-        try {
-            BasicHeader header = new BasicHeader(HTTP.CONTENT_TYPE, "application/json");
-            StringEntity entity = new StringEntity("");
-            if (payload != null)
-                entity = new StringEntity(payload.toString());
-            entity.setContentType(header);
-            if (colHeaders == null)
-                colHeaders = new Vector<Header>();
-            colHeaders.add(header);
-
-            return executeRequest(url, entity, colHeaders);
-
-        } catch (MPRestException restEx) {
-            throw restEx;
-        } catch(Exception ex) {
-            throw new MPRestException(ex);
-        }
-    }
-
-    public HttpResponse executeRequest(String url, HttpEntity payload, Collection<Header> colHeaders) throws MPRestException {
+    /**
+     * Executes a http request and returns a response
+     *
+     * @param httpMethod                a String with the http method to execute
+     * @param uri                       a String with the uri
+     * @param payloadType               PayloadType NONE, JSON, FORM_DATA, X_WWW_FORM_URLENCODED
+     * @param payload                   JosnObject with the payload
+     * @param colHeaders                custom headers to add in the request
+     * @return                          Response of the http request
+     * @throws MPRestException
+     */
+    public HttpResponse executeRequest(String httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders)
+            throws MPRestException {
         HttpClient httpClient = null;
         try {
             httpClient = getClient();
-
-            HttpRequestBase request = null;
-            if (payload == null)
-                request = getRequestMethod(url);
-            else
-                request = getRequestMethod(url, payload);
-
-            addHeaders(request, colHeaders);
-
+            if (colHeaders == null)
+                colHeaders = new Vector<Header>();
+            HttpEntity entity = normalizePayload(payloadType, payload, colHeaders);
+            HttpRequestBase request = getRequestMethod(httpMethod, uri, entity);
+            for (Header header : colHeaders)
+                request.addHeader(header);
             HttpResponse response = httpClient.execute(request);
 
             return response;
@@ -95,6 +84,12 @@ public abstract class MPRestClient {
         }
     }
 
+    /**
+     * Returns a DefaultHttpClient instance.
+     * If proxy information exists, its setted on the client.
+     *
+     * @return                          a DefaultHttpClient
+     */
     private HttpClient getClient() {
         HttpClient httpClient = new DefaultHttpClient();
 
@@ -106,34 +101,88 @@ public abstract class MPRestClient {
         return httpClient;
     }
 
-    protected HttpRequestBase getRequestMethod(String url) throws MPRestException {
-        throw new MPRestException("Not supported for this method.");
+    /**
+     * Prepares the payload to be sended in the request.
+     *
+     * @param payloadType               PayloadType NONE, JSON, FORM_DATA, X_WWW_FORM_URLENCODED
+     * @param payload                   JosnObject with the payload
+     * @param colHeaders                Collection of headers. Content type header will be added by the method
+     * @return
+     * @throws MPRestException          HttpEntity with the normalized payload
+     */
+    private HttpEntity normalizePayload(PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders) throws MPRestException {
+        BasicHeader header = null;
+        HttpEntity entity = null;
+        if (payload != null) {
+            if (payloadType == PayloadType.JSON) {
+                header = new BasicHeader(HTTP.CONTENT_TYPE, "application/json");
+                StringEntity stringEntity = null;
+                try {
+                    stringEntity = new StringEntity(payload.toString());
+                } catch(Exception ex) {
+                    throw new MPRestException(ex);
+                }
+                stringEntity.setContentType(header);
+                entity = stringEntity;
+
+            } else {
+                Map<String, Object> map = new Gson().fromJson(payload.toString(), new TypeToken<Map<String, Object>>(){}.getType());
+                List<NameValuePair> params = new ArrayList<NameValuePair>(2);
+                for (Map.Entry<String, Object> entry : map.entrySet())
+                    params.add(new BasicNameValuePair(entry.getKey(), entry.getValue().toString()));
+                UrlEncodedFormEntity urlEncodedFormEntity = null;
+                try {
+                    urlEncodedFormEntity = new UrlEncodedFormEntity(params, "UTF-8");
+                } catch(Exception ex) {
+                    throw new MPRestException(ex);
+                }
+
+                //if (payloadType == PayloadType.FORM_DATA)
+                //    header = new BasicHeader(HTTP.CONTENT_TYPE, "multipart/form-data");
+                //else if (payloadType == PayloadType.X_WWW_FORM_URLENCODED)
+                    header = new BasicHeader(HTTP.CONTENT_TYPE, "application/x-www-form-urlencoded");
+                urlEncodedFormEntity.setContentType(header);
+                entity = urlEncodedFormEntity;
+            }
+        }
+        colHeaders.add(header);
+
+        return entity;
     }
 
-    protected HttpRequestBase getRequestMethod(String url, HttpEntity payload) throws MPRestException {
-        throw new MPRestException("Not supported for this method.");
-    }
-
-    private HttpRequestBase addHeaders(HttpRequestBase request, Collection<Header> colHeaders) {
-        if (colHeaders != null) {
-            for (Header header : colHeaders)
-                request.addHeader(header);
+    /**
+     * Returns the HttpRequestBase to be used by the HttpClient.
+     *
+     * @param httpMethod                a String with the http method to execute
+     * @param uri                       a String with the uri
+     * @param entity                    HttpEntity with the normalized payload
+     * @return                          HttpRequestBase object
+     * @throws MPRestException
+     */
+    private HttpRequestBase getRequestMethod(String httpMethod, String uri, HttpEntity entity) throws MPRestException {
+        HttpRequestBase request = null;
+        if (httpMethod.equals("GET")) {
+            if (entity != null)
+                throw new MPRestException("Not supported for this method.");
+            request = new HttpGet(uri);
+        } else if (httpMethod.equals("POST")) {
+            if (entity == null)
+                throw new MPRestException("Not supported for this method.");
+            HttpPost post = new HttpPost(uri);
+            post.setEntity(entity);
+            request = post;
+        } else if (httpMethod.equals("PUT")) {
+            if (entity == null)
+                throw new MPRestException("Not supported for this method.");
+            HttpPut put = new HttpPut(uri);
+            put.setEntity(entity);
+            request = put;
+        } else if (httpMethod.equals("DELETE")) {
+            if (entity != null)
+                throw new MPRestException("Not supported for this method.");
+            request = new HttpDelete(uri);
         }
         return request;
-    }
-
-    public static String contentToString(InputStream is) throws MPRestException {
-        try {
-            ByteArrayOutputStream result = new ByteArrayOutputStream();
-            byte[] buffer = new byte[1024];
-            int length;
-            while ((length = is.read(buffer)) != -1)
-                result.write(buffer, 0, length);
-            return result.toString("UTF-8");
-
-        } catch (Exception ex) {
-            throw new MPRestException(ex);
-        }
     }
 
 }

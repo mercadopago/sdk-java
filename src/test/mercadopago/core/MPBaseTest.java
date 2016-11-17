@@ -143,15 +143,15 @@ public class MPBaseTest extends MPBase {
      */
     @Test
     public void methodPathTest() throws Exception {
-        assertEquals("{\"method\":\"GET\",\"path\":\"/getpath/slug/test_id\"}", load("test_id"));
-        assertEquals("{\"method\":\"POST\",\"path\":\"/postpath/slug\",\"payload\":{\"testString\":\"Test String\",\"testInteger\":666}}", create());
-        assertEquals("{\"method\":\"PUT\",\"path\":\"/putpath/slug/test_id\",\"payload\":{}}", update("test_id"));
+        assertEquals("{\"method\":\"GET\",\"path\":\"https://api.mercadopago.com/getpath/slug/test_id\"}", load("test_id"));
+        assertEquals("{\"method\":\"POST\",\"path\":\"https://api.mercadopago.com/postpath/slug\",\"payload\":{\"testString\":\"Test String\",\"testInteger\":666}}", create());
+        assertEquals("{\"method\":\"PUT\",\"path\":\"https://api.mercadopago.com/putpath/slug/test_id\",\"payload\":{}}", update("test_id"));
 
         MPBaseTest resource = new MPBaseTest();
         resource.id = "5";
         resource.load(null);
         resource.testString = "TestUpdate";
-        assertEquals("{\"method\":\"PUT\",\"path\":\"/putpath/slug/5\",\"payload\":{\"testString\":\"TestUpdate\"}}", resource.update(null));
+        assertEquals("{\"method\":\"PUT\",\"path\":\"https://api.mercadopago.com/putpath/slug/5\",\"payload\":{\"testString\":\"TestUpdate\"}}", resource.update(null));
 
     }
 
