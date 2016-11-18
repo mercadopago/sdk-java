@@ -53,6 +53,7 @@ public class MPConf {
 
     /**
      * Getter/Setter for AccessToken
+     * The access token ir retrived when empty.
      */
     public static String getAccessToken() throws MPException {
         if (StringUtils.isEmpty(accessToken))

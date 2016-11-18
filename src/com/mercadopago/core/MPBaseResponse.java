@@ -22,15 +22,12 @@ public class MPBaseResponse {
 
     private String stringResponse;
     private JsonObject jsonResponse;
+
     private JsonObject jsonEntity;
 
     public MPBaseResponse(HttpResponse response) throws MPException {
         this._httpResponse = response;
         parseResponse(response);
-    }
-
-    private HttpResponse getResponse() {
-        return this._httpResponse;
     }
 
     public int getStatusCode() {
@@ -60,9 +57,9 @@ public class MPBaseResponse {
 
 
     /**
-     * Parses the http response in a custom object.
+     * Parses the http response in a custom MPBaseResponse object.
      *
-     * @param response
+     * @param response              a Http response to be parsed
      * @throws MPException
      */
     private void parseResponse(HttpResponse response) throws MPException {
@@ -74,13 +71,13 @@ public class MPBaseResponse {
             HttpEntity respEntity = response.getEntity();
             try {
                 this.stringResponse = MPCoreUtils.inputStreamToString(respEntity.getContent());
-                this.jsonResponse = new JsonParser().parse(this.stringResponse).getAsJsonObject();
-                if (this.jsonResponse.has("json") &&
-                        this.jsonResponse.get("json").isJsonObject())
-                    this.jsonEntity = this.jsonResponse.getAsJsonObject("json");
             } catch (Exception ex) {
                 throw new MPException(ex);
             }
+            this.jsonResponse = new JsonParser().parse(this.stringResponse).getAsJsonObject();
+            if (this.jsonResponse.has("json") &&
+                    this.jsonResponse.get("json").isJsonObject())
+                this.jsonEntity = this.jsonResponse.getAsJsonObject("json");
         }
     }
 

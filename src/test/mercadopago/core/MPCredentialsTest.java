@@ -19,10 +19,10 @@ public class MPCredentialsTest {
     public void getAccessTokenTest() throws MPException {
         // Test return an access token from api
         MPConf.cleanConfiguration();
-        MPConf.setClientId("3429371615123816");
-        MPConf.setClientSecret("xTbCyWb1SXPQ4TBJ2BZbvY3O23rbCTW8");
+        MPConf.setClientId(" ");
+        MPConf.setClientSecret(" ");
         MPCredentials.getAccessToken();
-        assertNotNull("Access token must not be \"null\"", MPConf.getAccessToken());
+        assertNull("Access token must be \"null\"", MPConf.getAccessToken());
 
     }
 
