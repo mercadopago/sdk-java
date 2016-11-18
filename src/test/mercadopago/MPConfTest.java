@@ -2,6 +2,7 @@ package test.mercadopago;
 
 import com.mercadopago.MPConf;
 import com.mercadopago.exceptions.MPConfException;
+import com.mercadopago.exceptions.MPException;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -190,7 +191,13 @@ public class MPConfTest {
 
         assertEquals("Client Secret must be \"null\" at this point", MPConf.getClientSecret(), null);
         assertEquals("Client Id must be \"null\" at this point", MPConf.getClientId(), null);
-        assertEquals("Access Token must be \"null\" at this point", MPConf.getAccessToken(), null);
+        auxException = null;
+        try {
+            MPConf.getAccessToken();
+        } catch (Exception exception) {
+            auxException = exception;
+        }
+        assertSame("Exception must be \"MPException\"", MPException.class, auxException.getClass());
         assertEquals("App Id must be \"null\" at this point", MPConf.getAppId(), null);
     }
 

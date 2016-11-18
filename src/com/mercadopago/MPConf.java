@@ -1,6 +1,8 @@
 package com.mercadopago;
 
+import com.mercadopago.core.MPCredentials;
 import com.mercadopago.exceptions.MPConfException;
+import com.mercadopago.exceptions.MPException;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.InputStream;
@@ -52,7 +54,9 @@ public class MPConf {
     /**
      * Getter/Setter for AccessToken
      */
-    public static String getAccessToken() {
+    public static String getAccessToken() throws MPException {
+        if (StringUtils.isEmpty(accessToken))
+            accessToken = MPCredentials.getAccessToken();
         return accessToken;
     }
 

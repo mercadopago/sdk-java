@@ -1,7 +1,11 @@
 package com.mercadopago.core;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.mercadopago.exceptions.MPException;
 import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 
 import java.io.InputStream;
 
@@ -33,4 +37,5 @@ public class MPCoreUtils {
             throw new MPException(ex);
         }
     }
+
 }
