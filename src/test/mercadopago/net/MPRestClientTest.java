@@ -50,7 +50,7 @@ public class MPRestClientTest {
         try {
             client.executeRequest(httpMethod, HTTPBIN_TEST_URL + "get", PayloadType.JSON, new JsonObject(), null);
         } catch (MPException mpException) {
-            assertEquals("Exception must have \"Not supported for this method\" message", mpException.getMessage(), "Not supported for this method.");
+            assertEquals("Exception must have \"Payload not supported for this method.\" message", mpException.getMessage(), "Payload not supported for this method.");
             exception = mpException;
         }
         assertSame("Exception type must be \"MPRestException\"", MPRestException.class, exception.getClass());
@@ -79,7 +79,7 @@ public class MPRestClientTest {
         try {
             client.executeRequest(httpMethod, HTTPBIN_TEST_URL + "delete", PayloadType.JSON, new JsonObject(), null);
         } catch (MPException mpException) {
-            assertEquals("Exception must have \"Not supported for this method\" message", mpException.getMessage(), "Not supported for this method.");
+            assertEquals("Exception must have \"Payload not supported for this method.\" message", mpException.getMessage(), "Payload not supported for this method.");
             exception = mpException;
         }
         assertSame("Exception type must be \"MPRestException\"", MPRestException.class, exception.getClass());
@@ -153,7 +153,7 @@ public class MPRestClientTest {
         try {
             client.executeRequest(httpMethod, HTTPBIN_TEST_URL + "post", PayloadType.NONE, null, null);
         } catch (MPException mpException) {
-            assertEquals("Exception must have \"Not supported for this method\" message", mpException.getMessage(), "Not supported for this method.");
+            assertEquals("Exception must have \"Must include payload for this method.\" message", mpException.getMessage(), "Must include payload for this method.");
             exception = mpException;
         }
         assertSame("Exception type must be \"MPRestException\"", MPRestException.class, exception.getClass());
@@ -203,7 +203,42 @@ public class MPRestClientTest {
         try {
             client.executeRequest(httpMethod, HTTPBIN_TEST_URL + "put", PayloadType.NONE, null, null);
         } catch (MPException mpException) {
-            assertEquals("Exception must have \"Not supported for this method\" message", mpException.getMessage(), "Not supported for this method.");
+            assertEquals("Exception must have \"Must include payload for this method.\" message", mpException.getMessage(), "Must include payload for this method.");
+            exception = mpException;
+        }
+        assertSame("Exception type must be \"MPRestException\"", MPRestException.class, exception.getClass());
+    }
+
+    @Test
+    public void invalidTest() throws MPRestException {
+        MPRestClient client = new MPRestClient();
+        String httpMethod = null;
+
+        Exception exception = null;
+        try {
+            client.executeRequest(httpMethod, null, PayloadType.NONE, null, null);
+        } catch (MPException mpException) {
+            assertEquals("Exception must have \"HttpMethod must be \"GET\", \"POST\", \"PUT\" or \"DELETE\".", "HttpMethod must be \"GET\", \"POST\", \"PUT\" or \"DELETE\".", mpException.getMessage());
+            exception = mpException;
+        }
+        assertSame("Exception type must be \"MPRestException\"", MPRestException.class, exception.getClass());
+
+        httpMethod = "OPTIONS";
+        exception = null;
+        try {
+            client.executeRequest(httpMethod, null, PayloadType.NONE, null, null);
+        } catch (MPException mpException) {
+            assertEquals("Exception must have \"HttpMethod must be \"GET\", \"POST\", \"PUT\" or \"DELETE\".", "HttpMethod must be \"GET\", \"POST\", \"PUT\" or \"DELETE\".", mpException.getMessage());
+            exception = mpException;
+        }
+        assertSame("Exception type must be \"MPRestException\"", MPRestException.class, exception.getClass());
+
+        httpMethod = "GET";
+        exception = null;
+        try {
+            client.executeRequest(httpMethod, null, PayloadType.NONE, null, null);
+        } catch (MPException mpException) {
+            assertEquals("Exception must have \"Uri can not be an empty String.", "Uri can not be an empty String.", mpException.getMessage());
             exception = mpException;
         }
         assertSame("Exception type must be \"MPRestException\"", MPRestException.class, exception.getClass());
