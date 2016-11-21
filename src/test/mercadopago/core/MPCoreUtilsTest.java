@@ -20,16 +20,15 @@ public class MPCoreUtilsTest {
 
     @Test
     public void inputStreamToStringTest() {
-        InputStream stubInputStream = IOUtils.toInputStream("Input Stream test data");
-        Exception exception = null;
         try {
-            assertEquals("Input Stream test data", MPCoreUtils.inputStreamToString(stubInputStream));
-            assertEquals(null, MPCoreUtils.inputStreamToString(null));
-        } catch (MPException mpException) {
-            exception = mpException;
-        }
-        assertSame("Exception type must be \"MPException\"", MPException.class, exception.getClass());
+            assertEquals("", MPCoreUtils.inputStreamToString(null));
 
+            InputStream stubInputStream = IOUtils.toInputStream("Input Stream test data");
+            assertEquals("Input Stream test data", MPCoreUtils.inputStreamToString(stubInputStream));
+
+        } catch (MPException mpException) {
+            // Do nothing
+        }
     }
 
 }
