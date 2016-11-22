@@ -3,6 +3,7 @@ package com.mercadopago.core;
 import com.google.common.collect.MapDifference;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.mercadopago.MPConf;
@@ -90,6 +91,8 @@ public abstract class MPBase {
         HashMap<String, Object> hashAnnotation = getRestInformation(annotatedMethod);
         String httpMethod = hashAnnotation.get("method").toString();
         String path = parsePath(hashAnnotation.get("path").toString(), mapParams);
+        // Validator will throw an MPValidatorException, there is no need to do a conditional
+        MPValidator.validate(this);
         PayloadType payloadType = (PayloadType) hashAnnotation.get("payloadType");
         JsonObject payload = generatePayload(httpMethod);
         String response = callApi(httpMethod, path, payload, payloadType);
@@ -197,7 +200,11 @@ public abstract class MPBase {
      * @return                  a JSON Object with the attributes members of the instance
      */
     private JsonObject getJson() {
-        return (JsonObject) new Gson().toJsonTree(this);
+        String FORMAT_ISO8601 = "yyyy-MM-dd'T'HH:mm:ssZ";
+        Gson gson = new GsonBuilder()
+                .setDateFormat(FORMAT_ISO8601)
+                .create();
+        return (JsonObject) gson.toJsonTree(this);
     }
 
     /**
