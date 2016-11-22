@@ -33,8 +33,9 @@ public class MPConf {
     }
 
     public static void setClientSecret(String value) throws MPConfException {
-        if (StringUtils.isNotEmpty(clientSecret))
+        if (StringUtils.isNotEmpty(clientSecret)) {
             throw new MPConfException("clientSecret setting can not be changed");
+        }
         clientSecret = value;
     }
 
@@ -46,8 +47,9 @@ public class MPConf {
     }
 
     public static void setClientId(String value) throws MPConfException {
-        if (StringUtils.isNotEmpty(clientId))
+        if (StringUtils.isNotEmpty(clientId)) {
             throw new MPConfException("clientId setting can not be changed");
+        }
         clientId = value;
     }
 
@@ -56,14 +58,16 @@ public class MPConf {
      * The access token ir retrived when empty.
      */
     public static String getAccessToken() throws MPException {
-        if (StringUtils.isEmpty(accessToken))
+        if (StringUtils.isEmpty(accessToken)) {
             accessToken = MPCredentials.getAccessToken();
+        }
         return accessToken;
     }
 
     public static void setAccessToken(String value) throws MPConfException {
-        if (StringUtils.isNotEmpty(accessToken))
+        if (StringUtils.isNotEmpty(accessToken)) {
             throw new MPConfException("accessToken setting can not be changed");
+        }
         accessToken = value;
     }
 
@@ -75,8 +79,9 @@ public class MPConf {
     }
 
     public static void setAppId(String value) throws MPConfException {
-        if (StringUtils.isNotEmpty(appId))
+        if (StringUtils.isNotEmpty(appId)) {
             throw new MPConfException("appId setting can not be changed");
+        }
         appId = value;
     }
 
@@ -99,8 +104,9 @@ public class MPConf {
      * throws MPConfException
      */
     public static void setConfiguration(HashMap<String, String> hashConfigurationParams) throws MPConfException {
-        if (hashConfigurationParams == null)
+        if (hashConfigurationParams == null) {
             throw new IllegalArgumentException("Invalid hashConfigurationParams parameter");
+        }
 
         setClientSecret(getValueFromHashMap(hashConfigurationParams, "clientSecret"));
         setClientId(getValueFromHashMap(hashConfigurationParams, "clientId"));
@@ -116,8 +122,9 @@ public class MPConf {
      */
     private static String getValueFromHashMap(HashMap<String, String> hashMap, String key) {
         if (hashMap.containsKey(key) &&
-                StringUtils.isNotEmpty(hashMap.get(key)))
+                StringUtils.isNotEmpty(hashMap.get(key))) {
             return hashMap.get(key);
+        }
         return null;
     }
 
@@ -127,16 +134,18 @@ public class MPConf {
      * throws MPConfException
      */
     public static void setConfiguration(String filePath) throws MPConfException {
-        if (StringUtils.isEmpty(filePath))
+        if (StringUtils.isEmpty(filePath)) {
             throw new IllegalArgumentException("File path can not be empty");
+        }
 
         InputStream inputStream = null;
         try {
             Properties properties = new Properties();
 
             inputStream = MPConf.class.getClassLoader().getResourceAsStream(filePath);
-            if (inputStream == null)
+            if (inputStream == null) {
                 throw new IllegalArgumentException("File not found");
+            }
 
             properties.load(inputStream);
 
@@ -167,8 +176,9 @@ public class MPConf {
      */
     private static String getValueFromProperties(Properties properties, String key) {
         if (properties.containsKey(key) &&
-                StringUtils.isNotEmpty(properties.getProperty(key)))
+                StringUtils.isNotEmpty(properties.getProperty(key))) {
             return properties.getProperty(key);
+        }
         return null;
     }
 

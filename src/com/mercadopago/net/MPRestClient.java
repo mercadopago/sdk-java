@@ -61,12 +61,14 @@ public class MPRestClient {
         HttpClient httpClient = null;
         try {
             httpClient = getClient();
-            if (colHeaders == null)
+            if (colHeaders == null) {
                 colHeaders = new Vector<Header>();
+            }
             HttpEntity entity = normalizePayload(payloadType, payload, colHeaders);
             HttpRequestBase request = getRequestMethod(httpMethod, uri, entity);
-            for (Header header : colHeaders)
+            for (Header header : colHeaders) {
                 request.addHeader(header);
+            }
             HttpResponse response = httpClient.execute(request);
 
             return new MPBaseResponse(response);
@@ -129,8 +131,9 @@ public class MPRestClient {
             } else {
                 Map<String, Object> map = new Gson().fromJson(payload.toString(), new TypeToken<Map<String, Object>>(){}.getType());
                 List<NameValuePair> params = new ArrayList<NameValuePair>(2);
-                for (Map.Entry<String, Object> entry : map.entrySet())
+                for (Map.Entry<String, Object> entry : map.entrySet()) {
                     params.add(new BasicNameValuePair(entry.getKey(), entry.getValue().toString()));
+                }
                 UrlEncodedFormEntity urlEncodedFormEntity = null;
                 try {
                     urlEncodedFormEntity = new UrlEncodedFormEntity(params, "UTF-8");
@@ -163,24 +166,28 @@ public class MPRestClient {
     private HttpRequestBase getRequestMethod(String httpMethod, String uri, HttpEntity entity) throws MPRestException {
         HttpRequestBase request = null;
         if (httpMethod.equals("GET")) {
-            if (entity != null)
+            if (entity != null) {
                 throw new MPRestException("Not supported for this method.");
+            }
             request = new HttpGet(uri);
         } else if (httpMethod.equals("POST")) {
-            if (entity == null)
+            if (entity == null) {
                 throw new MPRestException("Not supported for this method.");
+            }
             HttpPost post = new HttpPost(uri);
             post.setEntity(entity);
             request = post;
         } else if (httpMethod.equals("PUT")) {
-            if (entity == null)
+            if (entity == null) {
                 throw new MPRestException("Not supported for this method.");
+            }
             HttpPut put = new HttpPut(uri);
             put.setEntity(entity);
             request = put;
         } else if (httpMethod.equals("DELETE")) {
-            if (entity != null)
+            if (entity != null) {
                 throw new MPRestException("Not supported for this method.");
+            }
             request = new HttpDelete(uri);
         }
         return request;
