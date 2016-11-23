@@ -1,18 +1,13 @@
 package test.mercadopago.net;
 
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.mercadopago.core.MPCoreUtils;
+import com.mercadopago.core.MPBaseResponse;
 import com.mercadopago.core.RestAnnotations.PayloadType;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.exceptions.MPRestException;
 import com.mercadopago.net.MPRestClient;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.protocol.HTTP;
 import org.junit.Test;
-
-import java.io.InputStream;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
@@ -34,16 +29,19 @@ public class MPRestClientTest {
         String httpMethod = "GET";
 
         // Simple GET
-        HttpResponse response = client.executeRequest(httpMethod, HTTPBIN_TEST_URL + "get", PayloadType.NONE, null, null);
-        assertEquals("Response must have a 200 status.", 200, response.getStatusLine().getStatusCode());
+        MPBaseResponse response = client.executeRequest(httpMethod, HTTPBIN_TEST_URL + "get", PayloadType.NONE, null, null);
+        assertEquals("Response must have a 200 status.", 200, response.getStatusCode());
+        assertEquals("Response must have a \"OK\" reason phrase.", "OK", response.getReasonPhrase());
 
         // Invalid
         response = client.executeRequest(httpMethod, HTTPBIN_TEST_URL + "get/invalid", PayloadType.NONE, null, null);
-        assertEquals("Response must have a 404 status.", 404, response.getStatusLine().getStatusCode());
+        assertEquals("Response must have a 404 status.", 404, response.getStatusCode());
+        assertEquals("Response must have a \"NOT FOUND\" reason phrase.", "NOT FOUND", response.getReasonPhrase());
 
         // Not Allowed
         response = client.executeRequest(httpMethod, HTTPBIN_TEST_URL + "post", PayloadType.NONE, null, null);
-        assertEquals("Response must have a 405 status.", 405, response.getStatusLine().getStatusCode());
+        assertEquals("Response must have a 405 status.", 405, response.getStatusCode());
+        assertEquals("Response must have a \"METHOD NOT ALLOWED\" reason phrase.", "METHOD NOT ALLOWED", response.getReasonPhrase());
 
         // Not Supported
         Exception exception = null;
@@ -63,16 +61,19 @@ public class MPRestClientTest {
         String httpMethod = "DELETE";
 
         // Simple DELETE
-        HttpResponse response = client.executeRequest(httpMethod, HTTPBIN_TEST_URL + "delete", PayloadType.NONE, null, null);
-        assertEquals("Response must have a 200 status.", 200, response.getStatusLine().getStatusCode());
+        MPBaseResponse response = client.executeRequest(httpMethod, HTTPBIN_TEST_URL + "delete", PayloadType.NONE, null, null);
+        assertEquals("Response must have a 200 status.", 200, response.getStatusCode());
+        assertEquals("Response must have a \"OK\" reason phrase.", "OK", response.getReasonPhrase());
 
         // Invalid
         response = client.executeRequest(httpMethod, HTTPBIN_TEST_URL + "delete/invalid", PayloadType.NONE, null, null);
-        assertEquals("Response must have a 404 status.", 404, response.getStatusLine().getStatusCode());
+        assertEquals("Response must have a 404 status.", 404, response.getStatusCode());
+        assertEquals("Response must have a \"NOT FOUND\" reason phrase.", "NOT FOUND", response.getReasonPhrase());
 
         // Not Allowed
         response = client.executeRequest(httpMethod, HTTPBIN_TEST_URL + "get", PayloadType.NONE, null, null);
-        assertEquals("Response must have a 405 status.", 405, response.getStatusLine().getStatusCode());
+        assertEquals("Response must have a 405 status.", 405, response.getStatusCode());
+        assertEquals("Response must have a \"METHOD NOT ALLOWED\" reason phrase.", "METHOD NOT ALLOWED", response.getReasonPhrase());
 
         // Not Supported
         Exception exception = null;
@@ -96,57 +97,28 @@ public class MPRestClientTest {
         jsonObject.addProperty("testproperty", "testvalue");
 
         // POST JSON
-        HttpResponse response = client.executeRequest(httpMethod, HTTPBIN_TEST_URL + "post", PayloadType.JSON, jsonObject, null);
-        assertEquals("Response must have a 200 status.", 200, response.getStatusLine().getStatusCode());
-        HttpEntity respEntity = response.getEntity();
-        JsonObject jsonResponse = null;
-        if (respEntity != null) {
-            InputStream is = null;
-            try {
-                is = respEntity.getContent();
-            } catch (Exception ex) {
-                // Do nothing
-            }
-            String responseJson = null;
-            try {
-                responseJson = MPCoreUtils.inputStreamToString(is);
-            } catch (Exception ex) {
-                //Do nothing
-            }
-            JsonParser parser = new JsonParser();
-            jsonResponse = parser.parse(responseJson).getAsJsonObject().getAsJsonObject("json");
-        }
-        assertEquals("Response entity must be \"{\"property\":\"value\",\"testproperty\":\"testvalue\"}\"", jsonObject, jsonResponse);
+        MPBaseResponse response = client.executeRequest(httpMethod, HTTPBIN_TEST_URL + "post", PayloadType.JSON, jsonObject, null);
+        assertEquals("Response must have a 200 status.", 200, response.getStatusCode());
+        assertEquals("Response must have a \"OK\" reason phrase.", "OK", response.getReasonPhrase());
+        assertEquals("Response entity must be \"{\"property\":\"value\",\"testproperty\":\"testvalue\"}\"", jsonObject, response.getJsonEntity());
         assertEquals("Content type must be \"application/json\"", "application/json", response.getHeaders(HTTP.CONTENT_TYPE)[0].getValue());
 
         // POST X_WWW
         response = client.executeRequest(httpMethod, HTTPBIN_TEST_URL + "post", PayloadType.X_WWW_FORM_URLENCODED, jsonObject, null);
-        assertEquals("Response must have a 200 status.", 200, response.getStatusLine().getStatusCode());
-        respEntity = response.getEntity();
-        String responseJson = null;
-        if (respEntity != null) {
-            InputStream is = null;
-            try {
-                is = respEntity.getContent();
-            } catch (Exception ex) {
-                // Do nothing
-            }
-            try {
-                responseJson = MPCoreUtils.inputStreamToString(is);
-            } catch (Exception ex) {
-                //Do nothing
-            }
-        }
-        assertTrue("Response entity must be \"{\"property\":\"value\"}\"", responseJson.contains("\"property\": \"value\""));
-        assertTrue("Content type must be \"application/x-www-form-urlencoded\"", responseJson.contains("application/x-www-form-urlencoded"));
+        assertEquals("Response must have a 200 status.", 200, response.getStatusCode());
+        assertEquals("Response must have a \"OK\" reason phrase.", "OK", response.getReasonPhrase());
+        assertTrue("Response entity must be \"{\"property\":\"value\"}\"", response.getStringResponse().contains("\"property\": \"value\""));
+        assertTrue("Content type must be \"application/x-www-form-urlencoded\"", response.getStringResponse().contains("application/x-www-form-urlencoded"));
 
         // Invalid
         response = client.executeRequest(httpMethod, HTTPBIN_TEST_URL + "post/invalid", PayloadType.JSON, jsonObject, null);
-        assertEquals("Response must have a 404 status.", 404, response.getStatusLine().getStatusCode());
+        assertEquals("Response must have a 404 status.", 404, response.getStatusCode());
+        assertEquals("Response must have a \"NOT FOUND\" reason phrase.", "NOT FOUND", response.getReasonPhrase());
 
         // Not Allowed
         response = client.executeRequest(httpMethod, HTTPBIN_TEST_URL + "get", PayloadType.JSON, jsonObject, null);
-        assertEquals("Response must have a 405 status.", 405, response.getStatusLine().getStatusCode());
+        assertEquals("Response must have a 405 status.", 405, response.getStatusCode());
+        assertEquals("Response must have a \"METHOD NOT ALLOWED\" reason phrase.", "METHOD NOT ALLOWED", response.getReasonPhrase());
 
         // Not Supported
         Exception exception = null;
@@ -168,35 +140,20 @@ public class MPRestClientTest {
         jsonObject.addProperty("property", "value");
 
         // PUT JSON
-        HttpResponse response = client.executeRequest(httpMethod, HTTPBIN_TEST_URL + "put", PayloadType.JSON, jsonObject, null);
-        assertEquals("Response must have a 200 status.", 200, response.getStatusLine().getStatusCode());
-        HttpEntity respEntity = response.getEntity();
-        JsonObject jsonResponse = null;
-        if (respEntity != null) {
-            InputStream is = null;
-            try {
-                is = respEntity.getContent();
-            } catch (Exception ex) {
-                // Do nothing
-            }
-            String responseJson = null;
-            try {
-                responseJson = MPCoreUtils.inputStreamToString(is);
-            } catch (Exception ex) {
-                //Do nothing
-            }
-            JsonParser parser = new JsonParser();
-            jsonResponse = parser.parse(responseJson).getAsJsonObject().getAsJsonObject("json");
-        }
-        assertEquals("Response entity must be \"{\"data\":\"testvalue\"}\"", jsonObject, jsonResponse);
+        MPBaseResponse response = client.executeRequest(httpMethod, HTTPBIN_TEST_URL + "put", PayloadType.JSON, jsonObject, null);
+        assertEquals("Response must have a 200 status.", 200, response.getStatusCode());
+        assertEquals("Response must have a \"OK\" reason phrase.", "OK", response.getReasonPhrase());
+        assertEquals("Response entity must be \"{\"data\":\"testvalue\"}\"", jsonObject, response.getJsonEntity());
 
         // Invalid
         response = client.executeRequest(httpMethod, HTTPBIN_TEST_URL + "put/invalid", PayloadType.JSON, jsonObject, null);
-        assertEquals("Response must have a 404 status.", 404, response.getStatusLine().getStatusCode());
+        assertEquals("Response must have a 404 status.", 404, response.getStatusCode());
+        assertEquals("Response must have a \"NOT FOUND\" reason phrase.", "NOT FOUND", response.getReasonPhrase());
 
         // Not Allowed
         response = client.executeRequest(httpMethod, HTTPBIN_TEST_URL + "get", PayloadType.JSON, jsonObject, null);
-        assertEquals("Response must have a 405 status.", 405, response.getStatusLine().getStatusCode());
+        assertEquals("Response must have a 405 status.", 405, response.getStatusCode());
+        assertEquals("Response must have a \"METHOD NOT ALLOWED\" reason phrase.", "METHOD NOT ALLOWED", response.getReasonPhrase());
 
         // Not Supported
         Exception exception = null;

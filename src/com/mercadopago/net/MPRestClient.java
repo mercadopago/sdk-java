@@ -3,6 +3,7 @@ package com.mercadopago.net;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.mercadopago.core.MPBaseResponse;
 import com.mercadopago.core.RestAnnotations.PayloadType;
 import com.mercadopago.exceptions.MPRestException;
 import org.apache.commons.lang3.StringUtils;
@@ -50,10 +51,10 @@ public class MPRestClient {
      * @param payloadType               PayloadType NONE, JSON, FORM_DATA, X_WWW_FORM_URLENCODED
      * @param payload                   JosnObject with the payload
      * @param colHeaders                custom headers to add in the request
-     * @return                          Response of the http request
+     * @return                          MPBaseResponse with parsed info of the http response
      * @throws MPRestException
      */
-    public HttpResponse executeRequest(String httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders)
+    public MPBaseResponse executeRequest(String httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders)
             throws MPRestException {
         HttpClient httpClient = null;
         try {
@@ -66,7 +67,7 @@ public class MPRestClient {
                 request.addHeader(header);
             HttpResponse response = httpClient.execute(request);
 
-            return response;
+            return new MPBaseResponse(response);
 
         } catch (MPRestException restEx) {
             throw restEx;
