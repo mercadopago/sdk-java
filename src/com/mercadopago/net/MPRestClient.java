@@ -32,6 +32,8 @@ import java.util.*;
  */
 public class MPRestClient {
 
+    private static final List<String> ALLOWED_METHODS = Arrays.asList("GET", "POST", "PUT", "DELETE");
+
     private static String proxyHostName = null;
     private static int proxyPort = -1;
 
@@ -164,6 +166,12 @@ public class MPRestClient {
      * @throws MPRestException
      */
     private HttpRequestBase getRequestMethod(String httpMethod, String uri, HttpEntity entity) throws MPRestException {
+        if (StringUtils.isEmpty(httpMethod) ||
+                !ALLOWED_METHODS.contains(httpMethod))
+            throw new MPRestException("HttpMethod must be \"GET\", \"POST\", \"PUT\" or \"DELETE\".");
+        if (StringUtils.isEmpty(uri))
+            throw new MPRestException("Uri can not be an empty String.");
+
         HttpRequestBase request = null;
         if (httpMethod.equals("GET")) {
             if (entity != null) {
