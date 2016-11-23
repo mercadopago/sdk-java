@@ -1,6 +1,7 @@
 package com.mercadopago.core;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.mercadopago.exceptions.MPException;
 import org.apache.http.Header;
@@ -74,10 +75,17 @@ public class MPBaseResponse {
             } catch (Exception ex) {
                 throw new MPException(ex);
             }
-            this.jsonResponse = new JsonParser().parse(this.stringResponse).getAsJsonObject();
-            if (this.jsonResponse.has("json") &&
-                    this.jsonResponse.get("json").isJsonObject())
-                this.jsonEntity = this.jsonResponse.getAsJsonObject("json");
+
+            // Try to parse the response to a json, and a extract the entity of the response.
+            // When the response is not a json parseable string then the string response must be used.
+            try {
+                this.jsonResponse = new JsonParser().parse(this.stringResponse).getAsJsonObject();
+                if (this.jsonResponse.has("json") &&
+                        this.jsonResponse.get("json").isJsonObject())
+                    this.jsonEntity = this.jsonResponse.getAsJsonObject("json");
+            } catch (JsonParseException jsonParseException) {
+                // Do nothing
+            }
         }
     }
 
