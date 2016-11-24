@@ -9,16 +9,16 @@ import com.google.gson.reflect.TypeToken;
 import com.mercadopago.MPConf;
 import com.mercadopago.core.restannotations.*;
 import com.mercadopago.exceptions.MPException;
+import com.mercadopago.net.MPRestClient;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Mercado Pago SDK
@@ -89,7 +89,7 @@ public abstract class MPBase {
 
         AnnotatedElement annotatedMethod = getAnnotatedMethod(methodName);
         HashMap<String, Object> hashAnnotation = getRestInformation(annotatedMethod);
-        String httpMethod = hashAnnotation.get("method").toString();
+        MPRestClient.HttpMethod httpMethod = (MPRestClient.HttpMethod)hashAnnotation.get("method");
         String path = parsePath(hashAnnotation.get("path").toString(), mapParams);
         // Validator will throw an MPValidatorException, there is no need to do a conditional
         MPValidator.validate(this);
@@ -100,10 +100,10 @@ public abstract class MPBase {
         return response;
     }
 
-    private String callApi(String httpMethod, String path, JsonObject payload, PayloadType payloadType) throws MPException {
-//        MPRestClient restClient = new MPRestClient();
-//        Collection<Header> colHeaders = null;
-//        HttpResponse httpResponse = restClient.executeRequest(httpMethod, path, payload, payloadType, colHeaders);
+    private String callApi(MPRestClient.HttpMethod httpMethod, String path, JsonObject payload, PayloadType payloadType) throws MPException {
+        //MPRestClient restClient = new MPRestClient();
+        //Collection<Header> colHeaders = null;
+        //MPBaseResponse baseResponse = restClient.executeRequest(httpMethod, path, payloadType, payload, colHeaders);
 
         String response = "{\"method\":\"" + httpMethod + "\",\"path\":\"" + path + "\"";
         if (payload != null &&
@@ -172,11 +172,11 @@ public abstract class MPBase {
      *
      * @return                  a JSON Object with the attributes members of the instance. Null for GET and DELETE methods
      */
-    private JsonObject generatePayload(String httpMethod) {
+    private JsonObject generatePayload(MPRestClient.HttpMethod httpMethod) {
         JsonObject payload = null;
-        if (httpMethod.equals("POST")) {
+        if (httpMethod.equals(MPRestClient.HttpMethod.POST)) {
             payload = MPCoreUtils.getJson(this);
-        } else if (httpMethod.equals("PUT")) {
+        } else if (httpMethod.equals(MPRestClient.HttpMethod.PUT)) {
             JsonObject actualJson = MPCoreUtils.getJson(this);
 
             Type mapType = new TypeToken<Map<String, Object>>(){}.getType();
@@ -214,28 +214,28 @@ public abstract class MPBase {
                 if (StringUtils.isEmpty(delete.path())) {
                     throw new MPException("Path not found for DELETE method");
                 }
-                hashAnnotation = fillHashAnnotations(hashAnnotation, "DELETE", delete.path(), null);
+                hashAnnotation = fillHashAnnotations(hashAnnotation, MPRestClient.HttpMethod.DELETE, delete.path(), null, delete.retries());
 
             } else if (annotation instanceof GET) {
                 GET get = (GET) annotation;
                 if (StringUtils.isEmpty(get.path())) {
                     throw new MPException("Path not found for GET method");
                 }
-                hashAnnotation = fillHashAnnotations(hashAnnotation, "GET", get.path(), null);
+                hashAnnotation = fillHashAnnotations(hashAnnotation, MPRestClient.HttpMethod.GET, get.path(), null, get.retries());
 
             } else if (annotation instanceof POST) {
                 POST post = (POST) annotation;
                 if (StringUtils.isEmpty(post.path())) {
                     throw new MPException("Path not found for POST method");
                 }
-                hashAnnotation = fillHashAnnotations(hashAnnotation, "POST", post.path(), post.payloadType());
+                hashAnnotation = fillHashAnnotations(hashAnnotation, MPRestClient.HttpMethod.POST, post.path(), post.payloadType(), post.retries());
 
             } else if (annotation instanceof PUT) {
                 PUT put = (PUT) annotation;
                 if (StringUtils.isEmpty(put.path())) {
                     throw new MPException("Path not found for PUT method");
                 }
-                hashAnnotation = fillHashAnnotations(hashAnnotation, "PUT", put.path(), put.payloadType());
+                hashAnnotation = fillHashAnnotations(hashAnnotation, MPRestClient.HttpMethod.PUT, put.path(), put.payloadType(), put.retries());
             }
         }
         return hashAnnotation;
@@ -251,7 +251,7 @@ public abstract class MPBase {
      * @return                      the HashMap object that is received by param
      * @throws MPException
      */
-    private HashMap<String, Object> fillHashAnnotations(HashMap<String, Object> hashAnnotation, String method, String path, PayloadType payloadType)
+    private HashMap<String, Object> fillHashAnnotations(HashMap<String, Object> hashAnnotation, MPRestClient.HttpMethod method, String path, PayloadType payloadType, int retries)
             throws MPException {
         if (hashAnnotation.containsKey("method")) {
             throw new MPException("Multiple rest methods found");
@@ -259,6 +259,7 @@ public abstract class MPBase {
         hashAnnotation.put("method", method);
         hashAnnotation.put("path", path);
         hashAnnotation.put("payloadType", payloadType);
+        hashAnnotation.put("retries", retries);
         return hashAnnotation;
     }
 
