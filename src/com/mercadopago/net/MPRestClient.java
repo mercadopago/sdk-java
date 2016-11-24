@@ -13,11 +13,15 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.*;
 import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.*;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.CoreConnectionPNames;
+import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
+import org.apache.http.protocol.HttpContext;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -61,9 +65,13 @@ public class MPRestClient {
      */
     public MPBaseResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders)
             throws MPRestException {
+        return executeRequest(httpMethod, uri, payloadType, payload, colHeaders, 0, 0, 0);
+    }
+    public MPBaseResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders, int retries, int connectionTimeout, int soTimeout)
+            throws MPRestException {
         HttpClient httpClient = null;
         try {
-            httpClient = getClient();
+            httpClient = getClient(retries, connectionTimeout, soTimeout);
             if (colHeaders == null) {
                 colHeaders = new Vector<Header>();
             }
@@ -96,13 +104,25 @@ public class MPRestClient {
      *
      * @return                          a DefaultHttpClient
      */
-    private HttpClient getClient() {
+    private HttpClient getClient(int retries, int connectionTimeout, int soTimeout) {
+
+        DefaultHttpRequestRetryHandler retryHandler = new DefaultHttpRequestRetryHandler(retries, true);
+
         HttpClient httpClient = new DefaultHttpClient();
+        ((AbstractHttpClient)httpClient).setHttpRequestRetryHandler(retryHandler);
+
+        HttpParams httpParams = httpClient.getParams();
+        if (connectionTimeout > 0) {
+            httpParams.setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, connectionTimeout * 1000);
+        }
+        if (soTimeout > 0) {
+            httpParams.setParameter(CoreConnectionPNames.SO_TIMEOUT, soTimeout * 1000);
+        }
 
         //Proxy
         if (StringUtils.isNotEmpty(proxyHostName)) {
             HttpHost proxy = new HttpHost(proxyHostName, proxyPort);
-            httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+            httpParams.setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
         }
         return httpClient;
     }

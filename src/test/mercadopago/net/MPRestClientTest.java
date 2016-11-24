@@ -28,7 +28,7 @@ public class MPRestClientTest {
         MPRestClient client = new MPRestClient();
 
         // Simple GET
-        MPBaseResponse response = client.executeRequest(MPRestClient.HttpMethod.GET, HTTPBIN_TEST_URL + "get", PayloadType.NONE, null, null);
+        MPBaseResponse response = client.executeRequest(MPRestClient.HttpMethod.GET, HTTPBIN_TEST_URL + "get", PayloadType.NONE, null, null, 1, 1, 1);
         assertEquals("Response must have a 200 status.", 200, response.getStatusCode());
         assertEquals("Response must have a \"OK\" reason phrase.", "OK", response.getReasonPhrase());
 

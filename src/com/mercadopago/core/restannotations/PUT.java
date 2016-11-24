@@ -14,4 +14,8 @@ import java.lang.annotation.*;
 public @interface PUT {
     String path();
     PayloadType payloadType() default PayloadType.JSON;
+
+    int retries() default 0;
+    int connectionTimeout() default 0;
+    int soTimeout() default 0;
 }
