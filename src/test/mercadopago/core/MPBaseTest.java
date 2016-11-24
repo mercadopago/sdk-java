@@ -1,11 +1,13 @@
 package test.mercadopago.core;
 
-import com.mercadopago.core.RestAnnotations.GET;
-import com.mercadopago.core.RestAnnotations.POST;
-import com.mercadopago.core.RestAnnotations.PUT;
+import com.mercadopago.core.restannotations.GET;
+import com.mercadopago.core.restannotations.POST;
+import com.mercadopago.core.restannotations.PUT;
 import com.mercadopago.core.MPBase;
 import com.mercadopago.exceptions.MPException;
 import org.junit.Test;
+
+import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;

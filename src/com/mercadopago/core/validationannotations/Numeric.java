@@ -1,4 +1,4 @@
-package com.mercadopago.core.ValidationAnnotations;
+package com.mercadopago.core.validationannotations;
 
 import java.lang.annotation.*;
 

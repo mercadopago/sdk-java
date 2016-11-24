@@ -7,7 +7,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.mercadopago.MPConf;
-import com.mercadopago.core.RestAnnotations.*;
+import com.mercadopago.core.restannotations.*;
 import com.mercadopago.exceptions.MPException;
 import org.apache.commons.lang3.StringUtils;
 
@@ -96,7 +96,7 @@ public abstract class MPBase {
         PayloadType payloadType = (PayloadType) hashAnnotation.get("payloadType");
         JsonObject payload = generatePayload(httpMethod);
         String response = callApi(httpMethod, path, payload, payloadType);
-        lastKnownJson = getJson();
+        lastKnownJson = MPCoreUtils.getJson(this);
         return response;
     }
 
@@ -143,7 +143,7 @@ public abstract class MPBase {
                         StringUtils.isNotEmpty(mapParams.get(param))) {
                     value = mapParams.get(param);
                 } else {
-                    JsonObject json = getJson();
+                    JsonObject json = MPCoreUtils.getJson(this);
                     if (json.get(param) != null) {
                         value = json.get(param).getAsString();
                     }
@@ -175,9 +175,9 @@ public abstract class MPBase {
     private JsonObject generatePayload(String httpMethod) {
         JsonObject payload = null;
         if (httpMethod.equals("POST")) {
-            payload = getJson();
+            payload = MPCoreUtils.getJson(this);
         } else if (httpMethod.equals("PUT")) {
-            JsonObject actualJson = getJson();
+            JsonObject actualJson = MPCoreUtils.getJson(this);
 
             Type mapType = new TypeToken<Map<String, Object>>(){}.getType();
             Gson gson = new Gson();
@@ -193,18 +193,6 @@ public abstract class MPBase {
             }
         }
         return payload;
-    }
-
-    /**
-     * Transforms all attributes members of the instance in a JSON Element.
-     * @return                  a JSON Object with the attributes members of the instance
-     */
-    private JsonObject getJson() {
-        String FORMAT_ISO8601 = "yyyy-MM-dd'T'HH:mm:ssZ";
-        Gson gson = new GsonBuilder()
-                .setDateFormat(FORMAT_ISO8601)
-                .create();
-        return (JsonObject) gson.toJsonTree(this);
     }
 
     /**

@@ -1,11 +1,10 @@
 package com.mercadopago.core;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.mercadopago.exceptions.MPException;
 import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 
 import java.io.InputStream;
 
@@ -16,6 +15,17 @@ import java.io.InputStream;
  * Created by Eduardo Paoletta on 11/17/16.
  */
 public class MPCoreUtils {
+
+    public static final String FORMAT_ISO8601 = "yyyy-MM-dd'T'HH:mm:ssZ";
+
+    /**
+     * Static method that transforms all attributes members of the instance in a JSON Element.
+     * @return                  a JSON Object with the attributes members of the instance
+     */
+    public static JsonObject getJson(Object object) {
+        Gson gson = new GsonBuilder().setDateFormat(FORMAT_ISO8601).create();
+        return (JsonObject) gson.toJsonTree(object);
+    }
 
     /**
      * Static method that transform an Input Stream to a String object, returns an empty string if InputStream is null.

@@ -4,9 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.mercadopago.core.MPBaseResponse;
-import com.mercadopago.core.RestAnnotations.PayloadType;
+import com.mercadopago.core.restannotations.PayloadType;
 import com.mercadopago.exceptions.MPRestException;
-import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.*;
 import org.apache.http.client.HttpClient;
@@ -14,14 +13,11 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.*;
 import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.entity.EntitySerializer;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 
-import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -32,7 +28,12 @@ import java.util.*;
  */
 public class MPRestClient {
 
-    private static final List<String> ALLOWED_METHODS = Arrays.asList("GET", "POST", "PUT", "DELETE");
+    public enum HttpMethod {
+        GET,
+        POST,
+        PUT,
+        DELETE
+    }
 
     private static String proxyHostName = null;
     private static int proxyPort = -1;
@@ -58,7 +59,7 @@ public class MPRestClient {
      * @return                          MPBaseResponse with parsed info of the http response
      * @throws MPRestException
      */
-    public MPBaseResponse executeRequest(String httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders)
+    public MPBaseResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders)
             throws MPRestException {
         HttpClient httpClient = null;
         try {
@@ -165,36 +166,35 @@ public class MPRestClient {
      * @return                          HttpRequestBase object
      * @throws MPRestException
      */
-    private HttpRequestBase getRequestMethod(String httpMethod, String uri, HttpEntity entity) throws MPRestException {
-        if (StringUtils.isEmpty(httpMethod) ||
-                !ALLOWED_METHODS.contains(httpMethod))
+    private HttpRequestBase getRequestMethod(HttpMethod httpMethod, String uri, HttpEntity entity) throws MPRestException {
+        if (httpMethod == null)
             throw new MPRestException("HttpMethod must be \"GET\", \"POST\", \"PUT\" or \"DELETE\".");
         if (StringUtils.isEmpty(uri))
             throw new MPRestException("Uri can not be an empty String.");
 
         HttpRequestBase request = null;
-        if (httpMethod.equals("GET")) {
+        if (httpMethod.equals(HttpMethod.GET)) {
             if (entity != null) {
-                throw new MPRestException("Not supported for this method.");
+                throw new MPRestException("Payload not supported for this method.");
             }
             request = new HttpGet(uri);
-        } else if (httpMethod.equals("POST")) {
+        } else if (httpMethod.equals(HttpMethod.POST)) {
             if (entity == null) {
-                throw new MPRestException("Not supported for this method.");
+                throw new MPRestException("Must include payload for this method.");
             }
             HttpPost post = new HttpPost(uri);
             post.setEntity(entity);
             request = post;
-        } else if (httpMethod.equals("PUT")) {
+        } else if (httpMethod.equals(HttpMethod.PUT)) {
             if (entity == null) {
-                throw new MPRestException("Not supported for this method.");
+                throw new MPRestException("Must include payload for this method.");
             }
             HttpPut put = new HttpPut(uri);
             put.setEntity(entity);
             request = put;
-        } else if (httpMethod.equals("DELETE")) {
+        } else if (httpMethod.equals(HttpMethod.DELETE)) {
             if (entity != null) {
-                throw new MPRestException("Not supported for this method.");
+                throw new MPRestException("Payload not supported for this method.");
             }
             request = new HttpDelete(uri);
         }
