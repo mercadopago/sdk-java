@@ -1,4 +1,4 @@
-package com.mercadopago.core.RestAnnotations;
+package com.mercadopago.core.restannotations;
 
 import java.lang.annotation.*;
 
