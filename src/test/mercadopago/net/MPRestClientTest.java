@@ -2,7 +2,7 @@ package test.mercadopago.net;
 
 import com.google.gson.JsonObject;
 import com.mercadopago.core.MPBaseResponse;
-import com.mercadopago.core.RestAnnotations.PayloadType;
+import com.mercadopago.core.restannotations.PayloadType;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.exceptions.MPRestException;
 import com.mercadopago.net.MPRestClient;

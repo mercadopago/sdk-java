@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.mercadopago.core.MPBaseResponse;
-import com.mercadopago.core.RestAnnotations.PayloadType;
+import com.mercadopago.core.restannotations.PayloadType;
 import com.mercadopago.exceptions.MPRestException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.*;
