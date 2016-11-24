@@ -167,8 +167,9 @@ public class MPRestClient {
      * @throws MPRestException
      */
     private HttpRequestBase getRequestMethod(HttpMethod httpMethod, String uri, HttpEntity entity) throws MPRestException {
-        if (httpMethod == null)
+        if (httpMethod == null) {
             throw new MPRestException("HttpMethod must be \"GET\", \"POST\", \"PUT\" or \"DELETE\".");
+        }
         if (StringUtils.isEmpty(uri))
             throw new MPRestException("Uri can not be an empty String.");
 
