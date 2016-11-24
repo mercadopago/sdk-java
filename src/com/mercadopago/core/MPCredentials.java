@@ -23,8 +23,9 @@ public class MPCredentials {
      */
     public static String getAccessToken() throws MPException {
         if (StringUtils.isEmpty(MPConf.getClientId()) ||
-                StringUtils.isEmpty(MPConf.getClientSecret()))
+                StringUtils.isEmpty(MPConf.getClientSecret())) {
             throw new MPException("\"client_id\" and \"client_secret\" can not be \"null\" when getting the \"access_token\"");
+        }
 
         JsonObject jsonPayload = new JsonObject();
         jsonPayload.addProperty("grant_type", "client_credentials");
@@ -38,8 +39,9 @@ public class MPCredentials {
                 PayloadType.X_WWW_FORM_URLENCODED,
                 jsonPayload,
                 null);
-        if (response.getStatusCode() == 200)
+        if (response.getStatusCode() == 200) {
             access_token = response.getJsonResponse().get("access_token").getAsString();
+        }
         return access_token;
     }
 

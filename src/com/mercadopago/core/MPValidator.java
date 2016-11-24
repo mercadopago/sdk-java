@@ -1,6 +1,10 @@
 package com.mercadopago.core;
 
+<<<<<<< HEAD
 import com.mercadopago.core.validationannotations.*;
+=======
+import com.mercadopago.core.ValidationAnnotations.*;
+>>>>>>> a31e410d5ae37a8d97ed3404c940b393a0a28c71
 import com.mercadopago.exceptions.MPValidationException;
 import org.apache.commons.lang3.math.NumberUtils;
 

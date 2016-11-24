@@ -31,9 +31,11 @@ public class MPCoreUtils {
                 ByteArrayOutputStream result = new ByteArrayOutputStream();
                 byte[] buffer = new byte[1024];
                 int length;
-                while ((length = is.read(buffer)) != -1)
+                while ((length = is.read(buffer)) != -1) {
                     result.write(buffer, 0, length);
+                }
                 value = result.toString("UTF-8");
+
             } catch (Exception ex) {
                 throw new MPException(ex);
             }

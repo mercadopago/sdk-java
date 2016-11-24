@@ -75,6 +75,7 @@ public class MPBaseResponse {
             } catch (Exception ex) {
                 throw new MPException(ex);
             }
+<<<<<<< HEAD
 
             // Try to parse the response to a json, and a extract the entity of the response.
             // When the response is not a json parseable string then the string response must be used.
@@ -85,6 +86,12 @@ public class MPBaseResponse {
                     this.jsonEntity = this.jsonResponse.getAsJsonObject("json");
             } catch (JsonParseException jsonParseException) {
                 // Do nothing
+=======
+            this.jsonResponse = new JsonParser().parse(this.stringResponse).getAsJsonObject();
+            if (this.jsonResponse.has("json") &&
+                    this.jsonResponse.get("json").isJsonObject()) {
+                this.jsonEntity = this.jsonResponse.getAsJsonObject("json");
+>>>>>>> a31e410d5ae37a8d97ed3404c940b393a0a28c71
             }
         }
     }

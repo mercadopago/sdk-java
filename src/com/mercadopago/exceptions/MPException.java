@@ -44,11 +44,13 @@ public class MPException extends Exception {
     @Override
     public String toString() {
         String reqIdStr = "";
-        if (StringUtils.isNotEmpty(getRequestId()))
+        if (StringUtils.isNotEmpty(getRequestId())) {
             reqIdStr = "; request-id: " + getRequestId();
+        }
         String statCodeStr = "";
-        if (getStatusCode() != null)
+        if (getStatusCode() != null) {
             statCodeStr = "; status_code: " + getStatusCode();
+        }
         return super.toString() + reqIdStr + statCodeStr;
     }
 
