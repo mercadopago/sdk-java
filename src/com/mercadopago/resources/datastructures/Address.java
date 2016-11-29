@@ -1,6 +1,6 @@
 package com.mercadopago.resources.datastructures;
 
-import com.mercadopago.core.validationannotations.Size;
+import com.mercadopago.core.annotations.validation.Size;
 
 /**
  * Mercado Libre SDK

@@ -1,4 +1,3 @@
-package com.mercadopago.core.ValidationAnnotations;
 
 import java.lang.annotation.*;
 
@@ -6,10 +5,12 @@ import java.lang.annotation.*;
  * Mercado Pago SDK
  * Interface annotation for validate models.
  *
- * Created by Eduardo Paoletta on 11/21/16.
+ * Created by Eduardo Paoletta on 11/22/16.
  */
 @Inherited
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Null {
+public @interface Size {
+    int min() default -1;
+    int max() default -1;
 }

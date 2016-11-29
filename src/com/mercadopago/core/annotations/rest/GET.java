@@ -1,17 +1,16 @@
-package com.mercadopago.core.restannotations;
+package com.mercadopago.core.annotations.rest;
 
 import java.lang.annotation.*;
 
 /**
  * Mercado Pago SDK
- * Rest Information annotation interface for POST
+ * Rest Information annotation interface for GET
  *
  * Created by Eduardo Paoletta on 11/4/16.
  */
 @Inherited
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface POST {
+public @interface GET {
     String path();
-    PayloadType payloadType() default PayloadType.JSON;
 }

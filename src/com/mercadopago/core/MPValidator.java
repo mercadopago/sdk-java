@@ -1,8 +1,8 @@
 package com.mercadopago.core;
 
-import com.mercadopago.core.validationannotations.NotNull;
-import com.mercadopago.core.validationannotations.Numeric;
-import com.mercadopago.core.validationannotations.Size;
+import com.mercadopago.core.annotations.validation.NotNull;
+import com.mercadopago.core.annotations.validation.Numeric;
+import com.mercadopago.core.annotations.validation.Size;
 import com.mercadopago.exceptions.MPValidationException;
 import org.apache.commons.lang3.math.NumberUtils;
 
