@@ -1,4 +1,4 @@
-package com.mercadopago.core.RestAnnotations;
+package com.mercadopago.core.annotations.rest;
 
 import java.lang.annotation.*;
 
@@ -9,7 +9,7 @@ import java.lang.annotation.*;
  * Created by Eduardo Paoletta on 11/4/16.
  */
 @Inherited
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface POST {
     String path();

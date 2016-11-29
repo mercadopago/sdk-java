@@ -1,10 +1,10 @@
 package test.mercadopago.core;
 
 import com.mercadopago.core.MPBase;
-import com.mercadopago.core.RestAnnotations.DELETE;
-import com.mercadopago.core.RestAnnotations.GET;
-import com.mercadopago.core.RestAnnotations.POST;
-import com.mercadopago.core.RestAnnotations.PUT;
+import com.mercadopago.core.annotations.rest.DELETE;
+import com.mercadopago.core.annotations.rest.GET;
+import com.mercadopago.core.annotations.rest.POST;
+import com.mercadopago.core.annotations.rest.PUT;
 import com.mercadopago.exceptions.MPException;
 import org.junit.Test;
 

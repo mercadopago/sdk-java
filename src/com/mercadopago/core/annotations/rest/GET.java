@@ -1,16 +1,16 @@
-package com.mercadopago.core.RestAnnotations;
+package com.mercadopago.core.annotations.rest;
 
 import java.lang.annotation.*;
 
 /**
  * Mercado Pago SDK
- * Rest Information annotation interface for DELETE
+ * Rest Information annotation interface for GET
  *
  * Created by Eduardo Paoletta on 11/4/16.
  */
 @Inherited
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DELETE {
+public @interface GET {
     String path();
 }
