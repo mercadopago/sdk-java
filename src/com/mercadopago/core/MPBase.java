@@ -3,16 +3,15 @@ package com.mercadopago.core;
 import com.google.common.collect.MapDifference;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.mercadopago.MPConf;
-import com.mercadopago.core.restannotations.*;
+import com.mercadopago.core.annotations.rest.*;
 import com.mercadopago.exceptions.MPException;
+import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPRestClient;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
-import org.apache.http.HttpResponse;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -90,7 +89,7 @@ public abstract class MPBase {
 
         AnnotatedElement annotatedMethod = getAnnotatedMethod(methodName);
         HashMap<String, Object> hashAnnotation = getRestInformation(annotatedMethod);
-        MPRestClient.HttpMethod httpMethod = (MPRestClient.HttpMethod)hashAnnotation.get("method");
+        HttpMethod httpMethod = (HttpMethod)hashAnnotation.get("method");
         String path = parsePath(hashAnnotation.get("path").toString(), mapParams);
         int retries = Integer.valueOf(hashAnnotation.get("retries").toString());
         int connectionTimeout = Integer.valueOf(hashAnnotation.get("connectionTimeout").toString());
@@ -106,7 +105,7 @@ public abstract class MPBase {
     }
 
     private String callApi(
-            MPRestClient.HttpMethod httpMethod,
+            HttpMethod httpMethod,
             String path,
             JsonObject payload,
             PayloadType payloadType,
@@ -194,11 +193,11 @@ public abstract class MPBase {
      *
      * @return                  a JSON Object with the attributes members of the instance. Null for GET and DELETE methods
      */
-    private JsonObject generatePayload(MPRestClient.HttpMethod httpMethod) {
+    private JsonObject generatePayload(HttpMethod httpMethod) {
         JsonObject payload = null;
-        if (httpMethod.equals(MPRestClient.HttpMethod.POST)) {
+        if (httpMethod.equals(HttpMethod.POST)) {
             payload = MPCoreUtils.getJson(this);
-        } else if (httpMethod.equals(MPRestClient.HttpMethod.PUT)) {
+        } else if (httpMethod.equals(HttpMethod.PUT)) {
             JsonObject actualJson = MPCoreUtils.getJson(this);
 
             Type mapType = new TypeToken<Map<String, Object>>(){}.getType();
@@ -239,7 +238,7 @@ public abstract class MPBase {
                 }
                 hashAnnotation = fillHashAnnotations(
                         hashAnnotation,
-                        MPRestClient.HttpMethod.DELETE,
+                        HttpMethod.DELETE,
                         delete.path(),
                         null,
                         delete.retries(),
@@ -253,7 +252,7 @@ public abstract class MPBase {
                 }
                 hashAnnotation = fillHashAnnotations(
                         hashAnnotation,
-                        MPRestClient.HttpMethod.GET,
+                        HttpMethod.GET,
                         get.path(),
                         null,
                         get.retries(),
@@ -267,7 +266,7 @@ public abstract class MPBase {
                 }
                 hashAnnotation = fillHashAnnotations(
                         hashAnnotation,
-                        MPRestClient.HttpMethod.POST,
+                        HttpMethod.POST,
                         post.path(),
                         post.payloadType(),
                         post.retries(),
@@ -281,7 +280,7 @@ public abstract class MPBase {
                 }
                 hashAnnotation = fillHashAnnotations(
                         hashAnnotation,
-                        MPRestClient.HttpMethod.PUT,
+                        HttpMethod.PUT,
                         put.path(),
                         put.payloadType(),
                         put.retries(),
@@ -304,7 +303,7 @@ public abstract class MPBase {
      */
     private HashMap<String, Object> fillHashAnnotations(
             HashMap<String, Object> hashAnnotation,
-            MPRestClient.HttpMethod method,
+            HttpMethod method,
             String path,
             PayloadType payloadType,
             int retries,

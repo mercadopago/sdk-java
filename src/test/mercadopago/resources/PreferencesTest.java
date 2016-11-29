@@ -1,10 +1,10 @@
-package test.mercadopago.entities;
+package test.mercadopago.resources;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.mercadopago.core.MPCoreUtils;
-import com.mercadopago.entities.Preferences;
-import com.mercadopago.entities.datastructures.*;
+import com.mercadopago.resources.Preferences;
+import com.mercadopago.resources.datastructures.*;
 import org.junit.Test;
 
 import java.text.DateFormat;
@@ -21,7 +21,7 @@ import static org.junit.Assert.assertNull;
  *
  * Created by Eduardo Paoletta on 11/21/16.
  */
-public class MPPreferencesTest {
+public class PreferencesTest {
 
     @Test
     public void preferenceTest() {

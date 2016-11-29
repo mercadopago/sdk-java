@@ -1,13 +1,13 @@
-package com.mercadopago.entities;
+package com.mercadopago.resources;
 
 import com.mercadopago.core.MPBase;
-import com.mercadopago.core.restannotations.GET;
-import com.mercadopago.core.restannotations.POST;
-import com.mercadopago.core.restannotations.PUT;
-import com.mercadopago.core.validationannotations.NotNull;
-import com.mercadopago.core.validationannotations.Numeric;
-import com.mercadopago.core.validationannotations.Size;
-import com.mercadopago.entities.datastructures.*;
+import com.mercadopago.core.annotations.rest.GET;
+import com.mercadopago.core.annotations.rest.POST;
+import com.mercadopago.core.annotations.rest.PUT;
+import com.mercadopago.core.annotations.validation.NotNull;
+import com.mercadopago.core.annotations.validation.Numeric;
+import com.mercadopago.core.annotations.validation.Size;
+import com.mercadopago.resources.datastructures.*;
 import com.mercadopago.exceptions.MPException;
 
 

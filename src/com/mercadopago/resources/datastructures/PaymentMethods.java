@@ -1,7 +1,7 @@
-package com.mercadopago.entities.datastructures;
+package com.mercadopago.resources.datastructures;
 
-import com.mercadopago.core.validationannotations.Numeric;
-import com.mercadopago.core.validationannotations.Size;
+import com.mercadopago.core.annotations.validation.Numeric;
+import com.mercadopago.core.annotations.validation.Size;
 
 import java.util.ArrayList;
 import java.util.List;

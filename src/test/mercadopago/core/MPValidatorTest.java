@@ -2,9 +2,9 @@ package test.mercadopago.core;
 
 import com.mercadopago.core.MPValidator;
 import com.mercadopago.core.ValidationViolation;
-import com.mercadopago.entities.Preferences;
-import com.mercadopago.entities.datastructures.Item;
-import com.mercadopago.entities.datastructures.Payer;
+import com.mercadopago.resources.Preferences;
+import com.mercadopago.resources.datastructures.Item;
+import com.mercadopago.resources.datastructures.Payer;
 import com.mercadopago.exceptions.MPValidationException;
 import org.junit.Test;
 

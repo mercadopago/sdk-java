@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.mercadopago.core.MPBaseResponse;
-import com.mercadopago.core.restannotations.PayloadType;
+import com.mercadopago.core.annotations.rest.PayloadType;
 import com.mercadopago.exceptions.MPRestException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.*;
@@ -31,13 +31,6 @@ import java.util.*;
  * Created by Eduardo Paoletta on 11/11/16.
  */
 public class MPRestClient {
-
-    public enum HttpMethod {
-        GET,
-        POST,
-        PUT,
-        DELETE
-    }
 
     private static String proxyHostName = null;
     private static int proxyPort = -1;

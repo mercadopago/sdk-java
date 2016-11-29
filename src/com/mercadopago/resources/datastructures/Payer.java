@@ -1,6 +1,6 @@
-package com.mercadopago.entities.datastructures;
+package com.mercadopago.resources.datastructures;
 
-import com.mercadopago.core.validationannotations.Size;
+import com.mercadopago.core.annotations.validation.Size;
 
 import java.util.Date;
 

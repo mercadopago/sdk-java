@@ -1,8 +1,8 @@
 package com.mercadopago.core;
 
-import com.mercadopago.core.validationannotations.NotNull;
-import com.mercadopago.core.validationannotations.Numeric;
-import com.mercadopago.core.validationannotations.Size;
+import com.mercadopago.core.annotations.validation.NotNull;
+import com.mercadopago.core.annotations.validation.Numeric;
+import com.mercadopago.core.annotations.validation.Size;
 import com.mercadopago.exceptions.MPValidationException;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -43,7 +43,7 @@ public class MPValidator {
                 }
 
                 if (value != null &&
-                        value.getClass().getCanonicalName().indexOf("com.mercadopago.entities.datastructures.") == 0 &&
+                        value.getClass().getCanonicalName().indexOf("com.mercadopago.resources.datastructures.") == 0 &&
                         !value.getClass().getName().contains("$")) {
                     colViolations = validate(colViolations, value);
                 } else if (value != null &&
