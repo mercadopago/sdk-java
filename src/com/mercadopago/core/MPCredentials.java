@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.mercadopago.MPConf;
 import com.mercadopago.core.restannotations.PayloadType;
 import com.mercadopago.exceptions.MPException;
+import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPRestClient;
 import org.apache.commons.lang3.StringUtils;
 
@@ -34,7 +35,7 @@ public class MPCredentials {
 
         String access_token = null;
         MPBaseResponse response = new MPRestClient().executeRequest(
-                MPRestClient.HttpMethod.POST,
+                HttpMethod.POST,
                 MPConf.getBaseUrl() + "/oauth/token",
                 PayloadType.X_WWW_FORM_URLENCODED,
                 jsonPayload,

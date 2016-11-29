@@ -28,13 +28,6 @@ import java.util.*;
  */
 public class MPRestClient {
 
-    public enum HttpMethod {
-        GET,
-        POST,
-        PUT,
-        DELETE
-    }
-
     private static String proxyHostName = null;
     private static int proxyPort = -1;
 
