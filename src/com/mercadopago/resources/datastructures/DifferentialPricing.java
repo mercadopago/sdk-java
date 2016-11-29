@@ -1,4 +1,4 @@
-package com.mercadopago.entities.datastructures;
+package com.mercadopago.resources.datastructures;
 
 /**
  * Mercado Libre SDK

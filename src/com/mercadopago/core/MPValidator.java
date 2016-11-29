@@ -43,7 +43,7 @@ public class MPValidator {
                 }
 
                 if (value != null &&
-                        value.getClass().getCanonicalName().indexOf("com.mercadopago.entities.datastructures.") == 0 &&
+                        value.getClass().getCanonicalName().indexOf("com.mercadopago.resources.datastructures.") == 0 &&
                         !value.getClass().getName().contains("$")) {
                     colViolations = validate(colViolations, value);
                 } else if (value != null &&
