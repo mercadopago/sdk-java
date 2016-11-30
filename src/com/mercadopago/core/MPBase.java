@@ -12,6 +12,8 @@ import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPRestClient;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.protocol.HTTP;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -27,9 +29,20 @@ import java.util.*;
  */
 public abstract class MPBase {
 
-    private transient JsonObject lastKnownJson = null;
-
     private static final List<String> ALLOWED_METHODS = Arrays.asList("load", "loadAll", "save", "create", "update", "delete");
+
+    private transient JsonObject _lastKnownJson = null;
+
+    private transient String userToken = null;
+
+
+    public String getUserToken() {
+        return this.userToken;
+    }
+    public <T extends MPBase> T setUserToken(String userToken) {
+        this.userToken = userToken;
+        return (T)this;
+    }
 
     /**
      * Process the method to call the api
@@ -100,7 +113,7 @@ public abstract class MPBase {
         PayloadType payloadType = (PayloadType) hashAnnotation.get("payloadType");
         JsonObject payload = generatePayload(httpMethod);
         String response = callApi(httpMethod, path, payload, payloadType, retries, connectionTimeout, socketTimeout);
-        lastKnownJson = MPCoreUtils.getJson(this);
+        _lastKnownJson = MPCoreUtils.getJson(this);
         return response;
     }
 
@@ -128,7 +141,7 @@ public abstract class MPBase {
             int socketTimeout)
             throws MPException {
         MPRestClient restClient = new MPRestClient();
-        Collection<Header> colHeaders = null;
+        Collection<Header> colHeaders = getStandardHeaders();
         MPBaseResponse baseResponse = restClient.executeRequest(
                 httpMethod,
                 path,
@@ -148,6 +161,13 @@ public abstract class MPBase {
         return response;
     }
 
+    private Collection<Header> getStandardHeaders() {
+        Collection<Header> colHeaders = new Vector<Header>();
+        colHeaders.add(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+        colHeaders.add(new BasicHeader(HTTP.USER_AGENT, "MercadoPago Java SDK v1.0.1"));
+        return colHeaders;
+    }
+
     /**
      * Evaluates the path of the resourse and use the args or the attributes members of the instance to complete it.
      * @param path              a String with the path as stated in the declaration of the method caller
@@ -156,13 +176,13 @@ public abstract class MPBase {
      * @throws MPException
      */
     private String parsePath(String path, HashMap<String, String> mapParams) throws MPException {
-        String processedPath = "";
+        StringBuilder processedPath = new StringBuilder();
         if (path.contains(":")) {
             int paramIterator = 0;
             while (path.contains(":")) {
                 paramIterator++;
 
-                processedPath = processedPath + path.substring(0, path.indexOf(":"));
+                processedPath.append(path.substring(0, path.indexOf(":")));
                 path = path.substring(path.indexOf(":") + 1);
                 String param = path;
                 if (path.contains("/")) {
@@ -187,17 +207,29 @@ public abstract class MPBase {
                     throw new MPException("No argument supplied/found for method path");
                 }
 
-                processedPath = processedPath + value;
+                processedPath.append(value);
                 if (path.contains("/")) {
                     path = path.substring(path.indexOf("/"));
                 }
             }
 
         } else {
-            processedPath = path;
+            processedPath.append(path);
         }
-        processedPath = MPConf.getBaseUrl() + processedPath;
-        return processedPath;
+
+        // URL
+        processedPath.insert(0, MPConf.getBaseUrl());
+
+        // Token
+        String accessToken = null;
+        if (StringUtils.isNotEmpty(getUserToken())) {
+            accessToken = getUserToken();
+        } else {
+            accessToken = MPConf.getAccessToken();
+        }
+        processedPath.append("?access_token=" + accessToken);
+
+        return processedPath.toString();
     }
 
     /**
@@ -216,7 +248,7 @@ public abstract class MPBase {
 
             Type mapType = new TypeToken<Map<String, Object>>(){}.getType();
             Gson gson = new Gson();
-            Map<String, Object> oldMap = gson.fromJson(this.lastKnownJson, mapType);
+            Map<String, Object> oldMap = gson.fromJson(_lastKnownJson, mapType);
             Map<String, Object> newMap = gson.fromJson(actualJson, mapType);
             MapDifference<String, Object> mapDifferences = Maps.difference(oldMap, newMap);
 

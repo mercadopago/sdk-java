@@ -60,7 +60,7 @@ public class MPRestClient {
      * @param httpMethod                a String with the http method to execute
      * @param uri                       a String with the uri
      * @param payloadType               PayloadType NONE, JSON, FORM_DATA, X_WWW_FORM_URLENCODED
-     * @param payload                   JosnObject with the payload
+     * @param payload                   JsonObject with the payload
      * @param colHeaders                custom headers to add in the request
      * @param retries                   int with the retries for the api request
      * @param connectionTimeout         int with the connection timeout for the api request
