@@ -1,10 +1,12 @@
 package test.mercadopago.core;
 
+import com.mercadopago.MPConf;
 import com.mercadopago.core.MPBase;
 import com.mercadopago.core.annotations.rest.DELETE;
 import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.core.annotations.rest.POST;
 import com.mercadopago.exceptions.MPException;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -19,7 +21,11 @@ import static org.junit.Assert.assertEquals;
  */
 public class MPBaseMultipleParamsTest extends MPBase {
 
-    String card_id = null;
+    @BeforeClass
+    public static void beforeTest() throws MPException {
+        MPConf.cleanConfiguration();
+        MPConf.setConfiguration("test/mercadopago/data/credentials.properties");
+    }
 
     @GET(path="/loadpath/slug")
     public String load() throws MPException {
@@ -50,8 +56,10 @@ public class MPBaseMultipleParamsTest extends MPBase {
      */
     @Test
     public void noParamsMethdTest() throws Exception {
-        String response = load();
-        assertEquals("{\"method\":\"GET\",\"path\":\"https://api.mercadopago.com/loadpath/slug\"}", response);
+        String expected = "{\"method\":\"GET\",\"path\":\"https://api.mercadopago.com/loadpath/slug";
+        expected += "?access_token=" + MPConf.getAccessToken();
+        expected += "\"}";
+        assertEquals(expected, load());
     }
 
     /**
@@ -59,8 +67,10 @@ public class MPBaseMultipleParamsTest extends MPBase {
      */
     @Test
     public void singleParamsMethdTest() throws Exception {
-        String response = save("test1");
-        assertEquals("{\"method\":\"POST\",\"path\":\"https://api.mercadopago.com/savepath/slug/test1\",\"payload\":{}}", response);
+        String expected = "{\"method\":\"POST\",\"path\":\"https://api.mercadopago.com/savepath/slug/test1";
+        expected += "?access_token=" + MPConf.getAccessToken();
+        expected += "\",\"payload\":{}}";
+        assertEquals(expected, save("test1"));
     }
 
     /**
@@ -68,8 +78,10 @@ public class MPBaseMultipleParamsTest extends MPBase {
      */
     @Test
     public void twoParamsMethdTest() throws Exception {
-        String response = update("test1", "test2");
-        assertEquals("{\"method\":\"GET\",\"path\":\"https://api.mercadopago.com/getpath/slug/test1/otherslug/test2\"}", response);
+        String expected = "{\"method\":\"GET\",\"path\":\"https://api.mercadopago.com/getpath/slug/test1/otherslug/test2";
+        expected += "?access_token=" + MPConf.getAccessToken();
+        expected += "\"}";
+        assertEquals(expected, update("test1", "test2"));
     }
 
     /**
@@ -77,8 +89,10 @@ public class MPBaseMultipleParamsTest extends MPBase {
      */
     @Test
     public void threeParamsMethdTest() throws Exception {
-        String response = delete("test1", "test2", "test3");
-        assertEquals("{\"method\":\"DELETE\",\"path\":\"https://api.mercadopago.com/delete/slug/test1/otherslug/test2/test3\"}", response);
+        String expected = "{\"method\":\"DELETE\",\"path\":\"https://api.mercadopago.com/delete/slug/test1/otherslug/test2/test3";
+        expected += "?access_token=" + MPConf.getAccessToken();
+        expected += "\"}";
+        assertEquals(expected, delete("test1", "test2", "test3"));
     }
 
 }

@@ -161,6 +161,11 @@ public abstract class MPBase {
         return response;
     }
 
+    /**
+     * Returns standard headers for all the requests
+     *
+     * @return              a collection with headers objects
+     */
     private Collection<Header> getStandardHeaders() {
         Collection<Header> colHeaders = new Vector<Header>();
         colHeaders.add(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));

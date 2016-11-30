@@ -1,10 +1,13 @@
 package test.mercadopago.core;
 
+import com.mercadopago.MPConf;
+import com.mercadopago.core.MPBase;
 import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.core.annotations.rest.POST;
 import com.mercadopago.core.annotations.rest.PUT;
-import com.mercadopago.core.MPBase;
 import com.mercadopago.exceptions.MPException;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -17,6 +20,11 @@ import static org.junit.Assert.assertSame;
  * Created by Eduardo Paoletta on 11/4/16.
  */
 public class MPBaseTest extends MPBase {
+
+    @BeforeClass public static void beforeTests() throws MPException {
+        MPConf.cleanConfiguration();
+        MPConf.setConfiguration("test/mercadopago/data/credentials.properties");
+    }
 
     private String id = null;
     private String testString = "Test String";
@@ -143,15 +151,29 @@ public class MPBaseTest extends MPBase {
      */
     @Test
     public void methodPathTest() throws Exception {
-        assertEquals("{\"method\":\"GET\",\"path\":\"https://api.mercadopago.com/getpath/slug/test_id\"}", load("test_id"));
-        assertEquals("{\"method\":\"POST\",\"path\":\"https://api.mercadopago.com/postpath/slug\",\"payload\":{\"testString\":\"Test String\",\"testInteger\":666}}", create());
-        assertEquals("{\"method\":\"PUT\",\"path\":\"https://api.mercadopago.com/putpath/slug/test_id\",\"payload\":{}}", update("test_id"));
+        String expected = "{\"method\":\"GET\",\"path\":\"https://api.mercadopago.com/getpath/slug/test_id";
+        expected += "?access_token=" + MPConf.getAccessToken();
+        expected += "\"}";
+        assertEquals(expected, load("test_id"));
+
+        expected = "{\"method\":\"POST\",\"path\":\"https://api.mercadopago.com/postpath/slug";
+        expected += "?access_token=" + MPConf.getAccessToken();
+        expected += "\",\"payload\":{\"testString\":\"Test String\",\"testInteger\":666}}";
+        assertEquals(expected, create());
+
+        expected = "{\"method\":\"PUT\",\"path\":\"https://api.mercadopago.com/putpath/slug/test_id";
+        expected += "?access_token=" + MPConf.getAccessToken();
+        expected += "\",\"payload\":{}}";
+        assertEquals(expected, update("test_id"));
 
         MPBaseTest resource = new MPBaseTest();
         resource.id = "5";
         resource.load(null);
         resource.testString = "TestUpdate";
-        assertEquals("{\"method\":\"PUT\",\"path\":\"https://api.mercadopago.com/putpath/slug/5\",\"payload\":{\"testString\":\"TestUpdate\"}}", resource.update(null));
+        expected = "{\"method\":\"PUT\",\"path\":\"https://api.mercadopago.com/putpath/slug/5";
+        expected += "?access_token=" + MPConf.getAccessToken();
+        expected += "\",\"payload\":{\"testString\":\"TestUpdate\"}}";
+        assertEquals(expected, resource.update(null));
 
     }
 
