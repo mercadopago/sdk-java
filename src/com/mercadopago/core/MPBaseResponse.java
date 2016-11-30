@@ -17,6 +17,7 @@ import org.apache.http.HttpResponse;
 public class MPBaseResponse {
 
     private HttpResponse _httpResponse;
+    private long _responseMillis;
 
     private int statusCode;
     private String reasonPhrase;
@@ -26,8 +27,9 @@ public class MPBaseResponse {
 
     private JsonObject jsonEntity;
 
-    public MPBaseResponse(HttpResponse response) throws MPException {
+    public MPBaseResponse(HttpResponse response, long responseMillis) throws MPException {
         this._httpResponse = response;
+        this._responseMillis = responseMillis;
         parseResponse(response);
     }
 
@@ -38,7 +40,6 @@ public class MPBaseResponse {
     public String getReasonPhrase() {
         return this.reasonPhrase;
     }
-
 
     public String getStringResponse() {
         return this.stringResponse;
@@ -55,7 +56,6 @@ public class MPBaseResponse {
     public Header[] getHeaders(String headerName) {
         return this._httpResponse.getHeaders(headerName);
     }
-
 
     /**
      * Parses the http response in a custom MPBaseResponse object.

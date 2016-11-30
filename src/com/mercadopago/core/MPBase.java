@@ -93,17 +93,31 @@ public abstract class MPBase {
         String path = parsePath(hashAnnotation.get("path").toString(), mapParams);
         int retries = Integer.valueOf(hashAnnotation.get("retries").toString());
         int connectionTimeout = Integer.valueOf(hashAnnotation.get("connectionTimeout").toString());
-        int soTimeout = Integer.valueOf(hashAnnotation.get("soTimeout").toString());
+        int socketTimeout = Integer.valueOf(hashAnnotation.get("socketTimeout").toString());
 
         // Validator will throw an MPValidatorException, there is no need to do a conditional
         MPValidator.validate(this);
         PayloadType payloadType = (PayloadType) hashAnnotation.get("payloadType");
         JsonObject payload = generatePayload(httpMethod);
-        String response = callApi(httpMethod, path, payload, payloadType, retries, connectionTimeout, soTimeout);
+        String response = callApi(httpMethod, path, payload, payloadType, retries, connectionTimeout, socketTimeout);
         lastKnownJson = MPCoreUtils.getJson(this);
         return response;
     }
 
+    /**
+     * callApi method instanciate a MPRestClient obj and makes a request to the endpoint defined by the resource.
+     * It returns a MPBaseResponse with the status code and the response parsed in text and json, if possible
+     *
+     * @param httpMethod                HttpMethod that will be used to make the request
+     * @param path                      full path to the endpoint including the get params and the access_token
+     * @param payload                   payload to make the request if POST or PUT method are used, null if other method
+     * @param payloadType               payload type (NONE, JSON or X_WWW_FORM_URLENCODED
+     * @param retries                   number of retries, defined in the rest annotation
+     * @param connectionTimeout         connection timeout, defined in the rest annotation
+     * @param socketTimeout             socket timeout, defined in the rest annotation
+     * @return                          an MPBaseResponse obj.
+     * @throws MPException
+     */
     private String callApi(
             HttpMethod httpMethod,
             String path,
@@ -111,7 +125,7 @@ public abstract class MPBase {
             PayloadType payloadType,
             int retries,
             int connectionTimeout,
-            int soTimeout)
+            int socketTimeout)
             throws MPException {
         MPRestClient restClient = new MPRestClient();
         Collection<Header> colHeaders = null;
@@ -123,7 +137,7 @@ public abstract class MPBase {
                 colHeaders,
                 retries,
                 connectionTimeout,
-                soTimeout);
+                socketTimeout);
 
         String response = "{\"method\":\"" + httpMethod + "\",\"path\":\"" + path + "\"";
         if (payload != null &&
@@ -243,7 +257,7 @@ public abstract class MPBase {
                         null,
                         delete.retries(),
                         delete.connectionTimeout(),
-                        delete.soTimeout());
+                        delete.socketTimeout());
 
             } else if (annotation instanceof GET) {
                 GET get = (GET) annotation;
@@ -257,7 +271,7 @@ public abstract class MPBase {
                         null,
                         get.retries(),
                         get.connectionTimeout(),
-                        get.soTimeout());
+                        get.socketTimeout());
 
             } else if (annotation instanceof POST) {
                 POST post = (POST) annotation;
@@ -271,7 +285,7 @@ public abstract class MPBase {
                         post.payloadType(),
                         post.retries(),
                         post.connectionTimeout(),
-                        post.soTimeout());
+                        post.socketTimeout());
 
             } else if (annotation instanceof PUT) {
                 PUT put = (PUT) annotation;
@@ -285,7 +299,7 @@ public abstract class MPBase {
                         put.payloadType(),
                         put.retries(),
                         put.connectionTimeout(),
-                        put.soTimeout());
+                        put.socketTimeout());
             }
         }
         return hashAnnotation;
@@ -298,6 +312,9 @@ public abstract class MPBase {
      * @param method                a String with the method
      * @param path                  a String with the path
      * @param payloadType           a PayloadType enum
+     * @param retries               int with the retries for the api request
+     * @param connectionTimeout     int with the connection timeout for the api request
+     * @param socketTimeout         int with the socket timeout for the api request
      * @return                      the HashMap object that is received by param
      * @throws MPException
      */
@@ -308,7 +325,7 @@ public abstract class MPBase {
             PayloadType payloadType,
             int retries,
             int connectionTimeout,
-            int soTimeout)
+            int socketTimeout)
             throws MPException {
         if (hashAnnotation.containsKey("method")) {
             throw new MPException("Multiple rest methods found");
@@ -318,7 +335,7 @@ public abstract class MPBase {
         hashAnnotation.put("payloadType", payloadType);
         hashAnnotation.put("retries", retries);
         hashAnnotation.put("connectionTimeout", connectionTimeout);
-        hashAnnotation.put("soTimeout", soTimeout);
+        hashAnnotation.put("socketTimeout", socketTimeout);
         return hashAnnotation;
     }
 

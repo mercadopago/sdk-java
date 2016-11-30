@@ -8,18 +8,22 @@ import com.mercadopago.core.annotations.rest.PayloadType;
 import com.mercadopago.exceptions.MPRestException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.*;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.*;
 import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.*;
+import org.apache.http.impl.client.AbstractHttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
 import org.apache.http.message.BasicHeader;
+import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.message.BasicStatusLine;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
-import org.apache.http.protocol.HttpContext;
 
 import java.io.IOException;
 import java.util.*;
@@ -45,6 +49,11 @@ public class MPRestClient {
         this.proxyPort = proxyPort;
     }
 
+    public MPBaseResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders)
+            throws MPRestException {
+        return executeRequest(httpMethod, uri, payloadType, payload, colHeaders, 0, 0, 0);
+    }
+
     /**
      * Executes a http request and returns a response
      *
@@ -53,18 +62,17 @@ public class MPRestClient {
      * @param payloadType               PayloadType NONE, JSON, FORM_DATA, X_WWW_FORM_URLENCODED
      * @param payload                   JosnObject with the payload
      * @param colHeaders                custom headers to add in the request
+     * @param retries                   int with the retries for the api request
+     * @param connectionTimeout         int with the connection timeout for the api request
+     * @param socketTimeout             int with the socket timeout for the api request
      * @return                          MPBaseResponse with parsed info of the http response
      * @throws MPRestException
      */
-    public MPBaseResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders)
-            throws MPRestException {
-        return executeRequest(httpMethod, uri, payloadType, payload, colHeaders, 0, 0, 0);
-    }
-    public MPBaseResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders, int retries, int connectionTimeout, int soTimeout)
+    public MPBaseResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders, int retries, int connectionTimeout, int socketTimeout)
             throws MPRestException {
         HttpClient httpClient = null;
         try {
-            httpClient = getClient(retries, connectionTimeout, soTimeout);
+            httpClient = getClient(retries, connectionTimeout, socketTimeout);
             if (colHeaders == null) {
                 colHeaders = new Vector<Header>();
             }
@@ -73,9 +81,20 @@ public class MPRestClient {
             for (Header header : colHeaders) {
                 request.addHeader(header);
             }
-            HttpResponse response = httpClient.execute(request);
+            MPBaseResponse baseResponse = null;
+            HttpResponse response = null;
+            long startMillis = System.currentTimeMillis();
+            try {
+                response = httpClient.execute(request);
+            } catch (ClientProtocolException e) {
+                response = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 400, null));
+            } catch (IOException e) {
+                response = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 404, null));
+            }
+            long endMillis = System.currentTimeMillis();
+            long responseMillis = endMillis - startMillis;
 
-            return new MPBaseResponse(response);
+            return new MPBaseResponse(response, responseMillis);
 
         } catch (MPRestException restEx) {
             throw restEx;
@@ -92,24 +111,30 @@ public class MPRestClient {
     }
 
     /**
-     * Returns a DefaultHttpClient instance.
+     * Returns a DefaultHttpClient instance with retries and timeouts settings
      * If proxy information exists, its setted on the client.
      *
+     * @param retries                   int with the retries for the api request
+     * @param connectionTimeout         int with the connection timeout for the api request
+     * @param socketTimeout             int with the socket timeout for the api request
      * @return                          a DefaultHttpClient
      */
-    private HttpClient getClient(int retries, int connectionTimeout, int soTimeout) {
-
-        DefaultHttpRequestRetryHandler retryHandler = new DefaultHttpRequestRetryHandler(retries, true);
-
+    private HttpClient getClient(int retries, int connectionTimeout, int socketTimeout) {
         HttpClient httpClient = new DefaultHttpClient();
-        ((AbstractHttpClient)httpClient).setHttpRequestRetryHandler(retryHandler);
-
         HttpParams httpParams = httpClient.getParams();
+
+        // Retries
+        if (retries > 0) {
+            DefaultHttpRequestRetryHandler retryHandler = new DefaultHttpRequestRetryHandler(retries, true);
+            ((AbstractHttpClient) httpClient).setHttpRequestRetryHandler(retryHandler);
+        }
+
+        // Timeouts
         if (connectionTimeout > 0) {
             httpParams.setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, connectionTimeout * 1000);
         }
-        if (soTimeout > 0) {
-            httpParams.setParameter(CoreConnectionPNames.SO_TIMEOUT, soTimeout * 1000);
+        if (socketTimeout > 0) {
+            httpParams.setParameter(CoreConnectionPNames.SO_TIMEOUT, socketTimeout * 1000);
         }
 
         //Proxy
@@ -117,6 +142,7 @@ public class MPRestClient {
             HttpHost proxy = new HttpHost(proxyHostName, proxyPort);
             httpParams.setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
         }
+
         return httpClient;
     }
 
@@ -165,7 +191,9 @@ public class MPRestClient {
                 entity = urlEncodedFormEntity;
             }
         }
-        colHeaders.add(header);
+        if (header != null) {
+            colHeaders.add(header);
+        }
 
         return entity;
     }

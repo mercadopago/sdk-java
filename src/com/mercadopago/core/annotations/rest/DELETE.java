@@ -16,5 +16,5 @@ public @interface DELETE {
 
     int retries() default 0;
     int connectionTimeout() default 0;
-    int soTimeout() default 0;
+    int socketTimeout() default 0;
 }
