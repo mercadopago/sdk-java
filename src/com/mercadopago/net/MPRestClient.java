@@ -63,8 +63,8 @@ public class MPRestClient {
      * @param payload                   JsonObject with the payload
      * @param colHeaders                custom headers to add in the request
      * @param retries                   int with the retries for the api request
-     * @param connectionTimeout         int with the connection timeout for the api request
-     * @param socketTimeout             int with the socket timeout for the api request
+     * @param connectionTimeout         int with the connection timeout for the api request expressed in milliseconds
+     * @param socketTimeout             int with the socket timeout for the api request expressed in milliseconds
      * @return                          MPBaseResponse with parsed info of the http response
      * @throws MPRestException
      */
@@ -115,8 +115,8 @@ public class MPRestClient {
      * If proxy information exists, its setted on the client.
      *
      * @param retries                   int with the retries for the api request
-     * @param connectionTimeout         int with the connection timeout for the api request
-     * @param socketTimeout             int with the socket timeout for the api request
+     * @param connectionTimeout         int with the connection timeout for the api request expressed in milliseconds
+     * @param socketTimeout             int with the socket timeout for the api request expressed in milliseconds
      * @return                          a DefaultHttpClient
      */
     private HttpClient getClient(int retries, int connectionTimeout, int socketTimeout) {
@@ -131,10 +131,10 @@ public class MPRestClient {
 
         // Timeouts
         if (connectionTimeout > 0) {
-            httpParams.setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, connectionTimeout * 1000);
+            httpParams.setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, connectionTimeout);
         }
         if (socketTimeout > 0) {
-            httpParams.setParameter(CoreConnectionPNames.SO_TIMEOUT, socketTimeout * 1000);
+            httpParams.setParameter(CoreConnectionPNames.SO_TIMEOUT, socketTimeout);
         }
 
         //Proxy
