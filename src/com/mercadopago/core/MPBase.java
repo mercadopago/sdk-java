@@ -142,6 +142,11 @@ public abstract class MPBase {
             throws MPException {
         MPRestClient restClient = new MPRestClient();
         Collection<Header> colHeaders = getStandardHeaders();
+        String idempotentHash = MPCoreUtils.getIdempotentHash(this);
+        if (StringUtils.isNotEmpty(idempotentHash)) {
+            colHeaders.add(new BasicHeader("x-idempotency-key", idempotentHash));
+        }
+
         MPBaseResponse baseResponse = restClient.executeRequest(
                 httpMethod,
                 path,
