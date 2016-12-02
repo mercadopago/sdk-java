@@ -5,6 +5,7 @@ import java.lang.annotation.*;
 /**
  * Mercado Pago SDK
  * Rest Information annotation interface for GET
+ * connection and socket timeouts are expressed in milliseconds
  *
  * Created by Eduardo Paoletta on 11/4/16.
  */

@@ -126,8 +126,8 @@ public abstract class MPBase {
      * @param payload                   payload to make the request if POST or PUT method are used, null if other method
      * @param payloadType               payload type (NONE, JSON or X_WWW_FORM_URLENCODED
      * @param retries                   number of retries, defined in the rest annotation
-     * @param connectionTimeout         connection timeout, defined in the rest annotation
-     * @param socketTimeout             socket timeout, defined in the rest annotation
+     * @param connectionTimeout         connection timeout, defined in the rest annotation expressed in milliseconds
+     * @param socketTimeout             socket timeout, defined in the rest annotation expressed in milliseconds
      * @return                          an MPBaseResponse obj.
      * @throws MPException
      */
@@ -142,7 +142,7 @@ public abstract class MPBase {
             throws MPException {
         MPRestClient restClient = new MPRestClient();
         Collection<Header> colHeaders = getStandardHeaders();
-        String idempotentHash = MPCoreUtils.getIdempotentHash(this);
+        String idempotentHash = MPCoreUtils.getIdempotentHashFromObject(this);
         if (StringUtils.isNotEmpty(idempotentHash)) {
             colHeaders.add(new BasicHeader("x-idempotency-key", idempotentHash));
         }
@@ -239,6 +239,9 @@ public abstract class MPBase {
         }
         processedPath.append("?access_token=" + accessToken);
 
+        if (!MPCoreUtils.validateUrl(processedPath.toString())) {
+            throw new MPException("Processed URL not valid: " + processedPath.toString());
+        }
         return processedPath.toString();
     }
 
@@ -355,8 +358,8 @@ public abstract class MPBase {
      * @param path                  a String with the path
      * @param payloadType           a PayloadType enum
      * @param retries               int with the retries for the api request
-     * @param connectionTimeout     int with the connection timeout for the api request
-     * @param socketTimeout         int with the socket timeout for the api request
+     * @param connectionTimeout     int with the connection timeout for the api request expressed in milliseconds
+     * @param socketTimeout         int with the socket timeout for the api request expressed in milliseconds
      * @return                      the HashMap object that is received by param
      * @throws MPException
      */

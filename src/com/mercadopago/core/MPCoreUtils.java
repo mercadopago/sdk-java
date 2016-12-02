@@ -7,8 +7,7 @@ import com.mercadopago.core.annotations.idempotent.Idempotent;
 import com.mercadopago.exceptions.MPException;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.Header;
-import org.apache.http.message.BasicHeader;
+import org.apache.commons.validator.routines.UrlValidator;
 
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -27,7 +26,14 @@ public class MPCoreUtils {
     private static char[] HEX_CHARS = "0123456789ABCDEF".toCharArray();
     public static final String FORMAT_ISO8601 = "yyyy-MM-dd'T'HH:mm:ssZ";
 
-    public static String getIdempotentHash(Object object) throws MPException {
+    /**
+     * Generates an unique hash using annotated params from the obj passed.
+     *
+     * @param object            the obj to be analized to extract the idempotent params
+     * @return
+     * @throws MPException
+     */
+    public static String getIdempotentHashFromObject(Object object) throws MPException {
         StringBuilder key = generateIdempotentKey(new StringBuilder(), object);
         String hex = null;
         if (StringUtils.isNotEmpty(key.toString())) {
@@ -49,6 +55,14 @@ public class MPCoreUtils {
         return hex;
     }
 
+    /**
+     * Auxiliar method to generate a key using annotated params from the obj passed.
+     *
+     * @param sb                a string builder that will append all the idempotent params of an object
+     * @param object            the obj to be analized to extract the idempotent params
+     * @return
+     * @throws MPException
+     */
     private static StringBuilder generateIdempotentKey(StringBuilder sb, Object object) throws MPException {
         Field[] declaredFields = object.getClass().getDeclaredFields();
         for(Field field : declaredFields) {
@@ -116,6 +130,19 @@ public class MPCoreUtils {
         }
         return value;
 
+    }
+
+    /**
+     * Validates if an url is a valid url address
+     *
+     * @param url               url address to validate
+     * @return
+     * @throws MPException
+     */
+    public static boolean validateUrl(String url) {
+        String[] schemes = {"https"};
+        UrlValidator urlValidator = new UrlValidator(schemes);
+        return urlValidator.isValid(url);
     }
 
 }
