@@ -186,4 +186,16 @@ public class MPRestClientTest {
         assertSame("Exception type must be \"MPRestException\"", MPRestException.class, exception.getClass());
     }
 
+    @Test
+    public void httpParamsTest() throws MPRestException {
+        MPRestClient client = new MPRestClient();
+
+        MPBaseResponse response = client.executeRequest(HttpMethod.GET, HTTPBIN_TEST_URL + "delay/5", PayloadType.NONE, null, null, 0, 1, 1);
+        assertEquals("Response must have a 404 status.", 404, response.getStatusCode());
+
+        response = client.executeRequest(HttpMethod.GET, HTTPBIN_TEST_URL + "delay/5", PayloadType.NONE, null, null, 3, 10000, 10000);
+        assertEquals("Response must have a 200 status.", 200, response.getStatusCode());
+
+    }
+
 }

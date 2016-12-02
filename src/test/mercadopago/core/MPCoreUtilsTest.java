@@ -1,5 +1,6 @@
 package test.mercadopago.core;
 
+import com.mercadopago.MPConf;
 import com.mercadopago.core.MPCoreUtils;
 import com.mercadopago.exceptions.MPException;
 import org.apache.commons.io.IOUtils;
@@ -7,8 +8,7 @@ import org.junit.Test;
 
 import java.io.InputStream;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 /**
  * Mercado Pago SDK
@@ -29,6 +29,17 @@ public class MPCoreUtilsTest {
         } catch (MPException mpException) {
             // Do nothing
         }
+    }
+
+    @Test
+    public void validateURLTest() {
+        assertTrue(MPCoreUtils.validateUrl("https://www.google.com"));
+        assertTrue(MPCoreUtils.validateUrl("https://mail.google.com/mail/u/0/#inbox"));
+        assertTrue(MPCoreUtils.validateUrl(MPConf.getBaseUrl() + "/checkout/preferences/4564"));
+
+        assertFalse(MPCoreUtils.validateUrl("djsfhsdkfhsdkfjhs"));
+        assertFalse(MPCoreUtils.validateUrl("http://mail.google.com/mail/u/0/#inbox"));
+        assertFalse(MPCoreUtils.validateUrl(MPConf.getBaseUrl() + "/checkout/preferences/¿?"));
     }
 
 }

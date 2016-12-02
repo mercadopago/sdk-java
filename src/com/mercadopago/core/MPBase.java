@@ -9,16 +9,18 @@ import com.mercadopago.MPConf;
 import com.mercadopago.core.annotations.rest.*;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
+import com.mercadopago.net.MPRestClient;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.validator.routines.UrlValidator;
+import org.apache.http.Header;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.protocol.HTTP;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Mercado Pago SDK
@@ -28,9 +30,20 @@ import java.util.Map;
  */
 public abstract class MPBase {
 
-    private transient JsonObject lastKnownJson = null;
-
     private static final List<String> ALLOWED_METHODS = Arrays.asList("load", "loadAll", "save", "create", "update", "delete");
+
+    private transient JsonObject _lastKnownJson = null;
+
+    private transient String userToken = null;
+
+
+    public String getUserToken() {
+        return this.userToken;
+    }
+    public <T extends MPBase> T setUserToken(String userToken) {
+        this.userToken = userToken;
+        return (T)this;
+    }
 
     /**
      * Process the method to call the api
@@ -84,33 +97,81 @@ public abstract class MPBase {
      */
     protected String processMethod(String methodName, HashMap<String, String> mapParams) throws MPException {
         //Validates the method executed
-        if (!ALLOWED_METHODS.contains(methodName))
+        if (!ALLOWED_METHODS.contains(methodName)) {
             throw new MPException("Method \"" + methodName + "\" not allowed");
+        }
 
         AnnotatedElement annotatedMethod = getAnnotatedMethod(methodName);
         HashMap<String, Object> hashAnnotation = getRestInformation(annotatedMethod);
         HttpMethod httpMethod = (HttpMethod)hashAnnotation.get("method");
         String path = parsePath(hashAnnotation.get("path").toString(), mapParams);
+        int retries = Integer.valueOf(hashAnnotation.get("retries").toString());
+        int connectionTimeout = Integer.valueOf(hashAnnotation.get("connectionTimeout").toString());
+        int socketTimeout = Integer.valueOf(hashAnnotation.get("socketTimeout").toString());
+
         // Validator will throw an MPValidatorException, there is no need to do a conditional
         MPValidator.validate(this);
         PayloadType payloadType = (PayloadType) hashAnnotation.get("payloadType");
         JsonObject payload = generatePayload(httpMethod);
-        String response = callApi(httpMethod, path, payload, payloadType);
-        lastKnownJson = MPCoreUtils.getJson(this);
+        String response = callApi(httpMethod, path, payload, payloadType, retries, connectionTimeout, socketTimeout);
+        _lastKnownJson = MPCoreUtils.getJson(this);
         return response;
     }
 
-    private String callApi(HttpMethod httpMethod, String path, JsonObject payload, PayloadType payloadType) throws MPException {
-        //MPRestClient restClient = new MPRestClient();
-        //Collection<Header> colHeaders = null;
-        //MPBaseResponse baseResponse = restClient.executeRequest(httpMethod, path, payloadType, payload, colHeaders);
+    /**
+     * callApi method instanciate a MPRestClient obj and makes a request to the endpoint defined by the resource.
+     * It returns a MPBaseResponse with the status code and the response parsed in text and json, if possible
+     *
+     * @param httpMethod                HttpMethod that will be used to make the request
+     * @param path                      full path to the endpoint including the get params and the access_token
+     * @param payload                   payload to make the request if POST or PUT method are used, null if other method
+     * @param payloadType               payload type (NONE, JSON or X_WWW_FORM_URLENCODED
+     * @param retries                   number of retries, defined in the rest annotation
+     * @param connectionTimeout         connection timeout, defined in the rest annotation expressed in milliseconds
+     * @param socketTimeout             socket timeout, defined in the rest annotation expressed in milliseconds
+     * @return                          an MPBaseResponse obj.
+     * @throws MPException
+     */
+    private String callApi(
+            HttpMethod httpMethod,
+            String path,
+            JsonObject payload,
+            PayloadType payloadType,
+            int retries,
+            int connectionTimeout,
+            int socketTimeout)
+            throws MPException {
+        MPRestClient restClient = new MPRestClient();
+        Collection<Header> colHeaders = getStandardHeaders();
+        MPBaseResponse baseResponse = restClient.executeRequest(
+                httpMethod,
+                path,
+                payloadType,
+                payload,
+                colHeaders,
+                retries,
+                connectionTimeout,
+                socketTimeout);
 
         String response = "{\"method\":\"" + httpMethod + "\",\"path\":\"" + path + "\"";
         if (payload != null &&
-                StringUtils.isNotEmpty(payload.toString()))
+                StringUtils.isNotEmpty(payload.toString())) {
             response += ",\"payload\":" + payload;
+        }
         response += "}";
         return response;
+    }
+
+    /**
+     * Returns standard headers for all the requests
+     *
+     * @return              a collection with headers objects
+     */
+    private Collection<Header> getStandardHeaders() {
+        Collection<Header> colHeaders = new Vector<Header>();
+        colHeaders.add(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+        colHeaders.add(new BasicHeader(HTTP.USER_AGENT, "MercadoPago Java SDK v1.0.1"));
+        return colHeaders;
     }
 
     /**
@@ -121,13 +182,13 @@ public abstract class MPBase {
      * @throws MPException
      */
     private String parsePath(String path, HashMap<String, String> mapParams) throws MPException {
-        String processedPath = "";
+        StringBuilder processedPath = new StringBuilder();
         if (path.contains(":")) {
             int paramIterator = 0;
             while (path.contains(":")) {
                 paramIterator++;
 
-                processedPath = processedPath + path.substring(0, path.indexOf(":"));
+                processedPath.append(path.substring(0, path.indexOf(":")));
                 path = path.substring(path.indexOf(":") + 1);
                 String param = path;
                 if (path.contains("/")) {
@@ -152,17 +213,32 @@ public abstract class MPBase {
                     throw new MPException("No argument supplied/found for method path");
                 }
 
-                processedPath = processedPath + value;
+                processedPath.append(value);
                 if (path.contains("/")) {
                     path = path.substring(path.indexOf("/"));
                 }
             }
 
         } else {
-            processedPath = path;
+            processedPath.append(path);
         }
-        processedPath = MPConf.getBaseUrl() + processedPath;
-        return processedPath;
+
+        // URL
+        processedPath.insert(0, MPConf.getBaseUrl());
+
+        // Token
+        String accessToken = null;
+        if (StringUtils.isNotEmpty(getUserToken())) {
+            accessToken = getUserToken();
+        } else {
+            accessToken = MPConf.getAccessToken();
+        }
+        processedPath.append("?access_token=" + accessToken);
+
+        if (!MPCoreUtils.validateUrl(processedPath.toString())) {
+            throw new MPException("Processed URL not valid: " + processedPath.toString());
+        }
+        return processedPath.toString();
     }
 
     /**
@@ -181,7 +257,7 @@ public abstract class MPBase {
 
             Type mapType = new TypeToken<Map<String, Object>>(){}.getType();
             Gson gson = new Gson();
-            Map<String, Object> oldMap = gson.fromJson(this.lastKnownJson, mapType);
+            Map<String, Object> oldMap = gson.fromJson(_lastKnownJson, mapType);
             Map<String, Object> newMap = gson.fromJson(actualJson, mapType);
             MapDifference<String, Object> mapDifferences = Maps.difference(oldMap, newMap);
 
@@ -204,8 +280,9 @@ public abstract class MPBase {
      * @throws MPException
      */
     private HashMap<String, Object> getRestInformation(AnnotatedElement element) throws MPException{
-        if (element.getAnnotations().length == 0)
+        if (element.getAnnotations().length == 0) {
             throw new MPException("No rest method found");
+        }
 
         HashMap<String, Object> hashAnnotation = new HashMap<String, Object>();
         for (Annotation annotation : element.getAnnotations()) {
@@ -214,28 +291,56 @@ public abstract class MPBase {
                 if (StringUtils.isEmpty(delete.path())) {
                     throw new MPException("Path not found for DELETE method");
                 }
-                hashAnnotation = fillHashAnnotations(hashAnnotation, HttpMethod.DELETE, delete.path(), null);
+                hashAnnotation = fillHashAnnotations(
+                        hashAnnotation,
+                        HttpMethod.DELETE,
+                        delete.path(),
+                        null,
+                        delete.retries(),
+                        delete.connectionTimeout(),
+                        delete.socketTimeout());
 
             } else if (annotation instanceof GET) {
                 GET get = (GET) annotation;
                 if (StringUtils.isEmpty(get.path())) {
                     throw new MPException("Path not found for GET method");
                 }
-                hashAnnotation = fillHashAnnotations(hashAnnotation, HttpMethod.GET, get.path(), null);
+                hashAnnotation = fillHashAnnotations(
+                        hashAnnotation,
+                        HttpMethod.GET,
+                        get.path(),
+                        null,
+                        get.retries(),
+                        get.connectionTimeout(),
+                        get.socketTimeout());
 
             } else if (annotation instanceof POST) {
                 POST post = (POST) annotation;
                 if (StringUtils.isEmpty(post.path())) {
                     throw new MPException("Path not found for POST method");
                 }
-                hashAnnotation = fillHashAnnotations(hashAnnotation, HttpMethod.POST, post.path(), post.payloadType());
+                hashAnnotation = fillHashAnnotations(
+                        hashAnnotation,
+                        HttpMethod.POST,
+                        post.path(),
+                        post.payloadType(),
+                        post.retries(),
+                        post.connectionTimeout(),
+                        post.socketTimeout());
 
             } else if (annotation instanceof PUT) {
                 PUT put = (PUT) annotation;
                 if (StringUtils.isEmpty(put.path())) {
                     throw new MPException("Path not found for PUT method");
                 }
-                hashAnnotation = fillHashAnnotations(hashAnnotation, HttpMethod.PUT, put.path(), put.payloadType());
+                hashAnnotation = fillHashAnnotations(
+                        hashAnnotation,
+                        HttpMethod.PUT,
+                        put.path(),
+                        put.payloadType(),
+                        put.retries(),
+                        put.connectionTimeout(),
+                        put.socketTimeout());
             }
         }
         return hashAnnotation;
@@ -248,10 +353,20 @@ public abstract class MPBase {
      * @param method                a String with the method
      * @param path                  a String with the path
      * @param payloadType           a PayloadType enum
+     * @param retries               int with the retries for the api request
+     * @param connectionTimeout     int with the connection timeout for the api request expressed in milliseconds
+     * @param socketTimeout         int with the socket timeout for the api request expressed in milliseconds
      * @return                      the HashMap object that is received by param
      * @throws MPException
      */
-    private HashMap<String, Object> fillHashAnnotations(HashMap<String, Object> hashAnnotation, HttpMethod method, String path, PayloadType payloadType)
+    private HashMap<String, Object> fillHashAnnotations(
+            HashMap<String, Object> hashAnnotation,
+            HttpMethod method,
+            String path,
+            PayloadType payloadType,
+            int retries,
+            int connectionTimeout,
+            int socketTimeout)
             throws MPException {
         if (hashAnnotation.containsKey("method")) {
             throw new MPException("Multiple rest methods found");
@@ -259,6 +374,9 @@ public abstract class MPBase {
         hashAnnotation.put("method", method);
         hashAnnotation.put("path", path);
         hashAnnotation.put("payloadType", payloadType);
+        hashAnnotation.put("retries", retries);
+        hashAnnotation.put("connectionTimeout", connectionTimeout);
+        hashAnnotation.put("socketTimeout", socketTimeout);
         return hashAnnotation;
     }
 
