@@ -2,16 +2,17 @@ package test.mercadopago.core;
 
 import com.mercadopago.MPConf;
 import com.mercadopago.core.MPBase;
+import com.mercadopago.core.annotations.idempotent.Idempotent;
 import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.core.annotations.rest.POST;
 import com.mercadopago.core.annotations.rest.PUT;
 import com.mercadopago.exceptions.MPException;
+import com.mercadopago.resources.Preferences;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 /**
  * Mercado Pago SDK
@@ -19,6 +20,7 @@ import static org.junit.Assert.assertSame;
  *
  * Created by Eduardo Paoletta on 11/4/16.
  */
+@Idempotent
 public class MPBaseTest extends MPBase {
 
     @BeforeClass public static void beforeTests() throws MPException {
@@ -175,6 +177,15 @@ public class MPBaseTest extends MPBase {
         expected += "\",\"payload\":{\"testString\":\"TestUpdate\"}}";
         assertEquals(expected, resource.update(null));
 
+    }
+
+    @Test
+    public void idempotenceTest() throws MPException {
+        MPBaseTest resource = new MPBaseTest();
+
+        assertNotNull(resource.getIdempotenceKey());
+        resource.setIdempotenceKey("someKey");
+        assertEquals("someKey", resource.getIdempotenceKey());
     }
 
 }

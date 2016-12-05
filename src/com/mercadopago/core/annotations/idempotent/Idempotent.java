@@ -4,11 +4,11 @@ import java.lang.annotation.*;
 
 /**
  * Mercado Pago SDK
- * Idempotence annotation to mark attributes
+ * Annotation to mark class as idempotent resource
  *
  * Created by Eduardo Paoletta on 11/30/16.
  */
-@Target(ElementType.FIELD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Idempotent {
 

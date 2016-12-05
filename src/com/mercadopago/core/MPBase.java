@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.mercadopago.MPConf;
+import com.mercadopago.core.annotations.idempotent.Idempotent;
 import com.mercadopago.core.annotations.rest.*;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
@@ -32,16 +33,41 @@ public abstract class MPBase {
     private static final List<String> ALLOWED_METHODS = Arrays.asList("load", "loadAll", "save", "create", "update", "delete");
 
     private transient JsonObject _lastKnownJson = null;
-
     private transient String userToken = null;
+    private transient String idempotenceKey = null;
 
+    public MPBase() {
+        if (admitIdempotenceKey()) {
+            this.idempotenceKey = UUID.randomUUID().toString();
+        }
+    }
 
     public String getUserToken() {
         return this.userToken;
     }
     public <T extends MPBase> T setUserToken(String userToken) {
         this.userToken = userToken;
-        return (T)this;
+        return (T) this;
+    }
+
+    public String getIdempotenceKey() {
+        return this.idempotenceKey;
+    }
+    public <T extends MPBase> T setIdempotenceKey(String idempotenceKey) throws MPException {
+        if (!admitIdempotenceKey()) {
+            throw new MPException(this.getClass().getSimpleName() + " does not admit an idempotence key");
+        }
+
+        this.idempotenceKey = idempotenceKey;
+        return (T) this;
+    }
+
+    /**
+     * Checks if the class is marked as an idempotent resource
+     * @return a boolean
+     */
+    private boolean admitIdempotenceKey() {
+        return (this.getClass().getAnnotation(Idempotent.class) != null);
     }
 
     /**
@@ -142,9 +168,8 @@ public abstract class MPBase {
             throws MPException {
         MPRestClient restClient = new MPRestClient();
         Collection<Header> colHeaders = getStandardHeaders();
-        String idempotentHash = MPCoreUtils.getIdempotentHashFromObject(this);
-        if (StringUtils.isNotEmpty(idempotentHash)) {
-            colHeaders.add(new BasicHeader("x-idempotency-key", idempotentHash));
+        if (StringUtils.isNotEmpty(getIdempotenceKey())) {
+            colHeaders.add(new BasicHeader("x-idempotency-key", getIdempotenceKey()));
         }
 
         MPBaseResponse baseResponse = restClient.executeRequest(

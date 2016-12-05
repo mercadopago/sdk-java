@@ -20,25 +20,6 @@ import static org.junit.Assert.*;
  */
 public class MPCoreUtilsTest {
 
-    @Idempotent private String string;
-    @Idempotent private Integer integer;
-    @Idempotent private ArrayList<Integer> array;
-
-    @Test
-    public void getHashFromObjectTest() {
-        string = "AAA";
-        integer = 111;
-        array = new ArrayList<Integer>();
-        array.add(222);
-        array.add(333);
-
-        try {
-            assertEquals("8F1170A5C7CB0F30950720380A9E4E69CFBF24C85ECECC233F3BA4E584B7F95C", MPCoreUtils.getIdempotentHashFromObject(this));
-        } catch (Exception ex) {
-
-        }
-    }
-
     @Test
     public void inputStreamToStringTest() {
         try {
