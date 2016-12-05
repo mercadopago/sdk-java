@@ -1,5 +1,6 @@
 package test.mercadopago.core;
 
+import com.mercadopago.core.MPBaseResponse;
 import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.core.annotations.rest.POST;
 import com.mercadopago.core.annotations.rest.PUT;
@@ -23,29 +24,29 @@ public class MPBaseTest extends MPBase {
     private Integer testInteger = 666;
 
     @GET(path="/getpath/slug/:id")
-    public String load(String id) throws MPException {
+    public MPBaseResponse load(String id) throws MPException {
         return super.processMethod("load", id);
     }
 
     @GET(path="/getpath/slug/")
     @PUT(path="/putpath/slug/")
-    public String loadAll() throws MPException {
+    public MPBaseResponse loadAll() throws MPException {
         return super.processMethod("loadAll");
     }
 
     //Save method will be used to test non annotated method
     //@POST(path="/postpath/slug")
-    public String save() throws MPException {
+    public MPBaseResponse save() throws MPException {
         return super.processMethod("save");
     }
 
     @POST(path="/postpath/slug")
-    public String create() throws MPException {
+    public MPBaseResponse create() throws MPException {
         return super.processMethod("create");
     }
 
     @PUT(path="/putpath/slug/:id")
-    public String update(String id) throws MPException {
+    public MPBaseResponse update(String id) throws MPException {
         return super.processMethod("update", id);
     }
 

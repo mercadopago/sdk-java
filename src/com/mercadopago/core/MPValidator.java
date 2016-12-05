@@ -20,7 +20,7 @@ import java.util.Vector;
  */
 public class MPValidator {
 
-    public static boolean validate(Object objectToValidate) throws MPValidationException {
+    public static <T extends MPBase> boolean validate(T objectToValidate) throws MPValidationException {
         Collection<ValidationViolation> colViolations = validate(new Vector<ValidationViolation>(), objectToValidate);
         if (!colViolations.isEmpty()) {
             throw new MPValidationException(colViolations);
@@ -73,7 +73,8 @@ public class MPValidator {
                                         colViolations.add(new ValidationViolation(className, field.getName(), "exceeds the maximum value", stringValue, numeric.max()));
                                     }
                                     if (numeric.fractionDigits() > -1) {
-                                        if (stringValue.substring(String.valueOf((floatValue)).indexOf(".") + 1).length() > numeric.fractionDigits()) {
+                                        if (stringValue.contains(".") &&
+                                                stringValue.substring(String.valueOf((floatValue)).indexOf(".") + 1).length() > numeric.fractionDigits()) {
                                             colViolations.add(new ValidationViolation(className, field.getName(), "exceeds the maximum decimal digits", stringValue, numeric.fractionDigits()));
                                         }
                                     }

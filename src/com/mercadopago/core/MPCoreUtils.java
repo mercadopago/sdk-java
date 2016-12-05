@@ -22,9 +22,15 @@ public class MPCoreUtils {
      * Static method that transforms all attributes members of the instance in a JSON Element.
      * @return                  a JSON Object with the attributes members of the instance
      */
-    public static JsonObject getJson(Object object) {
+    public static <T extends MPBase> JsonObject getJsonFromResource(T resourceObject) {
         Gson gson = new GsonBuilder().setDateFormat(FORMAT_ISO8601).create();
-        return (JsonObject) gson.toJsonTree(object);
+        return (JsonObject) gson.toJsonTree(resourceObject);
+    }
+
+    //TODO Javadocs
+    public static <T extends MPBase> T getResourceFromJson(Class clazz, JsonObject jsonEntity) {
+        Gson gson = new GsonBuilder().setDateFormat(FORMAT_ISO8601).create();
+        return (T) gson.fromJson(jsonEntity, clazz);
     }
 
     /**

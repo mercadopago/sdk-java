@@ -1,6 +1,7 @@
 package test.mercadopago.core;
 
 import com.mercadopago.core.MPBase;
+import com.mercadopago.core.MPBaseResponse;
 import com.mercadopago.core.annotations.rest.DELETE;
 import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.core.annotations.rest.POST;
@@ -22,22 +23,22 @@ public class MPBaseMultipleParamsTest extends MPBase {
     String card_id = null;
 
     @GET(path="/loadpath/slug")
-    public String load() throws MPException {
+    public MPBaseResponse load() throws MPException {
         return super.processMethod("load");
     }
 
     @POST(path="/savepath/slug/:param1")
-    public String save(String param1) throws MPException {
+    public MPBaseResponse save(String param1) throws MPException {
         return super.processMethod("save", param1);
     }
 
     @GET(path="/getpath/slug/:param1/otherslug/:param2")
-    public String update(String param1, String param2) throws MPException {
+    public MPBaseResponse update(String param1, String param2) throws MPException {
         return super.processMethod("update", param1, param2);
     }
 
     @DELETE(path="/delete/slug/:card_id/otherslug/:param2/:param3")
-    public String delete(String card_id, String param2, String param3) throws MPException {
+    public MPBaseResponse delete(String card_id, String param2, String param3) throws MPException {
         HashMap<String, String> mapParams = new HashMap<String, String>();
         mapParams.put("card_id", card_id);
         mapParams.put("param2", param2);
@@ -50,7 +51,7 @@ public class MPBaseMultipleParamsTest extends MPBase {
      */
     @Test
     public void noParamsMethdTest() throws Exception {
-        String response = load();
+        MPBaseResponse response = load();
         assertEquals("{\"method\":\"GET\",\"path\":\"https://api.mercadopago.com/loadpath/slug\"}", response);
     }
 
@@ -59,7 +60,7 @@ public class MPBaseMultipleParamsTest extends MPBase {
      */
     @Test
     public void singleParamsMethdTest() throws Exception {
-        String response = save("test1");
+        MPBaseResponse response = save("test1");
         assertEquals("{\"method\":\"POST\",\"path\":\"https://api.mercadopago.com/savepath/slug/test1\",\"payload\":{}}", response);
     }
 
@@ -68,7 +69,7 @@ public class MPBaseMultipleParamsTest extends MPBase {
      */
     @Test
     public void twoParamsMethdTest() throws Exception {
-        String response = update("test1", "test2");
+        MPBaseResponse response = update("test1", "test2");
         assertEquals("{\"method\":\"GET\",\"path\":\"https://api.mercadopago.com/getpath/slug/test1/otherslug/test2\"}", response);
     }
 
@@ -77,7 +78,7 @@ public class MPBaseMultipleParamsTest extends MPBase {
      */
     @Test
     public void threeParamsMethdTest() throws Exception {
-        String response = delete("test1", "test2", "test3");
+        MPBaseResponse response = delete("test1", "test2", "test3");
         assertEquals("{\"method\":\"DELETE\",\"path\":\"https://api.mercadopago.com/delete/slug/test1/otherslug/test2/test3\"}", response);
     }
 

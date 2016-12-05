@@ -9,10 +9,12 @@ import com.mercadopago.MPConf;
 import com.mercadopago.core.annotations.rest.*;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
+import com.mercadopago.net.MPRestClient;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Arrays;
@@ -36,10 +38,10 @@ public abstract class MPBase {
      * Process the method to call the api
      *
      * @param methodName        a String with the decorated method to be processed
-     * @return                  a String with the response of the method processed by the api
+     * @return                  a MPBaseResponse with the response of the method processed by the api
      * @throws MPException
      */
-    protected String processMethod(String methodName) throws MPException {
+    protected MPBaseResponse processMethod(String methodName) throws MPException {
         HashMap<String, String> mapParams = null;
         return processMethod(methodName, mapParams);
     }
@@ -49,10 +51,10 @@ public abstract class MPBase {
      *
      * @param methodName        a String with the decorated method to be processed
      * @param param1            a String with the arg passed in the call of the method
-     * @return                  a String with the response of the method processed by the api
+     * @return                  a MPBaseResponse with the response of the method processed by the api
      * @throws MPException
      */
-    protected String processMethod(String methodName, String param1) throws MPException {
+    protected MPBaseResponse processMethod(String methodName, String param1) throws MPException {
         HashMap<String, String> mapParams = new HashMap<String, String>();
         mapParams.put("param1", param1);
         return processMethod(methodName, mapParams);
@@ -64,10 +66,10 @@ public abstract class MPBase {
      * @param methodName        a String with the decorated method to be processed
      * @param param1            a String with the arg passed in the call of the method
      * @param param2            a String with the arg passed in the call of the method
-     * @return                  a String with the response of the method processed by the api
+     * @return                  a MPBaseResponse with the response of the method processed by the api
      * @throws MPException
      */
-    protected String processMethod(String methodName, String param1, String param2) throws MPException {
+    protected MPBaseResponse processMethod(String methodName, String param1, String param2) throws MPException {
         HashMap<String, String> mapParams = new HashMap<String, String>();
         mapParams.put("param1", param1);
         mapParams.put("param2", param2);
@@ -79,10 +81,10 @@ public abstract class MPBase {
      *
      * @param methodName        a String with the decorated method to be processed
      * @param mapParams         a hashmap with the args passed in the call of the method
-     * @return                  a String with the response of the method processed by the api
+     * @return                  a MPBaseResponse with the response of the method processed by the api
      * @throws MPException
      */
-    protected String processMethod(String methodName, HashMap<String, String> mapParams) throws MPException {
+    protected MPBaseResponse processMethod(String methodName, HashMap<String, String> mapParams) throws MPException {
         //Validates the method executed
         if (!ALLOWED_METHODS.contains(methodName))
             throw new MPException("Method \"" + methodName + "\" not allowed");
@@ -95,22 +97,35 @@ public abstract class MPBase {
         MPValidator.validate(this);
         PayloadType payloadType = (PayloadType) hashAnnotation.get("payloadType");
         JsonObject payload = generatePayload(httpMethod);
-        String response = callApi(httpMethod, path, payload, payloadType);
-        lastKnownJson = MPCoreUtils.getJson(this);
+        MPBaseResponse response = new MPRestClient().executeRequest(httpMethod, path, payloadType, payload, null);
+
+
+        if (payload != null) {
+            assignValuesToFields(
+                    this,
+                    MPCoreUtils.getResourceFromJson(this.getClass(), payload));
+            lastKnownJson = MPCoreUtils.getJsonFromResource(this);
+        }
+
         return response;
     }
 
-    private String callApi(HttpMethod httpMethod, String path, JsonObject payload, PayloadType payloadType) throws MPException {
-        //MPRestClient restClient = new MPRestClient();
-        //Collection<Header> colHeaders = null;
-        //MPBaseResponse baseResponse = restClient.executeRequest(httpMethod, path, payloadType, payload, colHeaders);
+    //TODO Javadoc
+    private <T extends MPBase> void assignValuesToFields(T instance, T resourceObject) throws MPException {
+        Field[] declaredFields = instance.getClass().getDeclaredFields();
+        for (Field field : declaredFields) {
+            try {
+                field.setAccessible(true);
+                Field originField = resourceObject.getClass().getDeclaredField(field.getName());
+                originField.setAccessible(true);
 
-        String response = "{\"method\":\"" + httpMethod + "\",\"path\":\"" + path + "\"";
-        if (payload != null &&
-                StringUtils.isNotEmpty(payload.toString()))
-            response += ",\"payload\":" + payload;
-        response += "}";
-        return response;
+                Object value = originField.get(resourceObject);
+                field.set(instance, value);
+
+            } catch (Exception ex) {
+                throw new MPException(ex);
+            }
+        }
     }
 
     /**
@@ -143,7 +158,7 @@ public abstract class MPBase {
                         StringUtils.isNotEmpty(mapParams.get(param))) {
                     value = mapParams.get(param);
                 } else {
-                    JsonObject json = MPCoreUtils.getJson(this);
+                    JsonObject json = MPCoreUtils.getJsonFromResource(this);
                     if (json.get(param) != null) {
                         value = json.get(param).getAsString();
                     }
@@ -175,9 +190,9 @@ public abstract class MPBase {
     private JsonObject generatePayload(HttpMethod httpMethod) {
         JsonObject payload = null;
         if (httpMethod.equals(HttpMethod.POST)) {
-            payload = MPCoreUtils.getJson(this);
+            payload = MPCoreUtils.getJsonFromResource(this);
         } else if (httpMethod.equals(HttpMethod.PUT)) {
-            JsonObject actualJson = MPCoreUtils.getJson(this);
+            JsonObject actualJson = MPCoreUtils.getJsonFromResource(this);
 
             Type mapType = new TypeToken<Map<String, Object>>(){}.getType();
             Gson gson = new Gson();

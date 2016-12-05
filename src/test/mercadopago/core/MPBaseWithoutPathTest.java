@@ -1,6 +1,7 @@
 package test.mercadopago.core;
 
 import com.mercadopago.core.MPBase;
+import com.mercadopago.core.MPBaseResponse;
 import com.mercadopago.core.annotations.rest.DELETE;
 import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.core.annotations.rest.POST;
@@ -20,22 +21,22 @@ import static org.junit.Assert.assertSame;
 public class MPBaseWithoutPathTest extends MPBase {
 
     @GET(path="")
-    public String load(String id) throws MPException {
+    public MPBaseResponse load(String id) throws MPException {
         return super.processMethod("load", id);
     }
 
     @POST(path="")
-    public String save() throws MPException {
+    public MPBaseResponse save() throws MPException {
         return super.processMethod("save");
     }
 
     @PUT(path="")
-    public String update(String id) throws MPException {
+    public MPBaseResponse update(String id) throws MPException {
         return super.processMethod("update", id);
     }
 
     @DELETE(path="")
-    public String delete(String id) throws MPException {
+    public MPBaseResponse delete(String id) throws MPException {
         return super.processMethod("delete", id);
     }
 
