@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.mercadopago.exceptions.MPException;
 import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.apache.commons.validator.routines.UrlValidator;
 
 import java.io.InputStream;
 
@@ -58,6 +59,19 @@ public class MPCoreUtils {
         }
         return value;
 
+    }
+
+    /**
+     * Validates if an url is a valid url address
+     *
+     * @param url               url address to validate
+     * @return
+     * @throws MPException
+     */
+    public static boolean validateUrl(String url) {
+        String[] schemes = {"https"};
+        UrlValidator urlValidator = new UrlValidator(schemes);
+        return urlValidator.isValid(url);
     }
 
 }

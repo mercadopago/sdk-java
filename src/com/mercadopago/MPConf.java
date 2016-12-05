@@ -129,9 +129,9 @@ public class MPConf {
     }
 
     /**
-     * Set configuration params with a properties file
-     * @param filePath the path of the properties file
-     * throws MPConfException
+     * Set configuration params from a properties file
+     * @param filePath              string with the path of the properties file
+     * @throws MPConfException
      */
     public static void setConfiguration(String filePath) throws MPConfException {
         if (StringUtils.isEmpty(filePath)) {
@@ -141,18 +141,13 @@ public class MPConf {
         InputStream inputStream = null;
         try {
             Properties properties = new Properties();
-
             inputStream = MPConf.class.getClassLoader().getResourceAsStream(filePath);
             if (inputStream == null) {
                 throw new IllegalArgumentException("File not found");
             }
-
             properties.load(inputStream);
 
-            setClientSecret(getValueFromProperties(properties, "clientSecret"));
-            setClientId(getValueFromProperties(properties, "clientId"));
-            setAccessToken(getValueFromProperties(properties, "accessToken"));
-            setAppId(getValueFromProperties(properties, "appId"));
+            setConfiguration(properties);
 
         } catch (IllegalArgumentException iaException) {
             throw iaException;
@@ -166,6 +161,18 @@ public class MPConf {
                 // Do nothing
             }
         }
+    }
+
+    /**
+     * Set configuration params from a properties obj
+     * @param properties            Properties obj
+     * throws MPConfException
+     */
+    public static void setConfiguration(Properties properties) throws MPConfException {
+        setClientSecret(getValueFromProperties(properties, "clientSecret"));
+        setClientId(getValueFromProperties(properties, "clientId"));
+        setAccessToken(getValueFromProperties(properties, "accessToken"));
+        setAppId(getValueFromProperties(properties, "appId"));
     }
 
     /**

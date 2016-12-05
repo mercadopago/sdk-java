@@ -1,6 +1,7 @@
 package com.mercadopago.resources;
 
 import com.mercadopago.core.MPBase;
+import com.mercadopago.core.MPBaseResponse;
 import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.core.annotations.rest.POST;
 import com.mercadopago.core.annotations.rest.PUT;
@@ -237,17 +238,17 @@ public class Preferences extends MPBase {
 
     //Methods
     @GET(path="/checkout/preferences/:param")
-    public String load(String id) throws MPException {
+    public MPBaseResponse load(String id) throws MPException {
         return super.processMethod("load", id);
     }
 
     @POST(path="/checkout/preferences")
-    public String create() throws MPException {
+    public MPBaseResponse create() throws MPException {
         return super.processMethod("create");
     }
 
     @PUT(path="/checkout/preferences/:param")
-    public String update(String id) throws MPException {
+    public MPBaseResponse update(String id) throws MPException {
         return super.processMethod("update", id);
     }
 
