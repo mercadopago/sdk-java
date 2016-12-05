@@ -98,12 +98,10 @@ public abstract class MPBase {
         PayloadType payloadType = (PayloadType) hashAnnotation.get("payloadType");
         JsonObject payload = generatePayload(httpMethod);
         MPBaseResponse response = new MPRestClient().executeRequest(httpMethod, path, payloadType, payload, null);
-
-
-        if (payload != null) {
+        if (response.getJsonEntity() != null) {
             assignValuesToFields(
                     this,
-                    MPCoreUtils.getResourceFromJson(this.getClass(), payload));
+                    MPCoreUtils.getResourceFromJson(this.getClass(), response.getJsonEntity()));
             lastKnownJson = MPCoreUtils.getJsonFromResource(this);
         }
 
