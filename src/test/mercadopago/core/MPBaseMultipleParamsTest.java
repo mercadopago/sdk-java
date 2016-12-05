@@ -6,12 +6,15 @@ import com.mercadopago.core.annotations.rest.DELETE;
 import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.core.annotations.rest.POST;
 import com.mercadopago.exceptions.MPException;
+import com.mercadopago.resources.Preferences;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 
 /**
  * Mercado Pago SDK
@@ -93,6 +96,23 @@ public class MPBaseMultipleParamsTest extends MPBase {
         expected += "?access_token=" + MPConf.getAccessToken();
         expected += "\"}";
         assertEquals(expected, delete("test1", "test2", "test3"));
+    }
+
+
+    @Test
+    public void idempotenceKeyTest() throws MPException {
+        Preferences preferences = new Preferences();
+
+        assertNull(preferences.getIdempotenceKey());
+
+        Exception exception = null;
+        try {
+            preferences.setIdempotenceKey("someKey");
+        } catch (MPException mpException) {
+            assertEquals("Preferences does not admit an idempotence key", mpException.getMessage());
+            exception = mpException;
+        }
+        assertSame(MPException.class, exception.getClass());
     }
 
 }

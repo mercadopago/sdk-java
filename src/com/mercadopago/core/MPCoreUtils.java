@@ -21,8 +21,7 @@ public class MPCoreUtils {
 
     /**
      * Static method that transforms all attributes members of the instance in a JSON Element.
-     *
-     * @return a JSON Object with the attributes members of the instance
+     * @return                  a JSON Object with the attributes members of the instance
      */
     public static JsonObject getJson(Object object) {
         Gson gson = new GsonBuilder().setDateFormat(FORMAT_ISO8601).create();
@@ -32,8 +31,8 @@ public class MPCoreUtils {
     /**
      * Static method that transform an Input Stream to a String object, returns an empty string if InputStream is null.
      *
-     * @param is Input Stream to process
-     * @return a String with the stream content
+     * @param is                    Input Stream to process
+     * @return                      a String with the stream content
      * @throws MPException
      */
     public static String inputStreamToString(InputStream is) throws MPException {

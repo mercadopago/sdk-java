@@ -2,11 +2,13 @@ package test.mercadopago.core;
 
 import com.mercadopago.MPConf;
 import com.mercadopago.core.MPCoreUtils;
+import com.mercadopago.core.annotations.idempotent.Idempotent;
 import com.mercadopago.exceptions.MPException;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 

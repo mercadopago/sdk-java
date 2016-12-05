@@ -3,6 +3,9 @@ package test.mercadopago.resources;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.mercadopago.core.MPCoreUtils;
+import com.mercadopago.core.annotations.rest.PayloadType;
+import com.mercadopago.exceptions.MPException;
+import com.mercadopago.exceptions.MPRestException;
 import com.mercadopago.resources.Preferences;
 import com.mercadopago.resources.datastructures.*;
 import org.junit.Test;
@@ -11,9 +14,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 /**
  * Mercado Pago SDK
