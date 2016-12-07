@@ -46,6 +46,7 @@ public abstract class MPBase {
     public String getUserToken() {
         return this.userToken;
     }
+
     public <T extends MPBase> T setUserToken(String userToken) {
         this.userToken = userToken;
         return (T) this;
@@ -54,11 +55,11 @@ public abstract class MPBase {
     public String getIdempotenceKey() {
         return this.idempotenceKey;
     }
+
     public <T extends MPBase> T setIdempotenceKey(String idempotenceKey) throws MPException {
         if (!admitIdempotenceKey()) {
             throw new MPException(this.getClass().getSimpleName() + " does not admit an idempotence key");
         }
-
         this.idempotenceKey = idempotenceKey;
         return (T) this;
     }
@@ -155,17 +156,25 @@ public abstract class MPBase {
                 connectionTimeout,
                 socketTimeout);
 
-        if (response.getJsonEntity() != null) {
+        if (response.getJsonResponse() != null &&
+                response.getStatusCode() >= 200 && response.getStatusCode() < 300) {
             assignValuesToFields(
                     this,
-                    MPCoreUtils.getResourceFromJson(this.getClass(), response.getJsonEntity()));
+                    MPCoreUtils.getResourceFromJson(this.getClass(), response.getJsonResponse()));
             _lastKnownJson = MPCoreUtils.getJsonFromResource(this);
         }
 
         return response;
     }
 
-    //TODO Javadoc
+    /**
+     * Iterates over all the declared fields of an instance and copy field values from the resource obj passed.
+     *
+     * @param instance              destination obj
+     * @param resourceObject        source obj
+     * @param <T>                   type of the instance
+     * @throws MPException
+     */
     private <T extends MPBase> void assignValuesToFields(T instance, T resourceObject) throws MPException {
         Field[] declaredFields = instance.getClass().getDeclaredFields();
         for (Field field : declaredFields) {
@@ -173,7 +182,6 @@ public abstract class MPBase {
                 field.setAccessible(true);
                 Field originField = resourceObject.getClass().getDeclaredField(field.getName());
                 originField.setAccessible(true);
-
                 Object value = originField.get(resourceObject);
                 field.set(instance, value);
 
@@ -248,7 +256,7 @@ public abstract class MPBase {
         processedPath.insert(0, MPConf.getBaseUrl());
 
         // Token
-        String accessToken = null;
+        String accessToken;
         if (StringUtils.isNotEmpty(getUserToken())) {
             accessToken = getUserToken();
         } else {
@@ -271,7 +279,8 @@ public abstract class MPBase {
      */
     private JsonObject generatePayload(HttpMethod httpMethod) {
         JsonObject payload = null;
-        if (httpMethod.equals(HttpMethod.POST)) {
+        if (httpMethod.equals(HttpMethod.POST) ||
+                (httpMethod.equals(HttpMethod.PUT) && _lastKnownJson == null)) {
             payload = MPCoreUtils.getJsonFromResource(this);
         } else if (httpMethod.equals(HttpMethod.PUT)) {
             JsonObject actualJson = MPCoreUtils.getJsonFromResource(this);
@@ -284,9 +293,17 @@ public abstract class MPBase {
 
             payload = new JsonObject();
 
-            mapDifferences.entriesDiffering().size();
             for (Map.Entry<String, MapDifference.ValueDifference<Object>> entry : mapDifferences.entriesDiffering().entrySet()) {
                 payload.addProperty(entry.getKey(), entry.getValue().rightValue().toString());
+            }
+            for (Map.Entry<String, Object> entry : mapDifferences.entriesOnlyOnRight().entrySet()) {
+                if (entry.getValue() instanceof Boolean) {
+                    payload.addProperty(entry.getKey(), (Boolean)entry.getValue());
+                } else if (entry.getValue() instanceof Number) {
+                    payload.addProperty(entry.getKey(), (Number)entry.getValue());
+                } else {
+                    payload.addProperty(entry.getKey(), entry.getValue().toString());
+                }
             }
         }
         return payload;

@@ -18,7 +18,6 @@ public class Item {
     @Size(max=600) private String picture_url = null;
     @Size(max=256) private String category_id = null;
     @NotNull @Numeric(min=1) private Integer quantity = null;
-    @Size(min=3, max=3) private String currency_id = null;
     @NotNull @Numeric(min=.01f, max=999999f, fractionDigits=2) private Float unit_price = 0f;
 
     public String getId() {
@@ -72,15 +71,6 @@ public class Item {
 
     public Item setQuantity(Integer quantity) {
         this.quantity = quantity;
-        return this;
-    }
-
-    public String getCurrencyId() {
-        return currency_id;
-    }
-
-    public Item setCurrencyId(String currencyId) {
-        this.currency_id = currencyId;
         return this;
     }
 

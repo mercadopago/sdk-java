@@ -10,10 +10,8 @@ import com.mercadopago.core.annotations.validation.Size;
  */
 public class Phone {
 
-    @Size(max=256)
-    private String area_code = null;
-    @Size(max=256)
-    private String number = null;
+    @Size(max=256) private String area_code = null;
+    @Size(max=256) private String number = null;
 
     public String getAreaCode() {
         return area_code;

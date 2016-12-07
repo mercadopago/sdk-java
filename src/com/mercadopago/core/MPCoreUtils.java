@@ -8,6 +8,10 @@ import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.validator.routines.UrlValidator;
 
 import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Mercado Pago SDK
@@ -18,6 +22,25 @@ import java.io.InputStream;
 public class MPCoreUtils {
 
     public static final String FORMAT_ISO8601 = "yyyy-MM-dd'T'HH:mm:ssZ";
+
+    /**
+     * Retrieves all fields from a class except the ones from MPBase abstract class and Object class
+     *
+     * @param type          Java Class type
+     * @return
+     */
+    static Field[] getAllFields(Class<?> type) {
+        List<Field> fields = new ArrayList<Field>();
+        for (Class<?> clazz = type; clazz != null; clazz = clazz.getSuperclass()) {
+            if (clazz == MPBase.class ||
+                    clazz == Object.class) {
+                break;
+            }
+            fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
+        }
+        Field[] fieldsArray = new Field[fields.size()];
+        return fields.toArray(fieldsArray);
+    }
 
     /**
      * Static method that transforms all attributes members of the instance in a JSON Element.

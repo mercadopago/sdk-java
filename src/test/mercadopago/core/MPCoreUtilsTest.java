@@ -37,11 +37,11 @@ public class MPCoreUtilsTest {
     public void validateURLTest() {
         assertTrue(MPCoreUtils.validateUrl("https://www.google.com"));
         assertTrue(MPCoreUtils.validateUrl("https://mail.google.com/mail/u/0/#inbox"));
-        assertTrue(MPCoreUtils.validateUrl(MPConf.getBaseUrl() + "/checkout/preferences/4564"));
+        assertTrue(MPCoreUtils.validateUrl(MPConf.getBaseUrl() + "/checkout/Preferences/4564"));
 
         assertFalse(MPCoreUtils.validateUrl("djsfhsdkfhsdkfjhs"));
         assertFalse(MPCoreUtils.validateUrl("http://mail.google.com/mail/u/0/#inbox"));
-        assertFalse(MPCoreUtils.validateUrl(MPConf.getBaseUrl() + "/checkout/preferences/¿?"));
+        assertFalse(MPCoreUtils.validateUrl(MPConf.getBaseUrl() + "/checkout/Preferences/¿?"));
     }
 
 }

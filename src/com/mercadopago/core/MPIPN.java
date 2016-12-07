@@ -12,8 +12,18 @@ import com.mercadopago.resources.interfaces.IPNRecoverable;
 public class MPIPN {
 
     public enum Topic {
-        merchant_order,
-        payment
+        merchant_order("com.mercadopago.resources.MerchantOrder"),
+        payment("com.mercadopago.resources.Payment");
+
+        private final String resourceClassName;
+
+        Topic(String resourceClassName) {
+            this.resourceClassName = resourceClassName;
+        }
+
+        public String getResourceClassName() {
+            return this.resourceClassName;
+        }
     }
 
     public static <T extends IPNRecoverable> T manage(Topic topic, String id) throws MPException {
@@ -24,8 +34,8 @@ public class MPIPN {
 
         T resourceObject = null;
         try {
-            Class clazz = Class.forName(topic.toString());
-            if (!clazz.isAssignableFrom(MPBase.class)) {
+            Class clazz = Class.forName(topic.getResourceClassName());
+            if (!MPBase.class.isAssignableFrom(clazz)) {
                 throw new MPException(topic.toString() + " does not extend from MPBase");
             }
             resourceObject = (T) clazz.newInstance();

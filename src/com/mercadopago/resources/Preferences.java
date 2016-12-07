@@ -17,17 +17,17 @@ import java.util.Date;
 
 /**
  * Mercado Pago SDK
- * This resource allows you to set up, during the payment process, all the item information, any accepted means of payment and many other options.
+ * This resource allows you to set up, during the Payment process, all the item information, any accepted means of Payment and many other options.
  *
  * Created by Eduardo Paoletta on 11/9/16.
  */
 public class Preferences extends MPBase {
 
     //Attributes
-    @NotNull private ArrayList<Item> items = null;
-    @NotNull private Payer payer = null;
+    @NotNull private ArrayList<ItemPreferences> items = null;
+    @NotNull private PayerPreferences payer = null;
     private PaymentMethods payment_methods = null;
-    private Shipments shipments = null;
+    private ShipmentsPreferences shipments = null;
     private BackUrls back_urls = null;
     @Size(max=500) private String notification_url = null;
     private String id = null;
@@ -56,27 +56,27 @@ public class Preferences extends MPBase {
     private DifferentialPricing differential_pricing = null;
 
     //Getters/Setters
-    public ArrayList<Item> getItems() {
+    public ArrayList<ItemPreferences> getItems() {
         return items;
     }
 
-    public Preferences setItems(ArrayList<Item> items) {
+    public Preferences setItems(ArrayList<ItemPreferences> items) {
         this.items = items;
         return this;
     }
 
-    public ArrayList<Item> appendItem(Item item) {
+    public ArrayList<ItemPreferences> appendItem(ItemPreferences item) {
         if (items == null)
-            items = new ArrayList<Item>();
+            items = new ArrayList<ItemPreferences>();
         items.add(item);
         return getItems();
     }
 
-    public Payer getPayer() {
+    public PayerPreferences getPayer() {
         return payer;
     }
 
-    public Preferences setPayer(Payer payer) {
+    public Preferences setPayer(PayerPreferences payer) {
         this.payer = payer;
         return this;
     }
@@ -90,11 +90,11 @@ public class Preferences extends MPBase {
         return this;
     }
 
-    public Shipments getShipments() {
+    public ShipmentsPreferences getShipments() {
         return shipments;
     }
 
-    public Preferences setShipments(Shipments shipments) {
+    public Preferences setShipments(ShipmentsPreferences shipments) {
         this.shipments = shipments;
         return this;
     }

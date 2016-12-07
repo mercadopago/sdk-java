@@ -5,26 +5,26 @@ import com.mercadopago.core.annotations.validation.Size;
 import java.util.Date;
 
 /**
- * Mercado Libre SDK
- * Payer class
+ * Mercado Pago SDK
+ * Payer Preferences class
  *
- * Created by Eduardo Paoletta on 11/9/16.
+ * Created by Eduardo Paoletta on 12/2/16.
  */
-public class Payer {
+public class PayerPreferences {
 
     @Size(max=256) private String name = null;
     @Size(max=256) private String surname = null;
     @Size(max=256) private String email = null;
     private Phone phone = null;
     private Identification identification = null;
-    private PayerAddress address = null;
+    private Address address = null;
     private Date date_created = null;
 
     public String getName() {
         return name;
     }
 
-    public Payer setName(String name) {
+    public PayerPreferences setName(String name) {
         this.name = name;
         return this;
     }
@@ -33,7 +33,7 @@ public class Payer {
         return surname;
     }
 
-    public Payer setSurname(String surname) {
+    public PayerPreferences setSurname(String surname) {
         this.surname = surname;
         return this;
     }
@@ -42,7 +42,7 @@ public class Payer {
         return email;
     }
 
-    public Payer setEmail(String email) {
+    public PayerPreferences setEmail(String email) {
         this.email = email;
         return this;
     }
@@ -51,7 +51,7 @@ public class Payer {
         return phone;
     }
 
-    public Payer setPhone(Phone phone) {
+    public PayerPreferences setPhone(Phone phone) {
         this.phone = phone;
         return this;
     }
@@ -60,16 +60,16 @@ public class Payer {
         return identification;
     }
 
-    public Payer setIdentification(Identification identification) {
+    public PayerPreferences setIdentification(Identification identification) {
         this.identification = identification;
         return this;
     }
 
-    public PayerAddress getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public Payer setAddress(PayerAddress address) {
+    public PayerPreferences setAddress(Address address) {
         this.address = address;
         return this;
     }
@@ -78,7 +78,7 @@ public class Payer {
         return date_created;
     }
 
-    public Payer setDateCreated(Date dateCreated) {
+    public PayerPreferences setDateCreated(Date dateCreated) {
         this.date_created = dateCreated;
         return this;
     }

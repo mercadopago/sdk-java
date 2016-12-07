@@ -2,14 +2,12 @@ package test.mercadopago.core;
 
 import com.mercadopago.MPConf;
 import com.mercadopago.core.MPBase;
-import com.mercadopago.core.annotations.idempotent.Idempotent;
 import com.mercadopago.core.MPBaseResponse;
+import com.mercadopago.core.annotations.idempotent.Idempotent;
 import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.core.annotations.rest.POST;
 import com.mercadopago.core.annotations.rest.PUT;
 import com.mercadopago.exceptions.MPException;
-import com.mercadopago.resources.Preferences;
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -154,29 +152,28 @@ public class MPBaseTest extends MPBase {
      */
     @Test
     public void methodPathTest() throws Exception {
-        String expected = "{\"method\":\"GET\",\"path\":\"https://api.mercadopago.com/getpath/slug/test_id";
-        expected += "?access_token=" + MPConf.getAccessToken();
-        expected += "\"}";
-        assertEquals(expected, load("test_id"));
+        MPBaseResponse response = load("test_id");
+        assertEquals("GET", response.getMethod());
+        assertEquals("https://api.mercadopago.com/getpath/slug/test_id?access_token=" + MPConf.getAccessToken(), response.getUrl());
 
-        expected = "{\"method\":\"POST\",\"path\":\"https://api.mercadopago.com/postpath/slug";
-        expected += "?access_token=" + MPConf.getAccessToken();
-        expected += "\",\"payload\":{\"testString\":\"Test String\",\"testInteger\":666}}";
-        assertEquals(expected, create());
+        response = create();
+        assertEquals("POST", response.getMethod());
+        assertEquals("https://api.mercadopago.com/postpath/slug?access_token=" + MPConf.getAccessToken(), response.getUrl());
+        assertEquals("{\"testString\":\"Test String\",\"testInteger\":666}", response.getPayload());
 
-        expected = "{\"method\":\"PUT\",\"path\":\"https://api.mercadopago.com/putpath/slug/test_id";
-        expected += "?access_token=" + MPConf.getAccessToken();
-        expected += "\",\"payload\":{}}";
-        assertEquals(expected, update("test_id"));
+        response = update("test_id");
+        assertEquals("PUT", response.getMethod());
+        assertEquals("https://api.mercadopago.com/putpath/slug/test_id?access_token=" + MPConf.getAccessToken(), response.getUrl());
+        assertEquals("{\"testString\":\"Test String\",\"testInteger\":666}", response.getPayload());
 
         MPBaseTest resource = new MPBaseTest();
         resource.id = "5";
         resource.load(null);
         resource.testString = "TestUpdate";
-        expected = "{\"method\":\"PUT\",\"path\":\"https://api.mercadopago.com/putpath/slug/5";
-        expected += "?access_token=" + MPConf.getAccessToken();
-        expected += "\",\"payload\":{\"testString\":\"TestUpdate\"}}";
-        assertEquals(expected, resource.update(null));
+
+        response = resource.update(null);
+        assertEquals("PUT", response.getMethod());
+        assertEquals("https://api.mercadopago.com/putpath/slug/5?access_token=" + MPConf.getAccessToken(), response.getUrl());
 
     }
 

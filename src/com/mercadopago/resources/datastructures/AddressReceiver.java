@@ -8,31 +8,31 @@ import com.mercadopago.core.annotations.validation.Size;
  *
  * Created by Eduardo Paoletta on 11/9/16.
  */
-public class ReceiverAddress extends Address {
+public class AddressReceiver extends Address {
 
     @Size(max=256) private String floor = null;
     @Size(max=256) private String apartment = null;
 
     @Override
-    public ReceiverAddress setZipCode(String zipCode) {
-        return (ReceiverAddress)super.setZipCode(zipCode);
+    public AddressReceiver setZipCode(String zipCode) {
+        return (AddressReceiver)super.setZipCode(zipCode);
     }
 
     @Override
-    public ReceiverAddress setStreetName(String streetName) {
-        return (ReceiverAddress)super.setStreetName(streetName);
+    public AddressReceiver setStreetName(String streetName) {
+        return (AddressReceiver)super.setStreetName(streetName);
     }
 
     @Override
-    public ReceiverAddress setStreetNumber(Integer streetNumber) {
-        return (ReceiverAddress)super.setStreetNumber(streetNumber);
+    public AddressReceiver setStreetNumber(Integer streetNumber) {
+        return (AddressReceiver)super.setStreetNumber(streetNumber);
     }
 
     public String getFloor() {
         return floor;
     }
 
-    public ReceiverAddress setFloor(String floor) {
+    public AddressReceiver setFloor(String floor) {
         this.floor = floor;
         return this;
     }
@@ -41,7 +41,7 @@ public class ReceiverAddress extends Address {
         return apartment;
     }
 
-    public ReceiverAddress setApartment(String apartment) {
+    public AddressReceiver setApartment(String apartment) {
         this.apartment = apartment;
         return this;
     }

@@ -2,12 +2,12 @@ package test.mercadopago.resources;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import com.mercadopago.MPConf;
 import com.mercadopago.core.MPCoreUtils;
-import com.mercadopago.core.annotations.rest.PayloadType;
 import com.mercadopago.exceptions.MPException;
-import com.mercadopago.exceptions.MPRestException;
 import com.mercadopago.resources.Preferences;
 import com.mercadopago.resources.datastructures.*;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.text.DateFormat;
@@ -18,15 +18,21 @@ import static org.junit.Assert.*;
 
 /**
  * Mercado Pago SDK
- *
+ * Preferences Resource Test
  *
  * Created by Eduardo Paoletta on 11/21/16.
  */
 public class PreferencesTest {
 
+    @BeforeClass
+    public static void beforeTest() throws MPException {
+        MPConf.cleanConfiguration();
+        MPConf.setConfiguration("test/mercadopago/data/credentials.properties");
+    }
+
     @Test
-    public void preferenceTest() {
-        Item item = new Item();
+    public void preferenceGettersSettersTest() throws MPException {
+        ItemPreferences item = new ItemPreferences();
         item.setId("Id");
         item.setTitle("Title");
         item.setDescription("Description");
@@ -44,18 +50,18 @@ public class PreferencesTest {
         identification.setType("Type");
         identification.setNumber("Number");
 
-        PayerAddress payerAddress = new PayerAddress();
-        payerAddress.setZipCode("ZipCode");
-        payerAddress.setStreetName("StreetName");
-        payerAddress.setStreetNumber(0);
+        Address address = new Address();
+        address.setZipCode("ZipCode");
+        address.setStreetName("StreetName");
+        address.setStreetNumber(0);
 
-        Payer payer = new Payer();
+        PayerPreferences payer = new PayerPreferences();
         payer.setName("Name");
         payer.setSurname("Surname");
         payer.setEmail("Email");
         payer.setPhone(phone);
         payer.setIdentification(identification);
-        payer.setAddress(payerAddress);
+        payer.setAddress(address);
         payer.setDateCreated(new Date());
 
         PaymentMethods paymentMethods = new PaymentMethods();
@@ -65,22 +71,22 @@ public class PreferencesTest {
         paymentMethods.setInstallments(1);
         paymentMethods.setDefaultInstallments(1);
 
-        ReceiverAddress receiverAddress = new ReceiverAddress();
-        receiverAddress.setZipCode("ZipCode");
-        receiverAddress.setStreetName("StreetName");
-        receiverAddress.setStreetNumber(0);
-        receiverAddress.setFloor("Floor");
-        receiverAddress.setApartment("Apartment");
+        AddressReceiver addressReceiver = new AddressReceiver();
+        addressReceiver.setZipCode("ZipCode");
+        addressReceiver.setStreetName("StreetName");
+        addressReceiver.setStreetNumber(0);
+        addressReceiver.setFloor("Floor");
+        addressReceiver.setApartment("Apartment");
 
-        Shipments shipments = new Shipments();
-        shipments.setMode(Shipments.ShipmentMode.custom);
+        ShipmentsPreferences shipments = new ShipmentsPreferences();
+        shipments.setMode(ShipmentsPreferences.ShipmentMode.custom);
         shipments.setLocalPickup(Boolean.FALSE);
         shipments.setDimensions("Dimensions");
         shipments.setDefaultShippingMethod(0);
         shipments.appendFreeMethods(0);
         shipments.setCost(.01f);
         shipments.setFreeShipping(Boolean.FALSE);
-        shipments.setReceiverAddress(receiverAddress);
+        shipments.setReceiverAddress(addressReceiver);
 
         BackUrls backUrls = new BackUrls();
         backUrls.setSuccess("Success");
@@ -135,9 +141,9 @@ public class PreferencesTest {
         assertEquals(identification.getNumber(), jsonIdentification.get("number").getAsString());
 
         JsonObject jsonPayerAddress = (JsonObject) jsonPayer.get("address");
-        assertEquals(payerAddress.getZipCode(), jsonPayerAddress.get("zip_code").getAsString());
-        assertEquals(payerAddress.getStreetName(), jsonPayerAddress.get("street_name").getAsString());
-        assertEquals(payerAddress.getStreetNumber().intValue(), jsonPayerAddress.get("street_number").getAsInt());
+        assertEquals(address.getZipCode(), jsonPayerAddress.get("zip_code").getAsString());
+        assertEquals(address.getStreetName(), jsonPayerAddress.get("street_name").getAsString());
+        assertEquals(address.getStreetNumber().intValue(), jsonPayerAddress.get("street_number").getAsInt());
 
         assertEquals(payer.getName(), jsonPayer.get("name").getAsString());
         assertEquals(payer.getSurname(), jsonPayer.get("surname").getAsString());
@@ -156,11 +162,11 @@ public class PreferencesTest {
         JsonObject jsonShipments = (JsonObject) jsonPreferences.get("shipments");
 
         JsonObject jsonReceiverAddress = (JsonObject) jsonShipments.get("receiver_address");
-        assertEquals(receiverAddress.getZipCode(), jsonReceiverAddress.get("zip_code").getAsString());
-        assertEquals(receiverAddress.getStreetName(), jsonReceiverAddress.get("street_name").getAsString());
-        assertEquals(receiverAddress.getStreetNumber().intValue(), jsonReceiverAddress.get("street_number").getAsInt());
-        assertEquals(receiverAddress.getFloor(), jsonReceiverAddress.get("floor").getAsString());
-        assertEquals(receiverAddress.getApartment(), jsonReceiverAddress.get("apartment").getAsString());
+        assertEquals(addressReceiver.getZipCode(), jsonReceiverAddress.get("zip_code").getAsString());
+        assertEquals(addressReceiver.getStreetName(), jsonReceiverAddress.get("street_name").getAsString());
+        assertEquals(addressReceiver.getStreetNumber().intValue(), jsonReceiverAddress.get("street_number").getAsInt());
+        assertEquals(addressReceiver.getFloor(), jsonReceiverAddress.get("floor").getAsString());
+        assertEquals(addressReceiver.getApartment(), jsonReceiverAddress.get("apartment").getAsString());
 
         assertEquals(shipments.getMode().toString(), jsonShipments.get("mode").getAsString());
         assertEquals(shipments.getLocalPickup(), jsonShipments.get("local_pickup").getAsBoolean());
@@ -196,5 +202,7 @@ public class PreferencesTest {
         assertEquals(preferences.getExpires(), jsonPreferences.get("marketplace").getAsBoolean());
         assertEquals(preferences.getExpires(), jsonPreferences.get("marketplace_fee").getAsBoolean());
 
+        preferences.create();
     }
+
 }

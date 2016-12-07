@@ -4,9 +4,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.mercadopago.exceptions.MPException;
+import com.mercadopago.net.HttpMethod;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpRequestBase;
 
 /**
  * Mercado Pago SDK
@@ -16,8 +18,14 @@ import org.apache.http.HttpResponse;
  */
 public class MPBaseResponse {
 
+    private HttpRequestBase _httpRequest;
+    private JsonObject _requestPayload;
     private HttpResponse _httpResponse;
     private long _responseMillis;
+
+    private String method;
+    private String url;
+    private String payload;
 
     private int statusCode;
     private String reasonPhrase;
@@ -25,12 +33,26 @@ public class MPBaseResponse {
     private String stringResponse;
     private JsonObject jsonResponse;
 
-    private JsonObject jsonEntity;
-
-    public MPBaseResponse(HttpResponse response, long responseMillis) throws MPException {
+    public MPBaseResponse(HttpMethod httpMethod, HttpRequestBase request, JsonObject payload, HttpResponse response, long responseMillis)
+            throws MPException {
+        this._httpRequest = request;
+        this._requestPayload = payload;
         this._httpResponse = response;
         this._responseMillis = responseMillis;
+        parseRequest(httpMethod, request, payload);
         parseResponse(response);
+    }
+
+    public String getMethod() {
+        return this.method;
+    }
+
+    public String getUrl() {
+        return this.url;
+    }
+
+    public String getPayload() {
+        return this.payload;
     }
 
     public int getStatusCode() {
@@ -49,12 +71,24 @@ public class MPBaseResponse {
         return this.jsonResponse;
     }
 
-    public JsonObject getJsonEntity() {
-        return this.jsonEntity;
-    }
-
     public Header[] getHeaders(String headerName) {
         return this._httpResponse.getHeaders(headerName);
+    }
+
+    /**
+     * Parses the http request in a custom MPBaseResponse object.
+     *
+     * @param httpMethod            enum with the method executed
+     * @param request               HttpRequestBase object
+     * @param payload               JsonObject with the payload
+     * @throws MPException
+     */
+    private void parseRequest(HttpMethod httpMethod, HttpRequestBase request, JsonObject payload) throws MPException {
+        this.method = httpMethod.toString();
+        this.url = request.getURI().toString();
+        if (payload != null) {
+            this.payload = payload.toString();
+        }
     }
 
     /**
@@ -67,22 +101,18 @@ public class MPBaseResponse {
         this.statusCode = response.getStatusLine().getStatusCode();
         this.reasonPhrase = response.getStatusLine().getReasonPhrase();
 
-        if (this.statusCode == 200 &&
-                response.getEntity() != null) {
+        if (response.getEntity() != null) {
             HttpEntity respEntity = response.getEntity();
             try {
                 this.stringResponse = MPCoreUtils.inputStreamToString(respEntity.getContent());
             } catch (Exception ex) {
                 throw new MPException(ex);
             }
-
             // Try to parse the response to a json, and a extract the entity of the response.
             // When the response is not a json parseable string then the string response must be used.
             try {
                 this.jsonResponse = new JsonParser().parse(this.stringResponse).getAsJsonObject();
-                if (this.jsonResponse.has("json") &&
-                        this.jsonResponse.get("json").isJsonObject())
-                    this.jsonEntity = this.jsonResponse.getAsJsonObject("json");
+
             } catch (JsonParseException jsonParseException) {
                 // Do nothing
             }
