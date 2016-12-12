@@ -1,4 +1,4 @@
-package com.mercadopago.resources.datastructures;
+package com.mercadopago.resources.datastructures.payment;
 
 import java.util.ArrayList;
 
@@ -11,14 +11,15 @@ import java.util.ArrayList;
 public class AdditionalInfo {
 
     private ArrayList<Item> items = null;
-    private PayerAdditionalInfoPayment payer = null;
+    private AdditionalInfoPayer payer = null;
     private Shipments shipments = null;
+
 
     public void setItems(ArrayList<Item> items) {
         this.items = items;
     }
 
-    public void setPayer(PayerAdditionalInfoPayment payer) {
+    public void setPayer(AdditionalInfoPayer payer) {
         this.payer = payer;
     }
 

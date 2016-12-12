@@ -6,7 +6,7 @@ import com.mercadopago.MPConf;
 import com.mercadopago.core.MPCoreUtils;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.Preferences;
-import com.mercadopago.resources.datastructures.*;
+import com.mercadopago.resources.datastructures.preferences.*;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -32,7 +32,7 @@ public class PreferencesTest {
 
     @Test
     public void preferenceGettersSettersTest() throws MPException {
-        ItemPreferences item = new ItemPreferences();
+        Item item = new Item();
         item.setId("Id");
         item.setTitle("Title");
         item.setDescription("Description");
@@ -55,7 +55,7 @@ public class PreferencesTest {
         address.setStreetName("StreetName");
         address.setStreetNumber(0);
 
-        PayerPreferences payer = new PayerPreferences();
+        Payer payer = new Payer();
         payer.setName("Name");
         payer.setSurname("Surname");
         payer.setEmail("Email");
@@ -78,8 +78,8 @@ public class PreferencesTest {
         addressReceiver.setFloor("Floor");
         addressReceiver.setApartment("Apartment");
 
-        ShipmentsPreferences shipments = new ShipmentsPreferences();
-        shipments.setMode(ShipmentsPreferences.ShipmentMode.custom);
+        Shipments shipments = new Shipments();
+        shipments.setMode(Shipments.ShipmentMode.custom);
         shipments.setLocalPickup(Boolean.FALSE);
         shipments.setDimensions("Dimensions");
         shipments.setDefaultShippingMethod(0);
@@ -109,13 +109,11 @@ public class PreferencesTest {
         preferences.setExpires(Boolean.FALSE);
         preferences.setExpirationDateFrom(new Date());
         preferences.setExpirationDateTo(new Date());
-        preferences.setCollectorId(0);
-        preferences.setClientId(0);
         preferences.setMarketplace("Marketplace");
         preferences.setMarketplaceFee(.01f);
         preferences.setDifferentialPricing(differentialPricing);
 
-        DateFormat df = new SimpleDateFormat(MPCoreUtils.FORMAT_ISO8601);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
 
         JsonObject jsonPreferences = MPCoreUtils.getJsonFromResource(preferences);
         assertNotNull(jsonPreferences);
@@ -195,12 +193,10 @@ public class PreferencesTest {
         assertEquals(preferences.getAutoReturn().toString(), jsonPreferences.get("auto_return").getAsString());
         assertEquals(preferences.getExternalReference(), jsonPreferences.get("external_reference").getAsString());
         assertEquals(preferences.getExpires(), jsonPreferences.get("expires").getAsBoolean());
-        assertEquals(preferences.getExpires(), jsonPreferences.get("expiration_date_from").getAsBoolean());
-        assertEquals(preferences.getExpires(), jsonPreferences.get("expiration_date_to").getAsBoolean());
-        assertEquals(preferences.getExpires(), jsonPreferences.get("collector_id").getAsBoolean());
-        assertEquals(preferences.getExpires(), jsonPreferences.get("client_id").getAsBoolean());
-        assertEquals(preferences.getExpires(), jsonPreferences.get("marketplace").getAsBoolean());
-        assertEquals(preferences.getExpires(), jsonPreferences.get("marketplace_fee").getAsBoolean());
+        assertEquals(df.format(preferences.getExpirationDateFrom()), jsonPreferences.get("expiration_date_from").getAsString());
+        assertEquals(df.format(preferences.getExpirationDateTo()), jsonPreferences.get("expiration_date_to").getAsString());
+        assertEquals(preferences.getMarketplace(), jsonPreferences.get("marketplace").getAsString());
+        assertEquals(preferences.getMarketplaceFee(), jsonPreferences.get("marketplace_fee").getAsFloat(), 0.0f);
 
         preferences.create();
     }

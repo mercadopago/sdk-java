@@ -159,12 +159,12 @@ public class MPBaseTest extends MPBase {
         response = create();
         assertEquals("POST", response.getMethod());
         assertEquals("https://api.mercadopago.com/postpath/slug?access_token=" + MPConf.getAccessToken(), response.getUrl());
-        assertEquals("{\"testString\":\"Test String\",\"testInteger\":666}", response.getPayload());
+        assertEquals("{\"test_string\":\"Test String\",\"test_integer\":666}", response.getPayload());
 
         response = update("test_id");
         assertEquals("PUT", response.getMethod());
         assertEquals("https://api.mercadopago.com/putpath/slug/test_id?access_token=" + MPConf.getAccessToken(), response.getUrl());
-        assertEquals("{\"testString\":\"Test String\",\"testInteger\":666}", response.getPayload());
+        assertEquals("{\"test_string\":\"Test String\",\"test_integer\":666}", response.getPayload());
 
         MPBaseTest resource = new MPBaseTest();
         resource.id = "5";
@@ -177,6 +177,9 @@ public class MPBaseTest extends MPBase {
 
     }
 
+    /**
+     * Test method for idempotence key
+     */
     @Test
     public void idempotenceTest() throws MPException {
         MPBaseTest resource = new MPBaseTest();

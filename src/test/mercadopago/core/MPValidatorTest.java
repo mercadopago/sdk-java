@@ -4,8 +4,8 @@ import com.mercadopago.core.MPValidator;
 import com.mercadopago.core.ValidationViolation;
 import com.mercadopago.exceptions.MPValidationException;
 import com.mercadopago.resources.Preferences;
-import com.mercadopago.resources.datastructures.ItemPreferences;
-import com.mercadopago.resources.datastructures.PayerPreferences;
+import com.mercadopago.resources.datastructures.preferences.Item;
+import com.mercadopago.resources.datastructures.preferences.Payer;
 import org.junit.Test;
 
 import java.math.BigInteger;
@@ -43,11 +43,11 @@ public class MPValidatorTest {
 
     @Test
     public void validateNotNullPass() {
-        ItemPreferences item = new ItemPreferences();
+        Item item = new Item();
         item.setQuantity(1);
         item.setUnitPrice(.01f);
 
-        PayerPreferences payer = new PayerPreferences();
+        Payer payer = new Payer();
 
         Preferences preferences = new Preferences();
         preferences.appendItem(item);
@@ -64,11 +64,11 @@ public class MPValidatorTest {
 
     @Test
     public void validateNumericError() {
-        ItemPreferences item = new ItemPreferences();
+        Item item = new Item();
         item.setQuantity(0);
         item.setUnitPrice(.01f);
 
-        PayerPreferences payer = new PayerPreferences();
+        Payer payer = new Payer();
 
         Preferences preferences = new Preferences();
         preferences.appendItem(item);
@@ -116,11 +116,11 @@ public class MPValidatorTest {
 
     @Test
     public void validateNumericPass() {
-        ItemPreferences item = new ItemPreferences();
+        Item item = new Item();
         item.setQuantity(1);
         item.setUnitPrice(1f);
 
-        PayerPreferences payer = new PayerPreferences();
+        Payer payer = new Payer();
 
         Preferences preferences = new Preferences();
         preferences.appendItem(item);
@@ -141,11 +141,11 @@ public class MPValidatorTest {
         for (int i = 0; i < 257; i ++)
             string257 += new BigInteger(5, new SecureRandom()).toString(32);
 
-        ItemPreferences item = new ItemPreferences();
+        Item item = new Item();
         item.setQuantity(1);
         item.setUnitPrice(1f);
 
-        PayerPreferences payer = new PayerPreferences();
+        Payer payer = new Payer();
 
         Preferences preferences = new Preferences();
         preferences.appendItem(item);
@@ -186,12 +186,12 @@ public class MPValidatorTest {
         for (int i = 0; i < 256; i ++)
             string256 += new BigInteger(5, new SecureRandom()).toString(32);
 
-        ItemPreferences item = new ItemPreferences();
+        Item item = new Item();
         item.setQuantity(1);
         item.setUnitPrice(1f);
         item.setCurrencyId("ARS");
 
-        PayerPreferences payer = new PayerPreferences();
+        Payer payer = new Payer();
 
         Preferences preferences = new Preferences();
         preferences.appendItem(item);

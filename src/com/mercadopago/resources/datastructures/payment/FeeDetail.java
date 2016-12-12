@@ -1,4 +1,4 @@
-package com.mercadopago.resources.datastructures;
+package com.mercadopago.resources.datastructures.payment;
 
 /**
  * Mercado Pago SDK
@@ -17,23 +17,24 @@ public class FeeDetail {
         application_fee,
         discount_fee
     }
-    private FeePayer fee_payer = null;
+    private FeePayer feePayer = null;
     public enum FeePayer {
         collector,
         payer
     }
-    private Float fee_amount = null;
+    private Float amount = null;
+
 
     public Type getType() {
         return type;
     }
 
-    public FeePayer getFee_payer() {
-        return fee_payer;
+    public FeePayer getFeePayer() {
+        return feePayer;
     }
 
-    public Float getFee_amount() {
-        return fee_amount;
+    public Float getAmount() {
+        return amount;
     }
 
 }

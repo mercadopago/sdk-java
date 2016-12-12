@@ -1,4 +1,4 @@
-package com.mercadopago.resources.datastructures;
+package com.mercadopago.resources.datastructures.payment;
 
 /**
  * Mercado Pago SDK
@@ -14,6 +14,7 @@ public class Order {
         mercadopago
     }
     private Long id = null;
+
 
     public Type getType() {
         return type;

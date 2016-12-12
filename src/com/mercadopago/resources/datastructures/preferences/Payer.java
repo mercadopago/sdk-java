@@ -1,4 +1,4 @@
-package com.mercadopago.resources.datastructures;
+package com.mercadopago.resources.datastructures.preferences;
 
 import com.mercadopago.core.annotations.validation.Size;
 
@@ -10,7 +10,7 @@ import java.util.Date;
  *
  * Created by Eduardo Paoletta on 12/2/16.
  */
-public class PayerPreferences {
+public class Payer {
 
     @Size(max=256) private String name = null;
     @Size(max=256) private String surname = null;
@@ -18,13 +18,14 @@ public class PayerPreferences {
     private Phone phone = null;
     private Identification identification = null;
     private Address address = null;
-    private Date date_created = null;
+    private Date dateCreated = null;
+
 
     public String getName() {
         return name;
     }
 
-    public PayerPreferences setName(String name) {
+    public Payer setName(String name) {
         this.name = name;
         return this;
     }
@@ -33,7 +34,7 @@ public class PayerPreferences {
         return surname;
     }
 
-    public PayerPreferences setSurname(String surname) {
+    public Payer setSurname(String surname) {
         this.surname = surname;
         return this;
     }
@@ -42,7 +43,7 @@ public class PayerPreferences {
         return email;
     }
 
-    public PayerPreferences setEmail(String email) {
+    public Payer setEmail(String email) {
         this.email = email;
         return this;
     }
@@ -51,7 +52,7 @@ public class PayerPreferences {
         return phone;
     }
 
-    public PayerPreferences setPhone(Phone phone) {
+    public Payer setPhone(Phone phone) {
         this.phone = phone;
         return this;
     }
@@ -60,7 +61,7 @@ public class PayerPreferences {
         return identification;
     }
 
-    public PayerPreferences setIdentification(Identification identification) {
+    public Payer setIdentification(Identification identification) {
         this.identification = identification;
         return this;
     }
@@ -69,17 +70,17 @@ public class PayerPreferences {
         return address;
     }
 
-    public PayerPreferences setAddress(Address address) {
+    public Payer setAddress(Address address) {
         this.address = address;
         return this;
     }
 
     public Date getDateCreated() {
-        return date_created;
+        return dateCreated;
     }
 
-    public PayerPreferences setDateCreated(Date dateCreated) {
-        this.date_created = dateCreated;
+    public Payer setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
         return this;
     }
 

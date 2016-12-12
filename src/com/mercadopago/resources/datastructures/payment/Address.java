@@ -1,4 +1,4 @@
-package com.mercadopago.resources.datastructures;
+package com.mercadopago.resources.datastructures.payment;
 
 import com.mercadopago.core.annotations.validation.Size;
 
@@ -10,34 +10,35 @@ import com.mercadopago.core.annotations.validation.Size;
  */
 public class Address {
 
-    @Size(max=256) private String zip_code = null;
-    @Size(max=256) private String street_name = null;
-    private Integer street_number = null;
+    @Size(max=256) private String zipCode = null;
+    @Size(max=256) private String streetName = null;
+    private Integer streetNumber = null;
+
 
     public String getZipCode() {
-        return zip_code;
+        return zipCode;
     }
 
     public Address setZipCode(String zipCode) {
-        this.zip_code = zipCode;
+        this.zipCode = zipCode;
         return this;
     }
 
     public String getStreetName() {
-        return street_name;
+        return streetName;
     }
 
     public Address setStreetName(String streetName) {
-        this.street_name = streetName;
+        this.streetName = streetName;
         return this;
     }
 
     public Integer getStreetNumber() {
-        return street_number;
+        return streetNumber;
     }
 
     public Address setStreetNumber(Integer streetNumber) {
-        this.street_number = streetNumber;
+        this.streetNumber = streetNumber;
         return this;
     }
 

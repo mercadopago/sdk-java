@@ -1,4 +1,4 @@
-package com.mercadopago.resources.datastructures;
+package com.mercadopago.resources.datastructures.preferences;
 
 /**
  * Mercado Libre SDK
@@ -9,6 +9,7 @@ package com.mercadopago.resources.datastructures;
 public class DifferentialPricing {
 
     private Integer id = null;
+
 
     public Integer getId() {
         return id;

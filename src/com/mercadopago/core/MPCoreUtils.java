@@ -1,5 +1,6 @@
 package com.mercadopago.core;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -21,7 +22,13 @@ import java.util.List;
  */
 public class MPCoreUtils {
 
-    public static final String FORMAT_ISO8601 = "yyyy-MM-dd'T'HH:mm:ssZ";
+    private static final String FORMAT_ISO8601 = "yyyy-MM-dd'T'HH:mm:ssZ";
+
+    private static Gson gson = new GsonBuilder()
+            .setDateFormat(FORMAT_ISO8601)
+            .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+            .create();
+
 
     /**
      * Retrieves all fields from a class except the ones from MPBase abstract class and Object class
@@ -43,17 +50,23 @@ public class MPCoreUtils {
     }
 
     /**
-     * Static method that transforms all attributes members of the instance in a JSON Element.
+     * Static method that transforms all attributes members of the instance in a JSON Object.
+     *
      * @return                  a JSON Object with the attributes members of the instance
      */
     public static <T extends MPBase> JsonObject getJsonFromResource(T resourceObject) {
-        Gson gson = new GsonBuilder().setDateFormat(FORMAT_ISO8601).create();
         return (JsonObject) gson.toJsonTree(resourceObject);
     }
 
-    //TODO Javadocs
+    /**
+     * Static method that transforms a Json Object in a MP Resource.
+     *
+     * @param clazz             Java Class type of the resource
+     * @param jsonEntity        JsonObject to be transformed
+     * @param <T>
+     * @return
+     */
     public static <T extends MPBase> T getResourceFromJson(Class clazz, JsonObject jsonEntity) {
-        Gson gson = new GsonBuilder().setDateFormat(FORMAT_ISO8601).create();
         return (T) gson.fromJson(jsonEntity, clazz);
     }
 

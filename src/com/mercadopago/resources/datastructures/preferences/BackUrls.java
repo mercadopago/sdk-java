@@ -1,4 +1,4 @@
-package com.mercadopago.resources.datastructures;
+package com.mercadopago.resources.datastructures.preferences;
 
 import com.mercadopago.core.annotations.validation.Size;
 
@@ -13,6 +13,7 @@ public class BackUrls {
     @Size(max=600) private String success = null;
     @Size(max=600) private String pending = null;
     @Size(max=600) private String failure = null;
+
 
     public String getSuccess() {
         return success;

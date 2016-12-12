@@ -1,4 +1,4 @@
-package com.mercadopago.resources.datastructures;
+package com.mercadopago.resources.datastructures.preferences;
 
 import com.mercadopago.core.annotations.validation.Numeric;
 import com.mercadopago.core.annotations.validation.Size;
@@ -14,50 +14,51 @@ import java.util.List;
  */
 public class PaymentMethods {
 
-    private ArrayList<String> excluded_payment_methods = null;
-    private ArrayList<String> excluded_payment_types = null;
-    @Size(max=256) private String default_payment_method_id = null;
+    private ArrayList<String> excludedPaymentMethods = null;
+    private ArrayList<String> excludedPaymentTypes = null;
+    @Size(max=256) private String defaultPaymentMethodId = null;
     @Numeric(min=1, fractionDigits=0) private Integer installments = null;
-    @Numeric(min=1, fractionDigits=0) private Integer default_installments = null;
+    @Numeric(min=1, fractionDigits=0) private Integer defaultInstallments = null;
+
 
     public List<String> getExcludedPaymentMethods() {
-        return excluded_payment_methods;
+        return excludedPaymentMethods;
     }
 
     public PaymentMethods setExcludedPaymentMethods(ArrayList<String> excludedPaymentMethods) {
-        this.excluded_payment_methods = excludedPaymentMethods;
+        this.excludedPaymentMethods = excludedPaymentMethods;
         return this;
     }
 
     public List<String> appendExcludedPaymentMethod(String excludedPaymentMethod) {
-        if (excluded_payment_methods == null)
-            excluded_payment_methods = new ArrayList<String>();
-        excluded_payment_methods.add(excludedPaymentMethod);
+        if (excludedPaymentMethods == null)
+            excludedPaymentMethods = new ArrayList<String>();
+        excludedPaymentMethods.add(excludedPaymentMethod);
         return getExcludedPaymentMethods();
     }
 
     public ArrayList<String> getExcludedPaymentTypes() {
-        return excluded_payment_types;
+        return excludedPaymentTypes;
     }
 
     public PaymentMethods setExcludedPaymentTypes(ArrayList<String> excludedPaymentTypes) {
-        this.excluded_payment_types = excludedPaymentTypes;
+        this.excludedPaymentTypes = excludedPaymentTypes;
         return this;
     }
 
     public List<String> appendExcludedPaymentTypes(String excludedPaymentType) {
-        if (excluded_payment_types == null)
-            excluded_payment_types = new ArrayList<String>();
-        excluded_payment_types.add(excludedPaymentType);
+        if (excludedPaymentTypes == null)
+            excludedPaymentTypes = new ArrayList<String>();
+        excludedPaymentTypes.add(excludedPaymentType);
         return getExcludedPaymentTypes();
     }
 
     public String getDefaultPaymentMethodId() {
-        return default_payment_method_id;
+        return defaultPaymentMethodId;
     }
 
     public PaymentMethods setDefaultPaymentMethodId(String defaultPaymentMethodId) {
-        this.default_payment_method_id = defaultPaymentMethodId;
+        this.defaultPaymentMethodId = defaultPaymentMethodId;
         return this;
     }
 
@@ -71,11 +72,11 @@ public class PaymentMethods {
     }
 
     public Integer getDefaultInstallments() {
-        return default_installments;
+        return defaultInstallments;
     }
 
     public PaymentMethods setDefaultInstallments(Integer defaultInstallments) {
-        this.default_installments = defaultInstallments;
+        this.defaultInstallments = defaultInstallments;
         return this;
     }
 

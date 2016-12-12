@@ -1,17 +1,18 @@
-package com.mercadopago.resources.datastructures;
+package com.mercadopago.resources.datastructures.preferences;
 
 import com.mercadopago.core.annotations.validation.Size;
 
 /**
  * Mercado Pago SDK
- * Receiver address class
+ * Preferences Shipments AddressReceiver class
  *
- * Created by Eduardo Paoletta on 11/9/16.
+ * Created by Eduardo Paoletta on 12/12/16.
  */
 public class AddressReceiver extends Address {
 
     @Size(max=256) private String floor = null;
     @Size(max=256) private String apartment = null;
+
 
     @Override
     public AddressReceiver setZipCode(String zipCode) {

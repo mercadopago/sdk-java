@@ -1,4 +1,4 @@
-package com.mercadopago.resources.datastructures;
+package com.mercadopago.resources.datastructures.payment;
 
 import java.util.Date;
 
@@ -19,8 +19,7 @@ public class Source {
         admin,
         bpp
     }
-    private Date date_created = null;
-    private String unique_sequence_number = null;
+
 
     public String getId() {
         return id;
@@ -34,12 +33,5 @@ public class Source {
         return type;
     }
 
-    public Date getDate_created() {
-        return date_created;
-    }
-
-    public String getUnique_sequence_number() {
-        return unique_sequence_number;
-    }
 
 }

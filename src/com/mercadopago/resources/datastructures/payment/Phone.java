@@ -1,4 +1,4 @@
-package com.mercadopago.resources.datastructures;
+package com.mercadopago.resources.datastructures.payment;
 
 import com.mercadopago.core.annotations.validation.Size;
 
@@ -10,15 +10,16 @@ import com.mercadopago.core.annotations.validation.Size;
  */
 public class Phone {
 
-    @Size(max=256) private String area_code = null;
+    @Size(max=256) private String areaCode = null;
     @Size(max=256) private String number = null;
 
+
     public String getAreaCode() {
-        return area_code;
+        return areaCode;
     }
 
     public Phone setAreaCode(String areaCode) {
-        this.area_code = areaCode;
+        this.areaCode = areaCode;
         return this;
     }
 
@@ -30,4 +31,5 @@ public class Phone {
         this.number = number;
         return this;
     }
+
 }

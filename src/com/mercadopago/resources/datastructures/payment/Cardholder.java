@@ -1,4 +1,4 @@
-package com.mercadopago.resources.datastructures;
+package com.mercadopago.resources.datastructures.payment;
 
 /**
  * Mercado Pago SDK
@@ -10,6 +10,7 @@ public class Cardholder {
 
     private String name = null;
     private Identification identification = null;
+
 
     public String getName() {
         return name;

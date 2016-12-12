@@ -9,7 +9,9 @@ import com.mercadopago.exceptions.MPRestException;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPRestClient;
 import com.mercadopago.resources.Payment;
-import com.mercadopago.resources.datastructures.PayerPayment;
+import com.mercadopago.resources.datastructures.payment.Payer;
+
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 import test.mercadopago.data.TestUserData;
@@ -37,9 +39,9 @@ public class PaymentTest {
         MPBaseResponse response = payment.load("2278812");
         assertEquals(200, response.getStatusCode());
         assertEquals("2278812", payment.getId());
-        assertEquals("regular_payment", payment.getOperation_type().toString());
-        assertEquals(Float.valueOf(100f), payment.getTransaction_amount());
-        assertEquals("accredited", payment.getStatus_detail());
+        assertEquals("regular_payment", payment.getOperationType().toString());
+        assertEquals(Float.valueOf(100f), payment.getTransactionAmount());
+        assertEquals("accredited", payment.getStatusDetail());
         assertTrue(payment.getCaptured());
         assertEquals(Integer.valueOf(1), payment.getInstallments());
     }
@@ -48,12 +50,12 @@ public class PaymentTest {
     public void paymentPutTest() throws MPException {
         String token = getCardToken();
 
-        PayerPayment payer = new PayerPayment();
+        Payer payer = new Payer();
         payer.setEmail("test_user_93364321@testuser.com");
 
         Payment payment = new Payment();
-        payment.setTransaction_amount(100f);
-        payment.setPayment_method_id("visa");
+        payment.setTransactionAmount(100f);
+        payment.setPaymentMethodId("visa");
         payment.setDescription("Payment test 1 peso");
         payment.setToken(token);
         payment.setInstallments(1);
@@ -108,12 +110,12 @@ public class PaymentTest {
     public void paymentTest() throws MPException {
         String token = getCardToken();
 
-        PayerPayment payer = new PayerPayment();
+        Payer payer = new Payer();
         payer.setEmail("test_user_93364321@testuser.com");
 
         Payment payment = new Payment();
-        payment.setTransaction_amount(100f);
-        payment.setPayment_method_id("visa");
+        payment.setTransactionAmount(100f);
+        payment.setPaymentMethodId("visa");
         payment.setDescription("Payment test 1 peso");
         payment.setToken(token);
         payment.setInstallments(1);
@@ -123,9 +125,10 @@ public class PaymentTest {
         assertEquals(201, response.getStatusCode());
         assertNotNull(payment.getId());
         assertEquals("approved", payment.getStatus().toString());
-        assertEquals("accredited", payment.getStatus_detail());
+        assertEquals("accredited", payment.getStatusDetail());
         assertTrue(payment.getCaptured());
-        assertEquals("credit_card", payment.getPayment_type_id().toString());
+        assertEquals("credit_card", payment.getPaymentTypeId().toString());
     }
 
 }
+

@@ -1,8 +1,8 @@
-package com.mercadopago.resources.datastructures;
+package com.mercadopago.resources.datastructures.payment;
 
 import com.google.gson.JsonObject;
 
-import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Mercado Pago SDK
@@ -12,17 +12,20 @@ import java.util.ArrayList;
 public class Refund {
 
     private Number id = null;
-    private Number payment_id = null;
+    private Number paymentId = null;
     private Float amount = null;
     private JsonObject metadata = null;
     private Source source = null;
+    private Date dateCreated = null;
+    private String uniqueSequenceNumber = null;
+
 
     public Number getId() {
         return id;
     }
 
-    public Number getPayment_id() {
-        return payment_id;
+    public Number getPaymentId() {
+        return paymentId;
     }
 
     public Float getAmount() {
@@ -36,4 +39,13 @@ public class Refund {
     public Source getSource() {
         return source;
     }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public String getUniqueSequenceNumber() {
+        return uniqueSequenceNumber;
+    }
+
 }

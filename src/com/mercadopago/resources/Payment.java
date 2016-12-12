@@ -7,9 +7,10 @@ import com.mercadopago.core.annotations.idempotent.Idempotent;
 import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.core.annotations.rest.POST;
 import com.mercadopago.core.annotations.rest.PUT;
+import com.mercadopago.core.annotations.validation.Numeric;
 import com.mercadopago.core.annotations.validation.Size;
 import com.mercadopago.exceptions.MPException;
-import com.mercadopago.resources.datastructures.*;
+import com.mercadopago.resources.datastructures.payment.*;
 import com.mercadopago.resources.interfaces.IPNRecoverable;
 
 import java.util.ArrayList;
@@ -24,14 +25,13 @@ import java.util.Date;
 @Idempotent
 public class Payment extends MPBase implements IPNRecoverable {
 
-    //Attributes
     private String id = null;
-    private Date date_created = null;
-    private Date date_approved = null;
-    private Date date_last_updated = null;
-    private Date money_release_date = null;
-    private Integer collector_id = null;
-    private OperationType operation_type = null;
+    private Date dateCreated = null;
+    private Date dateApproved = null;
+    private Date dateLastUpdated = null;
+    private Date moneyReleaseDate = null;
+    private Integer collectorId = null;
+    private OperationType operationType = null;
     public enum OperationType {
         regular_payment,
         money_transfer,
@@ -41,14 +41,14 @@ public class Payment extends MPBase implements IPNRecoverable {
         cellphone_recharge,
         pos_payment
     }
-    private PayerPayment payer = null;
-    private Boolean binary_mode = null;
-    private Boolean live_mode = null;
+    private Payer payer = null;
+    private Boolean binaryMode = null;
+    private Boolean liveMode = null;
     private Order order = null;
-    private String external_reference = null;
+    private String externalReference = null;
     private String description = null;
     private JsonObject metadata = null;
-    @Size(min=3, max=3) private CurrencyId currency_id = null;
+    @Size(min=3, max=3) private CurrencyId currencyId = null;
     public enum CurrencyId {
         ARS,
         BRL,
@@ -59,15 +59,15 @@ public class Payment extends MPBase implements IPNRecoverable {
         PEN,
         UYU
     }
-    private Float transaction_amount = null;
-    private Float transaction_amount_refunded = null;
-    private Float coupon_amount = null;
-    private Integer campaign_id = null;
-    private String coupon_code = null;
-    private TransactionDetails transaction_details = null;
-    private ArrayList<FeeDetail> fee_detail = null;
-    private Integer differential_pricing_id = null;
-    private Float application_fee = null;
+    private Float transactionAmount = null;
+    private Float transactionAmountRefunded = null;
+    private Float couponAmount = null;
+    private Integer campaignId = null;
+    private String couponCode = null;
+    private TransactionDetails transactionDetails = null;
+    private ArrayList<FeeDetail> feeDetails = null;
+    private Integer differentialPricingId = null;
+    private Float applicationFee = null;
     private Status status = null;
     public enum Status {
         pending,
@@ -80,13 +80,13 @@ public class Payment extends MPBase implements IPNRecoverable {
         refunded,
         charged_back
     }
-    private String status_detail = null;
+    private String statusDetail = null;
     private Boolean capture = null;
     private Boolean captured = null;
-    private String call_for_authorize_id = null;
-    private String payment_method_id = null;
-    private String issuer_id = null;
-    private PaymentTypeId payment_type_id = null;
+    private String callForAuthorizeId = null;
+    private String paymentMethodId = null;
+    private String issuerId = null;
+    private PaymentTypeId paymentTypeId = null;
     public enum PaymentTypeId {
         account_money,
         ticket,
@@ -98,122 +98,59 @@ public class Payment extends MPBase implements IPNRecoverable {
     }
     private String token = null;
     private Card card = null;
-    private String statement_descriptor = null;
-    private Integer installments = null;
-    private String notification_url = null;
+    private String statementDescriptor = null;
+    @Numeric(min=1, fractionDigits=0) private Integer installments = null;
+    private String notificationUrl = null;
     private ArrayList<Refund> refunds = null;
-    private AdditionalInfo additional_info = null;
+    private AdditionalInfo additionalInfo = null;
+
 
     public String getId() {
         return id;
     }
 
-    public Date getDate_created() {
-        return date_created;
+    public Date getDateCreated() {
+        return dateCreated;
     }
 
-    public Date getDate_approved() {
-        return date_approved;
+    public Date getDateApproved() {
+        return dateApproved;
     }
 
-    public Date getDate_last_updated() {
-        return date_last_updated;
+    public Date getDateLastUpdated() {
+        return dateLastUpdated;
     }
 
-    public Date getMoney_release_date() {
-        return money_release_date;
+    public Date getMoneyReleaseDate() {
+        return moneyReleaseDate;
     }
 
-    public Integer getCollector_id() {
-        return collector_id;
+    public Integer getCollectorId() {
+        return collectorId;
     }
 
-    public OperationType getOperation_type() {
-        return operation_type;
+    public OperationType getOperationType() {
+        return operationType;
     }
 
-    public Boolean getLive_mode() {
-        return live_mode;
-    }
-
-    public CurrencyId getCurrency_id() {
-        return currency_id;
-    }
-
-    public Float getTransaction_amount_refunded() {
-        return transaction_amount_refunded;
-    }
-
-    public ArrayList<FeeDetail> getFee_detail() {
-        return fee_detail;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public String getStatus_detail() {
-        return status_detail;
-    }
-
-    public Boolean getCaptured() {
-        return captured;
-    }
-
-    public String getCall_for_authorize_id() {
-        return call_for_authorize_id;
-    }
-
-    public PaymentTypeId getPayment_type_id() {
-        return payment_type_id;
-    }
-
-    public Card getCard() {
-        return card;
-    }
-
-    public ArrayList<Refund> getRefunds() {
-        return refunds;
-    }
-
-    public void setCampaign_id(Integer campaign_id) {
-        this.campaign_id = campaign_id;
-    }
-
-    public void setCoupon_code(String coupon_code) {
-        this.coupon_code = coupon_code;
-    }
-
-    public void setApplication_fee(Float application_fee) {
-        this.application_fee = application_fee;
-    }
-
-    public void setCapture(Boolean capture) {
-        this.capture = capture;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public void setAdditional_info(AdditionalInfo additional_info) {
-        this.additional_info = additional_info;
-    }
-
-    public PayerPayment getPayer() {
+    public Payer getPayer() {
         return payer;
     }
 
-    public void setPayer(PayerPayment payer) {
+    public void setPayer(Payer payer) {
         this.payer = payer;
     }
 
-    public Boolean getBinary_mode() {
-        return binary_mode;
+    public Boolean getBinaryMode() {
+        return binaryMode;
     }
 
-    public void setBinary_mode(Boolean binary_mode) {
-        this.binary_mode = binary_mode;
+    public void setBinaryMode(Boolean binaryMode) {
+        this.binaryMode = binaryMode;
+    }
+
+    public Boolean getLiveMode() {
+        return liveMode;
     }
 
     public Order getOrder() {
@@ -224,12 +161,12 @@ public class Payment extends MPBase implements IPNRecoverable {
         this.order = order;
     }
 
-    public String getExternal_reference() {
-        return external_reference;
+    public String getExternalReference() {
+        return externalReference;
     }
 
-    public void setExternal_reference(String external_reference) {
-        this.external_reference = external_reference;
+    public void setExternalReference(String externalReference) {
+        this.externalReference = externalReference;
     }
 
     public String getDescription() {
@@ -248,52 +185,112 @@ public class Payment extends MPBase implements IPNRecoverable {
         this.metadata = metadata;
     }
 
-    public Float getTransaction_amount() {
-        return transaction_amount;
+    public CurrencyId getCurrencyId() {
+        return currencyId;
     }
 
-    public void setTransaction_amount(Float transaction_amount) {
-        this.transaction_amount = transaction_amount;
+    public Float getTransactionAmount() {
+        return transactionAmount;
     }
 
-    public Float getCoupon_amount() {
-        return coupon_amount;
+    public void setTransactionAmount(Float transactionAmount) {
+        this.transactionAmount = transactionAmount;
     }
 
-    public void setCoupon_amount(Float coupon_amount) {
-        this.coupon_amount = coupon_amount;
+    public Float getTransactionAmountRefunded() {
+        return transactionAmountRefunded;
     }
 
-    public Integer getDifferential_pricing_id() {
-        return differential_pricing_id;
+    public Float getCouponAmount() {
+        return couponAmount;
     }
 
-    public void setDifferential_pricing_id(Integer differential_pricing_id) {
-        this.differential_pricing_id = differential_pricing_id;
+    public void setCouponAmount(Float couponAmount) {
+        this.couponAmount = couponAmount;
     }
 
-    public String getPayment_method_id() {
-        return payment_method_id;
+    public void setCampaignId(Integer campaignId) {
+        this.campaignId = campaignId;
     }
 
-    public void setPayment_method_id(String payment_method_id) {
-        this.payment_method_id = payment_method_id;
+    public void setCouponCode(String couponCode) {
+        this.couponCode = couponCode;
     }
 
-    public String getIssuer_id() {
-        return issuer_id;
+    public TransactionDetails getTransactionDetails() {
+        return transactionDetails;
     }
 
-    public void setIssuer_id(String issuer_id) {
-        this.issuer_id = issuer_id;
+    public ArrayList<FeeDetail> getFeeDetails() {
+        return feeDetails;
     }
 
-    public String getStatement_descriptor() {
-        return statement_descriptor;
+    public Integer getDifferentialPricingId() {
+        return differentialPricingId;
     }
 
-    public void setStatement_descriptor(String statement_descriptor) {
-        this.statement_descriptor = statement_descriptor;
+    public void setDifferentialPricingId(Integer differentialPricingId) {
+        this.differentialPricingId = differentialPricingId;
+    }
+
+    public void setApplicationFee(Float applicationFee) {
+        this.applicationFee = applicationFee;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public String getStatusDetail() {
+        return statusDetail;
+    }
+
+    public void setCapture(Boolean capture) {
+        this.capture = capture;
+    }
+
+    public Boolean getCaptured() {
+        return captured;
+    }
+
+    public String getCallForAuthorizeId() {
+        return callForAuthorizeId;
+    }
+
+    public String getPaymentMethodId() {
+        return paymentMethodId;
+    }
+
+    public void setPaymentMethodId(String paymentMethodId) {
+        this.paymentMethodId = paymentMethodId;
+    }
+
+    public String getIssuerId() {
+        return issuerId;
+    }
+
+    public void setIssuerId(String issuerId) {
+        this.issuerId = issuerId;
+    }
+
+    public PaymentTypeId getPaymentTypeId() {
+        return paymentTypeId;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public Card getCard() {
+        return card;
+    }
+
+    public String getStatementDescriptor() {
+        return statementDescriptor;
+    }
+
+    public void setStatementDescriptor(String statementDescriptor) {
+        this.statementDescriptor = statementDescriptor;
     }
 
     public Integer getInstallments() {
@@ -304,15 +301,24 @@ public class Payment extends MPBase implements IPNRecoverable {
         this.installments = installments;
     }
 
-    public String getNotification_url() {
-        return notification_url;
+
+    public String getNotificationUrl() {
+        return notificationUrl;
     }
 
-    public void setNotification_url(String notification_url) {
-        this.notification_url = notification_url;
+    public void setNotificationUrl(String notificationUrl) {
+        this.notificationUrl = notificationUrl;
     }
 
-    //Methods
+    public ArrayList<Refund> getRefunds() {
+        return refunds;
+    }
+
+    public void setAdditionalInfo(AdditionalInfo additionalInfo) {
+        this.additionalInfo = additionalInfo;
+    }
+
+
     @GET(path="/v1/payments/:id")
     public MPBaseResponse load(String id) throws MPException {
         return super.processMethod("load", id);
