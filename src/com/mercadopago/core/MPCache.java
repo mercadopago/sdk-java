@@ -45,7 +45,12 @@ class MPCache {
      */
     static MPBaseResponse getFromCache(String key) {
         HashMap<String, MPBaseResponse> mapCache = getMapCache();
-        MPBaseResponse response = mapCache.get(key);
+        MPBaseResponse response = null;
+        try {
+            response = mapCache.get(key).clone();
+        } catch (Exception ex) {
+            // Do nothing
+        }
         if (response != null) {
             response.fromCache = Boolean.TRUE;
         }

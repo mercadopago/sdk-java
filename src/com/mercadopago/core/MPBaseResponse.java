@@ -16,7 +16,7 @@ import org.apache.http.client.methods.HttpRequestBase;
  *
  * Created by Eduardo Paoletta on 11/17/16.
  */
-public class MPBaseResponse {
+public class MPBaseResponse implements Cloneable {
 
     private HttpRequestBase _httpRequest;
     private JsonObject _requestPayload;
@@ -119,6 +119,11 @@ public class MPBaseResponse {
                 // Do nothing
             }
         }
+    }
+
+    @Override
+    protected MPBaseResponse clone() throws CloneNotSupportedException {
+        return (MPBaseResponse) super.clone();
     }
 
 }
