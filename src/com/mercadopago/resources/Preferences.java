@@ -226,9 +226,14 @@ public class Preferences extends MPBase {
     }
 
 
-    @GET(path="/checkout/preferences/:param")
+
     public MPBaseResponse load(String id) throws MPException {
-        return super.processMethod("load", id);
+        return load(id, WITHOUT_CACHE);
+    }
+
+    @GET(path="/checkout/preferences/:param")
+    public MPBaseResponse load(String id, Boolean useCache) throws MPException {
+        return super.processMethod("load", id, useCache);
     }
 
     @POST(path="/checkout/preferences")

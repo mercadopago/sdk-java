@@ -33,6 +33,8 @@ public class MPBaseResponse {
     private String stringResponse;
     private JsonObject jsonResponse;
 
+    public Boolean fromCache = Boolean.FALSE;
+
     public MPBaseResponse(HttpMethod httpMethod, HttpRequestBase request, JsonObject payload, HttpResponse response, long responseMillis)
             throws MPException {
         this._httpRequest = request;

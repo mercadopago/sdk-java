@@ -2,6 +2,7 @@ package test.mercadopago.resources;
 
 import com.google.gson.JsonObject;
 import com.mercadopago.MPConf;
+import com.mercadopago.core.MPBase;
 import com.mercadopago.core.MPBaseResponse;
 import com.mercadopago.core.annotations.rest.PayloadType;
 import com.mercadopago.exceptions.MPException;
@@ -36,7 +37,7 @@ public class PaymentTest {
     public void paymentLoadTest() throws MPException {
         Payment payment = new Payment();
 
-        MPBaseResponse response = payment.load("2278812");
+        MPBaseResponse response = payment.load("2278812", MPBase.WITH_CACHE);
         assertEquals(200, response.getStatusCode());
         assertEquals("2278812", payment.getId());
         assertEquals("regular_payment", payment.getOperationType().toString());
@@ -44,6 +45,10 @@ public class PaymentTest {
         assertEquals("accredited", payment.getStatusDetail());
         assertTrue(payment.getCaptured());
         assertEquals(Integer.valueOf(1), payment.getInstallments());
+        assertFalse(response.fromCache);
+
+        response = payment.load("2278812", MPBase.WITH_CACHE);
+        assertTrue(response.fromCache);
     }
 
     @Test

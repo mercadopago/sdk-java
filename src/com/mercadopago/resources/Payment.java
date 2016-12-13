@@ -319,9 +319,13 @@ public class Payment extends MPBase implements IPNRecoverable {
     }
 
 
-    @GET(path="/v1/payments/:id")
     public MPBaseResponse load(String id) throws MPException {
-        return super.processMethod("load", id);
+        return load(id, WITHOUT_CACHE);
+    }
+
+    @GET(path="/v1/payments/:id")
+    public MPBaseResponse load(String id, Boolean useCache) throws MPException {
+        return super.processMethod("load", id, useCache);
     }
 
     @POST(path="/v1/payments")

@@ -33,6 +33,9 @@ public abstract class MPBase {
 
     private static final List<String> ALLOWED_METHODS = Arrays.asList("load", "loadAll", "save", "create", "update", "delete");
 
+    public static final Boolean WITHOUT_CACHE = Boolean.FALSE;
+    public static final Boolean WITH_CACHE = Boolean.TRUE;
+
     private transient JsonObject _lastKnownJson = null;
     private transient String userToken = null;
     private transient String idempotenceKey = null;
@@ -80,8 +83,20 @@ public abstract class MPBase {
      * @throws MPException
      */
     protected MPBaseResponse processMethod(String methodName) throws MPException {
+        return processMethod(methodName, WITHOUT_CACHE);
+    }
+
+    /**
+     * Process the method to call the api
+     *
+     * @param methodName        a String with the decorated method to be processed
+     * @param useCache          a Boolean flag that indicates if the cache must be used
+     * @return                  a MPBaseResponse with the response of the method processed by the api
+     * @throws MPException
+     */
+    protected MPBaseResponse processMethod(String methodName, Boolean useCache) throws MPException {
         HashMap<String, String> mapParams = null;
-        return processMethod(methodName, mapParams);
+        return processMethod(methodName, mapParams, useCache);
     }
 
     /**
@@ -93,9 +108,22 @@ public abstract class MPBase {
      * @throws MPException
      */
     protected MPBaseResponse processMethod(String methodName, String param1) throws MPException {
+        return processMethod(methodName, param1, WITHOUT_CACHE);
+    }
+
+    /**
+     * Process the method to call the api
+     *
+     * @param methodName        a String with the decorated method to be processed
+     * @param param1            a String with the arg passed in the call of the method
+     * @param useCache          a Boolean flag that indicates if the cache must be used
+     * @return                  a MPBaseResponse with the response of the method processed by the api
+     * @throws MPException
+     */
+    protected MPBaseResponse processMethod(String methodName, String param1, Boolean useCache) throws MPException {
         HashMap<String, String> mapParams = new HashMap<String, String>();
         mapParams.put("param1", param1);
-        return processMethod(methodName, mapParams);
+        return processMethod(methodName, mapParams, useCache);
     }
 
     /**
@@ -108,10 +136,24 @@ public abstract class MPBase {
      * @throws MPException
      */
     protected MPBaseResponse processMethod(String methodName, String param1, String param2) throws MPException {
+        return processMethod(methodName, param1, param2, WITHOUT_CACHE);
+    }
+
+    /**
+     * Process the method to call the api
+     *
+     * @param methodName        a String with the decorated method to be processed
+     * @param param1            a String with the arg passed in the call of the method
+     * @param param2            a String with the arg passed in the call of the method
+     * @param useCache          a Boolean flag that indicates if the cache must be used
+     * @return                  a MPBaseResponse with the response of the method processed by the api
+     * @throws MPException
+     */
+    protected MPBaseResponse processMethod(String methodName, String param1, String param2, Boolean useCache) throws MPException {
         HashMap<String, String> mapParams = new HashMap<String, String>();
         mapParams.put("param1", param1);
         mapParams.put("param2", param2);
-        return processMethod(methodName, mapParams);
+        return processMethod(methodName, mapParams, useCache);
     }
 
     /**
@@ -123,6 +165,20 @@ public abstract class MPBase {
      * @throws MPException
      */
     protected MPBaseResponse processMethod(String methodName, HashMap<String, String> mapParams) throws MPException {
+        return processMethod(methodName, mapParams, WITHOUT_CACHE);
+    }
+
+    /**
+     * Process the method to call the api
+     *
+     * @param methodName        a String with the decorated method to be processed
+     * @param mapParams         a hashmap with the args passed in the call of the method
+     * @param useCache          a Boolean flag that indicates if the cache must be used
+     *
+     * @return                  a MPBaseResponse with the response of the method processed by the api
+     * @throws MPException
+     */
+    protected MPBaseResponse processMethod(String methodName, HashMap<String, String> mapParams, Boolean useCache) throws MPException {
         //Validates the method executed
         if (!ALLOWED_METHODS.contains(methodName)) {
             throw new MPException("Method \"" + methodName + "\" not allowed");
@@ -146,15 +202,29 @@ public abstract class MPBase {
             colHeaders.add(new BasicHeader("x-idempotency-key", getIdempotenceKey()));
         }
 
-        MPBaseResponse response = new MPRestClient().executeRequest(
-                httpMethod,
-                path,
-                payloadType,
-                payload,
-                colHeaders,
-                retries,
-                connectionTimeout,
-                socketTimeout);
+        String cacheKey = httpMethod.toString() + "_" + path;
+
+        MPBaseResponse response = null;
+        if (useCache) {
+            response = MPCache.getFromCache(cacheKey);
+        }
+        if (response == null) {
+            response = new MPRestClient().executeRequest(
+                    httpMethod,
+                    path,
+                    payloadType,
+                    payload,
+                    colHeaders,
+                    retries,
+                    connectionTimeout,
+                    socketTimeout);
+
+            if (useCache) {
+                MPCache.addToCache(cacheKey, response);
+            } else {
+                MPCache.removeFromCache(cacheKey);
+            }
+        }
 
         if (response.getJsonResponse() != null &&
                 response.getStatusCode() >= 200 && response.getStatusCode() < 300) {
@@ -427,11 +497,12 @@ public abstract class MPBase {
      */
     private AnnotatedElement getAnnotatedMethod(String methodName) throws MPException {
         for (Method method : this.getClass().getDeclaredMethods()) {
-            if (method.getName().equals(methodName)) {
+            if (method.getName().equals(methodName) &&
+                    method.getDeclaredAnnotations().length > 0) {
                 return method;
             }
         }
-        throw new MPException("No method found");
+        throw new MPException("No annotated method found");
     }
 
 }

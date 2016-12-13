@@ -31,9 +31,13 @@ public class MPBaseTest extends MPBase {
     private String testString = "Test String";
     private Integer testInteger = 666;
 
-    @GET(path="/getpath/slug/:id")
     public MPBaseResponse load(String id) throws MPException {
-        return super.processMethod("load", id);
+        return load(id, WITHOUT_CACHE);
+    }
+
+    @GET(path="/getpath/slug/:id")
+    public MPBaseResponse load(String id, Boolean useCache) throws MPException {
+        return super.processMethod("load", id, useCache);
     }
 
     @GET(path="/getpath/slug/")
@@ -92,7 +96,7 @@ public class MPBaseTest extends MPBase {
         try {
             super.processMethod("delete", "test_id");
         } catch (MPException mpException) {
-            assertEquals("Exception must have \"No method found\" message", mpException.getMessage(), "No method found");
+            assertEquals("Exception must have \"No annotated method found\" message", "No annotated method found", mpException.getMessage());
             auxException = mpException;
         }
         assertSame("Exception type must be \"MPException\"", MPException.class, auxException.getClass());
@@ -108,7 +112,7 @@ public class MPBaseTest extends MPBase {
         try {
             save();
         } catch (MPException mpException) {
-            assertEquals("Exception must have \"No rest method found\" message", mpException.getMessage(), "No rest method found");
+            assertEquals("Exception must have \"No annotated method found\" message", "No annotated method found", mpException.getMessage());
             auxException = mpException;
         }
         assertSame("Exception type must be \"MPException\"", MPException.class, auxException.getClass());
@@ -175,6 +179,22 @@ public class MPBaseTest extends MPBase {
         assertEquals("PUT", response.getMethod());
         assertEquals("https://api.mercadopago.com/putpath/slug/5?access_token=" + MPConf.getAccessToken(), response.getUrl());
 
+    }
+
+    @Test
+    public void cacheTest() throws MPException {
+        MPBaseTest resource = new MPBaseTest();
+        MPBaseResponse response = resource.load("5", WITH_CACHE);
+        assertFalse(response.fromCache);
+
+        response = resource.load("5", WITH_CACHE);
+        assertTrue(response.fromCache);
+
+        response = resource.load("5", WITHOUT_CACHE);
+        assertFalse(response.fromCache);
+
+        response = resource.load("5", WITH_CACHE);
+        assertFalse(response.fromCache);
     }
 
     /**
