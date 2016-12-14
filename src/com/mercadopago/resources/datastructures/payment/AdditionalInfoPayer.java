@@ -17,24 +17,29 @@ public class AdditionalInfoPayer {
     private Date registrationDate = null;
 
 
-    public void setFirstName(String firstName) {
+    public AdditionalInfoPayer setFirstName(String firstName) {
         this.firstName = firstName;
+        return this;
     }
 
-    public void setLastName(String lastName) {
+    public AdditionalInfoPayer setLastName(String lastName) {
         this.lastName = lastName;
+        return this;
     }
 
-    public void setPhone(Phone phone) {
+    public AdditionalInfoPayer setPhone(Phone phone) {
         this.phone = phone;
+        return this;
     }
 
-    public void setAddress(Address address) {
+    public AdditionalInfoPayer setAddress(Address address) {
         this.address = address;
+        return this;
     }
 
-    public void setRegistrationDate(Date registrationDate) {
+    public AdditionalInfoPayer setRegistrationDate(Date registrationDate) {
         this.registrationDate = registrationDate;
+        return this;
     }
 
 }

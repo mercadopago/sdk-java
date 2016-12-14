@@ -26,32 +26,36 @@ public class Payer {
         return type;
     }
 
-    public void setType(Payer.type type) {
+    public Payer setType(Payer.type type) {
         this.type = type;
+        return this;
     }
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public Payer setId(String id) {
         this.id = id;
+        return this;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public Payer setEmail(String email) {
         this.email = email;
+        return this;
     }
 
     public Identification getIdentification() {
         return identification;
     }
 
-    public void setIdentification(Identification identification) {
+    public Payer setIdentification(Identification identification) {
         this.identification = identification;
+        return this;
     }
 
     public PayerPhone getPhone() {

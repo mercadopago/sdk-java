@@ -15,16 +15,27 @@ public class AdditionalInfo {
     private Shipments shipments = null;
 
 
-    public void setItems(ArrayList<Item> items) {
+    public AdditionalInfo setItems(ArrayList<Item> items) {
         this.items = items;
+        return this;
     }
 
-    public void setPayer(AdditionalInfoPayer payer) {
+    public AdditionalInfo appendItem(Item item) {
+        if (items == null) {
+            items = new ArrayList<Item>();
+        }
+        items.add(item);
+        return this;
+    }
+
+    public AdditionalInfo setPayer(AdditionalInfoPayer payer) {
         this.payer = payer;
+        return this;
     }
 
-    public void setShipments(Shipments shipments) {
+    public AdditionalInfo setShipments(Shipments shipments) {
         this.shipments = shipments;
+        return this;
     }
 
 }

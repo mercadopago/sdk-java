@@ -9,7 +9,7 @@ package com.mercadopago.resources.datastructures.payment;
 public class Order {
 
     private Type type = null;
-    private enum Type {
+    public enum Type {
         mercadolibre,
         mercadopago
     }
@@ -20,16 +20,18 @@ public class Order {
         return type;
     }
 
-    public void setType(Type type) {
+    public Order setType(Type type) {
         this.type = type;
+        return this;
     }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public Order setId(Long id) {
         this.id = id;
+        return this;
     }
 
 }

@@ -3,6 +3,7 @@ package com.mercadopago.core;
 import com.google.common.collect.MapDifference;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.mercadopago.MPConf;
@@ -32,11 +33,13 @@ import java.util.*;
 public abstract class MPBase {
 
     private static final List<String> ALLOWED_METHODS = Arrays.asList("load", "loadAll", "save", "create", "update", "delete");
+    private static final List<String> METHODS_TO_VALIDATE = Arrays.asList("save", "create", "update");
 
     public static final Boolean WITHOUT_CACHE = Boolean.FALSE;
     public static final Boolean WITH_CACHE = Boolean.TRUE;
 
     private transient JsonObject _lastKnownJson = null;
+
     private transient String userToken = null;
     private transient String idempotenceKey = null;
 
@@ -192,8 +195,10 @@ public abstract class MPBase {
         int connectionTimeout = Integer.valueOf(hashAnnotation.get("connectionTimeout").toString());
         int socketTimeout = Integer.valueOf(hashAnnotation.get("socketTimeout").toString());
 
-        // Validator will throw an MPValidatorException, there is no need to do a conditional
-        MPValidator.validate(this);
+        if (METHODS_TO_VALIDATE.contains(methodName)) {
+            // Validator will throw an MPValidatorException, there is no need to do a conditional
+            MPValidator.validate(this);
+        }
         PayloadType payloadType = (PayloadType) hashAnnotation.get("payloadType");
         JsonObject payload = generatePayload(httpMethod);
 
@@ -230,7 +235,7 @@ public abstract class MPBase {
                 response.getStatusCode() >= 200 && response.getStatusCode() < 300) {
             assignValuesToFields(
                     this,
-                    MPCoreUtils.getResourceFromJson(this.getClass(), response.getJsonResponse()));
+                    response.getJsonResponse());
             _lastKnownJson = MPCoreUtils.getJsonFromResource(this);
         }
 
@@ -241,12 +246,14 @@ public abstract class MPBase {
      * Iterates over all the declared fields of an instance and copy field values from the resource obj passed.
      *
      * @param instance              destination obj
-     * @param resourceObject        source obj
+     * @param jsonObject            json with source obj
      * @param <T>                   type of the instance
      * @throws MPException
      */
-    private <T extends MPBase> void assignValuesToFields(T instance, T resourceObject) throws MPException {
+    private <T extends MPBase> void assignValuesToFields(T instance, JsonObject jsonObject) throws MPException {
+        T resourceObject = MPCoreUtils.getResourceFromJson(instance.getClass(), jsonObject);
         Field[] declaredFields = instance.getClass().getDeclaredFields();
+
         for (Field field : declaredFields) {
             try {
                 field.setAccessible(true);
@@ -259,6 +266,7 @@ public abstract class MPBase {
                 throw new MPException(ex);
             }
         }
+
     }
 
     /**

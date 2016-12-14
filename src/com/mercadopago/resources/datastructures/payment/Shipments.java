@@ -2,7 +2,7 @@ package com.mercadopago.resources.datastructures.payment;
 
 /**
  * Mercado Libre SDk
- * Shipments class
+ * Shipment class
  *
  * Created by Eduardo Paoletta on 11/9/16.
  */

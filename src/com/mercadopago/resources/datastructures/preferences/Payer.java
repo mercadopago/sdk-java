@@ -18,7 +18,7 @@ public class Payer {
     private Phone phone = null;
     private Identification identification = null;
     private Address address = null;
-    private Date dateCreated = null;
+    private String dateCreated = null;
 
 
     public String getName() {
@@ -75,11 +75,11 @@ public class Payer {
         return this;
     }
 
-    public Date getDateCreated() {
+    public String getDateCreated() {
         return dateCreated;
     }
 
-    public Payer setDateCreated(Date dateCreated) {
+    public Payer setDateCreated(String dateCreated) {
         this.dateCreated = dateCreated;
         return this;
     }

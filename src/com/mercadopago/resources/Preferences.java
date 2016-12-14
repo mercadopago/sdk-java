@@ -51,7 +51,7 @@ public class Preferences extends MPBase {
     private Integer collectorId = null;
     private Integer clientId = null;
     @Size(max=256) private String marketplace = null;
-    @Numeric(min=.01f) private Float marketplaceFee = null;
+    private Float marketplaceFee = null;
     private DifferentialPricing differentialPricing = null;
 
 
@@ -64,11 +64,12 @@ public class Preferences extends MPBase {
         return this;
     }
 
-    public ArrayList<Item> appendItem(Item item) {
-        if (items == null)
+    public Preferences appendItem(Item item) {
+        if (items == null) {
             items = new ArrayList<Item>();
+        }
         items.add(item);
-        return getItems();
+        return this;
     }
 
     public Payer getPayer() {
@@ -231,7 +232,7 @@ public class Preferences extends MPBase {
         return load(id, WITHOUT_CACHE);
     }
 
-    @GET(path="/checkout/preferences/:param")
+    @GET(path="/checkout/preferences/:id")
     public MPBaseResponse load(String id, Boolean useCache) throws MPException {
         return super.processMethod("load", id, useCache);
     }
@@ -241,9 +242,9 @@ public class Preferences extends MPBase {
         return super.processMethod("create");
     }
 
-    @PUT(path="/checkout/preferences/:param")
-    public MPBaseResponse update(String id) throws MPException {
-        return super.processMethod("update", id);
+    @PUT(path="/checkout/preferences/:id")
+    public MPBaseResponse update() throws MPException {
+        return super.processMethod("update");
     }
 
 }

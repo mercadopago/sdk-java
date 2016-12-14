@@ -137,16 +137,18 @@ public class Payment extends MPBase implements IPNRecoverable {
         return payer;
     }
 
-    public void setPayer(Payer payer) {
+    public Payment setPayer(Payer payer) {
         this.payer = payer;
+        return this;
     }
 
     public Boolean getBinaryMode() {
         return binaryMode;
     }
 
-    public void setBinaryMode(Boolean binaryMode) {
+    public Payment setBinaryMode(Boolean binaryMode) {
         this.binaryMode = binaryMode;
+        return this;
     }
 
     public Boolean getLiveMode() {
@@ -157,32 +159,36 @@ public class Payment extends MPBase implements IPNRecoverable {
         return order;
     }
 
-    public void setOrder(Order order) {
+    public Payment setOrder(Order order) {
         this.order = order;
+        return this;
     }
 
     public String getExternalReference() {
         return externalReference;
     }
 
-    public void setExternalReference(String externalReference) {
+    public Payment setExternalReference(String externalReference) {
         this.externalReference = externalReference;
+        return this;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public Payment setDescription(String description) {
         this.description = description;
+        return this;
     }
 
     public JsonObject getMetadata() {
         return metadata;
     }
 
-    public void setMetadata(JsonObject metadata) {
+    public Payment setMetadata(JsonObject metadata) {
         this.metadata = metadata;
+        return this;
     }
 
     public CurrencyId getCurrencyId() {
@@ -193,8 +199,9 @@ public class Payment extends MPBase implements IPNRecoverable {
         return transactionAmount;
     }
 
-    public void setTransactionAmount(Float transactionAmount) {
+    public Payment setTransactionAmount(Float transactionAmount) {
         this.transactionAmount = transactionAmount;
+        return this;
     }
 
     public Float getTransactionAmountRefunded() {
@@ -205,16 +212,19 @@ public class Payment extends MPBase implements IPNRecoverable {
         return couponAmount;
     }
 
-    public void setCouponAmount(Float couponAmount) {
+    public Payment setCouponAmount(Float couponAmount) {
         this.couponAmount = couponAmount;
+        return this;
     }
 
-    public void setCampaignId(Integer campaignId) {
+    public Payment setCampaignId(Integer campaignId) {
         this.campaignId = campaignId;
+        return this;
     }
 
-    public void setCouponCode(String couponCode) {
+    public Payment setCouponCode(String couponCode) {
         this.couponCode = couponCode;
+        return this;
     }
 
     public TransactionDetails getTransactionDetails() {
@@ -229,12 +239,14 @@ public class Payment extends MPBase implements IPNRecoverable {
         return differentialPricingId;
     }
 
-    public void setDifferentialPricingId(Integer differentialPricingId) {
+    public Payment setDifferentialPricingId(Integer differentialPricingId) {
         this.differentialPricingId = differentialPricingId;
+        return this;
     }
 
-    public void setApplicationFee(Float applicationFee) {
+    public Payment setApplicationFee(Float applicationFee) {
         this.applicationFee = applicationFee;
+        return this;
     }
 
     public Status getStatus() {
@@ -245,8 +257,9 @@ public class Payment extends MPBase implements IPNRecoverable {
         return statusDetail;
     }
 
-    public void setCapture(Boolean capture) {
+    public Payment setCapture(Boolean capture) {
         this.capture = capture;
+        return this;
     }
 
     public Boolean getCaptured() {
@@ -261,24 +274,27 @@ public class Payment extends MPBase implements IPNRecoverable {
         return paymentMethodId;
     }
 
-    public void setPaymentMethodId(String paymentMethodId) {
+    public Payment setPaymentMethodId(String paymentMethodId) {
         this.paymentMethodId = paymentMethodId;
+        return this;
     }
 
     public String getIssuerId() {
         return issuerId;
     }
 
-    public void setIssuerId(String issuerId) {
+    public Payment setIssuerId(String issuerId) {
         this.issuerId = issuerId;
+        return this;
     }
 
     public PaymentTypeId getPaymentTypeId() {
         return paymentTypeId;
     }
 
-    public void setToken(String token) {
+    public Payment setToken(String token) {
         this.token = token;
+        return this;
     }
 
     public Card getCard() {
@@ -289,16 +305,18 @@ public class Payment extends MPBase implements IPNRecoverable {
         return statementDescriptor;
     }
 
-    public void setStatementDescriptor(String statementDescriptor) {
+    public Payment setStatementDescriptor(String statementDescriptor) {
         this.statementDescriptor = statementDescriptor;
+        return this;
     }
 
     public Integer getInstallments() {
         return installments;
     }
 
-    public void setInstallments(Integer installments) {
+    public Payment setInstallments(Integer installments) {
         this.installments = installments;
+        return this;
     }
 
 
@@ -306,16 +324,18 @@ public class Payment extends MPBase implements IPNRecoverable {
         return notificationUrl;
     }
 
-    public void setNotificationUrl(String notificationUrl) {
+    public Payment setNotificationUrl(String notificationUrl) {
         this.notificationUrl = notificationUrl;
+        return this;
     }
 
     public ArrayList<Refund> getRefunds() {
         return refunds;
     }
 
-    public void setAdditionalInfo(AdditionalInfo additionalInfo) {
+    public Payment setAdditionalInfo(AdditionalInfo additionalInfo) {
         this.additionalInfo = additionalInfo;
+        return this;
     }
 
 
@@ -334,8 +354,8 @@ public class Payment extends MPBase implements IPNRecoverable {
     }
 
     @PUT(path="/v1/payments/:id")
-    public MPBaseResponse update(String id) throws MPException {
-        return super.processMethod("update", id);
+    public MPBaseResponse update() throws MPException {
+        return super.processMethod("update");
     }
 
 }

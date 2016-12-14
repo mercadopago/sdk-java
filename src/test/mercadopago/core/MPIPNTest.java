@@ -4,6 +4,7 @@ import com.mercadopago.MPConf;
 import com.mercadopago.core.MPBase;
 import com.mercadopago.core.MPIPN;
 import com.mercadopago.exceptions.MPException;
+import com.mercadopago.resources.MerchantOrder;
 import com.mercadopago.resources.Payment;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -19,12 +20,6 @@ import static org.junit.Assert.assertTrue;
  * Created by Eduardo Paoletta on 12/6/16.
  */
 public class MPIPNTest {
-
-    @BeforeClass
-    public static void beforeTest() throws MPException {
-        MPConf.cleanConfiguration();
-        MPConf.setConfiguration("test/mercadopago/data/credentials.properties");
-    }
 
     @Test
     public void managerNullTest() throws MPException {
@@ -60,24 +55,22 @@ public class MPIPNTest {
     }
 
     @Test
-    public void managerClassNotFoundTest() throws MPException {
-        Exception auxException = null;
-        try {
-            MPIPN.manage(MPIPN.Topic.merchant_order, "some_id");
-
-        } catch (MPException mpException) {
-            assertEquals("java.lang.ClassNotFoundException: com.mercadopago.resources.MerchantOrder", mpException.getMessage());
-            auxException = mpException;
-        }
-        assertSame(MPException.class, auxException.getClass());
-    }
-
-    @Test
     public <T extends MPBase> void managerTest() throws MPException {
+        MPConf.cleanConfiguration();
+        MPConf.setConfiguration("test/mercadopago/data/credentials.properties");
+
         T resource = MPIPN.manage(MPIPN.Topic.payment, "2278812");
         assertTrue(resource instanceof Payment);
         Payment payment = (Payment)resource;
         assertEquals("2278812", payment.getId());
+
+        MPConf.cleanConfiguration();
+        MPConf.setConfiguration("test/mercadopago/data/credentialsprod.properties");
+
+        resource = MPIPN.manage(MPIPN.Topic.merchant_order, "433287094");
+        assertTrue(resource instanceof MerchantOrder);
+        MerchantOrder merchantOrder = (MerchantOrder)resource;
+        assertEquals("433287094", merchantOrder.getId());
     }
 
 }

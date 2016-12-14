@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * Mercado Pago SDK
- * Shipments Payment class
+ * Shipment Payment class
  *
  * Created by Eduardo Paoletta on 12/5/16.
  */
