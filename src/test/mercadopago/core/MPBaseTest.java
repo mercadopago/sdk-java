@@ -2,13 +2,12 @@ package test.mercadopago.core;
 
 import com.mercadopago.MPConf;
 import com.mercadopago.core.MPBase;
+import com.mercadopago.core.MPBaseResponse;
 import com.mercadopago.core.annotations.idempotent.Idempotent;
 import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.core.annotations.rest.POST;
 import com.mercadopago.core.annotations.rest.PUT;
 import com.mercadopago.exceptions.MPException;
-import com.mercadopago.resources.Preferences;
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -32,30 +31,34 @@ public class MPBaseTest extends MPBase {
     private String testString = "Test String";
     private Integer testInteger = 666;
 
+    public MPBaseResponse load(String id) throws MPException {
+        return load(id, WITHOUT_CACHE);
+    }
+
     @GET(path="/getpath/slug/:id")
-    public String load(String id) throws MPException {
-        return super.processMethod("load", id);
+    public MPBaseResponse load(String id, Boolean useCache) throws MPException {
+        return super.processMethod("load", id, useCache);
     }
 
     @GET(path="/getpath/slug/")
     @PUT(path="/putpath/slug/")
-    public String loadAll() throws MPException {
+    public MPBaseResponse loadAll() throws MPException {
         return super.processMethod("loadAll");
     }
 
     //Save method will be used to test non annotated method
     //@POST(path="/postpath/slug")
-    public String save() throws MPException {
+    public MPBaseResponse save() throws MPException {
         return super.processMethod("save");
     }
 
     @POST(path="/postpath/slug")
-    public String create() throws MPException {
+    public MPBaseResponse create() throws MPException {
         return super.processMethod("create");
     }
 
     @PUT(path="/putpath/slug/:id")
-    public String update(String id) throws MPException {
+    public MPBaseResponse update(String id) throws MPException {
         return super.processMethod("update", id);
     }
 
@@ -93,7 +96,7 @@ public class MPBaseTest extends MPBase {
         try {
             super.processMethod("delete", "test_id");
         } catch (MPException mpException) {
-            assertEquals("Exception must have \"No method found\" message", mpException.getMessage(), "No method found");
+            assertEquals("Exception must have \"No annotated method found\" message", "No annotated method found", mpException.getMessage());
             auxException = mpException;
         }
         assertSame("Exception type must be \"MPException\"", MPException.class, auxException.getClass());
@@ -109,7 +112,7 @@ public class MPBaseTest extends MPBase {
         try {
             save();
         } catch (MPException mpException) {
-            assertEquals("Exception must have \"No rest method found\" message", mpException.getMessage(), "No rest method found");
+            assertEquals("Exception must have \"No annotated method found\" message", "No annotated method found", mpException.getMessage());
             auxException = mpException;
         }
         assertSame("Exception type must be \"MPException\"", MPException.class, auxException.getClass());
@@ -153,32 +156,50 @@ public class MPBaseTest extends MPBase {
      */
     @Test
     public void methodPathTest() throws Exception {
-        String expected = "{\"method\":\"GET\",\"path\":\"https://api.mercadopago.com/getpath/slug/test_id";
-        expected += "?access_token=" + MPConf.getAccessToken();
-        expected += "\"}";
-        assertEquals(expected, load("test_id"));
+        MPBaseResponse response = load("test_id");
+        assertEquals("GET", response.getMethod());
+        assertEquals("https://api.mercadopago.com/getpath/slug/test_id?access_token=" + MPConf.getAccessToken(), response.getUrl());
 
-        expected = "{\"method\":\"POST\",\"path\":\"https://api.mercadopago.com/postpath/slug";
-        expected += "?access_token=" + MPConf.getAccessToken();
-        expected += "\",\"payload\":{\"testString\":\"Test String\",\"testInteger\":666}}";
-        assertEquals(expected, create());
+        response = create();
+        assertEquals("POST", response.getMethod());
+        assertEquals("https://api.mercadopago.com/postpath/slug?access_token=" + MPConf.getAccessToken(), response.getUrl());
+        assertEquals("{\"test_string\":\"Test String\",\"test_integer\":666}", response.getPayload());
 
-        expected = "{\"method\":\"PUT\",\"path\":\"https://api.mercadopago.com/putpath/slug/test_id";
-        expected += "?access_token=" + MPConf.getAccessToken();
-        expected += "\",\"payload\":{}}";
-        assertEquals(expected, update("test_id"));
+        response = update("test_id");
+        assertEquals("PUT", response.getMethod());
+        assertEquals("https://api.mercadopago.com/putpath/slug/test_id?access_token=" + MPConf.getAccessToken(), response.getUrl());
+        assertEquals("{\"test_string\":\"Test String\",\"test_integer\":666}", response.getPayload());
 
         MPBaseTest resource = new MPBaseTest();
         resource.id = "5";
         resource.load(null);
         resource.testString = "TestUpdate";
-        expected = "{\"method\":\"PUT\",\"path\":\"https://api.mercadopago.com/putpath/slug/5";
-        expected += "?access_token=" + MPConf.getAccessToken();
-        expected += "\",\"payload\":{\"testString\":\"TestUpdate\"}}";
-        assertEquals(expected, resource.update(null));
+
+        response = resource.update(null);
+        assertEquals("PUT", response.getMethod());
+        assertEquals("https://api.mercadopago.com/putpath/slug/5?access_token=" + MPConf.getAccessToken(), response.getUrl());
 
     }
 
+    @Test
+    public void cacheTest() throws MPException {
+        MPBaseTest resource = new MPBaseTest();
+        MPBaseResponse response = resource.load("5", WITH_CACHE);
+        assertFalse(response.fromCache);
+
+        response = resource.load("5", WITH_CACHE);
+        assertTrue(response.fromCache);
+
+        response = resource.load("5", WITHOUT_CACHE);
+        assertFalse(response.fromCache);
+
+        response = resource.load("5", WITH_CACHE);
+        assertFalse(response.fromCache);
+    }
+
+    /**
+     * Test method for idempotence key
+     */
     @Test
     public void idempotenceTest() throws MPException {
         MPBaseTest resource = new MPBaseTest();

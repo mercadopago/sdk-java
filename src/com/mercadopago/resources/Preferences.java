@@ -1,60 +1,60 @@
 package com.mercadopago.resources;
 
 import com.mercadopago.core.MPBase;
+import com.mercadopago.core.MPBaseResponse;
 import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.core.annotations.rest.POST;
 import com.mercadopago.core.annotations.rest.PUT;
 import com.mercadopago.core.annotations.validation.NotNull;
 import com.mercadopago.core.annotations.validation.Numeric;
 import com.mercadopago.core.annotations.validation.Size;
-import com.mercadopago.resources.datastructures.*;
 import com.mercadopago.exceptions.MPException;
-
+import com.mercadopago.resources.datastructures.preferences.*;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 /**
  * Mercado Pago SDK
- * This resource allows you to set up, during the payment process, all the item information, any accepted means of payment and many other options.
+ * This resource allows you to set up, during the Payment process, all the item information,
+ * any accepted means of Payment and many other options.
  *
  * Created by Eduardo Paoletta on 11/9/16.
  */
 public class Preferences extends MPBase {
 
-    //Attributes
     @NotNull private ArrayList<Item> items = null;
     @NotNull private Payer payer = null;
-    private PaymentMethods payment_methods = null;
+    private PaymentMethods paymentMethods = null;
     private Shipments shipments = null;
-    private BackUrls back_urls = null;
-    @Size(max=500) private String notification_url = null;
+    private BackUrls backUrls = null;
+    @Size(max=500) private String notificationUrl = null;
     private String id = null;
-    private String init_point = null;
-    private String sandbox_init_point = null;
-    private Date date_created = null;
-    private OperationType operation_type = null;
+    private String initPoint = null;
+    private String sandboxInitPoint = null;
+    private Date dateCreated = null;
+    private OperationType operationType = null;
     public enum OperationType {
         regular_payment,
         money_transfer
     }
-    @Size(max=600) private String additional_info = null;
-    private AutoReturn auto_return = null;
+    @Size(max=600) private String additionalInfo = null;
+    private AutoReturn autoReturn = null;
     public enum AutoReturn {
         approved,
         all
     }
-    @Size(max=256) private String external_reference = null;
+    @Size(max=256) private String externalReference = null;
     private Boolean expires = null;
-    private Date expiration_date_from = null;
-    private Date expiration_date_to = null;
-    private Integer collector_id = null;
-    private Integer client_id = null;
+    private Date expirationDateFrom = null;
+    private Date expirationDateTo = null;
+    private Integer collectorId = null;
+    private Integer clientId = null;
     @Size(max=256) private String marketplace = null;
-    @Numeric(min=.01f) private Float marketplace_fee = null;
-    private DifferentialPricing differential_pricing = null;
+    private Float marketplaceFee = null;
+    private DifferentialPricing differentialPricing = null;
 
-    //Getters/Setters
+
     public ArrayList<Item> getItems() {
         return items;
     }
@@ -64,11 +64,12 @@ public class Preferences extends MPBase {
         return this;
     }
 
-    public ArrayList<Item> appendItem(Item item) {
-        if (items == null)
+    public Preferences appendItem(Item item) {
+        if (items == null) {
             items = new ArrayList<Item>();
+        }
         items.add(item);
-        return getItems();
+        return this;
     }
 
     public Payer getPayer() {
@@ -81,11 +82,11 @@ public class Preferences extends MPBase {
     }
 
     public PaymentMethods getPaymentMethods() {
-        return payment_methods;
+        return paymentMethods;
     }
 
     public Preferences setPaymentMethods(PaymentMethods paymentMethods) {
-        this.payment_methods = paymentMethods;
+        this.paymentMethods = paymentMethods;
         return this;
     }
 
@@ -99,20 +100,20 @@ public class Preferences extends MPBase {
     }
 
     public BackUrls getBackUrls() {
-        return back_urls;
+        return backUrls;
     }
 
     public Preferences setBackUrls(BackUrls backUrls) {
-        this.back_urls = backUrls;
+        this.backUrls = backUrls;
         return this;
     }
 
     public String getNotificationUrl() {
-        return notification_url;
+        return notificationUrl;
     }
 
     public Preferences setNotificationUrl(String notificationUrl) {
-        this.notification_url = notificationUrl;
+        this.notificationUrl = notificationUrl;
         return this;
     }
 
@@ -121,45 +122,45 @@ public class Preferences extends MPBase {
     }
 
     public String getInitPoint() {
-        return init_point;
+        return initPoint;
     }
 
     public String getSandboxInitPoint() {
-        return sandbox_init_point;
+        return sandboxInitPoint;
     }
 
     public Date getDateCreated() {
-        return date_created;
+        return dateCreated;
     }
 
     public OperationType getOperationType() {
-        return operation_type;
+        return operationType;
     }
 
     public String getAdditionalInfo() {
-        return additional_info;
+        return additionalInfo;
     }
 
     public Preferences setAdditionalInfo(String additionalInfo) {
-        this.additional_info = additionalInfo;
+        this.additionalInfo = additionalInfo;
         return this;
     }
 
     public AutoReturn getAutoReturn() {
-        return auto_return;
+        return autoReturn;
     }
 
     public Preferences setAutoReturn(AutoReturn autoReturn) {
-        this.auto_return = autoReturn;
+        this.autoReturn = autoReturn;
         return this;
     }
 
     public String getExternalReference() {
-        return external_reference;
+        return externalReference;
     }
 
     public Preferences setExternalReference(String externalReference) {
-        this.external_reference = externalReference;
+        this.externalReference = externalReference;
         return this;
     }
 
@@ -173,39 +174,29 @@ public class Preferences extends MPBase {
     }
 
     public Date getExpirationDateFrom() {
-        return expiration_date_from;
+        return expirationDateFrom;
     }
 
     public Preferences setExpirationDateFrom(Date expirationDateFrom) {
-        this.expiration_date_from = expirationDateFrom;
+        this.expirationDateFrom = expirationDateFrom;
         return this;
     }
 
     public Date getExpirationDateTo() {
-        return expiration_date_to;
+        return expirationDateTo;
     }
 
     public Preferences setExpirationDateTo(Date expirationDateTo) {
-        this.expiration_date_to = expirationDateTo;
+        this.expirationDateTo = expirationDateTo;
         return this;
     }
 
     public Integer getCollectorId() {
-        return collector_id;
-    }
-
-    public Preferences setCollectorId(Integer collectorId) {
-        this.collector_id = collectorId;
-        return this;
+        return collectorId;
     }
 
     public Integer getClientId() {
-        return client_id;
-    }
-
-    public Preferences setClientId(Integer clientId) {
-        this.client_id = clientId;
-        return this;
+        return clientId;
     }
 
     public String getMarketplace() {
@@ -218,37 +209,42 @@ public class Preferences extends MPBase {
     }
 
     public Float getMarketplaceFee() {
-        return marketplace_fee;
+        return marketplaceFee;
     }
 
     public Preferences setMarketplaceFee(Float marketplaceFee) {
-        this.marketplace_fee = marketplaceFee;
+        this.marketplaceFee = marketplaceFee;
         return this;
     }
 
     public DifferentialPricing getDifferentialPricing() {
-        return differential_pricing;
+        return differentialPricing;
     }
 
     public Preferences setDifferentialPricing(DifferentialPricing differentialPricing) {
-        this.differential_pricing = differentialPricing;
+        this.differentialPricing = differentialPricing;
         return this;
     }
 
-    //Methods
-    @GET(path="/checkout/preferences/:param")
-    public String load(String id) throws MPException {
-        return super.processMethod("load", id);
+
+
+    public MPBaseResponse load(String id) throws MPException {
+        return load(id, WITHOUT_CACHE);
+    }
+
+    @GET(path="/checkout/preferences/:id")
+    public MPBaseResponse load(String id, Boolean useCache) throws MPException {
+        return super.processMethod("load", id, useCache);
     }
 
     @POST(path="/checkout/preferences")
-    public String create() throws MPException {
+    public MPBaseResponse create() throws MPException {
         return super.processMethod("create");
     }
 
-    @PUT(path="/checkout/preferences/:param")
-    public String update(String id) throws MPException {
-        return super.processMethod("update", id);
+    @PUT(path="/checkout/preferences/:id")
+    public MPBaseResponse update() throws MPException {
+        return super.processMethod("update");
     }
 
 }

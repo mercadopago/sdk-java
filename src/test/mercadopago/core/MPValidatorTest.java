@@ -2,10 +2,10 @@ package test.mercadopago.core;
 
 import com.mercadopago.core.MPValidator;
 import com.mercadopago.core.ValidationViolation;
-import com.mercadopago.resources.Preferences;
-import com.mercadopago.resources.datastructures.Item;
-import com.mercadopago.resources.datastructures.Payer;
 import com.mercadopago.exceptions.MPValidationException;
+import com.mercadopago.resources.Preferences;
+import com.mercadopago.resources.datastructures.preferences.Item;
+import com.mercadopago.resources.datastructures.preferences.Payer;
 import org.junit.Test;
 
 import java.math.BigInteger;

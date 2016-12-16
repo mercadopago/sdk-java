@@ -1,5 +1,6 @@
 package com.mercadopago.core;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -8,6 +9,10 @@ import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.validator.routines.UrlValidator;
 
 import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Mercado Pago SDK
@@ -17,15 +22,52 @@ import java.io.InputStream;
  */
 public class MPCoreUtils {
 
-    public static final String FORMAT_ISO8601 = "yyyy-MM-dd'T'HH:mm:ssZ";
+    private static final String FORMAT_ISO8601 = "yyyy-MM-dd'T'HH:mm:ssZ";
+
+    private static Gson gson = new GsonBuilder()
+            .setDateFormat(FORMAT_ISO8601)
+            .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+            .create();
+
 
     /**
-     * Static method that transforms all attributes members of the instance in a JSON Element.
+     * Retrieves all fields from a class except the ones from MPBase abstract class and Object class
+     *
+     * @param type          Java Class type
+     * @return
+     */
+    static Field[] getAllFields(Class<?> type) {
+        List<Field> fields = new ArrayList<Field>();
+        for (Class<?> clazz = type; clazz != null; clazz = clazz.getSuperclass()) {
+            if (clazz == MPBase.class ||
+                    clazz == Object.class) {
+                break;
+            }
+            fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
+        }
+        Field[] fieldsArray = new Field[fields.size()];
+        return fields.toArray(fieldsArray);
+    }
+
+    /**
+     * Static method that transforms all attributes members of the instance in a JSON Object.
+     *
      * @return                  a JSON Object with the attributes members of the instance
      */
-    public static JsonObject getJson(Object object) {
-        Gson gson = new GsonBuilder().setDateFormat(FORMAT_ISO8601).create();
-        return (JsonObject) gson.toJsonTree(object);
+    public static <T extends MPBase> JsonObject getJsonFromResource(T resourceObject) {
+        return (JsonObject) gson.toJsonTree(resourceObject);
+    }
+
+    /**
+     * Static method that transforms a Json Object in a MP Resource.
+     *
+     * @param clazz             Java Class type of the resource
+     * @param jsonEntity        JsonObject to be transformed
+     * @param <T>
+     * @return
+     */
+    public static <T extends MPBase> T getResourceFromJson(Class clazz, JsonObject jsonEntity) {
+        return (T) gson.fromJson(jsonEntity, clazz);
     }
 
     /**

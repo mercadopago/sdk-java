@@ -20,7 +20,15 @@ import java.util.Vector;
  */
 public class MPValidator {
 
-    public static boolean validate(Object objectToValidate) throws MPValidationException {
+    /**
+     * Evaluates every field of an obj using Validation annotations
+     *
+     * @param objectToValidate          Object to be evaluated
+     * @param <T>
+     * @return
+     * @throws MPValidationException
+     */
+    public static <T extends MPBase> boolean validate(T objectToValidate) throws MPValidationException {
         Collection<ValidationViolation> colViolations = validate(new Vector<ValidationViolation>(), objectToValidate);
         if (!colViolations.isEmpty()) {
             throw new MPValidationException(colViolations);
@@ -28,10 +36,17 @@ public class MPValidator {
         return true;
     }
 
+    /**
+     * Auxiliar recursive method for evaluate an obj
+     *
+     * @param colViolations             Collection of ValidateViolations
+     * @param objectToValidate          Object to be evaluated
+     * @return
+     */
     private static Collection<ValidationViolation> validate(Collection<ValidationViolation> colViolations, Object objectToValidate) {
         String className = objectToValidate.getClass().getSimpleName();
-        Field[] declaredFields = objectToValidate.getClass().getDeclaredFields();
-        for(Field field : declaredFields) {
+        Field[] fields = MPCoreUtils.getAllFields(objectToValidate.getClass());
+        for(Field field : fields) {
             Annotation[] annotations = field.getAnnotations();
             if (annotations != null) {
                 Object value = null;
@@ -47,7 +62,7 @@ public class MPValidator {
                         !value.getClass().getName().contains("$")) {
                     colViolations = validate(colViolations, value);
                 } else if (value != null &&
-                        value.getClass().getCanonicalName() == "java.util.ArrayList") {
+                        value.getClass().getCanonicalName().equals("java.util.ArrayList")) {
                     for (Object arrayItem : (ArrayList)value) {
                         colViolations = validate(colViolations, arrayItem);
                     }
@@ -73,7 +88,8 @@ public class MPValidator {
                                         colViolations.add(new ValidationViolation(className, field.getName(), "exceeds the maximum value", stringValue, numeric.max()));
                                     }
                                     if (numeric.fractionDigits() > -1) {
-                                        if (stringValue.substring(String.valueOf((floatValue)).indexOf(".") + 1).length() > numeric.fractionDigits()) {
+                                        if (stringValue.contains(".") &&
+                                                stringValue.substring(String.valueOf((floatValue)).indexOf(".") + 1).length() > numeric.fractionDigits()) {
                                             colViolations.add(new ValidationViolation(className, field.getName(), "exceeds the maximum decimal digits", stringValue, numeric.fractionDigits()));
                                         }
                                     }

@@ -3,6 +3,7 @@ package com.mercadopago.core;
 import com.google.common.collect.MapDifference;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.mercadopago.MPConf;
@@ -18,6 +19,7 @@ import org.apache.http.protocol.HTTP;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.*;
@@ -31,8 +33,13 @@ import java.util.*;
 public abstract class MPBase {
 
     private static final List<String> ALLOWED_METHODS = Arrays.asList("load", "loadAll", "save", "create", "update", "delete");
+    private static final List<String> METHODS_TO_VALIDATE = Arrays.asList("save", "create", "update");
+
+    public static final Boolean WITHOUT_CACHE = Boolean.FALSE;
+    public static final Boolean WITH_CACHE = Boolean.TRUE;
 
     private transient JsonObject _lastKnownJson = null;
+
     private transient String userToken = null;
     private transient String idempotenceKey = null;
 
@@ -45,6 +52,7 @@ public abstract class MPBase {
     public String getUserToken() {
         return this.userToken;
     }
+
     public <T extends MPBase> T setUserToken(String userToken) {
         this.userToken = userToken;
         return (T) this;
@@ -53,11 +61,11 @@ public abstract class MPBase {
     public String getIdempotenceKey() {
         return this.idempotenceKey;
     }
+
     public <T extends MPBase> T setIdempotenceKey(String idempotenceKey) throws MPException {
         if (!admitIdempotenceKey()) {
             throw new MPException(this.getClass().getSimpleName() + " does not admit an idempotence key");
         }
-
         this.idempotenceKey = idempotenceKey;
         return (T) this;
     }
@@ -74,12 +82,24 @@ public abstract class MPBase {
      * Process the method to call the api
      *
      * @param methodName        a String with the decorated method to be processed
-     * @return                  a String with the response of the method processed by the api
+     * @return                  a MPBaseResponse with the response of the method processed by the api
      * @throws MPException
      */
-    protected String processMethod(String methodName) throws MPException {
+    protected MPBaseResponse processMethod(String methodName) throws MPException {
+        return processMethod(methodName, WITHOUT_CACHE);
+    }
+
+    /**
+     * Process the method to call the api
+     *
+     * @param methodName        a String with the decorated method to be processed
+     * @param useCache          a Boolean flag that indicates if the cache must be used
+     * @return                  a MPBaseResponse with the response of the method processed by the api
+     * @throws MPException
+     */
+    protected MPBaseResponse processMethod(String methodName, Boolean useCache) throws MPException {
         HashMap<String, String> mapParams = null;
-        return processMethod(methodName, mapParams);
+        return processMethod(methodName, mapParams, useCache);
     }
 
     /**
@@ -87,13 +107,26 @@ public abstract class MPBase {
      *
      * @param methodName        a String with the decorated method to be processed
      * @param param1            a String with the arg passed in the call of the method
-     * @return                  a String with the response of the method processed by the api
+     * @return                  a MPBaseResponse with the response of the method processed by the api
      * @throws MPException
      */
-    protected String processMethod(String methodName, String param1) throws MPException {
+    protected MPBaseResponse processMethod(String methodName, String param1) throws MPException {
+        return processMethod(methodName, param1, WITHOUT_CACHE);
+    }
+
+    /**
+     * Process the method to call the api
+     *
+     * @param methodName        a String with the decorated method to be processed
+     * @param param1            a String with the arg passed in the call of the method
+     * @param useCache          a Boolean flag that indicates if the cache must be used
+     * @return                  a MPBaseResponse with the response of the method processed by the api
+     * @throws MPException
+     */
+    protected MPBaseResponse processMethod(String methodName, String param1, Boolean useCache) throws MPException {
         HashMap<String, String> mapParams = new HashMap<String, String>();
         mapParams.put("param1", param1);
-        return processMethod(methodName, mapParams);
+        return processMethod(methodName, mapParams, useCache);
     }
 
     /**
@@ -102,14 +135,28 @@ public abstract class MPBase {
      * @param methodName        a String with the decorated method to be processed
      * @param param1            a String with the arg passed in the call of the method
      * @param param2            a String with the arg passed in the call of the method
-     * @return                  a String with the response of the method processed by the api
+     * @return                  a MPBaseResponse with the response of the method processed by the api
      * @throws MPException
      */
-    protected String processMethod(String methodName, String param1, String param2) throws MPException {
+    protected MPBaseResponse processMethod(String methodName, String param1, String param2) throws MPException {
+        return processMethod(methodName, param1, param2, WITHOUT_CACHE);
+    }
+
+    /**
+     * Process the method to call the api
+     *
+     * @param methodName        a String with the decorated method to be processed
+     * @param param1            a String with the arg passed in the call of the method
+     * @param param2            a String with the arg passed in the call of the method
+     * @param useCache          a Boolean flag that indicates if the cache must be used
+     * @return                  a MPBaseResponse with the response of the method processed by the api
+     * @throws MPException
+     */
+    protected MPBaseResponse processMethod(String methodName, String param1, String param2, Boolean useCache) throws MPException {
         HashMap<String, String> mapParams = new HashMap<String, String>();
         mapParams.put("param1", param1);
         mapParams.put("param2", param2);
-        return processMethod(methodName, mapParams);
+        return processMethod(methodName, mapParams, useCache);
     }
 
     /**
@@ -117,10 +164,24 @@ public abstract class MPBase {
      *
      * @param methodName        a String with the decorated method to be processed
      * @param mapParams         a hashmap with the args passed in the call of the method
-     * @return                  a String with the response of the method processed by the api
+     * @return                  a MPBaseResponse with the response of the method processed by the api
      * @throws MPException
      */
-    protected String processMethod(String methodName, HashMap<String, String> mapParams) throws MPException {
+    protected MPBaseResponse processMethod(String methodName, HashMap<String, String> mapParams) throws MPException {
+        return processMethod(methodName, mapParams, WITHOUT_CACHE);
+    }
+
+    /**
+     * Process the method to call the api
+     *
+     * @param methodName        a String with the decorated method to be processed
+     * @param mapParams         a hashmap with the args passed in the call of the method
+     * @param useCache          a Boolean flag that indicates if the cache must be used
+     *
+     * @return                  a MPBaseResponse with the response of the method processed by the api
+     * @throws MPException
+     */
+    protected MPBaseResponse processMethod(String methodName, HashMap<String, String> mapParams, Boolean useCache) throws MPException {
         //Validates the method executed
         if (!ALLOWED_METHODS.contains(methodName)) {
             throw new MPException("Method \"" + methodName + "\" not allowed");
@@ -134,61 +195,78 @@ public abstract class MPBase {
         int connectionTimeout = Integer.valueOf(hashAnnotation.get("connectionTimeout").toString());
         int socketTimeout = Integer.valueOf(hashAnnotation.get("socketTimeout").toString());
 
-        // Validator will throw an MPValidatorException, there is no need to do a conditional
-        MPValidator.validate(this);
+        if (METHODS_TO_VALIDATE.contains(methodName)) {
+            // Validator will throw an MPValidatorException, there is no need to do a conditional
+            MPValidator.validate(this);
+        }
         PayloadType payloadType = (PayloadType) hashAnnotation.get("payloadType");
         JsonObject payload = generatePayload(httpMethod);
-        String response = callApi(httpMethod, path, payload, payloadType, retries, connectionTimeout, socketTimeout);
-        _lastKnownJson = MPCoreUtils.getJson(this);
-        return response;
-    }
 
-    /**
-     * callApi method instanciate a MPRestClient obj and makes a request to the endpoint defined by the resource.
-     * It returns a MPBaseResponse with the status code and the response parsed in text and json, if possible
-     *
-     * @param httpMethod                HttpMethod that will be used to make the request
-     * @param path                      full path to the endpoint including the get params and the access_token
-     * @param payload                   payload to make the request if POST or PUT method are used, null if other method
-     * @param payloadType               payload type (NONE, JSON or X_WWW_FORM_URLENCODED
-     * @param retries                   number of retries, defined in the rest annotation
-     * @param connectionTimeout         connection timeout, defined in the rest annotation expressed in milliseconds
-     * @param socketTimeout             socket timeout, defined in the rest annotation expressed in milliseconds
-     * @return                          an MPBaseResponse obj.
-     * @throws MPException
-     */
-    private String callApi(
-            HttpMethod httpMethod,
-            String path,
-            JsonObject payload,
-            PayloadType payloadType,
-            int retries,
-            int connectionTimeout,
-            int socketTimeout)
-            throws MPException {
-        MPRestClient restClient = new MPRestClient();
         Collection<Header> colHeaders = getStandardHeaders();
         if (StringUtils.isNotEmpty(getIdempotenceKey())) {
             colHeaders.add(new BasicHeader("x-idempotency-key", getIdempotenceKey()));
         }
 
-        MPBaseResponse baseResponse = restClient.executeRequest(
-                httpMethod,
-                path,
-                payloadType,
-                payload,
-                colHeaders,
-                retries,
-                connectionTimeout,
-                socketTimeout);
+        String cacheKey = httpMethod.toString() + "_" + path;
 
-        String response = "{\"method\":\"" + httpMethod + "\",\"path\":\"" + path + "\"";
-        if (payload != null &&
-                StringUtils.isNotEmpty(payload.toString())) {
-            response += ",\"payload\":" + payload;
+        MPBaseResponse response = null;
+        if (useCache) {
+            response = MPCache.getFromCache(cacheKey);
         }
-        response += "}";
+        if (response == null) {
+            response = new MPRestClient().executeRequest(
+                    httpMethod,
+                    path,
+                    payloadType,
+                    payload,
+                    colHeaders,
+                    retries,
+                    connectionTimeout,
+                    socketTimeout);
+
+            if (useCache) {
+                MPCache.addToCache(cacheKey, response);
+            } else {
+                MPCache.removeFromCache(cacheKey);
+            }
+        }
+
+        if (response.getJsonResponse() != null &&
+                response.getStatusCode() >= 200 && response.getStatusCode() < 300) {
+            assignValuesToFields(
+                    this,
+                    response.getJsonResponse());
+            _lastKnownJson = MPCoreUtils.getJsonFromResource(this);
+        }
+
         return response;
+    }
+
+    /**
+     * Iterates over all the declared fields of an instance and copy field values from the resource obj passed.
+     *
+     * @param instance              destination obj
+     * @param jsonObject            json with source obj
+     * @param <T>                   type of the instance
+     * @throws MPException
+     */
+    private <T extends MPBase> void assignValuesToFields(T instance, JsonObject jsonObject) throws MPException {
+        T resourceObject = MPCoreUtils.getResourceFromJson(instance.getClass(), jsonObject);
+        Field[] declaredFields = instance.getClass().getDeclaredFields();
+
+        for (Field field : declaredFields) {
+            try {
+                field.setAccessible(true);
+                Field originField = resourceObject.getClass().getDeclaredField(field.getName());
+                originField.setAccessible(true);
+                Object value = originField.get(resourceObject);
+                field.set(instance, value);
+
+            } catch (Exception ex) {
+                throw new MPException(ex);
+            }
+        }
+
     }
 
     /**
@@ -233,7 +311,7 @@ public abstract class MPBase {
                         StringUtils.isNotEmpty(mapParams.get(param))) {
                     value = mapParams.get(param);
                 } else {
-                    JsonObject json = MPCoreUtils.getJson(this);
+                    JsonObject json = MPCoreUtils.getJsonFromResource(this);
                     if (json.get(param) != null) {
                         value = json.get(param).getAsString();
                     }
@@ -256,7 +334,7 @@ public abstract class MPBase {
         processedPath.insert(0, MPConf.getBaseUrl());
 
         // Token
-        String accessToken = null;
+        String accessToken;
         if (StringUtils.isNotEmpty(getUserToken())) {
             accessToken = getUserToken();
         } else {
@@ -279,10 +357,11 @@ public abstract class MPBase {
      */
     private JsonObject generatePayload(HttpMethod httpMethod) {
         JsonObject payload = null;
-        if (httpMethod.equals(HttpMethod.POST)) {
-            payload = MPCoreUtils.getJson(this);
+        if (httpMethod.equals(HttpMethod.POST) ||
+                (httpMethod.equals(HttpMethod.PUT) && _lastKnownJson == null)) {
+            payload = MPCoreUtils.getJsonFromResource(this);
         } else if (httpMethod.equals(HttpMethod.PUT)) {
-            JsonObject actualJson = MPCoreUtils.getJson(this);
+            JsonObject actualJson = MPCoreUtils.getJsonFromResource(this);
 
             Type mapType = new TypeToken<Map<String, Object>>(){}.getType();
             Gson gson = new Gson();
@@ -292,9 +371,17 @@ public abstract class MPBase {
 
             payload = new JsonObject();
 
-            mapDifferences.entriesDiffering().size();
             for (Map.Entry<String, MapDifference.ValueDifference<Object>> entry : mapDifferences.entriesDiffering().entrySet()) {
                 payload.addProperty(entry.getKey(), entry.getValue().rightValue().toString());
+            }
+            for (Map.Entry<String, Object> entry : mapDifferences.entriesOnlyOnRight().entrySet()) {
+                if (entry.getValue() instanceof Boolean) {
+                    payload.addProperty(entry.getKey(), (Boolean)entry.getValue());
+                } else if (entry.getValue() instanceof Number) {
+                    payload.addProperty(entry.getKey(), (Number)entry.getValue());
+                } else {
+                    payload.addProperty(entry.getKey(), entry.getValue().toString());
+                }
             }
         }
         return payload;
@@ -418,11 +505,12 @@ public abstract class MPBase {
      */
     private AnnotatedElement getAnnotatedMethod(String methodName) throws MPException {
         for (Method method : this.getClass().getDeclaredMethods()) {
-            if (method.getName().equals(methodName)) {
+            if (method.getName().equals(methodName) &&
+                    method.getDeclaredAnnotations().length > 0) {
                 return method;
             }
         }
-        throw new MPException("No method found");
+        throw new MPException("No annotated method found");
     }
 
 }

@@ -1,14 +1,14 @@
-package com.mercadopago.resources.datastructures;
+package com.mercadopago.resources.datastructures.preferences;
 
 import com.mercadopago.core.annotations.validation.Size;
 
 import java.util.Date;
 
 /**
- * Mercado Libre SDK
- * Payer class
+ * Mercado Pago SDK
+ * Payer Preferences class
  *
- * Created by Eduardo Paoletta on 11/9/16.
+ * Created by Eduardo Paoletta on 12/2/16.
  */
 public class Payer {
 
@@ -17,8 +17,9 @@ public class Payer {
     @Size(max=256) private String email = null;
     private Phone phone = null;
     private Identification identification = null;
-    private PayerAddress address = null;
-    private Date date_created = null;
+    private Address address = null;
+    private String dateCreated = null;
+
 
     public String getName() {
         return name;
@@ -65,21 +66,21 @@ public class Payer {
         return this;
     }
 
-    public PayerAddress getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public Payer setAddress(PayerAddress address) {
+    public Payer setAddress(Address address) {
         this.address = address;
         return this;
     }
 
-    public Date getDateCreated() {
-        return date_created;
+    public String getDateCreated() {
+        return dateCreated;
     }
 
-    public Payer setDateCreated(Date dateCreated) {
-        this.date_created = dateCreated;
+    public Payer setDateCreated(String dateCreated) {
+        this.dateCreated = dateCreated;
         return this;
     }
 

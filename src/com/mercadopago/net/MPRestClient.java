@@ -81,8 +81,7 @@ public class MPRestClient {
             for (Header header : colHeaders) {
                 request.addHeader(header);
             }
-            MPBaseResponse baseResponse = null;
-            HttpResponse response = null;
+            HttpResponse response;
             long startMillis = System.currentTimeMillis();
             try {
                 response = httpClient.execute(request);
@@ -94,7 +93,7 @@ public class MPRestClient {
             long endMillis = System.currentTimeMillis();
             long responseMillis = endMillis - startMillis;
 
-            return new MPBaseResponse(response, responseMillis);
+            return new MPBaseResponse(httpMethod, request, payload, response, responseMillis);
 
         } catch (MPRestException restEx) {
             throw restEx;

@@ -1,4 +1,4 @@
-package com.mercadopago.resources.datastructures;
+package com.mercadopago.resources.datastructures.preferences;
 
 import com.mercadopago.core.annotations.validation.Numeric;
 
@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Mercado Libre SDk
- * Shipments class
+ * Mercado Pago SDK
+ * Shipment Payment class
  *
- * Created by Eduardo Paoletta on 11/9/16.
+ * Created by Eduardo Paoletta on 12/5/16.
  */
 public class Shipments {
 
@@ -19,13 +19,23 @@ public class Shipments {
         me2,
         not_specified
     }
-    private Boolean local_pickup = null;
+    private Boolean localPickup = null;
     private String dimensions = null;
-    private Integer default_shipping_method = null;
-    private List<Integer> free_methods = null;
+    private Integer defaultShippingMethod = null;
+    private ArrayList<Integer> freeMethods = null;
     @Numeric(min=.01f) private Float cost = null;
-    private Boolean free_shipping = null;
-    private ReceiverAddress receiver_address = null;
+    private Boolean freeShipping = null;
+    private AddressReceiver receiverAddress = null;
+
+
+    public AddressReceiver getReceiverAddress() {
+        return receiverAddress;
+    }
+
+    public Shipments setReceiverAddress(AddressReceiver addressReceiver) {
+        this.receiverAddress = addressReceiver;
+        return this;
+    }
 
     public ShipmentMode getMode() {
         return mode;
@@ -37,11 +47,11 @@ public class Shipments {
     }
 
     public Boolean getLocalPickup() {
-        return local_pickup;
+        return localPickup;
     }
 
     public Shipments setLocalPickup(Boolean localPickup) {
-        this.local_pickup = localPickup;
+        this.localPickup = localPickup;
         return this;
     }
 
@@ -55,27 +65,27 @@ public class Shipments {
     }
 
     public Integer getDefaultShippingMethod() {
-        return default_shipping_method;
+        return defaultShippingMethod;
     }
 
     public Shipments setDefaultShippingMethod(Integer defaultShippingMethod) {
-        this.default_shipping_method = defaultShippingMethod;
+        this.defaultShippingMethod = defaultShippingMethod;
         return this;
     }
 
-    public List<Integer> getFreeMethods() {
-        return free_methods;
+    public ArrayList<Integer> getFreeMethods() {
+        return freeMethods;
     }
 
-    public Shipments setFreeMethods(List<Integer> freeMethods) {
-        this.free_methods = freeMethods;
+    public Shipments setFreeMethods(ArrayList<Integer> freeMethods) {
+        this.freeMethods = freeMethods;
         return this;
     }
 
-    public List<Integer> appendFreeMethods(Integer freeMethod) {
-        if (free_methods == null)
-            free_methods = new ArrayList<Integer>();
-        free_methods.add(freeMethod);
+    public ArrayList<Integer> appendFreeMethods(Integer freeMethod) {
+        if (freeMethods == null)
+            freeMethods = new ArrayList<Integer>();
+        freeMethods.add(freeMethod);
         return getFreeMethods();
     }
 
@@ -89,20 +99,11 @@ public class Shipments {
     }
 
     public Boolean getFreeShipping() {
-        return free_shipping;
+        return freeShipping;
     }
 
     public Shipments setFreeShipping(Boolean freeShipping) {
-        this.free_shipping = freeShipping;
-        return this;
-    }
-
-    public ReceiverAddress getReceiverAddress() {
-        return receiver_address;
-    }
-
-    public Shipments setReceiverAddress(ReceiverAddress receiverAddress) {
-        this.receiver_address = receiverAddress;
+        this.freeShipping = freeShipping;
         return this;
     }
 
