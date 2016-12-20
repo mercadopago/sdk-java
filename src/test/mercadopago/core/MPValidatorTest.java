@@ -3,9 +3,9 @@ package test.mercadopago.core;
 import com.mercadopago.core.MPValidator;
 import com.mercadopago.core.ValidationViolation;
 import com.mercadopago.exceptions.MPValidationException;
-import com.mercadopago.resources.Preferences;
-import com.mercadopago.resources.datastructures.preferences.Item;
-import com.mercadopago.resources.datastructures.preferences.Payer;
+import com.mercadopago.resources.Preference;
+import com.mercadopago.resources.datastructures.preference.Item;
+import com.mercadopago.resources.datastructures.preference.Payer;
 import org.junit.Test;
 
 import java.math.BigInteger;
@@ -24,11 +24,11 @@ public class MPValidatorTest {
 
     @Test
     public void validateNotNullError() {
-        Preferences preferences = new Preferences();
+        Preference preference = new Preference();
 
         MPValidationException validationException = null;
         try {
-            MPValidator.validate(preferences);
+            MPValidator.validate(preference);
         } catch (MPValidationException ex) {
             validationException = ex;
         }
@@ -49,13 +49,13 @@ public class MPValidatorTest {
 
         Payer payer = new Payer();
 
-        Preferences preferences = new Preferences();
-        preferences.appendItem(item);
-        preferences.setPayer(payer);
+        Preference preference = new Preference();
+        preference.appendItem(item);
+        preference.setPayer(payer);
 
         MPValidationException validationException = null;
         try {
-            MPValidator.validate(preferences);
+            MPValidator.validate(preference);
         } catch (MPValidationException ex) {
             validationException = ex;
         }
@@ -70,13 +70,13 @@ public class MPValidatorTest {
 
         Payer payer = new Payer();
 
-        Preferences preferences = new Preferences();
-        preferences.appendItem(item);
-        preferences.setPayer(payer);
+        Preference preference = new Preference();
+        preference.appendItem(item);
+        preference.setPayer(payer);
 
         MPValidationException validationException = null;
         try {
-            MPValidator.validate(preferences);
+            MPValidator.validate(preference);
         } catch (MPValidationException ex) {
             validationException = ex;
         }
@@ -90,7 +90,7 @@ public class MPValidatorTest {
         item.setUnitPrice(1.001f);
         validationException = null;
         try {
-            MPValidator.validate(preferences);
+            MPValidator.validate(preference);
         } catch (MPValidationException ex) {
             validationException = ex;
         }
@@ -103,7 +103,7 @@ public class MPValidatorTest {
         item.setUnitPrice(1000000f);
         validationException = null;
         try {
-            MPValidator.validate(preferences);
+            MPValidator.validate(preference);
         } catch (MPValidationException ex) {
             validationException = ex;
         }
@@ -122,13 +122,13 @@ public class MPValidatorTest {
 
         Payer payer = new Payer();
 
-        Preferences preferences = new Preferences();
-        preferences.appendItem(item);
-        preferences.setPayer(payer);
+        Preference preference = new Preference();
+        preference.appendItem(item);
+        preference.setPayer(payer);
 
         MPValidationException validationException = null;
         try {
-            MPValidator.validate(preferences);
+            MPValidator.validate(preference);
         } catch (MPValidationException ex) {
             validationException = ex;
         }
@@ -147,14 +147,14 @@ public class MPValidatorTest {
 
         Payer payer = new Payer();
 
-        Preferences preferences = new Preferences();
-        preferences.appendItem(item);
-        preferences.setPayer(payer);
-        preferences.setExternalReference(string257);
+        Preference preference = new Preference();
+        preference.appendItem(item);
+        preference.setPayer(payer);
+        preference.setExternalReference(string257);
 
         MPValidationException validationException = null;
         try {
-            MPValidator.validate(preferences);
+            MPValidator.validate(preference);
         } catch (MPValidationException ex) {
             validationException = ex;
         }
@@ -164,12 +164,12 @@ public class MPValidatorTest {
         assertNotNull(colViolations.toArray()[0]);
         assertEquals("exceed the maximum length value", ((ValidationViolation)colViolations.toArray()[0]).getMessage());
 
-        preferences.setExternalReference(string257.substring(1));
+        preference.setExternalReference(string257.substring(1));
         item.setCurrencyId("AA");
 
         validationException = null;
         try {
-            MPValidator.validate(preferences);
+            MPValidator.validate(preference);
         } catch (MPValidationException ex) {
             validationException = ex;
         }
@@ -193,14 +193,14 @@ public class MPValidatorTest {
 
         Payer payer = new Payer();
 
-        Preferences preferences = new Preferences();
-        preferences.appendItem(item);
-        preferences.setPayer(payer);
-        preferences.setExternalReference(string256);
+        Preference preference = new Preference();
+        preference.appendItem(item);
+        preference.setPayer(payer);
+        preference.setExternalReference(string256);
 
         MPValidationException validationException = null;
         try {
-            MPValidator.validate(preferences);
+            MPValidator.validate(preference);
         } catch (MPValidationException ex) {
             validationException = ex;
         }

@@ -7,7 +7,7 @@ import com.mercadopago.core.annotations.rest.DELETE;
 import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.core.annotations.rest.POST;
 import com.mercadopago.exceptions.MPException;
-import com.mercadopago.resources.Preferences;
+import com.mercadopago.resources.Preference;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -96,15 +96,15 @@ public class MPBaseMultipleParamsTest extends MPBase {
 
     @Test
     public void idempotenceKeyTest() throws MPException {
-        Preferences preferences = new Preferences();
+        Preference preference = new Preference();
 
-        assertNull(preferences.getIdempotenceKey());
+        assertNull(preference.getIdempotenceKey());
 
         Exception exception = null;
         try {
-            preferences.setIdempotenceKey("someKey");
+            preference.setIdempotenceKey("someKey");
         } catch (MPException mpException) {
-            assertEquals("Preferences does not admit an idempotence key", mpException.getMessage());
+            assertEquals("Preference does not admit an idempotence key", mpException.getMessage());
             exception = mpException;
         }
         assertSame(MPException.class, exception.getClass());

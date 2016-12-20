@@ -58,7 +58,7 @@ class MPCache {
     }
 
     /**
-     * Removes an entre from the cache.
+     * Removes an entry from the cache.
      *
      * @param key           String with cache entry key
      */

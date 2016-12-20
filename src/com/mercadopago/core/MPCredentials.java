@@ -41,7 +41,7 @@ public class MPCredentials {
                 jsonPayload,
                 null);
         if (response.getStatusCode() == 200) {
-            access_token = response.getJsonResponse().get("access_token").getAsString();
+            access_token = response.getJsonObjectResponse().get("access_token").getAsString();
         } else {
             throw new MPException("Can not retrieve the \"access_token\"");
         }

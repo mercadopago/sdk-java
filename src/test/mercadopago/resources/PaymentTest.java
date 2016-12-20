@@ -211,7 +211,7 @@ public class PaymentTest {
         } catch (MPRestException rex) {
             throw new MPException(rex);
         }
-        return response.getJsonResponse().get("id").getAsString();
+        return response.getJsonObjectResponse().get("id").getAsString();
     }
 
     @Test

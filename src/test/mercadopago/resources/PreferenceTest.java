@@ -1,14 +1,13 @@
 package test.mercadopago.resources;
 
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import com.mercadopago.MPConf;
 import com.mercadopago.core.MPBase;
 import com.mercadopago.core.MPBaseResponse;
 import com.mercadopago.core.MPCoreUtils;
 import com.mercadopago.exceptions.MPException;
-import com.mercadopago.resources.Preferences;
-import com.mercadopago.resources.datastructures.preferences.*;
+import com.mercadopago.resources.Preference;
+import com.mercadopago.resources.datastructures.preference.*;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -21,11 +20,11 @@ import static org.junit.Assert.*;
 
 /**
  * Mercado Pago SDK
- * Preferences Resource Test
+ * Preference Resource Test
  *
  * Created by Eduardo Paoletta on 11/21/16.
  */
-public class PreferencesTest {
+public class PreferenceTest {
 
     @BeforeClass
     public static void beforeTest() throws MPException {
@@ -99,29 +98,29 @@ public class PreferencesTest {
         DifferentialPricing differentialPricing = new DifferentialPricing();
         differentialPricing.setId(0);
 
-        Preferences preferences = new Preferences();
-        preferences.appendItem(item);
-        preferences.setPayer(payer);
-        preferences.setPaymentMethods(paymentMethods);
-        preferences.setShipments(shipments);
-        preferences.setBackUrls(backUrls);
-        preferences.setNotificationUrl("NotificationUrl");
-        preferences.setAdditionalInfo("AdditionalInfo");
-        preferences.setAutoReturn(Preferences.AutoReturn.approved);
-        preferences.setExternalReference("ExternalReference");
-        preferences.setExpires(Boolean.FALSE);
-        preferences.setExpirationDateFrom(new Date());
-        preferences.setExpirationDateTo(new Date());
-        preferences.setMarketplace("Marketplace");
-        preferences.setMarketplaceFee(.01f);
-        preferences.setDifferentialPricing(differentialPricing);
+        Preference preference = new Preference();
+        preference.appendItem(item);
+        preference.setPayer(payer);
+        preference.setPaymentMethods(paymentMethods);
+        preference.setShipments(shipments);
+        preference.setBackUrls(backUrls);
+        preference.setNotificationUrl("NotificationUrl");
+        preference.setAdditionalInfo("AdditionalInfo");
+        preference.setAutoReturn(Preference.AutoReturn.approved);
+        preference.setExternalReference("ExternalReference");
+        preference.setExpires(Boolean.FALSE);
+        preference.setExpirationDateFrom(new Date());
+        preference.setExpirationDateTo(new Date());
+        preference.setMarketplace("Marketplace");
+        preference.setMarketplaceFee(.01f);
+        preference.setDifferentialPricing(differentialPricing);
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
 
-        JsonObject jsonPreferences = MPCoreUtils.getJsonFromResource(preferences);
-        assertNotNull(jsonPreferences);
+        JsonObject jsonPreference = MPCoreUtils.getJsonFromResource(preference);
+        assertNotNull(jsonPreference);
 
-        JsonObject jsonItem = (JsonObject)jsonPreferences.get("items").getAsJsonArray().get(0);
+        JsonObject jsonItem = (JsonObject)jsonPreference.get("items").getAsJsonArray().get(0);
         assertEquals(item.getId(), jsonItem.get("id").getAsString());
         assertEquals(item.getTitle(), jsonItem.get("title").getAsString());
         assertEquals(item.getDescription(), jsonItem.get("description").getAsString());
@@ -131,7 +130,7 @@ public class PreferencesTest {
         assertEquals(item.getCurrencyId(), jsonItem.get("currency_id").getAsString());
         assertEquals(item.getUnitPrice(), jsonItem.get("unit_price").getAsFloat(), 0.0f);
 
-        JsonObject jsonPayer = (JsonObject) jsonPreferences.get("payer");
+        JsonObject jsonPayer = (JsonObject) jsonPreference.get("payer");
 
         JsonObject jsonPhone = (JsonObject) jsonPayer.get("phone");
         assertEquals(phone.getAreaCode(), jsonPhone.get("area_code").getAsString());
@@ -151,7 +150,7 @@ public class PreferencesTest {
         assertEquals(payer.getEmail(), jsonPayer.get("email").getAsString());
         assertEquals(payer.getDateCreated(), jsonPayer.get("date_created").getAsString());
 
-        JsonObject jsonPaymentMethods = (JsonObject) jsonPreferences.get("payment_methods");
+        JsonObject jsonPaymentMethods = (JsonObject) jsonPreference.get("payment_methods");
         JsonObject jsonExcludedPaymentMethods = (JsonObject)jsonPaymentMethods.get("excluded_payment_methods").getAsJsonArray().get(0);
         assertEquals(paymentMethods.getExcludedPaymentMethods().get(0).getId(), jsonExcludedPaymentMethods.get("id").getAsString());
         JsonObject jsonExcludedPaymentTypes = (JsonObject)jsonPaymentMethods.get("excluded_payment_types").getAsJsonArray().get(0);
@@ -160,7 +159,7 @@ public class PreferencesTest {
         assertEquals(paymentMethods.getInstallments().intValue(), jsonPaymentMethods.get("installments").getAsInt());
         assertEquals(paymentMethods.getDefaultInstallments().intValue(), jsonPaymentMethods.get("default_installments").getAsInt());
 
-        JsonObject jsonShipments = (JsonObject) jsonPreferences.get("shipments");
+        JsonObject jsonShipments = (JsonObject) jsonPreference.get("shipments");
 
         JsonObject jsonReceiverAddress = (JsonObject) jsonShipments.get("receiver_address");
         assertEquals(addressReceiver.getZipCode(), jsonReceiverAddress.get("zip_code").getAsString());
@@ -177,49 +176,49 @@ public class PreferencesTest {
         assertEquals(shipments.getCost(), jsonShipments.get("cost").getAsFloat(), 0.0f);
         assertEquals(shipments.getFreeShipping(), jsonShipments.get("free_shipping").getAsBoolean());
 
-        JsonObject jsonBackUrls = (JsonObject) jsonPreferences.get("back_urls");
+        JsonObject jsonBackUrls = (JsonObject) jsonPreference.get("back_urls");
         assertEquals(backUrls.getSuccess(), jsonBackUrls.get("success").getAsString());
         assertEquals(backUrls.getPending(), jsonBackUrls.get("pending").getAsString());
         assertEquals(backUrls.getFailure(), jsonBackUrls.get("failure").getAsString());
 
-        JsonObject jsonDifferentialPricing = (JsonObject) jsonPreferences.get("differential_pricing");
+        JsonObject jsonDifferentialPricing = (JsonObject) jsonPreference.get("differential_pricing");
         assertEquals(differentialPricing.getId().intValue(), jsonDifferentialPricing.get("id").getAsInt());
 
-        assertEquals(preferences.getNotificationUrl(), jsonPreferences.get("notification_url").getAsString());
-        assertNull(jsonPreferences.get("id"));
-        assertNull(jsonPreferences.get("init_point"));
-        assertNull(jsonPreferences.get("sandbox_init_point"));
-        assertNull(jsonPreferences.get("date_created"));
-        assertNull(jsonPreferences.get("operation_type"));
-        assertEquals(preferences.getAdditionalInfo(), jsonPreferences.get("additional_info").getAsString());
-        assertEquals(preferences.getNotificationUrl(), jsonPreferences.get("notification_url").getAsString());
-        assertEquals(preferences.getAutoReturn().toString(), jsonPreferences.get("auto_return").getAsString());
-        assertEquals(preferences.getExternalReference(), jsonPreferences.get("external_reference").getAsString());
-        assertEquals(preferences.getExpires(), jsonPreferences.get("expires").getAsBoolean());
-        assertEquals(df.format(preferences.getExpirationDateFrom()), jsonPreferences.get("expiration_date_from").getAsString());
-        assertEquals(df.format(preferences.getExpirationDateTo()), jsonPreferences.get("expiration_date_to").getAsString());
-        assertEquals(preferences.getMarketplace(), jsonPreferences.get("marketplace").getAsString());
-        assertEquals(preferences.getMarketplaceFee(), jsonPreferences.get("marketplace_fee").getAsFloat(), 0.0f);
+        assertEquals(preference.getNotificationUrl(), jsonPreference.get("notification_url").getAsString());
+        assertNull(jsonPreference.get("id"));
+        assertNull(jsonPreference.get("init_point"));
+        assertNull(jsonPreference.get("sandbox_init_point"));
+        assertNull(jsonPreference.get("date_created"));
+        assertNull(jsonPreference.get("operation_type"));
+        assertEquals(preference.getAdditionalInfo(), jsonPreference.get("additional_info").getAsString());
+        assertEquals(preference.getNotificationUrl(), jsonPreference.get("notification_url").getAsString());
+        assertEquals(preference.getAutoReturn().toString(), jsonPreference.get("auto_return").getAsString());
+        assertEquals(preference.getExternalReference(), jsonPreference.get("external_reference").getAsString());
+        assertEquals(preference.getExpires(), jsonPreference.get("expires").getAsBoolean());
+        assertEquals(df.format(preference.getExpirationDateFrom()), jsonPreference.get("expiration_date_from").getAsString());
+        assertEquals(df.format(preference.getExpirationDateTo()), jsonPreference.get("expiration_date_to").getAsString());
+        assertEquals(preference.getMarketplace(), jsonPreference.get("marketplace").getAsString());
+        assertEquals(preference.getMarketplaceFee(), jsonPreference.get("marketplace_fee").getAsFloat(), 0.0f);
 
     }
 
     @Test
-    public void preferencesLoadTest() throws MPException {
-        Preferences preferences = new Preferences();
+    public void preferenceLoadTest() throws MPException {
+        Preference preference = new Preference();
 
-        MPBaseResponse response = preferences.load("236939761-d2d4c87c-3aa0-4015-9089-2047817399e4", MPBase.WITH_CACHE);
+        MPBaseResponse response = preference.load("236939761-d2d4c87c-3aa0-4015-9089-2047817399e4", MPBase.WITH_CACHE);
         assertEquals(200, response.getStatusCode());
-        assertEquals("236939761-d2d4c87c-3aa0-4015-9089-2047817399e4", preferences.getId());
-        assertEquals(1, preferences.getItems().size());
-        assertEquals("regular_payment", preferences.getOperationType().toString());
+        assertEquals("236939761-d2d4c87c-3aa0-4015-9089-2047817399e4", preference.getId());
+        assertEquals(1, preference.getItems().size());
+        assertEquals("regular_payment", preference.getOperationType().toString());
         assertFalse(response.fromCache);
 
-        response = preferences.load("236939761-d2d4c87c-3aa0-4015-9089-2047817399e4", MPBase.WITH_CACHE);
+        response = preference.load("236939761-d2d4c87c-3aa0-4015-9089-2047817399e4", MPBase.WITH_CACHE);
         assertTrue(response.fromCache);
     }
 
     @Test
-    public void preferencesPutTest() throws MPException {
+    public void preferencePutTest() throws MPException {
         Item item = new Item();
         item.setTitle("Title");
         item.setDescription("Description");
@@ -233,24 +232,24 @@ public class PreferencesTest {
         payer.setEmail("email@fakeemail.com");
         payer.setDateCreated(new Date().toString());
 
-        Preferences preferences = new Preferences();
-        preferences.appendItem(item);
-        preferences.setPayer(payer);
+        Preference preference = new Preference();
+        preference.appendItem(item);
+        preference.setPayer(payer);
 
-        MPBaseResponse response = preferences.create();
+        MPBaseResponse response = preference.create();
         assertEquals(201, response.getStatusCode());
-        assertNotNull(preferences.getId());
+        assertNotNull(preference.getId());
 
         String random = UUID.randomUUID().toString();
-        preferences.setAdditionalInfo(random);
-        response = preferences.update();
+        preference.setAdditionalInfo(random);
+        response = preference.update();
         assertEquals(200, response.getStatusCode());
-        assertEquals(random, preferences.getAdditionalInfo());
+        assertEquals(random, preference.getAdditionalInfo());
 
     }
 
     @Test
-    public void preferencesTest() throws MPException {
+    public void preferenceTest() throws MPException {
         Item item = new Item();
         item.setTitle("Title");
         item.setDescription("Description");
@@ -264,15 +263,15 @@ public class PreferencesTest {
         payer.setEmail("email@fakeemail.com");
         payer.setDateCreated(new Date().toString());
 
-        Preferences preferences = new Preferences();
-        preferences.appendItem(item);
-        preferences.setPayer(payer);
+        Preference preference = new Preference();
+        preference.appendItem(item);
+        preference.setPayer(payer);
 
-        MPBaseResponse response = preferences.create();
+        MPBaseResponse response = preference.create();
         assertEquals(201, response.getStatusCode());
-        assertNotNull(preferences.getId());
-        assertEquals(1, preferences.getItems().size());
-        assertEquals("regular_payment", preferences.getOperationType().toString());
+        assertNotNull(preference.getId());
+        assertEquals(1, preference.getItems().size());
+        assertEquals("regular_payment", preference.getOperationType().toString());
 
     }
 

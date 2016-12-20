@@ -222,7 +222,6 @@ public class MerchantOrder extends MPBase implements IPNRecoverable {
         return load(id, WITHOUT_CACHE);
     }
 
-
     @GET(path="/merchant_orders/:id")
     public MPBaseResponse load(String id, Boolean useCache) throws MPException {
         return super.processMethod("load", id, useCache);

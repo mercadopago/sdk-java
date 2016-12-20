@@ -1,4 +1,4 @@
-package com.mercadopago.resources.datastructures.preferences;
+package com.mercadopago.resources.datastructures.preference;
 
 import com.mercadopago.core.annotations.validation.Numeric;
 import com.mercadopago.core.annotations.validation.Size;

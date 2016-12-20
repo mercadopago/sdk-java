@@ -98,7 +98,7 @@ public class MPRestClientTest {
         MPBaseResponse response = client.executeRequest(HttpMethod.POST, HTTPBIN_TEST_URL + "post", PayloadType.JSON, jsonObject, null);
         assertEquals("Response must have a 200 status.", 200, response.getStatusCode());
         assertEquals("Response must have a \"OK\" reason phrase.", "OK", response.getReasonPhrase());
-        assertEquals("Response entity must be \"{\"property\":\"value\",\"testproperty\":\"testvalue\"}\"", jsonObject, response.getJsonResponse().get("json"));
+        assertEquals("Response entity must be \"{\"property\":\"value\",\"testproperty\":\"testvalue\"}\"", jsonObject, response.getJsonObjectResponse().get("json"));
         assertEquals("Content type must be \"application/json\"", "application/json", response.getHeaders(HTTP.CONTENT_TYPE)[0].getValue());
 
         // POST X_WWW
@@ -140,7 +140,7 @@ public class MPRestClientTest {
         MPBaseResponse response = client.executeRequest(HttpMethod.PUT, HTTPBIN_TEST_URL + "put", PayloadType.JSON, jsonObject, null);
         assertEquals("Response must have a 200 status.", 200, response.getStatusCode());
         assertEquals("Response must have a \"OK\" reason phrase.", "OK", response.getReasonPhrase());
-        assertEquals("Response entity must be \"{\"data\":\"testvalue\"}\"", jsonObject, response.getJsonResponse().get("json"));
+        assertEquals("Response entity must be \"{\"data\":\"testvalue\"}\"", jsonObject, response.getJsonObjectResponse().get("json"));
 
         // Invalid
         response = client.executeRequest(HttpMethod.PUT, HTTPBIN_TEST_URL + "put/invalid", PayloadType.JSON, jsonObject, null);

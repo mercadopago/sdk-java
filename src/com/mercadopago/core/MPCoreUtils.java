@@ -66,7 +66,7 @@ public class MPCoreUtils {
      * @param <T>
      * @return
      */
-    public static <T extends MPBase> T getResourceFromJson(Class clazz, JsonObject jsonEntity) {
+    public static <T> T getResourceFromJson(Class clazz, JsonObject jsonEntity) {
         return (T) gson.fromJson(jsonEntity, clazz);
     }
 

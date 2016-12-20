@@ -1,8 +1,7 @@
 package com.mercadopago.core;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
+import com.google.gson.annotations.JsonAdapter;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
 import org.apache.http.Header;
@@ -31,7 +30,9 @@ public class MPBaseResponse implements Cloneable {
     private String reasonPhrase;
 
     private String stringResponse;
-    private JsonObject jsonResponse;
+
+    private JsonArray jsonArrayResponse;
+    private JsonObject jsonObjectResponse;
 
     public Boolean fromCache = Boolean.FALSE;
 
@@ -69,8 +70,12 @@ public class MPBaseResponse implements Cloneable {
         return this.stringResponse;
     }
 
-    public JsonObject getJsonResponse() {
-        return this.jsonResponse;
+    public JsonObject getJsonObjectResponse() {
+        return this.jsonObjectResponse;
+    }
+
+    public JsonArray getJsonArrayResponse() {
+        return this.jsonArrayResponse;
     }
 
     public Header[] getHeaders(String headerName) {
@@ -110,15 +115,31 @@ public class MPBaseResponse implements Cloneable {
             } catch (Exception ex) {
                 throw new MPException(ex);
             }
+
             // Try to parse the response to a json, and a extract the entity of the response.
             // When the response is not a json parseable string then the string response must be used.
             try {
-                this.jsonResponse = new JsonParser().parse(this.stringResponse).getAsJsonObject();
+                JsonElement jsonElement = new JsonParser().parse(this.stringResponse);
+                if (jsonElement.isJsonObject()) {
+                    this.jsonObjectResponse = jsonElement.getAsJsonObject();
+                }
+                if (jsonElement.isJsonArray()) {
+                    this.jsonArrayResponse = jsonElement.getAsJsonArray();
+                }
+                if (isSearchResult(jsonElement)) {
+                    this.jsonArrayResponse = (JsonArray)((JsonObject) jsonElement).get("results");
+                }
 
             } catch (JsonParseException jsonParseException) {
                 // Do nothing
             }
         }
+    }
+
+    private boolean isSearchResult(JsonElement jsonElement) {
+        return jsonElement.isJsonObject() &&
+                ((JsonObject) jsonElement).get("results") != null &&
+                ((JsonObject) jsonElement).get("results").isJsonArray();
     }
 
     @Override

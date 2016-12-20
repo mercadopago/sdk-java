@@ -1,9 +1,8 @@
-package com.mercadopago.resources.datastructures.preferences;
+package com.mercadopago.resources.datastructures.preference;
 
 import com.mercadopago.core.annotations.validation.Numeric;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Mercado Pago SDK

@@ -3,6 +3,7 @@ package com.mercadopago.core;
 import com.google.common.collect.MapDifference;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -12,6 +13,7 @@ import com.mercadopago.core.annotations.rest.*;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPRestClient;
+import com.mercadopago.resources.interfaces.IPNRecoverable;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
@@ -32,7 +34,7 @@ import java.util.*;
  */
 public abstract class MPBase {
 
-    private static final List<String> ALLOWED_METHODS = Arrays.asList("load", "loadAll", "save", "create", "update", "delete");
+    private static final List<String> ALLOWED_METHODS = Arrays.asList("load", "loadAll", "save", "create", "update", "delete", "search");
     private static final List<String> METHODS_TO_VALIDATE = Arrays.asList("save", "create", "update");
 
     public static final Boolean WITHOUT_CACHE = Boolean.FALSE;
@@ -231,28 +233,62 @@ public abstract class MPBase {
             }
         }
 
-        if (response.getJsonResponse() != null &&
-                response.getStatusCode() >= 200 && response.getStatusCode() < 300) {
-            assignValuesToFields(
-                    this,
-                    response.getJsonResponse());
-            _lastKnownJson = MPCoreUtils.getJsonFromResource(this);
+        if (response.getStatusCode() >= 200 &&
+                response.getStatusCode() < 300) {
+            if (httpMethod != HttpMethod.DELETE) {
+                fillResource(response);
+            } else {
+                cleanResource();
+            }
         }
 
         return response;
     }
 
     /**
+     * Removes all data from the attributes members of the Resource obj.
+     * Used when a delete request is called
+     *
+     * @throws MPException
+     */
+    private void cleanResource() throws MPException {
+        Field[] declaredFields = this.getClass().getDeclaredFields();
+
+        for (Field field : declaredFields) {
+            try {
+                field.setAccessible(true);
+                field.set(this, null);
+
+            } catch (Exception ex) {
+                throw new MPException(ex);
+            }
+        }
+    }
+
+    /**
+     * It fills all the attributes members of the Resource obj.
+     * Used when a Get or a Put request is called
+     *
+     * @param response              Response of the request
+     * @throws MPException
+     */
+    protected void fillResource(MPBaseResponse response) throws MPException {
+        if (response.getJsonObjectResponse() != null) {
+            assignValuesToFields(response.getJsonObjectResponse());
+            _lastKnownJson = MPCoreUtils.getJsonFromResource(this);
+        }
+    }
+
+    /**
      * Iterates over all the declared fields of an instance and copy field values from the resource obj passed.
      *
-     * @param instance              destination obj
      * @param jsonObject            json with source obj
      * @param <T>                   type of the instance
      * @throws MPException
      */
-    private <T extends MPBase> void assignValuesToFields(T instance, JsonObject jsonObject) throws MPException {
-        T resourceObject = MPCoreUtils.getResourceFromJson(instance.getClass(), jsonObject);
-        Field[] declaredFields = instance.getClass().getDeclaredFields();
+    protected <T extends MPBase> void assignValuesToFields(JsonObject jsonObject) throws MPException {
+        T resourceObject = MPCoreUtils.getResourceFromJson(this.getClass(), jsonObject);
+        Field[] declaredFields = this.getClass().getDeclaredFields();
 
         for (Field field : declaredFields) {
             try {
@@ -260,7 +296,7 @@ public abstract class MPBase {
                 Field originField = resourceObject.getClass().getDeclaredField(field.getName());
                 originField.setAccessible(true);
                 Object value = originField.get(resourceObject);
-                field.set(instance, value);
+                field.set(this, value);
 
             } catch (Exception ex) {
                 throw new MPException(ex);
@@ -323,9 +359,13 @@ public abstract class MPBase {
                 processedPath.append(value);
                 if (path.contains("/")) {
                     path = path.substring(path.indexOf("/"));
+                } else {
+                    path = "";
                 }
             }
-
+            if (StringUtils.isNotEmpty(path)) {
+                processedPath.append(path);
+            }
         } else {
             processedPath.append(path);
         }
