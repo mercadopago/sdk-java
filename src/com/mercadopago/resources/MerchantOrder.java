@@ -7,9 +7,6 @@ import com.mercadopago.core.annotations.rest.PUT;
 import com.mercadopago.core.annotations.validation.Size;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.datastructures.merchantorder.*;
-import com.mercadopago.resources.datastructures.merchantorder.Item;
-import com.mercadopago.resources.datastructures.merchantorder.Payer;
-import com.mercadopago.resources.datastructures.merchantorder.Shipment;
 
 import java.util.ArrayList;
 import java.util.Date;

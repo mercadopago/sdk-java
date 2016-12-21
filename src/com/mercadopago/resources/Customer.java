@@ -2,7 +2,6 @@ package com.mercadopago.resources;
 
 import com.google.gson.JsonObject;
 import com.mercadopago.core.MPBase;
-import com.mercadopago.core.MPApiResponse;
 import com.mercadopago.core.MPResourceArray;
 import com.mercadopago.core.annotations.rest.DELETE;
 import com.mercadopago.core.annotations.rest.GET;

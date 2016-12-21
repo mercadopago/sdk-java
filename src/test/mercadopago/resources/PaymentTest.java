@@ -12,8 +12,6 @@ import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPRestClient;
 import com.mercadopago.resources.Payment;
 import com.mercadopago.resources.datastructures.payment.*;
-
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 import test.mercadopago.data.TestUserData;

@@ -3,7 +3,6 @@ package test.mercadopago.resources;
 import com.google.gson.JsonObject;
 import com.mercadopago.MPConf;
 import com.mercadopago.core.MPBase;
-import com.mercadopago.core.MPApiResponse;
 import com.mercadopago.core.MPCoreUtils;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.MerchantOrder;

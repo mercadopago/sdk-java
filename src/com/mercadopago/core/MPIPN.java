@@ -27,6 +27,15 @@ public class MPIPN {
         }
     }
 
+    /**
+     * It manages an IPN and returns a resource
+     *
+     * @param topic             Type of IPN
+     * @param id                String with the id of the resource
+     * @param <T>
+     * @return
+     * @throws MPException
+     */
     public static <T extends MPBase> T manage(Topic topic, String id) throws MPException {
         if (topic == null ||
                 id == null) {

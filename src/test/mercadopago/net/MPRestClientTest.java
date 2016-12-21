@@ -10,9 +10,7 @@ import com.mercadopago.net.MPRestClient;
 import org.apache.http.protocol.HTTP;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Mercado Pago SDK

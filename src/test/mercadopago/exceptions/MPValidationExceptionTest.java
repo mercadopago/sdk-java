@@ -2,7 +2,6 @@ package test.mercadopago.exceptions;
 
 import com.mercadopago.core.ValidationViolation;
 import com.mercadopago.exceptions.MPException;
-import com.mercadopago.exceptions.MPRestException;
 import com.mercadopago.exceptions.MPValidationException;
 import org.junit.Test;
 

@@ -1,7 +1,6 @@
 package test.mercadopago.resources;
 
 import com.mercadopago.MPConf;
-import com.mercadopago.core.MPApiResponse;
 import com.mercadopago.core.MPBase;
 import com.mercadopago.core.MPResourceArray;
 import com.mercadopago.exceptions.MPException;
@@ -9,9 +8,7 @@ import com.mercadopago.resources.IdentificationType;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Mercado Pago SDK

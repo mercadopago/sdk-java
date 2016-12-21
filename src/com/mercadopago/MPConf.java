@@ -1,6 +1,5 @@
 package com.mercadopago;
 
-import com.mercadopago.core.MPBase;
 import com.mercadopago.core.MPCredentials;
 import com.mercadopago.exceptions.MPConfException;
 import com.mercadopago.exceptions.MPException;

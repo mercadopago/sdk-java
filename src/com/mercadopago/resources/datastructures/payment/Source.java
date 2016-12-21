@@ -1,7 +1,5 @@
 package com.mercadopago.resources.datastructures.payment;
 
-import java.util.Date;
-
 /**
  * Mercado Pago SDK
  * Source class
