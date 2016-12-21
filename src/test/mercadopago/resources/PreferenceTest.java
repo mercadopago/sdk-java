@@ -2,8 +2,8 @@ package test.mercadopago.resources;
 
 import com.google.gson.JsonObject;
 import com.mercadopago.MPConf;
+import com.mercadopago.core.MPApiResponse;
 import com.mercadopago.core.MPBase;
-import com.mercadopago.core.MPBaseResponse;
 import com.mercadopago.core.MPCoreUtils;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.Preference;
@@ -204,17 +204,15 @@ public class PreferenceTest {
 
     @Test
     public void preferenceLoadTest() throws MPException {
-        Preference preference = new Preference();
-
-        MPBaseResponse response = preference.load("236939761-d2d4c87c-3aa0-4015-9089-2047817399e4", MPBase.WITH_CACHE);
-        assertEquals(200, response.getStatusCode());
+        Preference preference = Preference.load("236939761-d2d4c87c-3aa0-4015-9089-2047817399e4", MPBase.WITH_CACHE);
+        assertEquals(200, preference.getLastApiResponse().getStatusCode());
         assertEquals("236939761-d2d4c87c-3aa0-4015-9089-2047817399e4", preference.getId());
         assertEquals(1, preference.getItems().size());
         assertEquals("regular_payment", preference.getOperationType().toString());
-        assertFalse(response.fromCache);
+        assertFalse(preference.getLastApiResponse().fromCache);
 
-        response = preference.load("236939761-d2d4c87c-3aa0-4015-9089-2047817399e4", MPBase.WITH_CACHE);
-        assertTrue(response.fromCache);
+        preference = Preference.load("236939761-d2d4c87c-3aa0-4015-9089-2047817399e4", MPBase.WITH_CACHE);
+        assertTrue(preference.getLastApiResponse().fromCache);
     }
 
     @Test
@@ -236,14 +234,14 @@ public class PreferenceTest {
         preference.appendItem(item);
         preference.setPayer(payer);
 
-        MPBaseResponse response = preference.create();
-        assertEquals(201, response.getStatusCode());
+        preference.create();
+        assertEquals(201, preference.getLastApiResponse().getStatusCode());
         assertNotNull(preference.getId());
 
         String random = UUID.randomUUID().toString();
         preference.setAdditionalInfo(random);
-        response = preference.update();
-        assertEquals(200, response.getStatusCode());
+        preference.update();
+        assertEquals(200, preference.getLastApiResponse().getStatusCode());
         assertEquals(random, preference.getAdditionalInfo());
 
     }
@@ -267,8 +265,8 @@ public class PreferenceTest {
         preference.appendItem(item);
         preference.setPayer(payer);
 
-        MPBaseResponse response = preference.create();
-        assertEquals(201, response.getStatusCode());
+        preference.create();
+        assertEquals(201, preference.getLastApiResponse().getStatusCode());
         assertNotNull(preference.getId());
         assertEquals(1, preference.getItems().size());
         assertEquals("regular_payment", preference.getOperationType().toString());

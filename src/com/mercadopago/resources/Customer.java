@@ -2,7 +2,8 @@ package com.mercadopago.resources;
 
 import com.google.gson.JsonObject;
 import com.mercadopago.core.MPBase;
-import com.mercadopago.core.MPBaseResponse;
+import com.mercadopago.core.MPApiResponse;
+import com.mercadopago.core.MPResourceArray;
 import com.mercadopago.core.annotations.rest.DELETE;
 import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.core.annotations.rest.POST;
@@ -167,32 +168,37 @@ public class Customer extends MPBase {
     }
 
 
-    public MPBaseResponse load(String id) throws MPException {
+    public static MPResourceArray search() throws MPException {
+        return search(WITHOUT_CACHE);
+    }
+
+    @GET(path="/v1/customers/search")
+    public static MPResourceArray search(Boolean useCache) throws MPException {
+        return Customer.processMethodBulk(Customer.class, "search", useCache);
+    }
+
+    public static Customer load(String id) throws MPException {
         return load(id, WITHOUT_CACHE);
     }
 
     @GET(path="/v1/customers/:id")
-    public MPBaseResponse load(String id, Boolean useCache) throws MPException {
-        return super.processMethod("load", id, useCache);
+    public static Customer load(String id, Boolean useCache) throws MPException {
+        return Customer.processMethod(Customer.class, "load", id, useCache);
     }
 
     @POST(path="/v1/customers")
-    public MPBaseResponse create() throws MPException {
-        return super.processMethod("create");
+    public Customer create() throws MPException {
+        return super.processMethod("create", WITHOUT_CACHE);
     }
 
     @PUT(path="/v1/customers/:id")
-    public MPBaseResponse update() throws MPException {
-        return super.processMethod("update");
-    }
-
-    public MPBaseResponse delete() throws  MPException {
-        return delete(null);
+    public Customer update() throws MPException {
+        return super.processMethod("update", WITHOUT_CACHE);
     }
 
     @DELETE(path="/v1/customers/:id")
-    public MPBaseResponse delete(String id) throws MPException {
-        return super.processMethod("delete", id);
+    public Customer delete() throws MPException {
+        return super.processMethod("delete", WITHOUT_CACHE);
     }
 
 }

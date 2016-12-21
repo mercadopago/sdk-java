@@ -1,7 +1,7 @@
 package com.mercadopago.resources;
 
+import com.mercadopago.core.MPApiResponse;
 import com.mercadopago.core.MPBase;
-import com.mercadopago.core.MPBaseResponse;
 import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.core.annotations.rest.POST;
 import com.mercadopago.core.annotations.rest.PUT;
@@ -227,23 +227,23 @@ public class Preference extends MPBase {
 
 
 
-    public MPBaseResponse load(String id) throws MPException {
+    public static Preference load(String id) throws MPException {
         return load(id, WITHOUT_CACHE);
     }
 
     @GET(path="/checkout/preferences/:id")
-    public MPBaseResponse load(String id, Boolean useCache) throws MPException {
-        return super.processMethod("load", id, useCache);
+    public static Preference load(String id, Boolean useCache) throws MPException {
+        return Preference.processMethod(Preference.class, "load", id, useCache);
     }
 
     @POST(path="/checkout/preferences")
-    public MPBaseResponse create() throws MPException {
-        return super.processMethod("create");
+    public Preference create() throws MPException {
+        return super.processMethod("create", WITHOUT_CACHE);
     }
 
     @PUT(path="/checkout/preferences/:id")
-    public MPBaseResponse update() throws MPException {
-        return super.processMethod("update");
+    public Preference update() throws MPException {
+        return super.processMethod("update", WITHOUT_CACHE);
     }
 
 }

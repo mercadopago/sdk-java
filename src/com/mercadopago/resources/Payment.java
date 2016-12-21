@@ -2,7 +2,6 @@ package com.mercadopago.resources;
 
 import com.google.gson.JsonObject;
 import com.mercadopago.core.MPBase;
-import com.mercadopago.core.MPBaseResponse;
 import com.mercadopago.core.annotations.idempotent.Idempotent;
 import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.core.annotations.rest.POST;
@@ -11,7 +10,6 @@ import com.mercadopago.core.annotations.validation.Numeric;
 import com.mercadopago.core.annotations.validation.Size;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.datastructures.payment.*;
-import com.mercadopago.resources.interfaces.IPNRecoverable;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,7 +21,7 @@ import java.util.Date;
  * Created by Eduardo Paoletta on 12/2/16.
  */
 @Idempotent
-public class Payment extends MPBase implements IPNRecoverable {
+public class Payment extends MPBase {
 
     private String id = null;
     private Date dateCreated = null;
@@ -339,23 +337,23 @@ public class Payment extends MPBase implements IPNRecoverable {
     }
 
 
-    public MPBaseResponse load(String id) throws MPException {
+    public static Payment load(String id) throws MPException {
         return load(id, WITHOUT_CACHE);
     }
 
     @GET(path="/v1/payments/:id")
-    public MPBaseResponse load(String id, Boolean useCache) throws MPException {
-        return super.processMethod("load", id, useCache);
+    public static Payment load(String id, Boolean useCache) throws MPException {
+        return Payment.processMethod(Payment.class, "load", id, useCache);
     }
 
     @POST(path="/v1/payments")
-    public MPBaseResponse create() throws MPException {
-        return super.processMethod("create");
+    public Payment create() throws MPException {
+        return super.processMethod("create", WITHOUT_CACHE);
     }
 
     @PUT(path="/v1/payments/:id")
-    public MPBaseResponse update() throws MPException {
-        return super.processMethod("update");
+    public Payment update() throws MPException {
+        return super.processMethod("update", WITHOUT_CACHE);
     }
 
 }

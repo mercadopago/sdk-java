@@ -2,17 +2,16 @@ package test.mercadopago.resources;
 
 import com.google.gson.JsonObject;
 import com.mercadopago.MPConf;
+import com.mercadopago.core.MPApiResponse;
 import com.mercadopago.core.MPBase;
-import com.mercadopago.core.MPBaseResponse;
+import com.mercadopago.core.MPResourceArray;
 import com.mercadopago.core.annotations.rest.PayloadType;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.exceptions.MPRestException;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPRestClient;
 import com.mercadopago.resources.Card;
-import com.mercadopago.resources.Cards;
 import com.mercadopago.resources.Customer;
-import com.mercadopago.resources.Customers;
 import com.mercadopago.resources.datastructures.customer.Identification;
 import com.mercadopago.resources.datastructures.customer.Phone;
 import org.junit.BeforeClass;
@@ -39,8 +38,6 @@ public class CustomerTest {
 
     @Test
     public void customerTest() throws MPException {
-        MPBaseResponse response = null;
-
         //Customers
         Customer customer = new Customer();
         customer
@@ -55,65 +52,75 @@ public class CustomerTest {
                         new Identification()
                                 .setType("DNI")
                                 .setNumber("12.321.456"));
-        response = customer.create();
-        assertEquals(201, response.getStatusCode());
+        customer.create();
+        assertEquals(201, customer.getLastApiResponse().getStatusCode());
         assertNotNull(customer.getId());
 
-        response = customer.load(customer.getId(), MPBase.WITH_CACHE);
-        assertEquals(200, response.getStatusCode());
+        customer = Customer.load(customer.getId(), MPBase.WITH_CACHE);
+        assertEquals(200, customer.getLastApiResponse().getStatusCode());
         assertNotNull(customer.getId());
         assertEquals("Tete", customer.getFirstName());
-        assertFalse(response.fromCache);
-        response = customer.load(customer.getId(), MPBase.WITH_CACHE);
-        assertEquals(200, response.getStatusCode());
-        assertTrue(response.fromCache);
+        assertFalse(customer.getLastApiResponse().fromCache);
+        customer = Customer.load(customer.getId(), MPBase.WITH_CACHE);
+        assertEquals(200, customer.getLastApiResponse().getStatusCode());
+        assertTrue(customer.getLastApiResponse().fromCache);
 
-        Customers customers = new Customers();
-        response = customers.search(MPBase.WITH_CACHE);
-        assertEquals(200, response.getStatusCode());
-        assertEquals(1, customers.getCustomers().size());
-        assertFalse(response.fromCache);
-        response = customers.search(MPBase.WITH_CACHE);
-        assertEquals(200, response.getStatusCode());
-        assertTrue(response.fromCache);
-        assertEquals(customer.getId(), customers.getCustomers().get(0).getId());
+        MPResourceArray resourceArray = null;
+        resourceArray = Customer.search(MPBase.WITH_CACHE);
+        assertEquals(200, resourceArray.getLastApiResponse().getStatusCode());
+        assertEquals(1, resourceArray.size());
+        assertFalse(resourceArray.getLastApiResponse().fromCache);
+        resourceArray = Customer.search(MPBase.WITH_CACHE);
+        assertEquals(200, resourceArray.getLastApiResponse().getStatusCode());
+        assertTrue(resourceArray.getLastApiResponse().fromCache);
+        assertEquals(customer.getId(), ((Customer) resourceArray.getByIndex(0)).getId());
 
         String random = UUID.randomUUID().toString();
         customer.setDescription(random);
-        response = customer.update();
-        assertEquals(200, response.getStatusCode());
+        customer.update();
+        assertEquals(200, customer.getLastApiResponse().getStatusCode());
         assertEquals(random, customer.getDescription());
 
         //Cards
         String customerId = customer.getId();
         Card card = new Card()
+                .setCustomerId(customerId)
                 .setToken(getCardToken());
-        response = card.create(customerId);
-        assertEquals(200, response.getStatusCode());
+        card.create();
+        assertEquals(200, card.getLastApiResponse().getStatusCode());
         assertNotNull(card.getId());
 
-        response = card.load(customerId, card.getId(), MPBase.WITH_CACHE);
-        assertEquals(200, response.getStatusCode());
+        card = Card.load(customerId, card.getId(), MPBase.WITH_CACHE);
+        assertEquals(200, card.getLastApiResponse().getStatusCode());
         assertEquals(customerId, card.getCustomerId());
-        response = card.load(customerId, card.getId(), MPBase.WITH_CACHE);
-        assertEquals(200, response.getStatusCode());
+        assertFalse(card.getLastApiResponse().fromCache);
+        card = Card.load(customerId, card.getId(), MPBase.WITH_CACHE);
+        assertEquals(200, card.getLastApiResponse().getStatusCode());
+        assertTrue(card.getLastApiResponse().fromCache);
 
-        Cards cards = new Cards();
-        response = cards.loadAll(customerId, MPBase.WITH_CACHE);
-        assertEquals(200, response.getStatusCode());
-        assertEquals(1, cards.getCards().size());
-        assertFalse(response.fromCache);
-        response = cards.loadAll(customerId, MPBase.WITH_CACHE);
-        assertEquals(200, response.getStatusCode());
-        assertTrue(response.fromCache);
-        assertEquals(card.getId(), cards.getCards().get(0).getId());
+        resourceArray = Card.loadAll(customerId, MPBase.WITH_CACHE);
+        assertEquals(200, resourceArray.getLastApiResponse().getStatusCode());
+        assertEquals(1, resourceArray.size());
+        assertFalse(resourceArray.getLastApiResponse().fromCache);
+        resourceArray = Card.loadAll(customerId, MPBase.WITH_CACHE);
+        assertEquals(200, resourceArray.getLastApiResponse().getStatusCode());
+        assertTrue(resourceArray.getLastApiResponse().fromCache);
+        assertEquals(card.getId(), ((Card) resourceArray.getByIndex(0)).getId());
 
-        response = customer.load(customer.getId());
-        assertEquals(200, response.getStatusCode());
+        customer = Customer.load(customer.getId());
+        assertEquals(200, customer.getLastApiResponse().getStatusCode());
         assertEquals(1, customer.getCards().size());
 
-        response = customer.delete();
-        assertEquals(200, response.getStatusCode());
+        card = Card.load(customerId, card.getId());
+        assertEquals(200, card.getLastApiResponse().getStatusCode());
+        card.delete();
+        assertEquals(200, card.getLastApiResponse().getStatusCode());
+        resourceArray = Card.loadAll(customerId);
+        assertEquals(200, resourceArray.getLastApiResponse().getStatusCode());
+        assertEquals(0, resourceArray.size());
+
+        customer.delete();
+        assertEquals(200, customer.getLastApiResponse().getStatusCode());
         assertNull(customer.getId());
 
     }
@@ -135,7 +142,7 @@ public class CustomerTest {
 
         jsonPayload.add("cardholder", cardHolder);
 
-        MPBaseResponse response;
+        MPApiResponse response;
         try {
             MPRestClient client = new MPRestClient();
             response = client.executeRequest(
@@ -147,7 +154,7 @@ public class CustomerTest {
         } catch (MPRestException rex) {
             throw new MPException(rex);
         }
-        return response.getJsonObjectResponse().get("id").getAsString();
+        return ((JsonObject) response.getJsonElementResponse()).get("id").getAsString();
     }
 
 }

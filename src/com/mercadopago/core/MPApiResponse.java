@@ -1,7 +1,6 @@
 package com.mercadopago.core;
 
 import com.google.gson.*;
-import com.google.gson.annotations.JsonAdapter;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
 import org.apache.http.Header;
@@ -15,7 +14,7 @@ import org.apache.http.client.methods.HttpRequestBase;
  *
  * Created by Eduardo Paoletta on 11/17/16.
  */
-public class MPBaseResponse implements Cloneable {
+public class MPApiResponse implements Cloneable {
 
     private HttpRequestBase _httpRequest;
     private JsonObject _requestPayload;
@@ -31,12 +30,11 @@ public class MPBaseResponse implements Cloneable {
 
     private String stringResponse;
 
-    private JsonArray jsonArrayResponse;
-    private JsonObject jsonObjectResponse;
+    private JsonElement jsonElementResponse;
 
     public Boolean fromCache = Boolean.FALSE;
 
-    public MPBaseResponse(HttpMethod httpMethod, HttpRequestBase request, JsonObject payload, HttpResponse response, long responseMillis)
+    public MPApiResponse(HttpMethod httpMethod, HttpRequestBase request, JsonObject payload, HttpResponse response, long responseMillis)
             throws MPException {
         this._httpRequest = request;
         this._requestPayload = payload;
@@ -70,12 +68,8 @@ public class MPBaseResponse implements Cloneable {
         return this.stringResponse;
     }
 
-    public JsonObject getJsonObjectResponse() {
-        return this.jsonObjectResponse;
-    }
-
-    public JsonArray getJsonArrayResponse() {
-        return this.jsonArrayResponse;
+    public JsonElement getJsonElementResponse() {
+        return this.jsonElementResponse;
     }
 
     public Header[] getHeaders(String headerName) {
@@ -83,7 +77,7 @@ public class MPBaseResponse implements Cloneable {
     }
 
     /**
-     * Parses the http request in a custom MPBaseResponse object.
+     * Parses the http request in a custom MPApiResponse object.
      *
      * @param httpMethod            enum with the method executed
      * @param request               HttpRequestBase object
@@ -99,7 +93,7 @@ public class MPBaseResponse implements Cloneable {
     }
 
     /**
-     * Parses the http response in a custom MPBaseResponse object.
+     * Parses the http response in a custom MPApiResponse object.
      *
      * @param response              a Http response to be parsed
      * @throws MPException
@@ -119,16 +113,7 @@ public class MPBaseResponse implements Cloneable {
             // Try to parse the response to a json, and a extract the entity of the response.
             // When the response is not a json parseable string then the string response must be used.
             try {
-                JsonElement jsonElement = new JsonParser().parse(this.stringResponse);
-                if (jsonElement.isJsonObject()) {
-                    this.jsonObjectResponse = jsonElement.getAsJsonObject();
-                }
-                if (jsonElement.isJsonArray()) {
-                    this.jsonArrayResponse = jsonElement.getAsJsonArray();
-                }
-                if (isSearchResult(jsonElement)) {
-                    this.jsonArrayResponse = (JsonArray)((JsonObject) jsonElement).get("results");
-                }
+                this.jsonElementResponse = new JsonParser().parse(this.stringResponse);
 
             } catch (JsonParseException jsonParseException) {
                 // Do nothing
@@ -136,15 +121,9 @@ public class MPBaseResponse implements Cloneable {
         }
     }
 
-    private boolean isSearchResult(JsonElement jsonElement) {
-        return jsonElement.isJsonObject() &&
-                ((JsonObject) jsonElement).get("results") != null &&
-                ((JsonObject) jsonElement).get("results").isJsonArray();
-    }
-
     @Override
-    protected MPBaseResponse clone() throws CloneNotSupportedException {
-        return (MPBaseResponse) super.clone();
+    protected MPApiResponse clone() throws CloneNotSupportedException {
+        return (MPApiResponse) super.clone();
     }
 
 }

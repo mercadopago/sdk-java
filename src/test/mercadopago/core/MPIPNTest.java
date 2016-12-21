@@ -52,6 +52,7 @@ public class MPIPNTest {
             auxException = mpException;
         }
         assertSame(MPException.class, auxException.getClass());
+
     }
 
     @Test
@@ -71,6 +72,7 @@ public class MPIPNTest {
         assertTrue(resource instanceof MerchantOrder);
         MerchantOrder merchantOrder = (MerchantOrder)resource;
         assertEquals("433287094", merchantOrder.getId());
+
     }
 
 }

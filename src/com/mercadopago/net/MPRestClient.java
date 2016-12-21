@@ -3,7 +3,7 @@ package com.mercadopago.net;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import com.mercadopago.core.MPBaseResponse;
+import com.mercadopago.core.MPApiResponse;
 import com.mercadopago.core.annotations.rest.PayloadType;
 import com.mercadopago.exceptions.MPRestException;
 import org.apache.commons.lang3.StringUtils;
@@ -49,7 +49,7 @@ public class MPRestClient {
         this.proxyPort = proxyPort;
     }
 
-    public MPBaseResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders)
+    public MPApiResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders)
             throws MPRestException {
         return executeRequest(httpMethod, uri, payloadType, payload, colHeaders, 0, 0, 0);
     }
@@ -65,10 +65,10 @@ public class MPRestClient {
      * @param retries                   int with the retries for the api request
      * @param connectionTimeout         int with the connection timeout for the api request expressed in milliseconds
      * @param socketTimeout             int with the socket timeout for the api request expressed in milliseconds
-     * @return                          MPBaseResponse with parsed info of the http response
+     * @return                          MPApiResponse with parsed info of the http response
      * @throws MPRestException
      */
-    public MPBaseResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders, int retries, int connectionTimeout, int socketTimeout)
+    public MPApiResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders, int retries, int connectionTimeout, int socketTimeout)
             throws MPRestException {
         HttpClient httpClient = null;
         try {
@@ -93,7 +93,7 @@ public class MPRestClient {
             long endMillis = System.currentTimeMillis();
             long responseMillis = endMillis - startMillis;
 
-            return new MPBaseResponse(httpMethod, request, payload, response, responseMillis);
+            return new MPApiResponse(httpMethod, request, payload, response, responseMillis);
 
         } catch (MPRestException restEx) {
             throw restEx;

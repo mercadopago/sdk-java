@@ -1,7 +1,6 @@
 package com.mercadopago.resources;
 
 import com.mercadopago.core.MPBase;
-import com.mercadopago.core.MPBaseResponse;
 import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.core.annotations.rest.POST;
 import com.mercadopago.core.annotations.rest.PUT;
@@ -11,7 +10,6 @@ import com.mercadopago.resources.datastructures.merchantorder.*;
 import com.mercadopago.resources.datastructures.merchantorder.Item;
 import com.mercadopago.resources.datastructures.merchantorder.Payer;
 import com.mercadopago.resources.datastructures.merchantorder.Shipment;
-import com.mercadopago.resources.interfaces.IPNRecoverable;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,7 +20,7 @@ import java.util.Date;
  *
  * Created by Eduardo Paoletta on 12/13/16.
  */
-public class MerchantOrder extends MPBase implements IPNRecoverable {
+public class MerchantOrder extends MPBase {
 
     private String id = null;
     private String preferenceId = null;
@@ -218,23 +216,23 @@ public class MerchantOrder extends MPBase implements IPNRecoverable {
     }
 
 
-    public MPBaseResponse load(String id) throws MPException {
+    public static MerchantOrder load(String id) throws MPException {
         return load(id, WITHOUT_CACHE);
     }
 
     @GET(path="/merchant_orders/:id")
-    public MPBaseResponse load(String id, Boolean useCache) throws MPException {
-        return super.processMethod("load", id, useCache);
+    public static MerchantOrder load(String id, Boolean useCache) throws MPException {
+        return MerchantOrder.processMethod(MerchantOrder.class, "load", id, useCache);
     }
 
     @POST(path="/merchant_orders")
-    public MPBaseResponse create() throws MPException {
-        return super.processMethod("create");
+    public MerchantOrder create() throws MPException {
+        return super.processMethod("create", WITHOUT_CACHE);
     }
 
     @PUT(path="/merchant_orders/:id")
-    public MPBaseResponse update() throws MPException {
-        return super.processMethod("update");
+    public MerchantOrder update() throws MPException {
+        return super.processMethod("update", WITHOUT_CACHE);
     }
 
 }

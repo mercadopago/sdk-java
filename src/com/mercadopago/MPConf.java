@@ -1,5 +1,6 @@
 package com.mercadopago;
 
+import com.mercadopago.core.MPBase;
 import com.mercadopago.core.MPCredentials;
 import com.mercadopago.exceptions.MPConfException;
 import com.mercadopago.exceptions.MPException;
@@ -22,6 +23,7 @@ public class MPConf {
     private static String clientSecret = null;
     private static String clientId = null;
     private static String accessToken = null;
+    private static String userToken = null;
     private static String appId = null;
     private static String baseUrl = DEFAULT_BASE_URL;
 
@@ -69,6 +71,14 @@ public class MPConf {
             throw new MPConfException("accessToken setting can not be changed");
         }
         accessToken = value;
+    }
+
+    public static String getUserToken() {
+        return userToken;
+    }
+
+    public static void setUserToken(String value) {
+        userToken = value;
     }
 
     /**

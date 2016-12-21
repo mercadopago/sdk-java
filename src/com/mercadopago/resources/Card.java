@@ -1,7 +1,8 @@
 package com.mercadopago.resources;
 
+import com.mercadopago.core.MPApiResponse;
 import com.mercadopago.core.MPBase;
-import com.mercadopago.core.MPBaseResponse;
+import com.mercadopago.core.MPResourceArray;
 import com.mercadopago.core.annotations.rest.DELETE;
 import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.core.annotations.rest.POST;
@@ -151,28 +152,37 @@ public class Card extends MPBase {
     }
 
 
-    public MPBaseResponse load(String customerId, String id) throws MPException {
+    public static MPResourceArray loadAll(String customerId) throws MPException {
+        return loadAll(customerId, WITHOUT_CACHE);
+    }
+
+    @GET(path="/v1/customers/:customer_id/cards")
+    public static MPResourceArray loadAll(String customerId, Boolean useCache) throws MPException {
+        return Card.processMethodBulk(Card.class, "loadAll", customerId, useCache);
+    }
+
+    public static Card load(String customerId, String id) throws MPException {
         return load(customerId, id, WITHOUT_CACHE);
     }
 
     @GET(path="/v1/customers/:customer_id/cards/:id")
-    public MPBaseResponse load(String customerId, String id, Boolean useCache) throws MPException {
-        return super.processMethod("load", customerId, id, useCache);
+    public static Card load(String customerId, String id, Boolean useCache) throws MPException {
+        return Card.processMethod(Card.class, "load", customerId, id, useCache);
     }
 
     @POST(path="/v1/customers/:customer_id/cards/")
-    public MPBaseResponse create(String customerId) throws MPException {
-        return super.processMethod("create", customerId);
+    public Card create() throws MPException {
+        return super.processMethod("create", WITHOUT_CACHE);
     }
 
     @PUT(path="/v1/customers/:customer_id/cards/:id")
-    public MPBaseResponse update() throws MPException {
-        return super.processMethod("update");
+    public Card update() throws MPException {
+        return super.processMethod("update", WITHOUT_CACHE);
     }
 
     @DELETE(path="/v1/customers/:customer_id/cards/:id")
-    public MPBaseResponse delete() throws MPException {
-        return super.processMethod("delete");
+    public Card delete() throws MPException {
+        return super.processMethod("delete", WITHOUT_CACHE);
     }
 
 }

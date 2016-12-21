@@ -1,7 +1,8 @@
 package com.mercadopago.core;
 
 import com.mercadopago.exceptions.MPException;
-import com.mercadopago.resources.interfaces.IPNRecoverable;
+
+import java.lang.reflect.Method;
 
 /**
  * Mercado Pago SDK
@@ -26,25 +27,26 @@ public class MPIPN {
         }
     }
 
-    public static <T extends IPNRecoverable> T manage(Topic topic, String id) throws MPException {
+    public static <T extends MPBase> T manage(Topic topic, String id) throws MPException {
         if (topic == null ||
                 id == null) {
             throw new MPException("Topic and Id can not be null in the IPN request");
         }
 
         T resourceObject = null;
+        Class clazz = null;
+        Method method = null;
         try {
-            Class clazz = Class.forName(topic.getResourceClassName());
+            clazz = Class.forName(topic.getResourceClassName());
             if (!MPBase.class.isAssignableFrom(clazz)) {
                 throw new MPException(topic.toString() + " does not extend from MPBase");
             }
-            resourceObject = (T) clazz.newInstance();
+            method = clazz.getMethod("load", String.class);
+            resourceObject = (T) method.invoke(null, id);
 
         } catch (Exception ex) {
             throw new MPException(ex);
         }
-        resourceObject.load(id);
-
         return resourceObject;
     }
 
