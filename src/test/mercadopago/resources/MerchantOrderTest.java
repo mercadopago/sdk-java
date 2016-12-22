@@ -3,7 +3,6 @@ package test.mercadopago.resources;
 import com.google.gson.JsonObject;
 import com.mercadopago.MPConf;
 import com.mercadopago.core.MPBase;
-import com.mercadopago.core.MPBaseResponse;
 import com.mercadopago.core.MPCoreUtils;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.MerchantOrder;
@@ -138,19 +137,17 @@ public class MerchantOrderTest {
 
     @Test
     public void merchantOrderLoadTest() throws MPException {
-        MerchantOrder merchantOrder = new MerchantOrder();
-
-        MPBaseResponse response = merchantOrder.load("433287094", MPBase.WITH_CACHE);
-        assertEquals(200, response.getStatusCode());
+        MerchantOrder merchantOrder = MerchantOrder.load("433287094", MPBase.WITH_CACHE);
+        assertEquals(200, merchantOrder.getLastApiResponse().getStatusCode());
         assertEquals("433287094", merchantOrder.getId());
         assertEquals("236939761-d2d4c87c-3aa0-4015-9089-2047817399e4", merchantOrder.getPreferenceId());
         assertEquals("opened", merchantOrder.getStatus());
         assertEquals("MLA", merchantOrder.getSiteId());
         assertEquals(0.01f, merchantOrder.getTotalAmount(), 0f);
-        assertFalse(response.fromCache);
+        assertFalse(merchantOrder.getLastApiResponse().fromCache);
 
-        response = merchantOrder.load("433287094", MPBase.WITH_CACHE);
-        assertTrue(response.fromCache);
+        merchantOrder = MerchantOrder.load("433287094", MPBase.WITH_CACHE);
+        assertTrue(merchantOrder.getLastApiResponse().fromCache);
     }
 
     @Test
@@ -166,15 +163,15 @@ public class MerchantOrderTest {
                                 .setCurrencyId("ARS")
                                 .setUnitPrice(.01f));
 
-        MPBaseResponse response = merchantOrder.create();
-        assertEquals(201, response.getStatusCode());
+        merchantOrder.create();
+        assertEquals(201, merchantOrder.getLastApiResponse().getStatusCode());
         assertNotNull(merchantOrder.getId());
         assertEquals(0.01f, merchantOrder.getTotalAmount(), 0f);
 
         String random = UUID.randomUUID().toString();
         merchantOrder.setAdditionalInfo(random);
-        response = merchantOrder.update();
-        assertEquals(200, response.getStatusCode());
+        merchantOrder.update();
+        assertEquals(200, merchantOrder.getLastApiResponse().getStatusCode());
         assertEquals(random, merchantOrder.getAdditionalInfo());
     }
 
@@ -191,8 +188,8 @@ public class MerchantOrderTest {
                                 .setCurrencyId("ARS")
                                 .setUnitPrice(.01f));
 
-        MPBaseResponse response = merchantOrder.create();
-        assertEquals(201, response.getStatusCode());
+        merchantOrder.create();
+        assertEquals(201, merchantOrder.getLastApiResponse().getStatusCode());
         assertNotNull(merchantOrder.getId());
         assertEquals("opened", merchantOrder.getStatus());
         assertEquals("MLA", merchantOrder.getSiteId());

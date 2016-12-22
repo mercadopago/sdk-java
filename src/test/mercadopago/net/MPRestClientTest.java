@@ -1,7 +1,7 @@
 package test.mercadopago.net;
 
 import com.google.gson.JsonObject;
-import com.mercadopago.core.MPBaseResponse;
+import com.mercadopago.core.MPApiResponse;
 import com.mercadopago.core.annotations.rest.PayloadType;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.exceptions.MPRestException;
@@ -10,9 +10,7 @@ import com.mercadopago.net.MPRestClient;
 import org.apache.http.protocol.HTTP;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Mercado Pago SDK
@@ -29,7 +27,7 @@ public class MPRestClientTest {
         MPRestClient client = new MPRestClient();
 
         // Simple GET
-        MPBaseResponse response = client.executeRequest(HttpMethod.GET, HTTPBIN_TEST_URL + "get", PayloadType.NONE, null, null);
+        MPApiResponse response = client.executeRequest(HttpMethod.GET, HTTPBIN_TEST_URL + "get", PayloadType.NONE, null, null);
         assertEquals("Response must have a 200 status.", 200, response.getStatusCode());
         assertEquals("Response must have a \"OK\" reason phrase.", "OK", response.getReasonPhrase());
 
@@ -60,7 +58,7 @@ public class MPRestClientTest {
         MPRestClient client = new MPRestClient();
 
         // Simple DELETE
-        MPBaseResponse response = client.executeRequest(HttpMethod.DELETE, HTTPBIN_TEST_URL + "delete", PayloadType.NONE, null, null);
+        MPApiResponse response = client.executeRequest(HttpMethod.DELETE, HTTPBIN_TEST_URL + "delete", PayloadType.NONE, null, null);
         assertEquals("Response must have a 200 status.", 200, response.getStatusCode());
         assertEquals("Response must have a \"OK\" reason phrase.", "OK", response.getReasonPhrase());
 
@@ -95,10 +93,10 @@ public class MPRestClientTest {
         jsonObject.addProperty("testproperty", "testvalue");
 
         // POST JSON
-        MPBaseResponse response = client.executeRequest(HttpMethod.POST, HTTPBIN_TEST_URL + "post", PayloadType.JSON, jsonObject, null);
+        MPApiResponse response = client.executeRequest(HttpMethod.POST, HTTPBIN_TEST_URL + "post", PayloadType.JSON, jsonObject, null);
         assertEquals("Response must have a 200 status.", 200, response.getStatusCode());
         assertEquals("Response must have a \"OK\" reason phrase.", "OK", response.getReasonPhrase());
-        assertEquals("Response entity must be \"{\"property\":\"value\",\"testproperty\":\"testvalue\"}\"", jsonObject, response.getJsonResponse().get("json"));
+        assertEquals("Response entity must be \"{\"property\":\"value\",\"testproperty\":\"testvalue\"}\"", jsonObject, ((JsonObject)response.getJsonElementResponse()).get("json"));
         assertEquals("Content type must be \"application/json\"", "application/json", response.getHeaders(HTTP.CONTENT_TYPE)[0].getValue());
 
         // POST X_WWW
@@ -137,10 +135,10 @@ public class MPRestClientTest {
         jsonObject.addProperty("property", "value");
 
         // PUT JSON
-        MPBaseResponse response = client.executeRequest(HttpMethod.PUT, HTTPBIN_TEST_URL + "put", PayloadType.JSON, jsonObject, null);
+        MPApiResponse response = client.executeRequest(HttpMethod.PUT, HTTPBIN_TEST_URL + "put", PayloadType.JSON, jsonObject, null);
         assertEquals("Response must have a 200 status.", 200, response.getStatusCode());
         assertEquals("Response must have a \"OK\" reason phrase.", "OK", response.getReasonPhrase());
-        assertEquals("Response entity must be \"{\"data\":\"testvalue\"}\"", jsonObject, response.getJsonResponse().get("json"));
+        assertEquals("Response entity must be \"{\"data\":\"testvalue\"}\"", jsonObject, ((JsonObject)response.getJsonElementResponse()).get("json"));
 
         // Invalid
         response = client.executeRequest(HttpMethod.PUT, HTTPBIN_TEST_URL + "put/invalid", PayloadType.JSON, jsonObject, null);
@@ -190,7 +188,7 @@ public class MPRestClientTest {
     public void httpParamsTest() throws MPRestException {
         MPRestClient client = new MPRestClient();
 
-        MPBaseResponse response = client.executeRequest(HttpMethod.GET, HTTPBIN_TEST_URL + "delay/5", PayloadType.NONE, null, null, 0, 1, 1);
+        MPApiResponse response = client.executeRequest(HttpMethod.GET, HTTPBIN_TEST_URL + "delay/5", PayloadType.NONE, null, null, 0, 1, 1);
         assertEquals("Response must have a 404 status.", 404, response.getStatusCode());
 
         response = client.executeRequest(HttpMethod.GET, HTTPBIN_TEST_URL + "delay/5", PayloadType.NONE, null, null, 3, 10000, 10000);

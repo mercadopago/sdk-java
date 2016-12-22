@@ -1,7 +1,6 @@
 package test.mercadopago.core;
 
 import com.mercadopago.core.MPBase;
-import com.mercadopago.core.MPBaseResponse;
 import com.mercadopago.core.annotations.rest.DELETE;
 import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.core.annotations.rest.POST;
@@ -21,23 +20,23 @@ import static org.junit.Assert.assertSame;
 public class MPBaseWithoutPathTest extends MPBase {
 
     @GET(path="")
-    public MPBaseResponse load(String id) throws MPException {
-        return super.processMethod("load", id);
+    public MPBaseWithoutPathTest load(String id) throws MPException {
+        return MPBaseWithoutPathTest.processMethod(MPBaseWithoutPathTest.class, "load", id, WITHOUT_CACHE);
     }
 
     @POST(path="")
-    public MPBaseResponse save() throws MPException {
-        return super.processMethod("save");
+    public MPBaseWithoutPathTest create() throws MPException {
+        return super.processMethod("create", WITHOUT_CACHE);
     }
 
     @PUT(path="")
-    public MPBaseResponse update(String id) throws MPException {
-        return super.processMethod("update", id);
+    public MPBaseWithoutPathTest update() throws MPException {
+        return super.processMethod("update", WITHOUT_CACHE);
     }
 
     @DELETE(path="")
-    public MPBaseResponse delete(String id) throws MPException {
-        return super.processMethod("delete", id);
+    public MPBaseWithoutPathTest delete() throws MPException {
+        return super.processMethod("delete", WITHOUT_CACHE);
     }
 
     /**
@@ -46,9 +45,11 @@ public class MPBaseWithoutPathTest extends MPBase {
      */
     @Test
     public void withoutPathMethodsTest() throws Exception {
+        MPBaseWithoutPathTest resource = new MPBaseWithoutPathTest();
+
         Exception auxException = null;
         try {
-            delete(null);
+            resource.delete();
         } catch (MPException mpException) {
             assertEquals("Exception must have \"Path not found for DELETE method\" message", mpException.getMessage(), "Path not found for DELETE method");
             auxException = mpException;
@@ -57,7 +58,7 @@ public class MPBaseWithoutPathTest extends MPBase {
 
         auxException = null;
         try {
-            load(null);
+            resource.load("5");
         } catch (MPException mpException) {
             assertEquals("Exception must have \"Path not found for GET method\" message", mpException.getMessage(), "Path not found for GET method");
             auxException = mpException;
@@ -66,7 +67,7 @@ public class MPBaseWithoutPathTest extends MPBase {
 
         auxException = null;
         try {
-            save();
+            resource.create();
         } catch (MPException mpException) {
             assertEquals("Exception must have \"Path not found for POST method\" message", mpException.getMessage(), "Path not found for POST method");
             auxException = mpException;
@@ -75,7 +76,7 @@ public class MPBaseWithoutPathTest extends MPBase {
 
         auxException = null;
         try {
-            update(null);
+            resource.update();
         } catch (MPException mpException) {
             assertEquals("Exception must have \"Path not found for PUT method\" message", mpException.getMessage(), "Path not found for PUT method");
             auxException = mpException;

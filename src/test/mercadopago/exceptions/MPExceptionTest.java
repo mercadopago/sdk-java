@@ -1,7 +1,6 @@
 package test.mercadopago.exceptions;
 
 import com.mercadopago.exceptions.MPException;
-import com.sun.javaws.exceptions.ExitException;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

@@ -1,9 +1,6 @@
 package com.mercadopago.core;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 import com.mercadopago.exceptions.MPException;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.validator.routines.UrlValidator;
@@ -66,7 +63,7 @@ public class MPCoreUtils {
      * @param <T>
      * @return
      */
-    public static <T extends MPBase> T getResourceFromJson(Class clazz, JsonObject jsonEntity) {
+    public static <T> T getResourceFromJson(Class clazz, JsonObject jsonEntity) {
         return (T) gson.fromJson(jsonEntity, clazz);
     }
 
@@ -108,6 +105,24 @@ public class MPCoreUtils {
         String[] schemes = {"https"};
         UrlValidator urlValidator = new UrlValidator(schemes);
         return urlValidator.isValid(url);
+    }
+
+    /**
+     * Analizes a JsonElement and determines if its a result of a api search or loadAll method
+     *
+     * @param jsonElement       the jsonElement to be analized
+     * @return
+     */
+    static JsonArray getArrayFromJsonElement(JsonElement jsonElement) {
+        JsonArray jsonArray = null;
+        if (jsonElement.isJsonArray()) {
+            jsonArray = jsonElement.getAsJsonArray();
+        } else if (jsonElement.isJsonObject() &&
+                ((JsonObject) jsonElement).get("results") != null &&
+                ((JsonObject) jsonElement).get("results").isJsonArray()) {
+            jsonArray = ((JsonObject) jsonElement).get("results").getAsJsonArray();
+        }
+        return jsonArray;
     }
 
 }

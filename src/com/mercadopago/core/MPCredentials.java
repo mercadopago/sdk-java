@@ -1,5 +1,6 @@
 package com.mercadopago.core;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mercadopago.MPConf;
 import com.mercadopago.core.annotations.rest.PayloadType;
@@ -34,14 +35,17 @@ public class MPCredentials {
         jsonPayload.addProperty("client_secret", MPConf.getClientSecret());
 
         String access_token = null;
-        MPBaseResponse response = new MPRestClient().executeRequest(
+        MPApiResponse response = new MPRestClient().executeRequest(
                 HttpMethod.POST,
                 MPConf.getBaseUrl() + "/oauth/token",
                 PayloadType.X_WWW_FORM_URLENCODED,
                 jsonPayload,
                 null);
         if (response.getStatusCode() == 200) {
-            access_token = response.getJsonResponse().get("access_token").getAsString();
+            JsonElement jsonElement = response.getJsonElementResponse();
+            if (jsonElement.isJsonObject()) {
+                access_token = ((JsonObject)jsonElement).get("access_token").getAsString();
+            }
         } else {
             throw new MPException("Can not retrieve the \"access_token\"");
         }

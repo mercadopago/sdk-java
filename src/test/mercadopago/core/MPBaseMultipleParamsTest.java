@@ -2,12 +2,12 @@ package test.mercadopago.core;
 
 import com.mercadopago.MPConf;
 import com.mercadopago.core.MPBase;
-import com.mercadopago.core.MPBaseResponse;
+import com.mercadopago.core.MPResourceArray;
 import com.mercadopago.core.annotations.rest.DELETE;
 import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.core.annotations.rest.POST;
 import com.mercadopago.exceptions.MPException;
-import com.mercadopago.resources.Preferences;
+import com.mercadopago.resources.Preference;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -29,28 +29,28 @@ public class MPBaseMultipleParamsTest extends MPBase {
         MPConf.setConfiguration("test/mercadopago/data/credentials.properties");
     }
 
-    @GET(path="/loadpath/slug")
-    public MPBaseResponse load() throws MPException {
-        return super.processMethod("load");
+    @GET(path="/loadpath/slug/:param1")
+    public static MPBaseMultipleParamsTest load(String id) throws MPException {
+        return MPBase.processMethod(MPBaseMultipleParamsTest.class, "load", id, WITHOUT_CACHE);
     }
 
-    @POST(path="/savepath/slug/:param1")
-    public MPBaseResponse save(String param1) throws MPException {
-        return super.processMethod("save", param1);
+    @POST(path="/createpath/slug/")
+    public MPBaseMultipleParamsTest create() throws MPException {
+        return super.processMethod("create", WITHOUT_CACHE);
     }
 
     @GET(path="/getpath/slug/:param1/otherslug/:param2")
-    public MPBaseResponse update(String param1, String param2) throws MPException {
-        return super.processMethod("update", param1, param2);
+    public static MPResourceArray loadAll(String param1, String param2) throws MPException {
+        return MPBaseMultipleParamsTest.processMethodBulk(MPBaseMultipleParamsTest.class, "loadAll", param1, param2, WITHOUT_CACHE);
     }
 
     @DELETE(path="/delete/slug/:card_id/otherslug/:param2/:param3")
-    public MPBaseResponse delete(String card_id, String param2, String param3) throws MPException {
+    public MPBaseMultipleParamsTest delete(String card_id, String param2, String param3) throws MPException {
         HashMap<String, String> mapParams = new HashMap<String, String>();
         mapParams.put("card_id", card_id);
         mapParams.put("param2", param2);
         mapParams.put("param3", param3);
-        return super.processMethod("delete", mapParams);
+        return super.processMethod(MPBaseMultipleParamsTest.class, this, "delete", mapParams, WITHOUT_CACHE);
     }
 
     /**
@@ -58,9 +58,11 @@ public class MPBaseMultipleParamsTest extends MPBase {
      */
     @Test
     public void noParamsMethdTest() throws Exception {
-        MPBaseResponse response = load();
-        assertEquals("GET", response.getMethod());
-        assertEquals("https://api.mercadopago.com/loadpath/slug?access_token=" + MPConf.getAccessToken(), response.getUrl());
+        MPBaseMultipleParamsTest resource = new MPBaseMultipleParamsTest();
+        resource.create();
+        assertEquals("POST", resource.getLastApiResponse().getMethod());
+        assertEquals("https://api.mercadopago.com/createpath/slug/?access_token=" + MPConf.getAccessToken(), resource.getLastApiResponse().getUrl());
+
     }
 
     /**
@@ -68,9 +70,10 @@ public class MPBaseMultipleParamsTest extends MPBase {
      */
     @Test
     public void singleParamsMethdTest() throws Exception {
-        MPBaseResponse response = save("test1");
-        assertEquals("POST", response.getMethod());
-        assertEquals("https://api.mercadopago.com/savepath/slug/test1?access_token=" + MPConf.getAccessToken(), response.getUrl());
+        MPBaseMultipleParamsTest resource = MPBaseMultipleParamsTest.load("some_id");
+        assertEquals("GET", resource.getLastApiResponse().getMethod());
+        assertEquals("https://api.mercadopago.com/loadpath/slug/some_id?access_token=" + MPConf.getAccessToken(), resource.getLastApiResponse().getUrl());
+
     }
 
     /**
@@ -78,9 +81,9 @@ public class MPBaseMultipleParamsTest extends MPBase {
      */
     @Test
     public void twoParamsMethdTest() throws Exception {
-        MPBaseResponse response = update("test1", "test2");
-        assertEquals("GET", response.getMethod());
-        assertEquals("https://api.mercadopago.com/getpath/slug/test1/otherslug/test2?access_token=" + MPConf.getAccessToken(), response.getUrl());
+        MPResourceArray resourceArray = MPBaseMultipleParamsTest.loadAll("test1", "test2");
+        assertEquals("GET", resourceArray.getLastApiResponse().getMethod());
+        assertEquals("https://api.mercadopago.com/getpath/slug/test1/otherslug/test2?access_token=" + MPConf.getAccessToken(), resourceArray.getLastApiResponse().getUrl());
     }
 
     /**
@@ -88,23 +91,24 @@ public class MPBaseMultipleParamsTest extends MPBase {
      */
     @Test
     public void threeParamsMethdTest() throws Exception {
-        MPBaseResponse response = delete("test1", "test2", "test3");
-        assertEquals("DELETE", response.getMethod());
-        assertEquals("https://api.mercadopago.com/delete/slug/test1/otherslug/test2/test3?access_token=" + MPConf.getAccessToken(), response.getUrl());
+        MPBaseMultipleParamsTest resource = new MPBaseMultipleParamsTest();
+        resource.delete("test1", "test2", "test3");
+        assertEquals("DELETE", resource.getLastApiResponse().getMethod());
+        assertEquals("https://api.mercadopago.com/delete/slug/test1/otherslug/test2/test3?access_token=" + MPConf.getAccessToken(), resource.getLastApiResponse().getUrl());
     }
 
 
     @Test
     public void idempotenceKeyTest() throws MPException {
-        Preferences preferences = new Preferences();
+        Preference preference = new Preference();
 
-        assertNull(preferences.getIdempotenceKey());
+        assertNull(preference.getIdempotenceKey());
 
         Exception exception = null;
         try {
-            preferences.setIdempotenceKey("someKey");
+            preference.setIdempotenceKey("someKey");
         } catch (MPException mpException) {
-            assertEquals("Preferences does not admit an idempotence key", mpException.getMessage());
+            assertEquals("Preference does not admit an idempotence key", mpException.getMessage());
             exception = mpException;
         }
         assertSame(MPException.class, exception.getClass());

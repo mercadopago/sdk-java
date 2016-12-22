@@ -1,10 +1,10 @@
-package com.mercadopago.resources.datastructures.preferences;
+package com.mercadopago.resources.datastructures.preference;
 
 import com.mercadopago.core.annotations.validation.Size;
 
 /**
  * Mercado Pago SDK
- * Preferences Payer Phone class
+ * Preference Payer Phone class
  *
  * Created by Eduardo Paoletta on 12/12/16.
  */

@@ -2,8 +2,8 @@ package test.mercadopago.resources;
 
 import com.google.gson.JsonObject;
 import com.mercadopago.MPConf;
+import com.mercadopago.core.MPApiResponse;
 import com.mercadopago.core.MPBase;
-import com.mercadopago.core.MPBaseResponse;
 import com.mercadopago.core.MPCoreUtils;
 import com.mercadopago.core.annotations.rest.PayloadType;
 import com.mercadopago.exceptions.MPException;
@@ -12,8 +12,6 @@ import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPRestClient;
 import com.mercadopago.resources.Payment;
 import com.mercadopago.resources.datastructures.payment.*;
-
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 import test.mercadopago.data.TestUserData;
@@ -138,20 +136,18 @@ public class PaymentTest {
 
     @Test
     public void paymentLoadTest() throws MPException {
-        Payment payment = new Payment();
-
-        MPBaseResponse response = payment.load("2278812", MPBase.WITH_CACHE);
-        assertEquals(200, response.getStatusCode());
+        Payment payment = Payment.load("2278812", MPBase.WITH_CACHE);
+        assertEquals(200, payment.getLastApiResponse().getStatusCode());
         assertEquals("2278812", payment.getId());
         assertEquals("regular_payment", payment.getOperationType().toString());
         assertEquals(Float.valueOf(100f), payment.getTransactionAmount());
         assertEquals("accredited", payment.getStatusDetail());
         assertTrue(payment.getCaptured());
         assertEquals(Integer.valueOf(1), payment.getInstallments());
-        assertFalse(response.fromCache);
+        assertFalse(payment.getLastApiResponse().fromCache);
 
-        response = payment.load("2278812", MPBase.WITH_CACHE);
-        assertTrue(response.fromCache);
+        payment = Payment.load("2278812", MPBase.WITH_CACHE);
+        assertTrue(payment.getLastApiResponse().fromCache);
     }
 
     @Test
@@ -170,14 +166,14 @@ public class PaymentTest {
         payment.setPayer(payer);
         payment.setCapture(Boolean.FALSE);
 
-        MPBaseResponse response = payment.create();
-        assertEquals(201, response.getStatusCode());
+        payment.create();
+        assertEquals(201, payment.getLastApiResponse().getStatusCode());
         assertNotNull(payment.getId());
         assertFalse(payment.getCaptured());
 
         payment.setCapture(Boolean.TRUE);
-        response = payment.update();
-        assertEquals(200, response.getStatusCode());
+        payment.update();
+        assertEquals(200, payment.getLastApiResponse().getStatusCode());
         assertTrue(payment.getCaptured());
 
     }
@@ -199,7 +195,7 @@ public class PaymentTest {
 
         jsonPayload.add("cardholder", cardHolder);
 
-        MPBaseResponse response;
+        MPApiResponse response;
         try {
             MPRestClient client = new MPRestClient();
             response = client.executeRequest(
@@ -211,7 +207,7 @@ public class PaymentTest {
         } catch (MPRestException rex) {
             throw new MPException(rex);
         }
-        return response.getJsonResponse().get("id").getAsString();
+        return ((JsonObject) response.getJsonElementResponse()).get("id").getAsString();
     }
 
     @Test
@@ -229,8 +225,8 @@ public class PaymentTest {
         payment.setInstallments(1);
         payment.setPayer(payer);
 
-        MPBaseResponse response = payment.create();
-        assertEquals(201, response.getStatusCode());
+        payment.create();
+        assertEquals(201, payment.getLastApiResponse().getStatusCode());
         assertNotNull(payment.getId());
         assertEquals("approved", payment.getStatus().toString());
         assertEquals("accredited", payment.getStatusDetail());

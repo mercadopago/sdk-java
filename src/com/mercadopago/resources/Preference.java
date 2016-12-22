@@ -1,15 +1,13 @@
 package com.mercadopago.resources;
 
 import com.mercadopago.core.MPBase;
-import com.mercadopago.core.MPBaseResponse;
 import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.core.annotations.rest.POST;
 import com.mercadopago.core.annotations.rest.PUT;
 import com.mercadopago.core.annotations.validation.NotNull;
-import com.mercadopago.core.annotations.validation.Numeric;
 import com.mercadopago.core.annotations.validation.Size;
 import com.mercadopago.exceptions.MPException;
-import com.mercadopago.resources.datastructures.preferences.*;
+import com.mercadopago.resources.datastructures.preference.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,7 +19,7 @@ import java.util.Date;
  *
  * Created by Eduardo Paoletta on 11/9/16.
  */
-public class Preferences extends MPBase {
+public class Preference extends MPBase {
 
     @NotNull private ArrayList<Item> items = null;
     @NotNull private Payer payer = null;
@@ -59,12 +57,12 @@ public class Preferences extends MPBase {
         return items;
     }
 
-    public Preferences setItems(ArrayList<Item> items) {
+    public Preference setItems(ArrayList<Item> items) {
         this.items = items;
         return this;
     }
 
-    public Preferences appendItem(Item item) {
+    public Preference appendItem(Item item) {
         if (items == null) {
             items = new ArrayList<Item>();
         }
@@ -76,7 +74,7 @@ public class Preferences extends MPBase {
         return payer;
     }
 
-    public Preferences setPayer(Payer payer) {
+    public Preference setPayer(Payer payer) {
         this.payer = payer;
         return this;
     }
@@ -85,7 +83,7 @@ public class Preferences extends MPBase {
         return paymentMethods;
     }
 
-    public Preferences setPaymentMethods(PaymentMethods paymentMethods) {
+    public Preference setPaymentMethods(PaymentMethods paymentMethods) {
         this.paymentMethods = paymentMethods;
         return this;
     }
@@ -94,7 +92,7 @@ public class Preferences extends MPBase {
         return shipments;
     }
 
-    public Preferences setShipments(Shipments shipments) {
+    public Preference setShipments(Shipments shipments) {
         this.shipments = shipments;
         return this;
     }
@@ -103,7 +101,7 @@ public class Preferences extends MPBase {
         return backUrls;
     }
 
-    public Preferences setBackUrls(BackUrls backUrls) {
+    public Preference setBackUrls(BackUrls backUrls) {
         this.backUrls = backUrls;
         return this;
     }
@@ -112,7 +110,7 @@ public class Preferences extends MPBase {
         return notificationUrl;
     }
 
-    public Preferences setNotificationUrl(String notificationUrl) {
+    public Preference setNotificationUrl(String notificationUrl) {
         this.notificationUrl = notificationUrl;
         return this;
     }
@@ -141,7 +139,7 @@ public class Preferences extends MPBase {
         return additionalInfo;
     }
 
-    public Preferences setAdditionalInfo(String additionalInfo) {
+    public Preference setAdditionalInfo(String additionalInfo) {
         this.additionalInfo = additionalInfo;
         return this;
     }
@@ -150,7 +148,7 @@ public class Preferences extends MPBase {
         return autoReturn;
     }
 
-    public Preferences setAutoReturn(AutoReturn autoReturn) {
+    public Preference setAutoReturn(AutoReturn autoReturn) {
         this.autoReturn = autoReturn;
         return this;
     }
@@ -159,7 +157,7 @@ public class Preferences extends MPBase {
         return externalReference;
     }
 
-    public Preferences setExternalReference(String externalReference) {
+    public Preference setExternalReference(String externalReference) {
         this.externalReference = externalReference;
         return this;
     }
@@ -168,7 +166,7 @@ public class Preferences extends MPBase {
         return expires;
     }
 
-    public Preferences setExpires(Boolean expires) {
+    public Preference setExpires(Boolean expires) {
         this.expires = expires;
         return this;
     }
@@ -177,7 +175,7 @@ public class Preferences extends MPBase {
         return expirationDateFrom;
     }
 
-    public Preferences setExpirationDateFrom(Date expirationDateFrom) {
+    public Preference setExpirationDateFrom(Date expirationDateFrom) {
         this.expirationDateFrom = expirationDateFrom;
         return this;
     }
@@ -186,7 +184,7 @@ public class Preferences extends MPBase {
         return expirationDateTo;
     }
 
-    public Preferences setExpirationDateTo(Date expirationDateTo) {
+    public Preference setExpirationDateTo(Date expirationDateTo) {
         this.expirationDateTo = expirationDateTo;
         return this;
     }
@@ -203,7 +201,7 @@ public class Preferences extends MPBase {
         return marketplace;
     }
 
-    public Preferences setMarketplace(String marketplace) {
+    public Preference setMarketplace(String marketplace) {
         this.marketplace = marketplace;
         return this;
     }
@@ -212,7 +210,7 @@ public class Preferences extends MPBase {
         return marketplaceFee;
     }
 
-    public Preferences setMarketplaceFee(Float marketplaceFee) {
+    public Preference setMarketplaceFee(Float marketplaceFee) {
         this.marketplaceFee = marketplaceFee;
         return this;
     }
@@ -221,30 +219,30 @@ public class Preferences extends MPBase {
         return differentialPricing;
     }
 
-    public Preferences setDifferentialPricing(DifferentialPricing differentialPricing) {
+    public Preference setDifferentialPricing(DifferentialPricing differentialPricing) {
         this.differentialPricing = differentialPricing;
         return this;
     }
 
 
 
-    public MPBaseResponse load(String id) throws MPException {
+    public static Preference load(String id) throws MPException {
         return load(id, WITHOUT_CACHE);
     }
 
     @GET(path="/checkout/preferences/:id")
-    public MPBaseResponse load(String id, Boolean useCache) throws MPException {
-        return super.processMethod("load", id, useCache);
+    public static Preference load(String id, Boolean useCache) throws MPException {
+        return Preference.processMethod(Preference.class, "load", id, useCache);
     }
 
     @POST(path="/checkout/preferences")
-    public MPBaseResponse create() throws MPException {
-        return super.processMethod("create");
+    public Preference create() throws MPException {
+        return super.processMethod("create", WITHOUT_CACHE);
     }
 
     @PUT(path="/checkout/preferences/:id")
-    public MPBaseResponse update() throws MPException {
-        return super.processMethod("update");
+    public Preference update() throws MPException {
+        return super.processMethod("update", WITHOUT_CACHE);
     }
 
 }
