@@ -1,6 +1,6 @@
 package test.mercadopago.resources;
 
-import com.mercadopago.MPConf;
+import com.mercadopago.SDK;
 import com.mercadopago.core.MPBase;
 import com.mercadopago.core.MPResourceArray;
 import com.mercadopago.exceptions.MPException;
@@ -20,7 +20,7 @@ public class IdentificationTypeTest {
 
     @BeforeClass
     public static void beforeTest() throws MPException {
-        MPConf.cleanConfiguration();
+        SDK.cleanConfiguration();
         MPConf.setConfiguration("test/mercadopago/data/credentials.properties");
     }
 

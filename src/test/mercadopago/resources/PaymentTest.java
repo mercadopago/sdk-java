@@ -1,7 +1,7 @@
 package test.mercadopago.resources;
 
 import com.google.gson.JsonObject;
-import com.mercadopago.MPConf;
+import com.mercadopago.SDK;
 import com.mercadopago.core.MPApiResponse;
 import com.mercadopago.core.MPBase;
 import com.mercadopago.core.MPCoreUtils;
@@ -32,8 +32,8 @@ public class PaymentTest {
 
     @BeforeClass
     public static void beforeTest() throws MPException {
-        MPConf.cleanConfiguration();
-        MPConf.setConfiguration("test/mercadopago/data/credentials.properties");
+        SDK.cleanConfiguration();
+        SDK.setConfiguration("test/mercadopago/data/credentials.properties");
     }
 
     @Test
@@ -200,7 +200,7 @@ public class PaymentTest {
             MPRestClient client = new MPRestClient();
             response = client.executeRequest(
                     HttpMethod.POST,
-                    MPConf.getBaseUrl() + "/v1/card_tokens?public_key=" + TestUserData.publicKey,
+                    SDK.getBaseUrl() + "/v1/card_tokens?public_key=" + TestUserData.publicKey,
                     PayloadType.JSON,
                     jsonPayload,
                     null);

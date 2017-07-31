@@ -11,11 +11,11 @@ import java.util.Properties;
 
 /**
  * Mercado Pago SDK
- * MPConf Class
+ * SDK Class
  *
  * Created by Eduardo Paoletta on 11/1/16.
  */
-public class MPConf {
+public class SDK {
 
     private static final String DEFAULT_BASE_URL = "https://api.mercadopago.com";
 
@@ -25,6 +25,20 @@ public class MPConf {
     private static String userToken = null;
     private static String appId = null;
     private static String baseUrl = DEFAULT_BASE_URL;
+
+
+    /**
+     * Configure Methods
+     */
+
+    public static void configure(String accessTokenValue) {
+        accessToken = accessTokenValue;
+    }
+
+    public static void configure(String clientIdValue, String clientSecretValue) {
+        clientId=clientIdValue;
+        clientSecret=clientSecretValue;
+    }
 
     /**
      * Getter/Setter for ClientSecret
@@ -150,7 +164,7 @@ public class MPConf {
         InputStream inputStream = null;
         try {
             Properties properties = new Properties();
-            inputStream = MPConf.class.getClassLoader().getResourceAsStream(filePath);
+            inputStream = SDK.class.getClassLoader().getResourceAsStream(filePath);
             if (inputStream == null) {
                 throw new IllegalArgumentException("File not found");
             }

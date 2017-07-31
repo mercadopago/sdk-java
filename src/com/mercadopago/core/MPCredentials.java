@@ -2,7 +2,7 @@ package com.mercadopago.core;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.mercadopago.MPConf;
+import com.mercadopago.SDK;
 import com.mercadopago.core.annotations.rest.PayloadType;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
@@ -24,20 +24,20 @@ public class MPCredentials {
      * @throws MPException
      */
     public static String getAccessToken() throws MPException {
-        if (StringUtils.isEmpty(MPConf.getClientId()) ||
-                StringUtils.isEmpty(MPConf.getClientSecret())) {
+        if (StringUtils.isEmpty(SDK.getClientId()) ||
+                StringUtils.isEmpty(SDK.getClientSecret())) {
             throw new MPException("\"client_id\" and \"client_secret\" can not be \"null\" when getting the \"access_token\"");
         }
 
         JsonObject jsonPayload = new JsonObject();
         jsonPayload.addProperty("grant_type", "client_credentials");
-        jsonPayload.addProperty("client_id", MPConf.getClientId());
-        jsonPayload.addProperty("client_secret", MPConf.getClientSecret());
+        jsonPayload.addProperty("client_id", SDK.getClientId());
+        jsonPayload.addProperty("client_secret", SDK.getClientSecret());
 
         String access_token = null;
         MPApiResponse response = new MPRestClient().executeRequest(
                 HttpMethod.POST,
-                MPConf.getBaseUrl() + "/oauth/token",
+                SDK.getBaseUrl() + "/oauth/token",
                 PayloadType.X_WWW_FORM_URLENCODED,
                 jsonPayload,
                 null);

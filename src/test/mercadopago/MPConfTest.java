@@ -1,6 +1,6 @@
 package test.mercadopago;
 
-import com.mercadopago.MPConf;
+import com.mercadopago.SDK;
 import com.mercadopago.exceptions.MPConfException;
 import com.mercadopago.exceptions.MPException;
 import org.junit.Test;

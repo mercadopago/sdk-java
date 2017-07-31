@@ -27,8 +27,8 @@ public class MerchantOrderTest {
 
     @BeforeClass
     public static void beforeTest() throws MPException {
-        MPConf.cleanConfiguration();
-        MPConf.setConfiguration("test/mercadopago/data/credentialsprod.properties");
+        SDK.cleanConfiguration();
+        SDK.setConfiguration("test/mercadopago/data/credentialsprod.properties");
     }
 
     @Test

@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import com.mercadopago.MPConf;
+import com.mercadopago.SDK;
 import com.mercadopago.core.annotations.idempotent.Idempotent;
 import com.mercadopago.core.annotations.rest.*;
 import com.mercadopago.exceptions.MPException;

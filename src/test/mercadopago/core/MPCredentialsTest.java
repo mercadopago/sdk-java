@@ -1,6 +1,6 @@
 package test.mercadopago.core;
 
-import com.mercadopago.MPConf;
+import com.mercadopago.SDK;
 import com.mercadopago.core.MPCredentials;
 import com.mercadopago.exceptions.MPConfException;
 import com.mercadopago.exceptions.MPException;
@@ -22,7 +22,7 @@ public class MPCredentialsTest {
 
     @Test
     public void credentialsTest() throws MPException {
-        MPConf.cleanConfiguration();
+        SDK.cleanConfiguration();
 
         Exception exception = null;
         try {
@@ -42,7 +42,7 @@ public class MPCredentialsTest {
         InputStream inputStream = null;
         try {
             properties = new Properties();
-            inputStream = MPConf.class.getClassLoader().getResourceAsStream("test/mercadopago/data/credentials.properties");
+            inputStream = SDK.class.getClassLoader().getResourceAsStream("test/mercadopago/data/credentials.properties");
             if (inputStream == null) {
                 throw new IllegalArgumentException("File not found");
             }
@@ -60,10 +60,10 @@ public class MPCredentialsTest {
                 // Do nothing
             }
         }
-        MPConf.setClientSecret(properties.getProperty("clientSecret"));
-        MPConf.setClientId(properties.getProperty("clientId"));
+        SDK.setClientSecret(properties.getProperty("clientSecret"));
+        SDK.setClientId(properties.getProperty("clientId"));
 
-        String accessToken = MPConf.getAccessToken();
+        String accessToken = SDK.getAccessToken();
         assertNotNull(accessToken);
     }
 
