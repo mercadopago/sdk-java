@@ -15,7 +15,7 @@ import com.mercadopago.resources.datastructures.customer.card.SecurityCode;
 import java.util.Date;
 
 /**
- * Mercado Pago SDK
+ * Mercado Pago MercadoPago
  * Retrieves information about a customer's cards.
  *
  * Created by Eduardo Paoletta on 12/15/16.

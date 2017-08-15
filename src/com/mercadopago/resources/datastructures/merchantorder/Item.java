@@ -3,7 +3,7 @@ package com.mercadopago.resources.datastructures.merchantorder;
 import com.mercadopago.core.annotations.validation.Size;
 
 /**
- * Mercado Pago SDK
+ * Mercado Pago MercadoPago
  * Merchant Order Item class
  *
  * Created by Eduardo Paoletta on 12/13/16.

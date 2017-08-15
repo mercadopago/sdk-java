@@ -3,7 +3,7 @@ package com.mercadopago.exceptions;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Mercado Pago SDK
+ * Mercado Pago MercadoPago
  * Mercado Pago MPBase Exception Class
  *
  * Created by Eduardo Paoletta on 11/1/16.

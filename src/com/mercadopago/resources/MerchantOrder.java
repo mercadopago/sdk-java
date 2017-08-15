@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Mercado Pago SDK
+ * Mercado Pago MercadoPago
  * This resource allows you to keep track the state of an order, grouping items, payments and shipments.
  *
  * Created by Eduardo Paoletta on 12/13/16.

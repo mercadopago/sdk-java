@@ -1,7 +1,7 @@
 package test.mercadopago.resources;
 
 import com.google.gson.JsonObject;
-import com.mercadopago.SDK;
+import com.mercadopago.MercadoPago;
 import com.mercadopago.core.MPBase;
 import com.mercadopago.core.MPCoreUtils;
 import com.mercadopago.exceptions.MPException;
@@ -18,7 +18,7 @@ import java.util.UUID;
 import static org.junit.Assert.*;
 
 /**
- * Mercado Pago SDK
+ * Mercado Pago MercadoPago
  * Preference Resource Test
  *
  * Created by Eduardo Paoletta on 11/21/16.
@@ -27,7 +27,7 @@ public class PreferenceTest {
 
     @BeforeClass
     public static void beforeTest() throws MPException {
-        SDK.cleanConfiguration();
+        MercadoPago.SDK.cleanConfiguration();
         setConfiguration("test/mercadopago/data/credentialsprod.properties");
     }
 

@@ -1,6 +1,6 @@
 package test.mercadopago.core;
 
-import com.mercadopago.SDK;
+import com.mercadopago.MercadoPago;
 import com.mercadopago.core.MPCredentials;
 import com.mercadopago.exceptions.MPConfException;
 import com.mercadopago.exceptions.MPException;
@@ -13,7 +13,7 @@ import java.util.Properties;
 import static org.junit.Assert.*;
 
 /**
- * Mercado Pago SDK
+ * Mercado Pago MercadoPago
  * MPCredentials Tests class
  *
  * Created by Eduardo Paoletta on 12/13/16.
@@ -22,7 +22,7 @@ public class MPCredentialsTest {
 
     @Test
     public void credentialsTest() throws MPException {
-        SDK.cleanConfiguration();
+        MercadoPago.SDK.cleanConfiguration();
 
         Exception exception = null;
         try {
@@ -42,7 +42,7 @@ public class MPCredentialsTest {
         InputStream inputStream = null;
         try {
             properties = new Properties();
-            inputStream = SDK.class.getClassLoader().getResourceAsStream("test/mercadopago/data/credentials.properties");
+            inputStream = MercadoPago.SDK.class.getClassLoader().getResourceAsStream("test/mercadopago/data/credentials.properties");
             if (inputStream == null) {
                 throw new IllegalArgumentException("File not found");
             }
@@ -60,10 +60,10 @@ public class MPCredentialsTest {
                 // Do nothing
             }
         }
-        SDK.setClientSecret(properties.getProperty("clientSecret"));
-        SDK.setClientId(properties.getProperty("clientId"));
+        MercadoPago.SDK.setClientSecret(properties.getProperty("clientSecret"));
+        MercadoPago.SDK.setClientId(properties.getProperty("clientId"));
 
-        String accessToken = SDK.getAccessToken();
+        String accessToken = MercadoPago.SDK.getAccessToken();
         assertNotNull(accessToken);
     }
 

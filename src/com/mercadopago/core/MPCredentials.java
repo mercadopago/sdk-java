@@ -2,7 +2,7 @@ package com.mercadopago.core;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.mercadopago.SDK;
+import com.mercadopago.MercadoPago;
 import com.mercadopago.core.annotations.rest.PayloadType;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
@@ -10,7 +10,7 @@ import com.mercadopago.net.MPRestClient;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Mercado Pago SDK
+ * Mercado Pago MercadoPago
  * MPCredentials class
  *
  * Created by Eduardo Paoletta on 11/17/16.
@@ -24,20 +24,20 @@ public class MPCredentials {
      * @throws MPException
      */
     public static String getAccessToken() throws MPException {
-        if (StringUtils.isEmpty(SDK.getClientId()) ||
-                StringUtils.isEmpty(SDK.getClientSecret())) {
+        if (StringUtils.isEmpty(MercadoPago.SDK.getClientId()) ||
+                StringUtils.isEmpty(MercadoPago.SDK.getClientSecret())) {
             throw new MPException("\"client_id\" and \"client_secret\" can not be \"null\" when getting the \"access_token\"");
         }
 
         JsonObject jsonPayload = new JsonObject();
         jsonPayload.addProperty("grant_type", "client_credentials");
-        jsonPayload.addProperty("client_id", SDK.getClientId());
-        jsonPayload.addProperty("client_secret", SDK.getClientSecret());
+        jsonPayload.addProperty("client_id", MercadoPago.SDK.getClientId());
+        jsonPayload.addProperty("client_secret", MercadoPago.SDK.getClientSecret());
 
         String access_token = null;
         MPApiResponse response = new MPRestClient().executeRequest(
                 HttpMethod.POST,
-                SDK.getBaseUrl() + "/oauth/token",
+                MercadoPago.SDK.getBaseUrl() + "/oauth/token",
                 PayloadType.X_WWW_FORM_URLENCODED,
                 jsonPayload,
                 null);

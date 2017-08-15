@@ -3,7 +3,7 @@ package com.mercadopago.resources.datastructures.merchantorder;
 import java.util.Date;
 
 /**
- * Mercado Pago SDK
+ * Mercado Pago MercadoPago
  * Merchant Order Shipment class
  *
  * Created by Eduardo Paoletta on 12/13/16.

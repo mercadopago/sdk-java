@@ -16,6 +16,9 @@ public class MPResourceArray {
     ArrayList _resourceArray = null;
     MPApiResponse lastApiResponse;
 
+    public ArrayList resources(){
+        return this._resourceArray;
+    }
 
     public MPApiResponse getLastApiResponse() {
         return this.lastApiResponse;

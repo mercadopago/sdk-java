@@ -18,7 +18,7 @@ import java.util.UUID;
 import static org.junit.Assert.*;
 
 /**
- * Mercado Pago SDK
+ * Mercado Pago MercadoPago
  * Merchant Order Test class
  *
  * Created by Eduardo Paoletta on 12/14/16.

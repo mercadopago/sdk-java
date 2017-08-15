@@ -1,7 +1,7 @@
 package com.mercadopago.resources.datastructures.payment;
 
 /**
- * Mercado Pago SDK
+ * Mercado Pago MercadoPago
  * Order class
  *
  * Created by Eduardo Paoletta on 12/2/16.

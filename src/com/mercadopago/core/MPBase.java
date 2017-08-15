@@ -6,7 +6,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import com.mercadopago.SDK;
 import com.mercadopago.core.annotations.idempotent.Idempotent;
 import com.mercadopago.core.annotations.rest.*;
 import com.mercadopago.exceptions.MPException;
@@ -24,8 +23,10 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.*;
 
+import static javax.print.attribute.standard.ReferenceUriSchemesSupported.HTTP;
+
 /**
- * Mercado Pago SDK
+ * Mercado Pago MercadoPago
  * Core MPBase class
  *
  * Created by Eduardo Paoletta on 11/4/16.
@@ -426,7 +427,7 @@ public abstract class MPBase {
     private static Collection<Header> getStandardHeaders() {
         Collection<Header> colHeaders = new Vector<Header>();
         colHeaders.add(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-        colHeaders.add(new BasicHeader(HTTP.USER_AGENT, "MercadoPago Java SDK v1.0.1"));
+        colHeaders.add(new BasicHeader(HTTP.USER_AGENT, "MercadoPago Java MercadoPago v1.0.1"));
         return colHeaders;
     }
 

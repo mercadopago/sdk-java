@@ -12,6 +12,13 @@ public class ExcludedPaymentMethod {
 
     @Size(max=256) private String id = null;
 
+    public ExcludedPaymentMethod(String id) {
+        this.id=id;
+    }
+
+    public void ExcludedPaymentMethod(String id){
+        this.id=id;
+    }
 
     public ExcludedPaymentMethod setId(String id) {
         this.id = id;
