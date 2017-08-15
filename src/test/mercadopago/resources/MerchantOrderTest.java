@@ -18,7 +18,7 @@ import java.util.UUID;
 import static org.junit.Assert.*;
 
 /**
- * Mercado Pago SDK
+ * Mercado Pago MercadoPago
  * Merchant Order Test class
  *
  * Created by Eduardo Paoletta on 12/14/16.
@@ -27,8 +27,8 @@ public class MerchantOrderTest {
 
     @BeforeClass
     public static void beforeTest() throws MPException {
-        MPConf.cleanConfiguration();
-        MPConf.setConfiguration("test/mercadopago/data/credentialsprod.properties");
+        SDK.cleanConfiguration();
+        SDK.setConfiguration("test/mercadopago/data/credentialsprod.properties");
     }
 
     @Test

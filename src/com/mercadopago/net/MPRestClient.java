@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Mercado Pago SDK
+ * Mercado Pago MercadoPago
  * Simple Rest Client
  *
  * Created by Eduardo Paoletta on 11/11/16.

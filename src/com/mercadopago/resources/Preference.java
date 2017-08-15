@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Mercado Pago SDK
+ * Mercado Pago MercadoPago
  * This resource allows you to set up, during the Payment process, all the item information,
  * any accepted means of Payment and many other options.
  *

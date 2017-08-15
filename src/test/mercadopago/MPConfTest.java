@@ -1,6 +1,5 @@
 package test.mercadopago;
 
-import com.mercadopago.MPConf;
 import com.mercadopago.exceptions.MPConfException;
 import com.mercadopago.exceptions.MPException;
 import org.junit.Test;
@@ -11,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
 /**
- * Mercado Pago SDK
+ * Mercado Pago MercadoPago
  * Mercado Pago configuration test class
  *
  * Created by Eduardo Paoletta on 11/1/16.

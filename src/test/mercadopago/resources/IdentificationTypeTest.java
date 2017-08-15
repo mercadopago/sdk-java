@@ -1,6 +1,6 @@
 package test.mercadopago.resources;
 
-import com.mercadopago.MPConf;
+import com.mercadopago.MercadoPago;
 import com.mercadopago.core.MPBase;
 import com.mercadopago.core.MPResourceArray;
 import com.mercadopago.exceptions.MPException;
@@ -11,7 +11,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Mercado Pago SDK
+ * Mercado Pago MercadoPago
  * Identification Types Test class
  *
  * Created by Eduardo Paoletta on 12/15/16.
@@ -20,8 +20,10 @@ public class IdentificationTypeTest {
 
     @BeforeClass
     public static void beforeTest() throws MPException {
-        MPConf.cleanConfiguration();
-        MPConf.setConfiguration("test/mercadopago/data/credentials.properties");
+ 
+        MercadoPago.SDK.cleanConfiguration();
+        MercadoPago.SDK.setConfiguration("test/mercadopago/data/credentials.properties");
+ 
     }
 
     @Test

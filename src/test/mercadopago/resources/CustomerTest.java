@@ -1,7 +1,7 @@
 package test.mercadopago.resources;
 
 import com.google.gson.JsonObject;
-import com.mercadopago.MPConf;
+import com.mercadopago.MercadoPago;
 import com.mercadopago.core.MPApiResponse;
 import com.mercadopago.core.MPBase;
 import com.mercadopago.core.MPResourceArray;
@@ -23,7 +23,7 @@ import java.util.UUID;
 import static org.junit.Assert.*;
 
 /**
- * Mercado Pago SDK
+ * Mercado Pago MercadoPago
  * Customer Test class
  *
  * Created by Eduardo Paoletta on 12/15/16.
@@ -32,8 +32,8 @@ public class CustomerTest {
 
     @BeforeClass
     public static void beforeTest() throws MPException {
-        MPConf.cleanConfiguration();
-        MPConf.setConfiguration("test/mercadopago/data/credentials.properties");
+        MercadoPago.SDK.cleanConfiguration();
+        MercadoPago.SDK.setConfiguration("test/mercadopago/data/credentials.properties");
     }
 
     @Test
@@ -147,7 +147,7 @@ public class CustomerTest {
             MPRestClient client = new MPRestClient();
             response = client.executeRequest(
                     HttpMethod.POST,
-                    MPConf.getBaseUrl() + "/v1/card_tokens?public_key=" + TestUserData.publicKey,
+                    MercadoPago.SDK.getBaseUrl() + "/v1/card_tokens?public_key=" + TestUserData.publicKey,
                     PayloadType.JSON,
                     jsonPayload,
                     null);

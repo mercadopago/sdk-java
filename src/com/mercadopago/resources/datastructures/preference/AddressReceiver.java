@@ -14,6 +14,15 @@ public class AddressReceiver extends Address {
     @Size(max=256) private String apartment = null;
 
 
+    public void AddressReceiver(String zipCode, Integer streetNumber, String streetName, String floor, String apartment){
+        this.setZipCode(zipCode);
+        this.setStreetName(streetName);
+        this.setStreetNumber(streetNumber);
+        this.setFloor(floor);
+        this.setApartment(apartment);
+    }
+
+
     @Override
     public AddressReceiver setZipCode(String zipCode) {
         return (AddressReceiver)super.setZipCode(zipCode);

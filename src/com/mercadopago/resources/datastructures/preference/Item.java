@@ -5,7 +5,7 @@ import com.mercadopago.core.annotations.validation.Numeric;
 import com.mercadopago.core.annotations.validation.Size;
 
 /**
- * Mercado Pago SDK
+ * Mercado Pago MercadoPago
  * Preference Item class
  *
  * Created by Eduardo Paoletta on 12/2/16.

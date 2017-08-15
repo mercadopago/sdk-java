@@ -25,7 +25,7 @@ public class MPBaseMultipleParamsTest extends MPBase {
 
     @BeforeClass
     public static void beforeTest() throws MPException {
-        MPConf.cleanConfiguration();
+        SDK.cleanConfiguration();
         MPConf.setConfiguration("test/mercadopago/data/credentials.properties");
     }
 

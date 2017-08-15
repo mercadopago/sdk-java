@@ -13,6 +13,11 @@ public class Identification {
     @Size(max=256) private String type = null;
     @Size(max=256) private String number = null;
 
+    public void Identification(String type,String number){
+        this.type = type;
+        this.number = number;
+    }
+
 
     public String getType() {
         return type;

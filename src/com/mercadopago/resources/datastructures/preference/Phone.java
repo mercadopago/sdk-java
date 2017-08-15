@@ -13,6 +13,11 @@ public class Phone {
     @Size(max=256) private String areaCode = null;
     @Size(max=256) private String number = null;
 
+    public void Phone(String areaCode,String number){
+        this.areaCode = areaCode;
+        this.number = number;
+    }
+
 
     public String getAreaCode() {
         return areaCode;

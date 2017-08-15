@@ -1,6 +1,7 @@
 package com.mercadopago.resources.datastructures.preference;
 
 import com.mercadopago.core.annotations.validation.Numeric;
+import com.mercadopago.resources.datastructures.customer.Shipment;
 
 import java.util.ArrayList;
 
@@ -21,7 +22,7 @@ public class Shipments {
     private Boolean localPickup = null;
     private String dimensions = null;
     private Integer defaultShippingMethod = null;
-    private ArrayList<Integer> freeMethods = null;
+    private ArrayList<ShippingMethod> freeMethods = null;
     @Numeric(min=.01f) private Float cost = null;
     private Boolean freeShipping = null;
     private AddressReceiver receiverAddress = null;
@@ -72,18 +73,28 @@ public class Shipments {
         return this;
     }
 
-    public ArrayList<Integer> getFreeMethods() {
+    public ArrayList<ShippingMethod> getFreeMethods() {
         return freeMethods;
     }
 
-    public Shipments setFreeMethods(ArrayList<Integer> freeMethods) {
+    public Shipments setFreeMethods(ArrayList<ShippingMethod> freeMethods) {
         this.freeMethods = freeMethods;
         return this;
     }
 
-    public ArrayList<Integer> appendFreeMethods(Integer freeMethod) {
+    public Shipments setFreeMethods(int... ids){
+        ArrayList<ShippingMethod> shippingMethods = new ArrayList<ShippingMethod>();
+        for(int i = 0; i < ids.length; i++){
+            ShippingMethod newShippingMethod = new ShippingMethod(ids[i]);
+            shippingMethods.add(newShippingMethod);
+        }
+        this.freeMethods = shippingMethods;
+        return this;
+    }
+
+    public ArrayList<ShippingMethod> appendFreeMethods(ShippingMethod freeMethod) {
         if (freeMethods == null)
-            freeMethods = new ArrayList<Integer>();
+            freeMethods = new ArrayList<ShippingMethod>();
         freeMethods.add(freeMethod);
         return getFreeMethods();
     }

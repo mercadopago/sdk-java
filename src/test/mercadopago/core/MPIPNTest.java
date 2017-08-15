@@ -54,16 +54,16 @@ public class MPIPNTest {
 
     @Test
     public <T extends MPBase> void managerTest() throws MPException {
-        MPConf.cleanConfiguration();
-        MPConf.setConfiguration("test/mercadopago/data/credentials.properties");
+        SDK.cleanConfiguration();
+        SDK.setConfiguration("test/mercadopago/data/credentials.properties");
 
         T resource = MPIPN.manage(MPIPN.Topic.payment, "2278812");
         assertTrue(resource instanceof Payment);
         Payment payment = (Payment)resource;
         assertEquals("2278812", payment.getId());
 
-        MPConf.cleanConfiguration();
-        MPConf.setConfiguration("test/mercadopago/data/credentialsprod.properties");
+        SDK.cleanConfiguration();
+        SDK.setConfiguration("test/mercadopago/data/credentialsprod.properties");
 
         resource = MPIPN.manage(MPIPN.Topic.merchant_order, "433287094");
         assertTrue(resource instanceof MerchantOrder);

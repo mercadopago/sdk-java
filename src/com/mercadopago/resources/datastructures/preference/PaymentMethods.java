@@ -20,6 +20,40 @@ public class PaymentMethods {
     @Numeric(min=1, fractionDigits=0) private Integer installments = null;
     @Numeric(min=1, fractionDigits=0) private Integer defaultInstallments = null;
 
+    public PaymentMethods(){
+
+    }
+
+    public PaymentMethods(ArrayList<ExcludedPaymentMethod> excludedPaymentMethods, ArrayList<ExcludedPaymentType> excludedPaymentTypes) {
+        this.excludedPaymentMethods = excludedPaymentMethods;
+        this.excludedPaymentTypes = excludedPaymentTypes;
+    }
+
+    public PaymentMethods(ArrayList<ExcludedPaymentMethod> excludedPaymentMethods, ArrayList<ExcludedPaymentType> excludedPaymentTypes, Integer installments) {
+        this.excludedPaymentMethods = excludedPaymentMethods;
+        this.excludedPaymentTypes = excludedPaymentTypes;
+    }
+
+    public PaymentMethods setExcludedPaymentMethods(String... ids){
+        ArrayList<ExcludedPaymentMethod> excludedPaymentMethods = new ArrayList<ExcludedPaymentMethod>();
+        for(int i = 0; i < ids.length; i++){
+            ExcludedPaymentMethod newPaymentMethod = new ExcludedPaymentMethod(ids[i]);
+            excludedPaymentMethods.add(newPaymentMethod);
+        }
+        this.excludedPaymentMethods = excludedPaymentMethods;
+        return this;
+    }
+
+    public PaymentMethods setExcludedPaymentTypes(String... ids){
+        ArrayList<ExcludedPaymentType> excludedPaymentTypes = new ArrayList<ExcludedPaymentType>();
+        for(int i = 0; i < ids.length; i++){
+            ExcludedPaymentType newPaymentType = new ExcludedPaymentType(ids[i]);
+            excludedPaymentTypes.add(newPaymentType);
+        }
+        this.excludedPaymentTypes = excludedPaymentTypes;
+        return this;
+    }
+
 
     public List<ExcludedPaymentMethod> getExcludedPaymentMethods() {
         return excludedPaymentMethods;

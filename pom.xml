@@ -6,12 +6,20 @@
 
     <groupId>com.mercadopago</groupId>
     <artifactId>sdk</artifactId>
-    <version>6.6.6</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>Mercadopago SDK</name>
     <description>Mercadopago SDK library for Payments integration</description>
-    <url>http://maven.apache.org</url>
+    <url>https://github.com/mercadopago/px-java</url>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <build>
         <plugins>
@@ -37,6 +45,24 @@
             </plugin>
         </plugins>
     </build>
+
+    <scm>
+        <connection>scm:git:file://.</connection>
+        <developerConnection>scm:git:file://.</developerConnection>
+        <url>scm:git:file://.</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

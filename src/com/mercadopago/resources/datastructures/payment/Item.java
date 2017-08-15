@@ -5,7 +5,7 @@ import com.mercadopago.core.annotations.validation.Numeric;
 import com.mercadopago.core.annotations.validation.Size;
 
 /**
- * Mercado Libre SDK
+ * Mercado Libre MercadoPago
  * Item class
  *
  * Created by Eduardo Paoletta on 11/23/16.

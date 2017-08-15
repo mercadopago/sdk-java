@@ -15,7 +15,7 @@ import java.util.Collection;
 import static org.junit.Assert.*;
 
 /**
- * Mercado Pago SDK
+ * Mercado Pago MercadoPago
  * MPValidator Test
  *
  * Created by Eduardo Paoletta on 11/23/16.

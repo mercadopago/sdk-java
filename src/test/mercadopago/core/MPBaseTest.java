@@ -1,6 +1,6 @@
 package test.mercadopago.core;
 
-import com.mercadopago.MPConf;
+import com.mercadopago.MercadoPago;
 import com.mercadopago.core.MPBase;
 import com.mercadopago.core.MPResourceArray;
 import com.mercadopago.core.annotations.idempotent.Idempotent;
@@ -14,7 +14,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Mercado Pago SDK
+ * Mercado Pago MercadoPago
  * Entity Test Class
  *
  * Created by Eduardo Paoletta on 11/4/16.
@@ -23,8 +23,8 @@ import static org.junit.Assert.*;
 public class MPBaseTest extends MPBase {
 
     @BeforeClass public static void beforeTests() throws MPException {
-        MPConf.cleanConfiguration();
-        MPConf.setConfiguration("test/mercadopago/data/credentials.properties");
+        MercadoPago.SDK.cleanConfiguration();
+        MercadoPago.SDK.setConfiguration("test/mercadopago/data/credentials.properties");
     }
 
     private String id = null;
@@ -160,17 +160,17 @@ public class MPBaseTest extends MPBase {
 
         resource = load("test_id");
         assertEquals("GET", resource.getLastApiResponse().getMethod());
-        assertEquals("https://api.mercadopago.com/getpath/slug/test_id?access_token=" + MPConf.getAccessToken(), resource.getLastApiResponse().getUrl());
+        assertEquals("https://api.mercadopago.com/getpath/slug/test_id?access_token=" + MercadoPago.SDK.getAccessToken(), resource.getLastApiResponse().getUrl());
 
         resource = create();
         assertEquals("POST", resource.getLastApiResponse().getMethod());
-        assertEquals("https://api.mercadopago.com/postpath/slug?access_token=" + MPConf.getAccessToken(), resource.getLastApiResponse().getUrl());
+        assertEquals("https://api.mercadopago.com/postpath/slug?access_token=" + MercadoPago.SDK.getAccessToken(), resource.getLastApiResponse().getUrl());
         assertEquals("{\"test_string\":\"Test String\",\"test_integer\":666}", resource.getLastApiResponse().getPayload());
 
         resource.id = "test_id";
         resource = update();
         assertEquals("PUT", resource.getLastApiResponse().getMethod());
-        assertEquals("https://api.mercadopago.com/putpath/slug/test_id?access_token=" + MPConf.getAccessToken(), resource.getLastApiResponse().getUrl());
+        assertEquals("https://api.mercadopago.com/putpath/slug/test_id?access_token=" + MercadoPago.SDK.getAccessToken(), resource.getLastApiResponse().getUrl());
         assertEquals("{\"id\":\"test_id\",\"test_string\":\"Test String\",\"test_integer\":666}", resource.getLastApiResponse().getPayload());
 
         resource = new MPBaseTest();
@@ -180,7 +180,7 @@ public class MPBaseTest extends MPBase {
         resource.id = "5";
         resource.update();
         assertEquals("PUT", resource.getLastApiResponse().getMethod());
-        assertEquals("https://api.mercadopago.com/putpath/slug/5?access_token=" + MPConf.getAccessToken(), resource.getLastApiResponse().getUrl());
+        assertEquals("https://api.mercadopago.com/putpath/slug/5?access_token=" + MercadoPago.SDK.getAccessToken(), resource.getLastApiResponse().getUrl());
 
     }
 
