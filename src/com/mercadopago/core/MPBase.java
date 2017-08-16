@@ -487,14 +487,14 @@ public abstract class MPBase {
         }
 
         // URL
-        processedPath.insert(0, MPConf.getBaseUrl());
+        processedPath.insert(0, MercadoPago.SDK.getBaseUrl());
 
         // Token
         String accessToken;
-        if (StringUtils.isNotEmpty(MPConf.getUserToken())) {
-            accessToken = MPConf.getUserToken();
+        if (StringUtils.isNotEmpty(MercadoPago.SDK.getUserToken())) {
+            accessToken = MercadoPago.SDK.getUserToken();
         } else {
-            accessToken = MPConf.getAccessToken();
+            accessToken = MercadoPago.SDK.getAccessToken();
         }
         processedPath
                 .append("?access_token=")
