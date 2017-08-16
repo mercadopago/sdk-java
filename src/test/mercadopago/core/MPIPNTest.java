@@ -1,6 +1,6 @@
 package test.mercadopago.core;
 
-import com.mercadopago.MPConf;
+import com.mercadopago.MercadoPago;
 import com.mercadopago.core.MPBase;
 import com.mercadopago.core.MPIPN;
 import com.mercadopago.exceptions.MPException;
@@ -54,16 +54,16 @@ public class MPIPNTest {
 
     @Test
     public <T extends MPBase> void managerTest() throws MPException {
-        SDK.cleanConfiguration();
-        SDK.setConfiguration("test/mercadopago/data/credentials.properties");
+        MercadoPago.SDK.cleanConfiguration();
+        MercadoPago.SDK.setConfiguration("test/mercadopago/data/credentials.properties");
 
         T resource = MPIPN.manage(MPIPN.Topic.payment, "2278812");
         assertTrue(resource instanceof Payment);
         Payment payment = (Payment)resource;
         assertEquals("2278812", payment.getId());
 
-        SDK.cleanConfiguration();
-        SDK.setConfiguration("test/mercadopago/data/credentialsprod.properties");
+        MercadoPago.SDK.cleanConfiguration();
+        MercadoPago.SDK.setConfiguration("test/mercadopago/data/credentialsprod.properties");
 
         resource = MPIPN.manage(MPIPN.Topic.merchant_order, "433287094");
         assertTrue(resource instanceof MerchantOrder);

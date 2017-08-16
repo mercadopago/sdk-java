@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.mercadopago.MercadoPago;
 import com.mercadopago.core.annotations.idempotent.Idempotent;
 import com.mercadopago.core.annotations.rest.*;
 import com.mercadopago.exceptions.MPException;
@@ -15,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
+import org.apache.http.entity.ContentType;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -23,7 +25,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.*;
 
-import static javax.print.attribute.standard.ReferenceUriSchemesSupported.HTTP;
 
 /**
  * Mercado Pago MercadoPago

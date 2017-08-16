@@ -7,6 +7,7 @@ public class ShippingMethod {
 
     private Integer id = null;
 
+    public ShippingMethod(){};
     public ShippingMethod(Integer id) {
         this.id=id;
     }

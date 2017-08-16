@@ -12,6 +12,8 @@ public class ExcludedPaymentType {
 
     @Size(max=256) private String id = null;
 
+    public ExcludedPaymentType() { }
+
     public ExcludedPaymentType(String id) {
         this.id=id;
     }

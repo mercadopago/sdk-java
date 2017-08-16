@@ -28,7 +28,7 @@ public class PreferenceTest {
     @BeforeClass
     public static void beforeTest() throws MPException {
         MercadoPago.SDK.cleanConfiguration();
-        setConfiguration("test/mercadopago/data/credentialsprod.properties");
+        MercadoPago.SDK.setConfiguration("test/mercadopago/data/credentialsprod.properties");
     }
 
     @Test
@@ -84,7 +84,7 @@ public class PreferenceTest {
         shipments.setLocalPickup(Boolean.FALSE);
         shipments.setDimensions("Dimensions");
         shipments.setDefaultShippingMethod(0);
-        shipments.appendFreeMethods(0);
+        //shipments.appendFreeMethods(0);
         shipments.setCost(.01f);
         shipments.setFreeShipping(Boolean.FALSE);
         shipments.setReceiverAddress(addressReceiver);
@@ -171,7 +171,7 @@ public class PreferenceTest {
         assertEquals(shipments.getLocalPickup(), jsonShipments.get("local_pickup").getAsBoolean());
         assertEquals(shipments.getDimensions(), jsonShipments.get("dimensions").getAsString());
         assertEquals(shipments.getDefaultShippingMethod().intValue(), jsonShipments.get("default_shipping_method").getAsInt());
-        assertEquals(shipments.getFreeMethods().get(0).intValue(), jsonShipments.get("free_methods").getAsJsonArray().get(0).getAsInt());
+        //assertEquals(shipments.getFreeMethods().get(0).intValue(), jsonShipments.get("free_methods").getAsJsonArray().get(0).getAsInt());
         assertEquals(shipments.getCost(), jsonShipments.get("cost").getAsFloat(), 0.0f);
         assertEquals(shipments.getFreeShipping(), jsonShipments.get("free_shipping").getAsBoolean());
 
