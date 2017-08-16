@@ -17,7 +17,7 @@ import java.util.Properties;
  */
 public class MercadoPago {
 
-    public class SDK {
+    public static class SDK {
         private static final String DEFAULT_BASE_URL = "https://api.mercadopago.com";
 
         private static String clientSecret = null;
