@@ -18,7 +18,24 @@
         </license>
     </licenses>
 
+    <developers>
+        <developer>
+            <id>Ibaceta</id>
+            <name>Joel</name>
+            <email>joel.ibaceta@mercadolibre.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <timezone>-3</timezone>
+        </developer>
+    </developers>
+
+
     <build>
+	<finalName>${artifactId}-${version}</finalName>
+	<sourceDirectory>src/com/mercadopago</sourceDirectory>
+	<testSourceDirectory>src/test/mercadopago</testSourceDirectory>
+	
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -27,6 +44,19 @@
                     <source>1.6</source>
                     <target>1.6</target>
                 </configuration>
+            </plugin>
+	    <plugin>
+        	<groupId>org.apache.maven.plugins</groupId>
+        	<artifactId>maven-gpg-plugin</artifactId>
+        	<executions>
+          		<execution>
+            			<id>sign-artifacts</id>
+				<phase>verify</phase>
+            			<goals>
+              				<goal>sign</goal>
+            			</goals>
+          		</execution>
+        	</executions>
             </plugin>
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
