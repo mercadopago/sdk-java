@@ -3,7 +3,7 @@
 
     <groupId>com.mercadopago</groupId>
     <artifactId>java-sdk</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Mercadopago SDK</name>
@@ -45,8 +45,8 @@
 
     <scm>
 	<url>https://github.com/mercadopago/px-java.git</url>
-        <connection>scm:git:ssh://git@github.com:mercadopago/px-java.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:mercadopago/px-java.git</developerConnection>
+        <connection>scm:git:git@github.com:mercadopago/px-java.git</connection>
+        <developerConnection>scm:git:git@github.com:mercadopago/px-java.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
