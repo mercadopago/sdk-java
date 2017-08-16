@@ -1,7 +1,7 @@
 package test.mercadopago.resources;
 
 import com.google.gson.JsonObject;
-import com.mercadopago.MPConf;
+import com.mercadopago.MercadoPago;
 import com.mercadopago.core.MPBase;
 import com.mercadopago.core.MPCoreUtils;
 import com.mercadopago.exceptions.MPException;
@@ -27,8 +27,8 @@ public class MerchantOrderTest {
 
     @BeforeClass
     public static void beforeTest() throws MPException {
-        SDK.cleanConfiguration();
-        SDK.setConfiguration("test/mercadopago/data/credentialsprod.properties");
+        MercadoPago.SDK.cleanConfiguration();
+        MercadoPago.SDK.setConfiguration("test/mercadopago/data/credentialsprod.properties");
     }
 
     @Test

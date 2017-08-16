@@ -14,6 +14,8 @@ public class BackUrls {
     @Size(max=600) private String pending = null;
     @Size(max=600) private String failure = null;
 
+    public BackUrls(){};
+
     public BackUrls(String successUrl, String pendingUrl, String failureUrl){
         this.success=successUrl;
         this.pending=pendingUrl;
