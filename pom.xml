@@ -44,9 +44,9 @@
     </build>
 
     <scm>
-	<url>https://github.com/mercadopago/px-java.git</url>
-        <connection>scm:git:http://git@github.com:mercadopago/px-java.git</connection>
-        <developerConnection>scm:git:http://git@github.com:mercadopago/px-java.git</developerConnection>
+	<url>http://github.com/mercadopago/px-java</url>
+        <connection>scm:git:ssh://git@github.com:mercadopago/px-java.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:mercadopago/px-java.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
