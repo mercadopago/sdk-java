@@ -25,6 +25,7 @@ import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 
+import javax.net.ssl.SSLPeerUnverifiedException;
 import java.io.IOException;
 import java.util.*;
 
@@ -51,7 +52,7 @@ public class MPRestClient {
 
     public MPApiResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders)
             throws MPRestException {
-        return executeRequest(httpMethod, uri, payloadType, payload, colHeaders, 0, 0, 0);
+        return this.executeRequest(httpMethod, uri, payloadType, payload, colHeaders, 0, 0, 0);
     }
 
     /**
@@ -87,6 +88,8 @@ public class MPRestClient {
                 response = httpClient.execute(request);
             } catch (ClientProtocolException e) {
                 response = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 400, null));
+            } catch (SSLPeerUnverifiedException e){
+                response = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 403, null));
             } catch (IOException e) {
                 response = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 404, null));
             }
