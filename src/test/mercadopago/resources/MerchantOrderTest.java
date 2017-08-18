@@ -6,6 +6,7 @@ import com.mercadopago.core.MPBase;
 import com.mercadopago.core.MPCoreUtils;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.MerchantOrder;
+import com.mercadopago.core.MPApiResponse;
 import com.mercadopago.resources.datastructures.merchantorder.*;
 import org.junit.BeforeClass;
 import org.junit.Test;

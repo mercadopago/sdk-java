@@ -35,10 +35,11 @@ public class MPCredentials {
         jsonPayload.addProperty("client_secret", MercadoPago.SDK.getClientSecret());
 
         String access_token = null;
+        String baseUri = MercadoPago.SDK.getBaseUrl();
         MPApiResponse response = new MPRestClient().executeRequest(
                 HttpMethod.POST,
-                MercadoPago.SDK.getBaseUrl() + "/oauth/token",
-                PayloadType.X_WWW_FORM_URLENCODED,
+                baseUri + "/oauth/token",
+                PayloadType.JSON,
                 jsonPayload,
                 null);
         if (response.getStatusCode() == 200) {

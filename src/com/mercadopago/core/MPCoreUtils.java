@@ -1,15 +1,18 @@
 package com.mercadopago.core;
 
+
 import com.google.gson.*;
-import com.mercadopago.exceptions.MPException;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.validator.routines.UrlValidator;
+import com.mercadopago.exceptions.*;
 
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+
 
 /**
  * Mercado Pago SDK
@@ -87,7 +90,7 @@ public class MPCoreUtils {
                 value = result.toString("UTF-8");
 
             } catch (Exception ex) {
-                throw new MPException(ex);
+                throw new com.mercadopago.exceptions.MPException(ex);
             }
         }
         return value;

@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 public class MPCredentialsTest {
 
     @Test
-    public void credentialsTest() throws MPException {
+    public void credentialsTest() throws MPException, MPConfException {
         MercadoPago.SDK.cleanConfiguration();
 
         Exception exception = null;
