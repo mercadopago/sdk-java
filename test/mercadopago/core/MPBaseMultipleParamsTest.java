@@ -27,22 +27,22 @@ public class MPBaseMultipleParamsTest extends MPBase {
     @BeforeClass
     public static void beforeTest() throws MPException {
         MercadoPago.SDK.cleanConfiguration();
-        MercadoPago.SDK.setConfiguration("/mercadopago/data/credentials.properties");
+        MercadoPago.SDK.setConfiguration("mercadopago/data/credentials.properties");
     }
 
     @GET(path="/loadpath/slug/:param1")
-    public static MPBaseMultipleParamsTest load(String id) throws MPException {
-        return processMethod(MPBaseMultipleParamsTest.class, "load", id, WITHOUT_CACHE);
+    public static MPBaseMultipleParamsTest findById(String id) throws MPException {
+        return processMethod(MPBaseMultipleParamsTest.class, "findById", id, WITHOUT_CACHE);
     }
 
     @POST(path="/createpath/slug/")
-    public MPBaseMultipleParamsTest create() throws MPException {
-        return super.processMethod("create", WITHOUT_CACHE);
+    public MPBaseMultipleParamsTest save() throws MPException {
+        return super.processMethod("save", WITHOUT_CACHE);
     }
 
     @GET(path="/getpath/slug/:param1/otherslug/:param2")
-    public static MPResourceArray loadAll(String param1, String param2) throws MPException {
-        return processMethodBulk(MPBaseMultipleParamsTest.class, "loadAll", param1, param2, WITHOUT_CACHE);
+    public static MPResourceArray all(String param1, String param2) throws MPException {
+        return processMethodBulk(MPBaseMultipleParamsTest.class, "all", param1, param2, WITHOUT_CACHE);
     }
 
     @DELETE(path="/delete/slug/:card_id/otherslug/:param2/:param3")
@@ -60,7 +60,7 @@ public class MPBaseMultipleParamsTest extends MPBase {
     @Test
     public void noParamsMethdTest() throws Exception {
         MPBaseMultipleParamsTest resource = new MPBaseMultipleParamsTest();
-        resource.create();
+        resource.save();
         assertEquals("POST", resource.getLastApiResponse().getMethod());
         assertEquals("https://api.mercadopago.com/createpath/slug/?access_token=" + MercadoPago.SDK.getAccessToken(), resource.getLastApiResponse().getUrl());
 
@@ -71,7 +71,7 @@ public class MPBaseMultipleParamsTest extends MPBase {
      */
     @Test
     public void singleParamsMethdTest() throws Exception {
-        MPBaseMultipleParamsTest resource = MPBaseMultipleParamsTest.load("some_id");
+        MPBaseMultipleParamsTest resource = MPBaseMultipleParamsTest.findById("some_id");
         assertEquals("GET", resource.getLastApiResponse().getMethod());
         assertEquals("https://api.mercadopago.com/loadpath/slug/some_id?access_token=" + MercadoPago.SDK.getAccessToken(), resource.getLastApiResponse().getUrl());
 
@@ -82,7 +82,7 @@ public class MPBaseMultipleParamsTest extends MPBase {
      */
     @Test
     public void twoParamsMethdTest() throws Exception {
-        MPResourceArray resourceArray = MPBaseMultipleParamsTest.loadAll("test1", "test2");
+        MPResourceArray resourceArray = MPBaseMultipleParamsTest.all("test1", "test2");
         assertEquals("GET", resourceArray.getLastApiResponse().getMethod());
         assertEquals("https://api.mercadopago.com/getpath/slug/test1/otherslug/test2?access_token=" + MercadoPago.SDK.getAccessToken(), resourceArray.getLastApiResponse().getUrl());
     }

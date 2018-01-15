@@ -25,16 +25,16 @@ public class MPCredentialsTest {
         MercadoPago.SDK.cleanConfiguration();
 
         Exception exception = null;
+
         try {
             MPCredentials.getAccessToken();
-
         } catch (Exception ex) {
             assertEquals("\"client_id\" and \"client_secret\" can not be \"null\" when getting the \"access_token\"", ex.getMessage());
             exception = ex;
         }
         assertSame(MPException.class, exception.getClass());
 
-        if (StringUtils.isEmpty("/mercadopago/data/credentials.properties")) {
+        if (StringUtils.isEmpty("mercadopago/data/credentials.properties")) {
             throw new IllegalArgumentException("File path can not be empty");
         }
 
@@ -42,7 +42,7 @@ public class MPCredentialsTest {
         InputStream inputStream = null;
         try {
             properties = new Properties();
-            inputStream = MercadoPago.SDK.class.getClassLoader().getResourceAsStream("/mercadopago/data/credentials.properties");
+            inputStream = MercadoPago.SDK.class.getClassLoader().getResourceAsStream("mercadopago/data/credentials.properties");
             if (inputStream == null) {
                 throw new IllegalArgumentException("File not found");
             }

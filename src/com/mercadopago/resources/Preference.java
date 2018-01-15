@@ -225,19 +225,18 @@ public class Preference extends MPBase {
     }
 
 
-
-    public static Preference load(String id) throws MPException {
-        return load(id, WITHOUT_CACHE);
+    public static Preference findById(String id) throws MPException {
+        return findById(id, WITHOUT_CACHE);
     }
 
     @GET(path="/checkout/preferences/:id")
-    public static Preference load(String id, Boolean useCache) throws MPException {
-        return Preference.processMethod(Preference.class, "load", id, useCache);
+    public static Preference findById(String id, Boolean useCache) throws MPException {
+        return Preference.processMethod(Preference.class, "findById", id, useCache);
     }
 
     @POST(path="/checkout/preferences")
     public Preference create() throws MPException {
-        return super.processMethod("create", WITHOUT_CACHE);
+        return super.processMethod("save", WITHOUT_CACHE);
     }
 
     @PUT(path="/checkout/preferences/:id")

@@ -24,7 +24,7 @@ public class MPExceptionTest {
         assertSame("Exception type must be \"MPException\"", MPException.class, exception.getClass());
         assertEquals(
                 exception.toString(),
-                "com.mercadopago.com.mercadopago.exceptions.MPException: Exception message");
+                "com.mercadopago.exceptions.MPException: Exception message");
         exception = null;
 
         exception = new MPException("Exception message 2", "request_id", 400);
@@ -34,7 +34,7 @@ public class MPExceptionTest {
         assertSame("Exception type must be \"MPException\"", MPException.class, exception.getClass());
         assertEquals(
                 exception.toString(),
-                "com.mercadopago.com.mercadopago.exceptions.MPException: Exception message 2; request-id: request_id; status_code: 400");
+                "com.mercadopago.exceptions.MPException: Exception message 2; request-id: request_id; status_code: 400");
         exception = null;
 
         Exception ex = new Exception("Cause exception");
@@ -46,7 +46,7 @@ public class MPExceptionTest {
         assertSame("Exception type must be \"MPException\"", MPException.class, exception.getClass());
         assertEquals(
                 exception.toString(),
-                "com.mercadopago.com.mercadopago.exceptions.MPException: Exception message 3; request-id: request_id2; status_code: 401");
+                "com.mercadopago.exceptions.MPException: Exception message 3; request-id: request_id2; status_code: 401");
         exception = null;
 
         exception = new MPException(ex);
@@ -54,7 +54,7 @@ public class MPExceptionTest {
         assertSame("Exception type must be \"MPException\"", MPException.class, exception.getClass());
         assertEquals(
                 exception.toString(),
-                "com.mercadopago.com.mercadopago.exceptions.MPException: java.lang.Exception: Cause exception");
+                "com.mercadopago.exceptions.MPException: java.lang.Exception: Cause exception");
         exception = null;
 
     }

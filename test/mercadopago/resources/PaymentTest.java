@@ -33,7 +33,7 @@ public class PaymentTest {
     @BeforeClass
     public static void beforeTest() throws MPException {
         MercadoPago.SDK.cleanConfiguration();
-        MercadoPago.SDK.setConfiguration("/mercadopago/data/credentials.properties");
+        MercadoPago.SDK.setConfiguration("mercadopago/data/credentials.properties");
     }
 
     @Test
@@ -136,7 +136,7 @@ public class PaymentTest {
 
     @Test
     public void paymentLoadTest() throws MPException {
-        Payment payment = Payment.load("2278812", MPBase.WITH_CACHE);
+        Payment payment = Payment.findById("2278812", MPBase.WITH_CACHE);
         assertEquals(200, payment.getLastApiResponse().getStatusCode());
         assertEquals("2278812", payment.getId());
         assertEquals("regular_payment", payment.getOperationType().toString());
@@ -146,7 +146,7 @@ public class PaymentTest {
         assertEquals(Integer.valueOf(1), payment.getInstallments());
         assertFalse(payment.getLastApiResponse().fromCache);
 
-        payment = Payment.load("2278812", MPBase.WITH_CACHE);
+        payment = Payment.findById("2278812", MPBase.WITH_CACHE);
         assertTrue(payment.getLastApiResponse().fromCache);
     }
 
@@ -166,7 +166,7 @@ public class PaymentTest {
         payment.setPayer(payer);
         payment.setCapture(Boolean.FALSE);
 
-        payment.create();
+        payment.save();
         assertEquals(201, payment.getLastApiResponse().getStatusCode());
         assertNotNull(payment.getId());
         assertFalse(payment.getCaptured());
@@ -225,7 +225,7 @@ public class PaymentTest {
         payment.setInstallments(1);
         payment.setPayer(payer);
 
-        payment.create();
+        payment.save();
         assertEquals(201, payment.getLastApiResponse().getStatusCode());
         assertNotNull(payment.getId());
         assertEquals("approved", payment.getStatus().toString());

@@ -55,7 +55,7 @@ public class MPIPNTest {
     @Test
     public <T extends MPBase> void managerTest() throws MPException {
         MercadoPago.SDK.cleanConfiguration();
-        MercadoPago.SDK.setConfiguration("/mercadopago/data/credentials.properties");
+        MercadoPago.SDK.setConfiguration("mercadopago/data/credentials.properties");
 
         T resource = MPIPN.manage(MPIPN.Topic.payment, "2278812");
         assertTrue(resource instanceof Payment);
@@ -63,7 +63,7 @@ public class MPIPNTest {
         assertEquals("2278812", payment.getId());
 
         MercadoPago.SDK.cleanConfiguration();
-        MercadoPago.SDK.setConfiguration("/mercadopago/data/credentialsprod.properties");
+        MercadoPago.SDK.setConfiguration("mercadopago/data/credentialsprod.properties");
 
         resource = MPIPN.manage(MPIPN.Topic.merchant_order, "433287094");
         assertTrue(resource instanceof MerchantOrder);

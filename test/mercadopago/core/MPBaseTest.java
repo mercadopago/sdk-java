@@ -24,26 +24,26 @@ public class MPBaseTest extends MPBase {
 
     @BeforeClass public static void beforeTests() throws MPException {
         MercadoPago.SDK.cleanConfiguration();
-        MercadoPago.SDK.setConfiguration("/mercadopago/data/credentials.properties");
+        MercadoPago.SDK.setConfiguration("mercadopago/data/credentials.properties");
     }
 
     private String id = null;
     private String testString = "Test String";
     private Integer testInteger = 666;
 
-    public static MPBaseTest load(String id) throws MPException {
-        return MPBaseTest.load(id, WITHOUT_CACHE);
+    public static MPBaseTest findById(String id) throws MPException {
+        return MPBaseTest.findById(id, WITHOUT_CACHE);
     }
 
     @GET(path="/getpath/slug/:id")
-    public static MPBaseTest load(String id, Boolean useCache) throws MPException {
-        return processMethod(MPBaseTest.class, "load", id, useCache);
+    public static MPBaseTest findById(String id, Boolean useCache) throws MPException {
+        return processMethod(MPBaseTest.class, "findById", id, useCache);
     }
 
     @GET(path="/getpath/slug/")
     @PUT(path="/putpath/slug/")
-    public static MPResourceArray loadAll() throws MPException {
-        return processMethodBulk(MPBaseTest.class, "loadAll", WITHOUT_CACHE);
+    public static MPResourceArray all() throws MPException {
+        return processMethodBulk(MPBaseTest.class, "all", WITHOUT_CACHE);
     }
 
     //Save method will be used to test non annotated method
@@ -53,8 +53,8 @@ public class MPBaseTest extends MPBase {
     }
 
     @POST(path="/postpath/slug")
-    public MPBaseTest create() throws MPException {
-        return super.processMethod("create", WITHOUT_CACHE);
+    public MPBaseTest save() throws MPException {
+        return super.processMethod("save", WITHOUT_CACHE);
     }
 
     @PUT(path="/putpath/slug/:id")
@@ -126,7 +126,7 @@ public class MPBaseTest extends MPBase {
     public void multipleAnnotationMethodTest() throws Exception {
         Exception auxException = null;
         try {
-            loadAll();
+            all();
         } catch (MPException mpException) {
             assertEquals("Exception must have \"Multiple rest methods found\" message", mpException.getMessage(), "Multiple rest methods found");
             auxException = mpException;
@@ -142,7 +142,7 @@ public class MPBaseTest extends MPBase {
     public void methodWithNoArgumentTest() throws  Exception {
         Exception auxException = null;
         try {
-            load(null);
+            findById(null);
         } catch (MPException mpException) {
             assertEquals("Exception must have \"No argument supplied for method\" message", mpException.getMessage(), "No argument supplied/found for method path");
             auxException = mpException;
@@ -158,11 +158,11 @@ public class MPBaseTest extends MPBase {
     public void methodPathTest() throws Exception {
         MPBaseTest resource = null;
 
-        resource = load("test_id");
+        resource = findById("test_id");
         assertEquals("GET", resource.getLastApiResponse().getMethod());
         assertEquals("https://api.mercadopago.com/getpath/slug/test_id?access_token=" + MercadoPago.SDK.getAccessToken(), resource.getLastApiResponse().getUrl());
 
-        resource = create();
+        resource = save();
         assertEquals("POST", resource.getLastApiResponse().getMethod());
         assertEquals("https://api.mercadopago.com/postpath/slug?access_token=" + MercadoPago.SDK.getAccessToken(), resource.getLastApiResponse().getUrl());
         assertEquals("{\"test_string\":\"Test String\",\"test_integer\":666}", resource.getLastApiResponse().getPayload());
@@ -174,7 +174,7 @@ public class MPBaseTest extends MPBase {
         assertEquals("{\"id\":\"test_id\",\"test_string\":\"Test String\",\"test_integer\":666}", resource.getLastApiResponse().getPayload());
 
         resource = new MPBaseTest();
-        resource.load("5");
+        resource.findById("5");
         resource.testString = "TestUpdate";
 
         resource.id = "5";
@@ -187,16 +187,16 @@ public class MPBaseTest extends MPBase {
     @Test
     public void cacheTest() throws MPException {
         MPBaseTest resource = new MPBaseTest();
-        resource = resource.load("5", WITH_CACHE);
+        resource = resource.findById("5", WITH_CACHE);
         assertFalse(resource.getLastApiResponse().fromCache);
 
-        resource = resource.load("5", WITH_CACHE);
+        resource = resource.findById("5", WITH_CACHE);
         assertTrue(resource.getLastApiResponse().fromCache);
 
-        resource = resource.load("5", WITHOUT_CACHE);
+        resource = resource.findById("5", WITHOUT_CACHE);
         assertFalse(resource.getLastApiResponse().fromCache);
 
-        resource = resource.load("5", WITH_CACHE);
+        resource = resource.findById("5", WITH_CACHE);
         assertFalse(resource.getLastApiResponse().fromCache);
     }
 

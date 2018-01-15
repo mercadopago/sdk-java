@@ -2,13 +2,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.mercadopago</groupId>
-    <artifactId>java-sdk</artifactId>
-    <version>1.0.2</version>
+    <artifactId>dx-java</artifactId>
+    <version>1.0.3</version>
     <packaging>jar</packaging>
 
     <name>Mercadopago SDK</name>
     <description>Mercadopago SDK</description>
-    <url>https://github.com/mercadopago/px-java</url>
+    <url>https://github.com/mercadopago/dx-java</url>
 
     <licenses>
         <license>
@@ -19,9 +19,18 @@
     
     <developers>
         <developer>
-            <id>Ibaceta</id>
-            <name>Joel</name>
+            <id>jibaceta</id>
+            <name>Joel Ibaceta</name>
             <email>joel.ibaceta@mercadolibre.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <timezone>-3</timezone>
+        </developer>
+        <developer>
+            <id>epaoletta</id>
+            <name>Eduardo Paoletta</name>
+            <email>eduardo.paoletta@mercadolibre.com</email>
             <roles>
                 <role>Developer</role>
             </roles>
@@ -29,7 +38,6 @@
         </developer>
     </developers>
 
- 
     <build>
 	<finalName>${artifactId}-${version}</finalName>
 	<sourceDirectory>src/com/com.mercadopago</sourceDirectory>
@@ -179,12 +187,7 @@
         <dependency>
             <groupId>commons-validator</groupId>
             <artifactId>commons-validator</artifactId>
-            <version>1.3.1</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-validator</groupId>
-            <artifactId>commons-validator</artifactId>
-            <version>1.3.1</version>
+            <version>1.4.0</version>
         </dependency>
     </dependencies>
 

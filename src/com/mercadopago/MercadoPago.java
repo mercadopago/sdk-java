@@ -9,6 +9,7 @@ import com.mercadopago.exceptions.MPConfException;
 import com.mercadopago.exceptions.MPException;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.Console;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Properties;
@@ -190,10 +191,18 @@ public class MercadoPago {
          * throws MPConfException
          */
         public static void setConfiguration(Properties properties) throws MPException {
-            setClientSecret(getValueFromProperties(properties, "clientSecret"));
-            setClientId(getValueFromProperties(properties, "clientId"));
-            setAccessToken(getValueFromProperties(properties, "accessToken"));
+
             setAppId(getValueFromProperties(properties, "appId"));
+
+            if (StringUtils.isNotEmpty(getValueFromProperties(properties, "accessToken"))) {
+                setAccessToken(getValueFromProperties(properties, "accessToken"));
+            }
+
+            if (StringUtils.isNotEmpty(getValueFromProperties(properties, "clientSecret"))){
+                setClientSecret(getValueFromProperties(properties, "clientSecret"));
+                setClientId(getValueFromProperties(properties, "clientId"));
+            }
+
         }
 
         /**

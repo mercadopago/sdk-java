@@ -25,7 +25,7 @@ public class MPRestExceptionTest {
         assertSame("Exception type must be \"MPConfException\"", MPRestException.class, exception.getClass());
         assertEquals(
                 exception.toString(),
-                "com.mercadopago.com.mercadopago.exceptions.MPRestException: Exception message");
+                "com.mercadopago.exceptions.MPRestException: Exception message");
         exception = null;
 
         Exception ex = new Exception("Cause exception");
@@ -34,7 +34,7 @@ public class MPRestExceptionTest {
         assertSame("Exception type must be \"MPConfException\"", MPRestException.class, exception.getClass());
         assertEquals(
                 exception.toString(),
-                "com.mercadopago.com.mercadopago.exceptions.MPRestException: java.lang.Exception: Cause exception");
+                "com.mercadopago.exceptions.MPRestException: java.lang.Exception: Cause exception");
         exception = null;
     }
 

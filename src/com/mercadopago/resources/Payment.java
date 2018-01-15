@@ -337,18 +337,18 @@ public class Payment extends MPBase {
     }
 
 
-    public static Payment load(String id) throws MPException {
-        return load(id, WITHOUT_CACHE);
+    public static Payment findById(String id) throws MPException {
+        return findById(id, WITHOUT_CACHE);
     }
 
     @GET(path="/v1/payments/:id")
-    public static Payment load(String id, Boolean useCache) throws MPException {
-        return Payment.processMethod(Payment.class, "load", id, useCache);
+    public static Payment findById(String id, Boolean useCache) throws MPException {
+        return Payment.processMethod(Payment.class, "findById", id, useCache);
     }
 
     @POST(path="/v1/payments")
-    public Payment create() throws MPException {
-        return super.processMethod("create", WITHOUT_CACHE);
+    public Payment save() throws MPException {
+        return super.processMethod("save", WITHOUT_CACHE);
     }
 
     @PUT(path="/v1/payments/:id")

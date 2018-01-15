@@ -213,18 +213,18 @@ public class MerchantOrder extends MPBase {
     }
 
 
-    public static MerchantOrder load(String id) throws MPException {
-        return load(id, WITHOUT_CACHE);
+    public static MerchantOrder findById(String id) throws MPException {
+        return findById(id, WITHOUT_CACHE);
     }
 
     @GET(path="/merchant_orders/:id")
-    public static MerchantOrder load(String id, Boolean useCache) throws MPException {
-        return MerchantOrder.processMethod(MerchantOrder.class, "load", id, useCache);
+    public static MerchantOrder findById(String id, Boolean useCache) throws MPException {
+        return MerchantOrder.processMethod(MerchantOrder.class, "findById", id, useCache);
     }
 
     @POST(path="/merchant_orders")
-    public MerchantOrder create() throws MPException {
-        return super.processMethod("create", WITHOUT_CACHE);
+    public MerchantOrder save() throws MPException {
+        return super.processMethod("save", WITHOUT_CACHE);
     }
 
     @PUT(path="/merchant_orders/:id")

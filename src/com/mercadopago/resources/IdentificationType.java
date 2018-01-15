@@ -41,13 +41,13 @@ public class IdentificationType extends MPBase {
     }
 
 
-    public static MPResourceArray loadAll() throws MPException {
-        return loadAll(WITHOUT_CACHE);
+    public static MPResourceArray all() throws MPException {
+        return all(WITHOUT_CACHE);
     }
 
     @GET(path="/v1/identification_types")
-    public static MPResourceArray loadAll(Boolean useCache) throws MPException {
-        return IdentificationType.processMethodBulk(IdentificationType.class, "loadAll", useCache);
+    public static MPResourceArray all(Boolean useCache) throws MPException {
+        return IdentificationType.processMethodBulk(IdentificationType.class, "all", useCache);
     }
 
 }

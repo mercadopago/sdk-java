@@ -176,18 +176,18 @@ public class Customer extends MPBase {
         return Customer.processMethodBulk(Customer.class, "search", useCache);
     }
 
-    public static Customer load(String id) throws MPException {
-        return load(id, WITHOUT_CACHE);
+    public static Customer findById(String id) throws MPException {
+        return findById(id, WITHOUT_CACHE);
     }
 
     @GET(path="/v1/customers/:id")
-    public static Customer load(String id, Boolean useCache) throws MPException {
-        return Customer.processMethod(Customer.class, "load", id, useCache);
+    public static Customer findById(String id, Boolean useCache) throws MPException {
+        return Customer.processMethod(Customer.class, "findById", id, useCache);
     }
 
     @POST(path="/v1/customers")
-    public Customer create() throws MPException {
-        return super.processMethod("create", WITHOUT_CACHE);
+    public Customer save() throws MPException {
+        return super.processMethod("save", WITHOUT_CACHE);
     }
 
     @PUT(path="/v1/customers/:id")

@@ -35,8 +35,8 @@ import java.util.*;
  */
 public abstract class MPBase {
 
-    private transient static final List<String> ALLOWED_METHODS = Arrays.asList("load", "create", "update", "delete");
-    private transient static final List<String> ALLOWED_BULK_METHODS = Arrays.asList("loadAll", "search");
+    private transient static final List<String> ALLOWED_METHODS = Arrays.asList("findById", "save", "update", "delete");
+    private transient static final List<String> ALLOWED_BULK_METHODS = Arrays.asList("all", "search");
     private transient static final List<String> METHODS_TO_VALIDATE = Arrays.asList("create", "update");
 
     public transient static final Boolean WITHOUT_CACHE = Boolean.FALSE;

@@ -151,27 +151,27 @@ public class Card extends MPBase {
     }
 
 
-    public static MPResourceArray loadAll(String customerId) throws MPException {
-        return loadAll(customerId, WITHOUT_CACHE);
+    public static MPResourceArray all(String customerId) throws MPException {
+        return all(customerId, WITHOUT_CACHE);
     }
 
     @GET(path="/v1/customers/:customer_id/cards")
-    public static MPResourceArray loadAll(String customerId, Boolean useCache) throws MPException {
-        return Card.processMethodBulk(Card.class, "loadAll", customerId, useCache);
+    public static MPResourceArray all(String customerId, Boolean useCache) throws MPException {
+        return Card.processMethodBulk(Card.class, "all", customerId, useCache);
     }
 
-    public static Card load(String customerId, String id) throws MPException {
-        return load(customerId, id, WITHOUT_CACHE);
+    public static Card findById(String customerId, String id) throws MPException {
+        return findById(customerId, id, WITHOUT_CACHE);
     }
 
     @GET(path="/v1/customers/:customer_id/cards/:id")
-    public static Card load(String customerId, String id, Boolean useCache) throws MPException {
-        return Card.processMethod(Card.class, "load", customerId, id, useCache);
+    public static Card findById(String customerId, String id, Boolean useCache) throws MPException {
+        return Card.processMethod(Card.class, "findById", customerId, id, useCache);
     }
 
     @POST(path="/v1/customers/:customer_id/cards/")
-    public Card create() throws MPException {
-        return super.processMethod("create", WITHOUT_CACHE);
+    public Card save() throws MPException {
+        return super.processMethod("save", WITHOUT_CACHE);
     }
 
     @PUT(path="/v1/customers/:customer_id/cards/:id")

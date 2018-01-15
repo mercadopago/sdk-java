@@ -53,16 +53,16 @@ public class CustomerTest {
                         new Identification()
                                 .setType("DNI")
                                 .setNumber("12.321.456"));
-        customer.create();
+        customer.save();
         assertEquals(201, customer.getLastApiResponse().getStatusCode());
         assertNotNull(customer.getId());
 
-        customer = Customer.load(customer.getId(), MPBase.WITH_CACHE);
+        customer = Customer.findById(customer.getId(), MPBase.WITH_CACHE);
         assertEquals(200, customer.getLastApiResponse().getStatusCode());
         assertNotNull(customer.getId());
         assertEquals("Tete", customer.getFirstName());
         assertFalse(customer.getLastApiResponse().fromCache);
-        customer = Customer.load(customer.getId(), MPBase.WITH_CACHE);
+        customer = Customer.findById(customer.getId(), MPBase.WITH_CACHE);
         assertEquals(200, customer.getLastApiResponse().getStatusCode());
         assertTrue(customer.getLastApiResponse().fromCache);
 
@@ -87,36 +87,36 @@ public class CustomerTest {
         Card card = new Card()
                 .setCustomerId(customerId)
                 .setToken(getCardToken());
-        card.create();
+        card.save();
         assertEquals(200, card.getLastApiResponse().getStatusCode());
         assertNotNull(card.getId());
 
-        card = Card.load(customerId, card.getId(), MPBase.WITH_CACHE);
+        card = Card.findById(customerId, card.getId(), MPBase.WITH_CACHE);
         assertEquals(200, card.getLastApiResponse().getStatusCode());
         assertEquals(customerId, card.getCustomerId());
         assertFalse(card.getLastApiResponse().fromCache);
-        card = Card.load(customerId, card.getId(), MPBase.WITH_CACHE);
+        card = Card.findById(customerId, card.getId(), MPBase.WITH_CACHE);
         assertEquals(200, card.getLastApiResponse().getStatusCode());
         assertTrue(card.getLastApiResponse().fromCache);
 
-        resourceArray = Card.loadAll(customerId, MPBase.WITH_CACHE);
+        resourceArray = Card.all(customerId, MPBase.WITH_CACHE);
         assertEquals(200, resourceArray.getLastApiResponse().getStatusCode());
         assertEquals(1, resourceArray.size());
         assertFalse(resourceArray.getLastApiResponse().fromCache);
-        resourceArray = Card.loadAll(customerId, MPBase.WITH_CACHE);
+        resourceArray = Card.all(customerId, MPBase.WITH_CACHE);
         assertEquals(200, resourceArray.getLastApiResponse().getStatusCode());
         assertTrue(resourceArray.getLastApiResponse().fromCache);
         assertEquals(card.getId(), ((Card) resourceArray.getByIndex(0)).getId());
 
-        customer = Customer.load(customer.getId());
+        customer = Customer.findById(customer.getId());
         assertEquals(200, customer.getLastApiResponse().getStatusCode());
         assertEquals(1, customer.getCards().size());
 
-        card = Card.load(customerId, card.getId());
+        card = Card.findById(customerId, card.getId());
         assertEquals(200, card.getLastApiResponse().getStatusCode());
         card.delete();
         assertEquals(200, card.getLastApiResponse().getStatusCode());
-        resourceArray = Card.loadAll(customerId);
+        resourceArray = Card.all(customerId);
         assertEquals(200, resourceArray.getLastApiResponse().getStatusCode());
         assertEquals(0, resourceArray.size());
 

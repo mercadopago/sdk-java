@@ -20,13 +20,13 @@ import static org.junit.Assert.assertSame;
 public class MPBaseWithoutPathTest extends MPBase {
 
     @GET(path="")
-    public MPBaseWithoutPathTest load(String id) throws MPException {
-        return processMethod(MPBaseWithoutPathTest.class, "load", id, WITHOUT_CACHE);
+    public MPBaseWithoutPathTest findById(String id) throws MPException {
+        return processMethod(MPBaseWithoutPathTest.class, "findById", id, WITHOUT_CACHE);
     }
 
     @POST(path="")
-    public MPBaseWithoutPathTest create() throws MPException {
-        return super.processMethod("create", WITHOUT_CACHE);
+    public MPBaseWithoutPathTest save() throws MPException {
+        return super.processMethod("save", WITHOUT_CACHE);
     }
 
     @PUT(path="")
@@ -58,7 +58,7 @@ public class MPBaseWithoutPathTest extends MPBase {
 
         auxException = null;
         try {
-            resource.load("5");
+            resource.findById("5");
         } catch (MPException mpException) {
             assertEquals("Exception must have \"Path not found for GET method\" message", mpException.getMessage(), "Path not found for GET method");
             auxException = mpException;
@@ -67,7 +67,7 @@ public class MPBaseWithoutPathTest extends MPBase {
 
         auxException = null;
         try {
-            resource.create();
+            resource.save();
         } catch (MPException mpException) {
             assertEquals("Exception must have \"Path not found for POST method\" message", mpException.getMessage(), "Path not found for POST method");
             auxException = mpException;

@@ -13,8 +13,8 @@ import java.lang.reflect.Method;
 public class MPIPN {
 
     public enum Topic {
-        merchant_order("com.mercadopago.com.mercadopago.resources.MerchantOrder"),
-        payment("com.mercadopago.com.mercadopago.resources.Payment");
+        merchant_order("com.mercadopago.resources.MerchantOrder"),
+        payment("com.mercadopago.resources.Payment");
 
         private final String resourceClassName;
 
@@ -50,7 +50,7 @@ public class MPIPN {
             if (!MPBase.class.isAssignableFrom(clazz)) {
                 throw new MPException(topic.toString() + " does not extend from MPBase");
             }
-            method = clazz.getMethod("load", String.class);
+            method = clazz.getMethod("findById", String.class);
             resourceObject = (T) method.invoke(null, id);
 
         } catch (Exception ex) {
