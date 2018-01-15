@@ -1,5 +1,6 @@
 package com.mercadopago.resources.datastructures.customer;
 
+import java.lang.*;
 import java.util.ArrayList;
 
 /**

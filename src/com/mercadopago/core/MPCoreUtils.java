@@ -3,7 +3,7 @@ package com.mercadopago.core;
 
 import com.google.gson.*;
 import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.apache.commons.validator.routines.UrlValidator;
+import org.apache.commons.validator.UrlValidator;
 import com.mercadopago.exceptions.*;
 
 import java.io.InputStream;

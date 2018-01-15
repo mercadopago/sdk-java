@@ -1,23 +1,23 @@
 package com.mercadopago.core;
 
+
 import com.google.common.collect.MapDifference;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import com.mercadopago.MercadoPago;
+import com.mercadopago.*;
 import com.mercadopago.core.annotations.idempotent.Idempotent;
+import com.mercadopago.core.annotations.rest.*;
 import com.mercadopago.core.annotations.rest.*;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPRestClient;
-import com.mercadopago.core.MPCoreUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
-import org.apache.http.entity.ContentType;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;

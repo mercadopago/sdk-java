@@ -1,5 +1,9 @@
 package com.mercadopago;
 
+/**
+ * Created by jibaceta on 1/15/18.
+ */
+
 import com.mercadopago.core.MPCredentials;
 import com.mercadopago.exceptions.MPConfException;
 import com.mercadopago.exceptions.MPException;
@@ -9,6 +13,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Properties;
 
+
 /**
  * Mercado Pago MercadoPago
  * MercadoPago Class
@@ -16,8 +21,8 @@ import java.util.Properties;
  * Created by Eduardo Paoletta on 11/1/16.
  */
 public class MercadoPago {
-
     public static class SDK {
+
         private static final String DEFAULT_BASE_URL = "https://api.mercadopago.com";
 
         private static String clientSecret = null;
@@ -30,11 +35,9 @@ public class MercadoPago {
         /**
          * Configure Methods
          */
-
         public static void configure(String accessTokenValue) {
             accessToken = accessTokenValue;
         }
-
         public static void configure(String clientIdValue, String clientSecretValue) {
             clientId=clientIdValue;
             clientSecret=clientSecretValue;
@@ -46,12 +49,11 @@ public class MercadoPago {
         public static String getClientSecret() {
             return clientSecret;
         }
-
-        public static void setClientSecret(String value) throws MPConfException {
-            if (StringUtils.isNotEmpty(clientSecret)) {
-                throw new MPConfException("clientSecret setting can not be changed");
-            }
+        public static void setClientSecret(String value) throws MPException {
             clientSecret = value;
+            if (StringUtils.isNotEmpty(clientId)) {
+                getAccessToken();
+            }
         }
 
         /**
@@ -60,12 +62,11 @@ public class MercadoPago {
         public static String getClientId() {
             return clientId;
         }
-
-        public static void setClientId(String value) throws MPConfException {
-            if (StringUtils.isNotEmpty(clientId)) {
-                throw new MPConfException("clientId setting can not be changed");
-            }
+        public static void setClientId(String value) throws MPException {
             clientId = value;
+            if (StringUtils.isNotEmpty(clientSecret)) {
+                getAccessToken();
+            }
         }
 
         /**
@@ -80,9 +81,6 @@ public class MercadoPago {
         }
 
         public static void setAccessToken(String value) throws MPConfException {
-            if (StringUtils.isNotEmpty(accessToken)) {
-                throw new MPConfException("accessToken setting can not be changed");
-            }
             accessToken = value;
         }
 
@@ -101,9 +99,9 @@ public class MercadoPago {
             return appId;
         }
 
-        public static void setAppId(String value) throws MPConfException {
+        public static void setAppId(String value) throws MPException {
             if (StringUtils.isNotEmpty(appId)) {
-                throw new MPConfException("appId setting can not be changed");
+                throw new MPException("appId setting can not be changed");
             }
             appId = value;
         }
@@ -126,7 +124,7 @@ public class MercadoPago {
          * @param hashConfigurationParams a <String, String> hashmap with the configuration params
          * throws MPConfException
          */
-        public static void setConfiguration(HashMap<String, String> hashConfigurationParams) throws MPConfException {
+        public static void setConfiguration(HashMap<String, String> hashConfigurationParams) throws MPException {
             if (hashConfigurationParams == null) {
                 throw new IllegalArgumentException("Invalid hashConfigurationParams parameter");
             }
@@ -164,7 +162,7 @@ public class MercadoPago {
             InputStream inputStream = null;
             try {
                 Properties properties = new Properties();
-                inputStream = MercadoPago.SDK.class.getClassLoader().getResourceAsStream(filePath);
+                inputStream = SDK.class.getClassLoader().getResourceAsStream(filePath);
                 if (inputStream == null) {
                     throw new IllegalArgumentException("File not found");
                 }
@@ -191,7 +189,7 @@ public class MercadoPago {
          * @param properties            Properties obj
          * throws MPConfException
          */
-        public static void setConfiguration(Properties properties) throws MPConfException {
+        public static void setConfiguration(Properties properties) throws MPException {
             setClientSecret(getValueFromProperties(properties, "clientSecret"));
             setClientId(getValueFromProperties(properties, "clientId"));
             setAccessToken(getValueFromProperties(properties, "accessToken"));
@@ -224,7 +222,6 @@ public class MercadoPago {
             baseUrl = DEFAULT_BASE_URL;
         }
     }
-
 
 
 }

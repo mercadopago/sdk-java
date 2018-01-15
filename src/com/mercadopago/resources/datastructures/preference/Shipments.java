@@ -1,7 +1,6 @@
 package com.mercadopago.resources.datastructures.preference;
 
 import com.mercadopago.core.annotations.validation.Numeric;
-import com.mercadopago.resources.datastructures.customer.Shipment;
 
 import java.util.ArrayList;
 

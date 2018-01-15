@@ -13,8 +13,8 @@ import java.lang.reflect.Method;
 public class MPIPN {
 
     public enum Topic {
-        merchant_order("com.mercadopago.resources.MerchantOrder"),
-        payment("com.mercadopago.resources.Payment");
+        merchant_order("com.mercadopago.com.mercadopago.resources.MerchantOrder"),
+        payment("com.mercadopago.com.mercadopago.resources.Payment");
 
         private final String resourceClassName;
 
