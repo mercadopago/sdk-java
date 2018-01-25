@@ -27,7 +27,7 @@ public class MPBaseMultipleParamsTest extends MPBase {
     @BeforeClass
     public static void beforeTest() throws MPException {
         MercadoPago.SDK.cleanConfiguration();
-        MercadoPago.SDK.setConfiguration("mercadopago/data/credentials.properties");
+        MercadoPago.SDK.setConfiguration("credentials.properties");
     }
 
     @GET(path="/loadpath/slug/:param1")

@@ -12,13 +12,13 @@ import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPRestClient;
 import com.mercadopago.resources.Payment;
 import com.mercadopago.resources.datastructures.payment.*;
-import mercadopago.data.TestUserData;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 import static org.junit.Assert.*;
 
@@ -33,7 +33,8 @@ public class PaymentTest {
     @BeforeClass
     public static void beforeTest() throws MPException {
         MercadoPago.SDK.cleanConfiguration();
-        MercadoPago.SDK.setConfiguration("mercadopago/data/credentials.properties");
+        MercadoPago.SDK.setAccessToken(System.getenv("ACCESS_TOKEN_TEST_OK"));
+
     }
 
     @Test
@@ -180,16 +181,24 @@ public class PaymentTest {
 
     private String getCardToken() throws MPException {
         JsonObject jsonPayload = new JsonObject();
-        jsonPayload.addProperty("card_number", "4509953566233704");
-        jsonPayload.addProperty("security_code", "123");
-        jsonPayload.addProperty("expiration_year", 2020);
-        jsonPayload.addProperty("expiration_month", 12);
+
+        Random rnd = new Random();
+
+        int expiration_year = rnd.nextInt(20) + 2019;
+        int expiration_month = 1 + rnd.nextInt(10) + 1;
+        int security_code = rnd.nextInt(900) + 100;
+
+        jsonPayload.addProperty("cardNumber", "4509953566233704");
+        jsonPayload.addProperty("securityCode", security_code);
+        jsonPayload.addProperty("expirationYear", expiration_year);
+        jsonPayload.addProperty("expirationMonth", expiration_month);
 
         JsonObject identification = new JsonObject();
         identification.addProperty("type", "DNI");
         identification.addProperty("number", "12345678");
 
         JsonObject cardHolder = new JsonObject();
+
         cardHolder.addProperty("name", "APRO");
         cardHolder.add("identification", identification);
 
@@ -200,7 +209,7 @@ public class PaymentTest {
             MPRestClient client = new MPRestClient();
             response = client.executeRequest(
                     HttpMethod.POST,
-                    MercadoPago.SDK.getBaseUrl() + "/v1/card_tokens?public_key=" + TestUserData.publicKey,
+                    MercadoPago.SDK.getBaseUrl() + "/v1/card_tokens?public_key=" + System.getenv("PUBLIC_KEY_TEST_OK"),
                     PayloadType.JSON,
                     jsonPayload,
                     null);
@@ -226,6 +235,7 @@ public class PaymentTest {
         payment.setPayer(payer);
 
         payment.save();
+
         assertEquals(201, payment.getLastApiResponse().getStatusCode());
         assertNotNull(payment.getId());
         assertEquals("approved", payment.getStatus().toString());

@@ -233,7 +233,8 @@ public class PreferenceTest {
         preference.appendItem(item);
         preference.setPayer(payer);
 
-        preference.create();
+        preference.save();
+
         assertEquals(201, preference.getLastApiResponse().getStatusCode());
         assertNotNull(preference.getId());
 
@@ -264,7 +265,7 @@ public class PreferenceTest {
         preference.appendItem(item);
         preference.setPayer(payer);
 
-        preference.create();
+        preference.save();
         assertEquals(201, preference.getLastApiResponse().getStatusCode());
         assertNotNull(preference.getId());
         assertEquals(1, preference.getItems().size());

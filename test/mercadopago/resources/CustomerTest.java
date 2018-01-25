@@ -1,6 +1,7 @@
 package mercadopago.resources;
 
 import com.google.gson.JsonObject;
+
 import com.mercadopago.*;
 import com.mercadopago.core.MPApiResponse;
 import com.mercadopago.core.MPBase;
@@ -16,11 +17,9 @@ import com.mercadopago.resources.datastructures.customer.Identification;
 import com.mercadopago.resources.datastructures.customer.Phone;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import mercadopago.data.TestUserData;
+import mercadopago.resources.TestUserData;
 
 import java.util.UUID;
-
-import static com.sun.javafx.tools.resource.DeployResource.Type.data;
 import static org.junit.Assert.*;
 
 /**
@@ -34,7 +33,7 @@ public class CustomerTest {
     @BeforeClass
     public static void beforeTest() throws MPException {
         MercadoPago.SDK.cleanConfiguration();
-        MercadoPago.SDK.setConfiguration("/mercadopago/data/credentials.properties");
+        MercadoPago.SDK.setConfiguration("mercadopago/data/credentials.properties");
     }
 
     @Test

@@ -24,7 +24,7 @@ public class MPBaseTest extends MPBase {
 
     @BeforeClass public static void beforeTests() throws MPException {
         MercadoPago.SDK.cleanConfiguration();
-        MercadoPago.SDK.setConfiguration("mercadopago/data/credentials.properties");
+        MercadoPago.SDK.setConfiguration("credentials.properties");
     }
 
     private String id = null;

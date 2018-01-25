@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
  */
 public class MPRestClientTest {
 
-    private String HTTPBIN_TEST_URL = "https://httpbin.org/";
+    private String HTTPBIN_TEST_URL = "http://httpbin.org/";
 
     @Test
     public void getMethodTest() throws MPRestException {
