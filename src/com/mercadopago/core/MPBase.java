@@ -37,7 +37,7 @@ public abstract class MPBase {
 
     private transient static final List<String> ALLOWED_METHODS = Arrays.asList("findById", "save", "update", "delete");
     private transient static final List<String> ALLOWED_BULK_METHODS = Arrays.asList("all", "search");
-    private transient static final List<String> METHODS_TO_VALIDATE = Arrays.asList("create", "update");
+    private transient static final List<String> METHODS_TO_VALIDATE = Arrays.asList("save", "update");
 
     public transient static final Boolean WITHOUT_CACHE = Boolean.FALSE;
     public transient static final Boolean WITH_CACHE = Boolean.TRUE;

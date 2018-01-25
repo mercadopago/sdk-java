@@ -235,7 +235,7 @@ public class Preference extends MPBase {
     }
 
     @POST(path="/checkout/preferences")
-    public Preference create() throws MPException {
+    public Preference save() throws MPException {
         return super.processMethod("save", WITHOUT_CACHE);
     }
 
