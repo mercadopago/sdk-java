@@ -17,7 +17,6 @@ import com.mercadopago.resources.datastructures.customer.Identification;
 import com.mercadopago.resources.datastructures.customer.Phone;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import mercadopago.resources.TestUserData;
 
 import java.util.UUID;
 import static org.junit.Assert.*;
