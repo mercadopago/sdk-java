@@ -3,3 +3,9 @@ settings.xml
 out/
 px-java.iml
 target/
+maven-central-deploy.log
+*.jks
+*.cer
+*.pem
+
+
