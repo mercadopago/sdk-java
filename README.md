@@ -2,7 +2,7 @@
 
 This library provides developers with a simple set of bindings to the Mercado Pago API.
 
-## Installation 
+## Installation 
 
 ### Using Maven
 1. Append MercadoPago dependencies to pom.xml
