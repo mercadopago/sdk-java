@@ -22,7 +22,7 @@ This library provides developers with a simple set of bindings to the Mercado Pa
 
 ## Quick Start
 
-1. Import Mercado Pago basic clases. `import import com.mercadopago.*;`
+1. Import Mercado Pago basic clases. `import com.mercadopago.*;`
 2. Setup your credentials.
   - **For Web-checkout:**
     ```java
