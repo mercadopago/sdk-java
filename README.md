@@ -12,7 +12,7 @@ This library provides developers with a simple set of bindings to the Mercado Pa
     <dependencies>
         <dependency>
             <groupId> com.mercadopago </groupId>
-            <artifactId> dx-java </artifactId>
+            <artifactId> sdk-java </artifactId>
             <version> 1.0.6 </version>
         </dependency>
     </dependencies>
