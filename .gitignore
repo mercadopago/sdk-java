@@ -1,10 +1,11 @@
 settings.xml
 .idea/
 out/
-px-java.iml
+*.iml
 target/
 maven-central-deploy.log
 *.jks
 *.cer
 *.pem
+.DS_Store
 
