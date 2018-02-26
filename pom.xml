@@ -3,7 +3,7 @@
 
     <groupId>com.mercadopago</groupId>
     <artifactId>dx-java</artifactId>
-    <version>1.0.6</version>
+    <version>1.0.8</version>
     <packaging>jar</packaging>
 
     <name>Mercadopago SDK</name>
@@ -72,7 +72,7 @@
                 <executions>
                     <execution>
                         <id>sign-artifacts</id>
-                    <phase>verify</phase>
+                        <phase>verify</phase>
                         <goals>
                             <goal>sign</goal>
                         </goals>
@@ -98,7 +98,7 @@
                 <execution>
                   <id>attach-sources</id>
                   <goals>
-                    <goal>jar</goal>
+                      <goal>jar-no-fork</goal>
                   </goals>
                 </execution>
               </executions>
@@ -117,6 +117,16 @@
           		</executions>
             </plugin>
             <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>deploy</id>
+                        <phase>deploy</phase>
+                        <goals><goal>deploy</goal></goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
             <groupId>org.sonatype.plugins</groupId>
             <artifactId>nexus-staging-maven-plugin</artifactId>
             <version>1.6.7</version>
@@ -127,6 +137,7 @@
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
             </configuration>
             </plugin>
+
         </plugins>
     </build>
 

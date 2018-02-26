@@ -122,7 +122,7 @@ public class MercadoPago {
         /**
          * Set configuration params with a hashmap.
          * Valid keys are: clientSecret, clientId, accessToken, appId
-         * @param hashConfigurationParams a <String, String> hashmap with the configuration params
+         * @param hashConfigurationParams a String, String hashmap with the configuration params
          * throws MPConfException
          */
         public static void setConfiguration(HashMap<String, String> hashConfigurationParams) throws MPException {
@@ -138,7 +138,7 @@ public class MercadoPago {
 
         /**
          * Extract a value from a HashMap if is not null or empty
-         * @param hashMap a <String, String> hashmap with the configuration params.
+         * @param hashMap a String, String hashmap with the configuration params.
          * @param key value key
          * @return the configuration param or null if the key does not exists or value is empty
          */

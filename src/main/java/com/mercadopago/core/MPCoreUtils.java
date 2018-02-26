@@ -102,7 +102,6 @@ public class MPCoreUtils {
      *
      * @param url               url address to validate
      * @return
-     * @throws MPException
      */
     public static boolean validateUrl(String url) {
         String[] schemes = {"https"};
