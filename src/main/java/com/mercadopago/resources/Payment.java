@@ -251,6 +251,11 @@ public class Payment extends MPBase {
         return status;
     }
 
+    public Payment setStatus(Status status) {
+        this.status = status;
+        return this;
+    }
+
     public String getStatusDetail() {
         return statusDetail;
     }
