@@ -72,4 +72,4 @@ This library provides developers with a simple set of bindings to the Mercado Pa
 
 ### Support 
 
-Write us at developers@mercadopago.com
+Write us at [developers.mercadopago.com](https://developers.mercadopago.com)
