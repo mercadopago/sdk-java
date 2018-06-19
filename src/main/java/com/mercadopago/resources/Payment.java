@@ -128,6 +128,10 @@ public class Payment extends MPBase {
         return collectorId;
     }
 
+    public String getAuthorizationCode() {
+        return authorizationCode;
+    }
+
     public OperationType getOperationType() {
         return operationType;
     }
