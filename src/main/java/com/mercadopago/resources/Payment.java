@@ -29,6 +29,7 @@ public class Payment extends MPBase {
     private Date dateLastUpdated = null;
     private Date moneyReleaseDate = null;
     private Integer collectorId = null;
+    private String authorizationCode = null;
     private OperationType operationType = null;
     public enum OperationType {
         regular_payment,
@@ -125,6 +126,10 @@ public class Payment extends MPBase {
 
     public Integer getCollectorId() {
         return collectorId;
+    }
+
+    public String getAuthorizationCode() {
+        return authorizationCode;
     }
 
     public OperationType getOperationType() {
