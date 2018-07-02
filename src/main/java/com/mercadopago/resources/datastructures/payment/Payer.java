@@ -20,7 +20,7 @@ public class Payer {
     private PayerPhone phone = null;
     private String firstName = null;
     private String lastName = null;
-
+    private Address address = null;
 
     public Payer.type getType() {
         return type;
@@ -70,4 +70,12 @@ public class Payer {
         return lastName;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public Payer setAddress(Address address) {
+        this.address = address;
+        return this;
+    }
 }

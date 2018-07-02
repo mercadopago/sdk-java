@@ -47,7 +47,17 @@ public class PaymentTest {
                                 .setIdentification(
                                         new Identification()
                                                 .setType("type")
-                                                .setNumber("number")))
+                                                .setNumber("number"))
+                                .setAddress(
+                                        new Address()
+                                                .setStreetName("ARIAS")
+                                                .setStreetNumber(3751)
+                                                .setZipCode("C1430CRI")
+                                                .setNeighborhood("CABA")
+                                                .setCity("Buenos Aires")
+                                                .setFederalUnit("BA")
+                                )
+                        )
                 .setBinaryMode(Boolean.TRUE)
                 .setOrder(
                         new Order()
