@@ -28,7 +28,8 @@ public class PreferenceTest {
     @BeforeClass
     public static void beforeTest() throws MPException {
         MercadoPago.SDK.cleanConfiguration();
-        MercadoPago.SDK.setConfiguration("mercadopago/data/credentialsprod.properties");
+        MercadoPago.SDK.setClientId(System.getenv("CLIENT_ID"));
+        MercadoPago.SDK.setClientSecret(System.getenv("CLIENT_SECRET"));
     }
 
     @Test
@@ -102,6 +103,8 @@ public class PreferenceTest {
         preference.appendItem(item);
         preference.setPayer(payer);
         preference.setPaymentMethods(paymentMethods);
+        preference.getPaymentMethods().appendExcludedPaymentMethod(new ExcludedPaymentMethod().setId("ExcludedPaymentMethod"));
+        preference.getPaymentMethods().appendExcludedPaymentTypes(new ExcludedPaymentType().setId("ExcludedPaymentType"));
         preference.setShipments(shipments);
         preference.setBackUrls(backUrls);
         preference.setNotificationUrl("NotificationUrl");

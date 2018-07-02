@@ -46,8 +46,8 @@ public class Preference extends MPBase {
     private Boolean expires = null;
     private Date expirationDateFrom = null;
     private Date expirationDateTo = null;
-    private Integer collectorId = null;
-    private Integer clientId = null;
+    private Float collectorId = null;
+    private Float clientId = null;
     @Size(max=256) private String marketplace = null;
     private Float marketplaceFee = null;
     private DifferentialPricing differentialPricing = null;
@@ -194,11 +194,11 @@ public class Preference extends MPBase {
         return this;
     }
 
-    public Integer getCollectorId() {
+    public Float getCollectorId() {
         return collectorId;
     }
 
-    public Integer getClientId() {
+    public Float getClientId() {
         return clientId;
     }
 
