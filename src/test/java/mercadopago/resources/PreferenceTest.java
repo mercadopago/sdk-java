@@ -103,8 +103,8 @@ public class PreferenceTest {
         preference.appendItem(item);
         preference.setPayer(payer);
         preference.setPaymentMethods(paymentMethods);
-        preference.getPaymentMethods().appendExcludedPaymentMethod(new ExcludedPaymentMethod().setId("ExcludedPaymentMethod"));
-        preference.getPaymentMethods().appendExcludedPaymentTypes(new ExcludedPaymentType().setId("ExcludedPaymentType"));
+        preference.getPaymentMethods().appendExcludedPaymentMethod(new ExcludedPaymentMethod("ExcludedPaymentMethod"));
+        preference.getPaymentMethods().appendExcludedPaymentTypes(new ExcludedPaymentType("ExcludedPaymentType"));
         preference.setShipments(shipments);
         preference.setBackUrls(backUrls);
         preference.setNotificationUrl("NotificationUrl");
