@@ -429,7 +429,8 @@ public abstract class MPBase {
     private static Collection<Header> getStandardHeaders() {
         Collection<Header> colHeaders = new Vector<Header>();
         colHeaders.add(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-        colHeaders.add(new BasicHeader(HTTP.USER_AGENT, "MercadoPago Java MercadoPago v1.0.1"));
+        colHeaders.add(new BasicHeader(HTTP.USER_AGENT, "MercadoPago Java SDK/1.0.10"));
+        colHeaders.add(new BasicHeader("x-product-id", "BC32A7VTRPP001U8NHJ0"));
         return colHeaders;
     }
 

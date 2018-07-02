@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.mercadopago.core.MPApiResponse;
+import com.mercadopago.core.MPCoreUtils;
 import com.mercadopago.core.annotations.rest.PayloadType;
 import com.mercadopago.exceptions.MPRestException;
 import org.apache.commons.lang3.StringUtils;
@@ -55,6 +56,7 @@ public class MPRestClient {
         return this.executeRequest(httpMethod, uri, payloadType, payload, colHeaders, 0, 0, 0);
     }
 
+
     /**
      * Executes a http request and returns a response
      *
@@ -96,7 +98,11 @@ public class MPRestClient {
             long endMillis = System.currentTimeMillis();
             long responseMillis = endMillis - startMillis;
 
-            return new MPApiResponse(httpMethod, request, payload, response, responseMillis);
+            MPApiResponse mapiresponse = new MPApiResponse(httpMethod, request, payload, response, responseMillis);
+
+            System.out.println(mapiresponse.getStringResponse());
+
+            return mapiresponse;
 
         } catch (MPRestException restEx) {
             throw restEx;

@@ -13,7 +13,7 @@ import java.util.Date;
 
 /**
  * Mercado Pago MercadoPago
- * This resource allows you to keep track the state of an order, grouping items, payments and shipments.
+ * This resource allows you to keep  the state of an order, grouping items, payments and shipments.
  *
  * Created by Eduardo Paoletta on 12/13/16.
  */

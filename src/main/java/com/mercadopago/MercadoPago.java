@@ -4,13 +4,20 @@ package com.mercadopago;
  * Created by jibaceta on 1/15/18.
  */
 
+import com.google.gson.JsonObject;
 import com.mercadopago.core.MPCredentials;
+import com.mercadopago.core.annotations.rest.PayloadType;
 import com.mercadopago.exceptions.MPConfException;
 import com.mercadopago.exceptions.MPException;
+import com.mercadopago.exceptions.MPRestException;
+import com.mercadopago.net.HttpMethod;
+import com.mercadopago.net.MPRestClient;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.Header;
 
 import java.io.Console;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -230,6 +237,17 @@ public class MercadoPago {
             appId = null;
             baseUrl = DEFAULT_BASE_URL;
         }
+
+        public static void Get(String uri) throws MPRestException {
+            MPRestClient client = new MPRestClient();
+            client.executeRequest(HttpMethod.GET, uri, PayloadType.JSON, null, null);
+        }
+
+        public static void Post(String uri, JsonObject payload) throws MPRestException {
+            MPRestClient client = new MPRestClient();
+            client.executeRequest(HttpMethod.POST, uri, PayloadType.JSON, payload, null);
+        }
+
     }
 
 

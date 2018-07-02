@@ -72,6 +72,7 @@ public class PreferenceTest {
         paymentMethods.setInstallments(1);
         paymentMethods.setDefaultInstallments(1);
 
+
         AddressReceiver addressReceiver = new AddressReceiver();
         addressReceiver.setZipCode("ZipCode");
         addressReceiver.setStreetName("StreetName");

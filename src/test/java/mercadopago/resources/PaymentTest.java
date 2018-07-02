@@ -34,7 +34,6 @@ public class PaymentTest {
     public static void beforeTest() throws MPException {
         MercadoPago.SDK.cleanConfiguration();
         MercadoPago.SDK.setAccessToken(System.getenv("ACCESS_TOKEN_TEST_OK"));
-
     }
 
     @Test
@@ -188,10 +187,10 @@ public class PaymentTest {
         int expiration_month = 1 + rnd.nextInt(10) + 1;
         int security_code = rnd.nextInt(900) + 100;
 
-        jsonPayload.addProperty("cardNumber", "4509953566233704");
-        jsonPayload.addProperty("securityCode", security_code);
-        jsonPayload.addProperty("expirationYear", expiration_year);
-        jsonPayload.addProperty("expirationMonth", expiration_month);
+        jsonPayload.addProperty("card_number", "4509953566233704");
+        jsonPayload.addProperty("security_code", String.valueOf(security_code));
+        jsonPayload.addProperty("expiration_year", expiration_year);
+        jsonPayload.addProperty("expiration_month", expiration_month);
 
         JsonObject identification = new JsonObject();
         identification.addProperty("type", "DNI");
@@ -221,16 +220,16 @@ public class PaymentTest {
 
     @Test
     public void paymentTest() throws MPException {
-        String token = getCardToken();
+        //String token = getCardToken();
 
         Payer payer = new Payer();
-        payer.setEmail("test_user_93364321@testuser.com");
+        payer.setEmail("tSADF_93364321@testuser.com");
 
         Payment payment = new Payment();
         payment.setTransactionAmount(100f);
         payment.setPaymentMethodId("visa");
         payment.setDescription("Payment test 1 peso");
-        payment.setToken(token);
+        payment.setToken(getCardToken());
         payment.setInstallments(1);
         payment.setPayer(payer);
 
