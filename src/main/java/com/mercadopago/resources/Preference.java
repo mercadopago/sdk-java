@@ -80,12 +80,7 @@ public class Preference extends MPBase {
     }
 
     public PaymentMethods getPaymentMethods() {
-        if (paymentMethods != null) {
-            return paymentMethods;
-        } else {
-            paymentMethods = new PaymentMethods();
-            return paymentMethods;
-        }
+        return paymentMethods;
     }
 
     public Preference setPaymentMethods(PaymentMethods paymentMethods) {
