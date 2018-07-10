@@ -13,7 +13,7 @@ This library provides developers with a simple set of bindings to the Mercado Pa
         <dependency>
             <groupId> com.mercadopago </groupId>
             <artifactId> dx-java </artifactId>
-            <version> 1.0.11 </version>
+            <version> 1.0.14 </version>
         </dependency>
     </dependencies>
     ...
@@ -72,4 +72,6 @@ This library provides developers with a simple set of bindings to the Mercado Pa
 
 ### Support 
 
-Write us at [developers.mercadopago.com](https://developers.mercadopago.com)
+1. Create an issue https://github.com/mercadopago/dx-java/issues 
+2. Follow your issue status in Issues Support Dashboard https://github.com/mercadopago/dx-java/projects/2
+
