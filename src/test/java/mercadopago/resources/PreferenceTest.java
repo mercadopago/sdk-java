@@ -67,12 +67,11 @@ public class PreferenceTest {
         payer.setDateCreated(new Date().toString());
 
         PaymentMethods paymentMethods = new PaymentMethods();
-        paymentMethods.appendExcludedPaymentMethod(new ExcludedPaymentMethod().setId("ExcludedPaymentMethod"));
-        paymentMethods.appendExcludedPaymentTypes(new ExcludedPaymentType().setId("ExcludedPaymentType"));
+        paymentMethods.appendExcludedPaymentMethod(new ExcludedPaymentMethod().setId("visa"));
+        paymentMethods.appendExcludedPaymentTypes(new ExcludedPaymentType().setId("credit_card"));
         paymentMethods.setDefaultPaymentMethodId("DefaultPaymentMethodId");
         paymentMethods.setInstallments(1);
         paymentMethods.setDefaultInstallments(1);
-
 
         AddressReceiver addressReceiver = new AddressReceiver();
         addressReceiver.setZipCode("ZipCode");
@@ -201,6 +200,8 @@ public class PreferenceTest {
         assertEquals(preference.getMarketplace(), jsonPreference.get("marketplace").getAsString());
         assertEquals(preference.getMarketplaceFee(), jsonPreference.get("marketplace_fee").getAsFloat(), 0.0f);
 
+        System.out.println(jsonPreference.get("id"));
+
     }
 
     @Test
@@ -242,6 +243,11 @@ public class PreferenceTest {
 
         String random = UUID.randomUUID().toString();
         preference.setAdditionalInfo(random);
+        PaymentMethods paymentMethods = new PaymentMethods();
+        paymentMethods.appendExcludedPaymentMethod(new ExcludedPaymentMethod().setId("redlink"));
+        paymentMethods.appendExcludedPaymentTypes(new ExcludedPaymentType().setId("bank_transfer"));
+        paymentMethods.appendExcludedPaymentTypes(new ExcludedPaymentType().setId("atm"));
+        preference.setPaymentMethods(paymentMethods);
         preference.update();
         assertEquals(200, preference.getLastApiResponse().getStatusCode());
         assertEquals(random, preference.getAdditionalInfo());
@@ -254,8 +260,8 @@ public class PreferenceTest {
         item.setTitle("Title");
         item.setDescription("Description");
         item.setQuantity(1);
-        item.setCurrencyId("ARS");
-        item.setUnitPrice(.01f);
+        item.setCurrencyId("MXN");
+        item.setUnitPrice(10.0f);
 
         Payer payer = new Payer();
         payer.setName("Name");
@@ -266,6 +272,8 @@ public class PreferenceTest {
         Preference preference = new Preference();
         preference.appendItem(item);
         preference.setPayer(payer);
+
+
 
         preference.save();
         assertEquals(201, preference.getLastApiResponse().getStatusCode());

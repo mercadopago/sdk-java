@@ -5,7 +5,9 @@ import com.google.common.collect.MapDifference;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 import com.mercadopago.*;
 import com.mercadopago.core.annotations.idempotent.Idempotent;
@@ -522,6 +524,7 @@ public abstract class MPBase {
                 (httpMethod.equals(HttpMethod.PUT) && resource._lastKnownJson == null)) {
             payload = MPCoreUtils.getJsonFromResource(resource);
         } else if (httpMethod.equals(HttpMethod.PUT)) {
+
             JsonObject actualJson = MPCoreUtils.getJsonFromResource(resource);
 
             Type mapType = new TypeToken<Map<String, Object>>(){}.getType();
@@ -532,10 +535,20 @@ public abstract class MPBase {
 
             payload = new JsonObject();
 
+
+
             for (Map.Entry<String, MapDifference.ValueDifference<Object>> entry : mapDifferences.entriesDiffering().entrySet()) {
-                payload.addProperty(entry.getKey(), entry.getValue().rightValue().toString());
+
+                if (entry.getValue().rightValue() instanceof LinkedTreeMap) {
+                    JsonElement jsonObject = gson.toJsonTree(entry.getValue().rightValue()).getAsJsonObject();
+                    payload.add(entry.getKey(), jsonObject);
+                } else {
+                    payload.addProperty(entry.getKey(), entry.getValue().rightValue().toString());
+                }
+
             }
             for (Map.Entry<String, Object> entry : mapDifferences.entriesOnlyOnRight().entrySet()) {
+                System.out.println("Second Iteration: " + entry.getValue().toString());
                 if (entry.getValue() instanceof Boolean) {
                     payload.addProperty(entry.getKey(), (Boolean)entry.getValue());
                 } else if (entry.getValue() instanceof Number) {
