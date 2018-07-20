@@ -10,6 +10,7 @@ import com.mercadopago.exceptions.MPException;
 import com.mercadopago.exceptions.MPRestException;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPRestClient;
+import com.mercadopago.resources.Card;
 import com.mercadopago.resources.Payment;
 import com.mercadopago.resources.datastructures.payment.*;
 import org.junit.BeforeClass;
@@ -29,6 +30,8 @@ import static org.junit.Assert.*;
  * Created by Eduardo Paoletta on 12/6/16.
  */
 public class PaymentTest {
+
+    static Payment lastPayment = null;
 
     @BeforeClass
     public static void beforeTest() throws MPException {
@@ -145,50 +148,73 @@ public class PaymentTest {
     }
 
     @Test
-    public void paymentLoadTest() throws MPException {
-        Payment payment = Payment.findById("2278812", MPBase.WITH_CACHE);
-        assertEquals(200, payment.getLastApiResponse().getStatusCode());
-        assertEquals("2278812", payment.getId());
-        assertEquals("regular_payment", payment.getOperationType().toString());
-        assertEquals(Float.valueOf(100f), payment.getTransactionAmount());
-        assertEquals("accredited", payment.getStatusDetail());
-        assertTrue(payment.getCaptured());
-        assertEquals(Integer.valueOf(1), payment.getInstallments());
-        assertFalse(payment.getLastApiResponse().fromCache);
-
-        payment = Payment.findById("2278812", MPBase.WITH_CACHE);
-        assertTrue(payment.getLastApiResponse().fromCache);
-    }
-
-    @Test
-    public void paymentPutTest() throws MPException {
-        String token = getCardToken();
+    public void paymentTest() throws MPException {
+        //String token = getCardToken();
 
         Payer payer = new Payer();
-        payer.setEmail("test_user_93364321@testuser.com");
+        payer.setEmail("tSADF_93364321@testuser.com");
 
         Payment payment = new Payment();
         payment.setTransactionAmount(100f);
         payment.setPaymentMethodId("visa");
         payment.setDescription("Payment test 1 peso");
-        payment.setToken(token);
+        payment.setToken(getCardToken(CardResultExpected.PENDING));
         payment.setInstallments(1);
         payment.setPayer(payer);
-        payment.setCapture(Boolean.FALSE);
 
         payment.save();
+
+        lastPayment = payment;
+
         assertEquals(201, payment.getLastApiResponse().getStatusCode());
         assertNotNull(payment.getId());
-        assertFalse(payment.getCaptured());
+        assertEquals("in_process", payment.getStatus().toString());
+        assertEquals("credit_card", payment.getPaymentTypeId().toString());
+    }
 
-        payment.setCapture(Boolean.TRUE);
-        payment.update();
+    @Test
+    public void paymentLoadTest() throws MPException {
+        Payment payment = Payment.findById(lastPayment.getId(), MPBase.WITHOUT_CACHE);
         assertEquals(200, payment.getLastApiResponse().getStatusCode());
-        assertTrue(payment.getCaptured());
+        assertEquals(lastPayment.getId(), payment.getId());
+
+        assertEquals(Float.valueOf(100f), payment.getTransactionAmount());
+        assertEquals(Integer.valueOf(1), payment.getInstallments());
+        assertFalse(payment.getLastApiResponse().fromCache);
+    }
+
+    @Test
+    public void paymentPutTest() throws MPException {
+
+        Payment payment = lastPayment;
+
+        payment.setStatus(Payment.Status.cancelled);
+        payment.update();
+
+        assertEquals(200, payment.getLastApiResponse().getStatusCode());
+        assertEquals(Payment.Status.cancelled, payment.getStatus());
+    }
+
+    private enum CardResultExpected {
+        APPROVED("APRO"),
+        PENDING("CONT");
+
+        private String CardHolderName;
+
+        private CardResultExpected(String cardHolderName){
+            this.CardHolderName = cardHolderName;
+        }
+
+        public String getCardHolderName(){
+            return this.CardHolderName;
+        }
 
     }
 
-    private String getCardToken() throws MPException {
+
+    private String getCardToken(CardResultExpected result) throws MPException {
+
+
         JsonObject jsonPayload = new JsonObject();
 
         Random rnd = new Random();
@@ -208,7 +234,7 @@ public class PaymentTest {
 
         JsonObject cardHolder = new JsonObject();
 
-        cardHolder.addProperty("name", "APRO");
+        cardHolder.addProperty("name", result.getCardHolderName());
         cardHolder.add("identification", identification);
 
         jsonPayload.add("cardholder", cardHolder);
@@ -226,31 +252,6 @@ public class PaymentTest {
             throw new MPException(rex);
         }
         return ((JsonObject) response.getJsonElementResponse()).get("id").getAsString();
-    }
-
-    @Test
-    public void paymentTest() throws MPException {
-        //String token = getCardToken();
-
-        Payer payer = new Payer();
-        payer.setEmail("tSADF_93364321@testuser.com");
-
-        Payment payment = new Payment();
-        payment.setTransactionAmount(100f);
-        payment.setPaymentMethodId("visa");
-        payment.setDescription("Payment test 1 peso");
-        payment.setToken(getCardToken());
-        payment.setInstallments(1);
-        payment.setPayer(payer);
-
-        payment.save();
-
-        assertEquals(201, payment.getLastApiResponse().getStatusCode());
-        assertNotNull(payment.getId());
-        assertEquals("approved", payment.getStatus().toString());
-        assertEquals("accredited", payment.getStatusDetail());
-        assertTrue(payment.getCaptured());
-        assertEquals("credit_card", payment.getPaymentTypeId().toString());
     }
 
 }
