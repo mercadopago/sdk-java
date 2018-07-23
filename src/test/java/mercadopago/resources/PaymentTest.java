@@ -187,7 +187,6 @@ public class PaymentTest {
     public void paymentPutTest() throws MPException {
 
         Payment payment = lastPayment;
-
         payment.setStatus(Payment.Status.cancelled);
         payment.update();
 

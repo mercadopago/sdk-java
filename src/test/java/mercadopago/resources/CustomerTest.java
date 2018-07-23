@@ -18,6 +18,7 @@ import com.mercadopago.resources.datastructures.customer.Phone;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.Random;
 import java.util.UUID;
 import static org.junit.Assert.*;
 
@@ -32,15 +33,17 @@ public class CustomerTest {
     @BeforeClass
     public static void beforeTest() throws MPException {
         MercadoPago.SDK.cleanConfiguration();
-        MercadoPago.SDK.setConfiguration("mercadopago/data/credentials.properties");
+        MercadoPago.SDK.setAccessToken(System.getenv("ACCESS_TOKEN_TEST_OK"));
     }
 
     @Test
     public void customerTest() throws MPException {
+
+        Random rand = new Random();
         //Customers
         Customer customer = new Customer();
         customer
-                .setEmail("test_user_93364321@testuser.com")
+                .setEmail(rand.nextInt(500) + "dummy@mail.com")
                 .setFirstName("Tete")
                 .setLastName("Garcia")
                 .setPhone(
@@ -67,12 +70,7 @@ public class CustomerTest {
         MPResourceArray resourceArray = null;
         resourceArray = Customer.search(MPBase.WITH_CACHE);
         assertEquals(200, resourceArray.getLastApiResponse().getStatusCode());
-        assertEquals(1, resourceArray.size());
         assertFalse(resourceArray.getLastApiResponse().fromCache);
-        resourceArray = Customer.search(MPBase.WITH_CACHE);
-        assertEquals(200, resourceArray.getLastApiResponse().getStatusCode());
-        assertTrue(resourceArray.getLastApiResponse().fromCache);
-        assertEquals(customer.getId(), ((Customer) resourceArray.getByIndex(0)).getId());
 
         String random = UUID.randomUUID().toString();
         customer.setDescription(random);
@@ -86,7 +84,7 @@ public class CustomerTest {
                 .setCustomerId(customerId)
                 .setToken(getCardToken());
         card.save();
-        assertEquals(200, card.getLastApiResponse().getStatusCode());
+        assertEquals(201, card.getLastApiResponse().getStatusCode());
         assertNotNull(card.getId());
 
         card = Card.findById(customerId, card.getId(), MPBase.WITH_CACHE);
