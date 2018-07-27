@@ -152,7 +152,7 @@ public class PaymentTest {
         //String token = getCardToken();
 
         Payer payer = new Payer();
-        payer.setEmail("tSADF_93364321@testuser.com");
+        payer.setEmail("test_user_97697694@testuser.com");
 
         Payment payment = new Payment();
         payment.setTransactionAmount(100f);
@@ -222,14 +222,14 @@ public class PaymentTest {
         int expiration_month = 1 + rnd.nextInt(10) + 1;
         int security_code = rnd.nextInt(900) + 100;
 
-        jsonPayload.addProperty("card_number", "4509953566233704");
+        jsonPayload.addProperty("card_number", "4235647728025682");
         jsonPayload.addProperty("security_code", String.valueOf(security_code));
         jsonPayload.addProperty("expiration_year", expiration_year);
         jsonPayload.addProperty("expiration_month", expiration_month);
 
         JsonObject identification = new JsonObject();
-        identification.addProperty("type", "DNI");
-        identification.addProperty("number", "12345678");
+        identification.addProperty("type", "CPF");
+        identification.addProperty("number", "19119119100");
 
         JsonObject cardHolder = new JsonObject();
 
