@@ -83,4 +83,9 @@ public class Payer {
         this.address = address;
         return this;
     }
+    
+    public Payer setPhone(PayerPhone phone) {
+        this.phone = phone;
+        return this;
+    }
 }
