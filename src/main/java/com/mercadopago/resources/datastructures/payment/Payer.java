@@ -74,6 +74,11 @@ public class Payer {
     public String getLastName() {
         return lastName;
     }
+    
+    public Payer setLastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
 
     public Address getAddress() {
         return address;
