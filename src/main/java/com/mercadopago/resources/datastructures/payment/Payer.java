@@ -65,6 +65,11 @@ public class Payer {
     public String getFirstName() {
         return firstName;
     }
+    
+    public Payer setFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
 
     public String getLastName() {
         return lastName;
