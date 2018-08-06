@@ -65,9 +65,19 @@ public class Payer {
     public String getFirstName() {
         return firstName;
     }
+    
+    public Payer setFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
 
     public String getLastName() {
         return lastName;
+    }
+    
+    public Payer setLastName(String lastName) {
+        this.lastName = lastName;
+        return this;
     }
 
     public Address getAddress() {
@@ -76,6 +86,11 @@ public class Payer {
 
     public Payer setAddress(Address address) {
         this.address = address;
+        return this;
+    }
+    
+    public Payer setPhone(PayerPhone phone) {
+        this.phone = phone;
         return this;
     }
 }
