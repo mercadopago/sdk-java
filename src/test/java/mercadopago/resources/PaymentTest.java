@@ -173,7 +173,7 @@ public class PaymentTest {
     }
 
     @Test
-    public void paymentLoadTest() throws MPException {
+    public void paymentFindByIdTest() throws MPException {
         Payment payment = Payment.findById(lastPayment.getId(), MPBase.WITHOUT_CACHE);
         assertEquals(200, payment.getLastApiResponse().getStatusCode());
         assertEquals(lastPayment.getId(), payment.getId());
