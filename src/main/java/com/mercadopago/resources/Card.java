@@ -35,6 +35,7 @@ public class Card extends MPBase {
     private Cardholder cardholder = null;
     private Date dateCreated = null;
     private Date dateLastUpdated = null;
+    private String paymentMethodId = null;
 
 
     public Card setToken(String token) {
@@ -184,4 +185,11 @@ public class Card extends MPBase {
         return super.processMethod("delete", WITHOUT_CACHE);
     }
 
+    public String getPaymentMethodId() {
+        return paymentMethodId;
+    }
+
+    public void setPaymentMethodId(String paymentMethodId) {
+        this.paymentMethodId = paymentMethodId;
+    }
 }
