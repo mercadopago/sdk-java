@@ -200,7 +200,6 @@ public class PreferenceTest {
         assertEquals(preference.getMarketplace(), jsonPreference.get("marketplace").getAsString());
         assertEquals(preference.getMarketplaceFee(), jsonPreference.get("marketplace_fee").getAsFloat(), 0.0f);
 
-        System.out.println(jsonPreference.get("id"));
 
     }
 

@@ -43,7 +43,6 @@ public class MPCredentials {
                 jsonPayload,
                 null);
 
-        System.out.println(response.getStatusCode());
 
         if (response.getStatusCode() == 200) {
             JsonElement jsonElement = response.getJsonElementResponse();

@@ -64,7 +64,7 @@ This library provides developers with a simple set of bindings to the Mercado Pa
 
           payment.save();
 
-          System.out.println(payment.getStatus());
+
 
       }
   }

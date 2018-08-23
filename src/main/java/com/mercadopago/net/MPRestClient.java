@@ -100,7 +100,7 @@ public class MPRestClient {
 
             MPApiResponse mapiresponse = new MPApiResponse(httpMethod, request, payload, response, responseMillis);
 
-            System.out.println(mapiresponse.getStringResponse());
+
 
             return mapiresponse;
 

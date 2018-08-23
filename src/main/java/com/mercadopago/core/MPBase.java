@@ -548,7 +548,7 @@ public abstract class MPBase {
 
             }
             for (Map.Entry<String, Object> entry : mapDifferences.entriesOnlyOnRight().entrySet()) {
-                System.out.println("Second Iteration: " + entry.getValue().toString());
+
                 if (entry.getValue() instanceof Boolean) {
                     payload.addProperty(entry.getKey(), (Boolean)entry.getValue());
                 } else if (entry.getValue() instanceof Number) {
