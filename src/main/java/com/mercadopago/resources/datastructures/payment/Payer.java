@@ -12,7 +12,8 @@ public class Payer {
     public enum type {
         customer,
         registered,
-        guest
+        guest,
+        anonymous
     }
     private String id = null;
     private String email = null;
