@@ -42,7 +42,7 @@ public class PreferenceTest {
         item.setCategoryId("CategoryId");
         item.setQuantity(1);
         item.setCurrencyId("ARS");
-        item.setUnitPrice(.01f);
+        item.setUnitPrice(100f);
 
         Phone phone = new Phone();
         phone.setAreaCode("AreaCode");
@@ -108,14 +108,14 @@ public class PreferenceTest {
         preference.setAdditionalInfo("AdditionalInfo");
         preference.setAutoReturn(Preference.AutoReturn.approved);
         preference.setExternalReference("ExternalReference");
-        preference.setExpires(Boolean.FALSE);
+        preference.setExpires(true);
         preference.setExpirationDateFrom(new Date());
         preference.setExpirationDateTo(new Date());
         preference.setMarketplace("Marketplace");
         preference.setMarketplaceFee(.01f);
         preference.setDifferentialPricing(differentialPricing);
 
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
         JsonObject jsonPreference = MPCoreUtils.getJsonFromResource(preference);
         assertNotNull(jsonPreference);
@@ -259,7 +259,7 @@ public class PreferenceTest {
         item.setTitle("Title");
         item.setDescription("Description");
         item.setQuantity(1);
-        item.setCurrencyId("MXN");
+        item.setCurrencyId("ARS");
         item.setUnitPrice(10.0f);
 
         Payer payer = new Payer();
@@ -271,7 +271,8 @@ public class PreferenceTest {
         Preference preference = new Preference();
         preference.appendItem(item);
         preference.setPayer(payer);
-
+        preference.setExpires(true);
+        preference.setExpirationDateFrom(new Date());
 
 
         preference.save();
