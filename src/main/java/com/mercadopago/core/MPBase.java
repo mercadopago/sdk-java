@@ -543,7 +543,13 @@ public abstract class MPBase {
                     JsonElement jsonObject = gson.toJsonTree(entry.getValue().rightValue()).getAsJsonObject();
                     payload.add(entry.getKey(), jsonObject);
                 } else {
-                    payload.addProperty(entry.getKey(), entry.getValue().rightValue().toString());
+                    if (entry.getValue().rightValue() instanceof Boolean) {
+                        payload.addProperty(entry.getKey(), (Boolean)entry.getValue().rightValue());
+                    } else if (entry.getValue().rightValue() instanceof Number) {
+                        payload.addProperty(entry.getKey(), (Number)entry.getValue().rightValue());
+                    } else {
+                        payload.addProperty(entry.getKey(), entry.getValue().rightValue().toString());
+                    }
                 }
 
             }
