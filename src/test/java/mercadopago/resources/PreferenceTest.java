@@ -235,13 +235,18 @@ public class PreferenceTest {
         preference.appendItem(item);
         preference.setPayer(payer);
 
+
         preference.save();
 
         assertEquals(201, preference.getLastApiResponse().getStatusCode());
         assertNotNull(preference.getId());
 
         String random = UUID.randomUUID().toString();
+
         preference.setAdditionalInfo(random);
+        preference.setExpires(true);
+        preference.setExpirationDateTo(new Date());
+
         PaymentMethods paymentMethods = new PaymentMethods();
         paymentMethods.appendExcludedPaymentMethod(new ExcludedPaymentMethod().setId("redlink"));
         paymentMethods.appendExcludedPaymentTypes(new ExcludedPaymentType().setId("bank_transfer"));
