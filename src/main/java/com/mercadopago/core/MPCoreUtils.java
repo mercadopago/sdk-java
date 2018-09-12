@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class MPCoreUtils {
 
-    private static final String FORMAT_ISO8601 = "yyyy-MM-dd'T'HH:mm:ssZ";
+    private static final String FORMAT_ISO8601 = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
     private static Gson gson = new GsonBuilder()
             .setDateFormat(FORMAT_ISO8601)
