@@ -21,5 +21,17 @@ public class PayerPhone {
     public String getExtension() {
         return extension;
     }
+    public PayerPhone setAreaCode(String areaCode) {
+        this.areaCode = areaCode;
+        return this;
+    }
+    public PayerPhone setNumber(String number) {
+        this.number = number;
+        return this;
+    }
+    public PayerPhone setExtension(String extension) {
+        this.extension = extension;
+        return this;
+    }
 
 }
