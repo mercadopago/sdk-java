@@ -10,6 +10,7 @@ import com.mercadopago.core.annotations.validation.Numeric;
 import com.mercadopago.core.annotations.validation.Size;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.datastructures.payment.*;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -351,19 +352,31 @@ public class Payment extends MPBase {
         return findById(id, WITHOUT_CACHE);
     }
 
-    @GET(path="/v1/payments/:id")
     public static Payment findById(String id, Boolean useCache) throws MPException {
-        return Payment.processMethod(Payment.class, "findById", id, useCache);
+        return findById(id, null, useCache);
+    }
+
+    @GET(path="/v1/payments/:id")
+    public static Payment findById(String id, String accessToken, Boolean useCache) throws MPException {
+        return Payment.processMethod(Payment.class, "findById", id, accessToken,useCache);
+    }
+
+    public Payment save() throws MPException {
+        return this.save(null);
     }
 
     @POST(path="/v1/payments")
-    public Payment save() throws MPException {
-        return super.processMethod("save", WITHOUT_CACHE);
+    public Payment save(String accessToken) throws MPException {
+        return super.processMethod("save", accessToken, WITHOUT_CACHE);
+    }
+
+    public Payment update() throws MPException {
+        return this.update(null);
     }
 
     @PUT(path="/v1/payments/:id")
-    public Payment update() throws MPException {
-        return super.processMethod("update", WITHOUT_CACHE);
+    public Payment update(String accessToken) throws MPException {
+        return super.processMethod("update", accessToken, WITHOUT_CACHE);
     }
 
 }

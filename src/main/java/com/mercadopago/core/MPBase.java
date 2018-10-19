@@ -12,7 +12,6 @@ import com.google.gson.reflect.TypeToken;
 import com.mercadopago.*;
 import com.mercadopago.core.annotations.idempotent.Idempotent;
 import com.mercadopago.core.annotations.rest.*;
-import com.mercadopago.core.annotations.rest.*;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPRestClient;
@@ -43,6 +42,7 @@ public abstract class MPBase {
 
     public transient static final Boolean WITHOUT_CACHE = Boolean.FALSE;
     public transient static final Boolean WITH_CACHE = Boolean.TRUE;
+    public static final String ACCESS_TOKEN_QUERY_PARAM = "token";
 
     protected transient JsonObject _lastKnownJson = null;
 
@@ -87,9 +87,9 @@ public abstract class MPBase {
      * @return                  a resourse obj fill with the api response
      * @throws MPException
      */
-    protected <T extends MPBase> T processMethod(String methodName, Boolean useCache) throws MPException {
+    protected <T extends MPBase> T processMethod(String methodName, String accessToken, Boolean useCache) throws MPException {
         HashMap<String, String> mapParams = null;
-        T resource = processMethod(this.getClass(), (T)this, methodName, mapParams, useCache);
+        T resource = processMethod(this.getClass(), (T)this, methodName, mapParams, accessToken, useCache);
         fillResource(resource, this);
         return (T)this;
     }
@@ -104,11 +104,10 @@ public abstract class MPBase {
      * @return                  a resourse obj fill with the api response
      * @throws MPException
      */
-    protected static <T extends MPBase> T processMethod(Class clazz, String methodName, String param1, Boolean useCache) throws MPException {
+    protected static <T extends MPBase> T processMethod(Class clazz, String methodName, String param1, String accessToken, Boolean useCache) throws MPException {
         HashMap<String, String> mapParams = new HashMap<String, String>();
         mapParams.put("param1", param1);
-
-        return processMethod(clazz, null, methodName, mapParams, useCache);
+        return processMethod(clazz, null, methodName, mapParams, accessToken, useCache);
     }
 
     /**
@@ -122,12 +121,13 @@ public abstract class MPBase {
      * @return                  a resourse obj fill with the api response
      * @throws MPException
      */
-    protected static <T extends MPBase> T processMethod(Class clazz, String methodName, String param1, String param2, Boolean useCache) throws MPException {
+    protected static <T extends MPBase> T processMethod(Class clazz, String methodName, String param1, String param2, String accessToken, Boolean useCache) throws MPException {
         HashMap<String, String> mapParams = new HashMap<String, String>();
         mapParams.put("param1", param1);
         mapParams.put("param2", param2);
 
-        return processMethod(clazz, null, methodName, mapParams, useCache);
+
+        return processMethod(clazz, null, methodName, mapParams, accessToken, useCache);
     }
 
     /**
@@ -137,11 +137,12 @@ public abstract class MPBase {
      * @param resource          an instance of the MPBase extended class, if its called from a non static method
      * @param methodName        a String with the decorated method to be processed
      * @param mapParams         a hashmap with the args passed in the call of the method
+     * @param accessToken       a String with the API access token
      * @param useCache          a Boolean flag that indicates if the cache must be used
      * @return                  a resourse obj fill with the api response
      * @throws MPException
      */
-    protected static <T extends MPBase> T processMethod(Class clazz, T resource, String methodName, HashMap<String, String> mapParams, Boolean useCache) throws MPException {
+    protected static <T extends MPBase> T processMethod(Class clazz, T resource, String methodName, HashMap<String, String> mapParams, String accessToken, Boolean useCache) throws MPException {
         if (resource == null) {
             try {
                 resource = (T) clazz.newInstance();
@@ -158,7 +159,9 @@ public abstract class MPBase {
         AnnotatedElement annotatedMethod = getAnnotatedMethod(clazz, methodName);
         HashMap<String, Object> hashAnnotation = getRestInformation(annotatedMethod);
         HttpMethod httpMethod = (HttpMethod)hashAnnotation.get("method");
-        String path = parsePath(hashAnnotation.get("path").toString(), mapParams, resource);
+
+        HashMap<String, String> queryParams = createQueryParams(accessToken);
+        String path = parsePath(hashAnnotation.get("path").toString(), mapParams, resource, queryParams);
         int retries = Integer.valueOf(hashAnnotation.get("retries").toString());
         int connectionTimeout = Integer.valueOf(hashAnnotation.get("connectionTimeout").toString());
         int socketTimeout = Integer.valueOf(hashAnnotation.get("socketTimeout").toString());
@@ -201,9 +204,9 @@ public abstract class MPBase {
      * @return
      * @throws MPException
      */
-    protected static MPResourceArray processMethodBulk(Class clazz, String methodName, Boolean useCache) throws MPException {
+    protected static MPResourceArray processMethodBulk(Class clazz, String methodName, String accessToken, Boolean useCache) throws MPException {
         HashMap<String, String> mapParams = null;
-        return processMethodBulk(clazz, methodName, mapParams, useCache);
+        return processMethodBulk(clazz, methodName, mapParams, accessToken, useCache);
     }
 
     /**
@@ -216,10 +219,10 @@ public abstract class MPBase {
      * @return
      * @throws MPException
      */
-    protected static MPResourceArray processMethodBulk(Class clazz, String methodName, String param1, Boolean useCache) throws MPException {
+    protected static MPResourceArray processMethodBulk(Class clazz, String methodName, String param1, String accessToken, Boolean useCache) throws MPException {
         HashMap<String, String> mapParams = new HashMap<String, String>();
         mapParams.put("param1", param1);
-        return processMethodBulk(clazz, methodName, mapParams, useCache);
+        return processMethodBulk(clazz, methodName, mapParams, accessToken, useCache);
     }
 
     /**
@@ -233,11 +236,11 @@ public abstract class MPBase {
      * @return
      * @throws MPException
      */
-    protected static MPResourceArray processMethodBulk(Class clazz, String methodName, String param1, String param2, Boolean useCache) throws MPException {
+    protected static MPResourceArray processMethodBulk(Class clazz, String methodName, String param1, String param2, String accessToken, Boolean useCache) throws MPException {
         HashMap<String, String> mapParams = new HashMap<String, String>();
         mapParams.put("param1", param1);
         mapParams.put("param2", param2);
-        return processMethodBulk(clazz, methodName, mapParams, useCache);
+        return processMethodBulk(clazz, methodName, mapParams, accessToken, useCache);
     }
 
     /**
@@ -250,7 +253,7 @@ public abstract class MPBase {
      * @return                  a resourse obj fill with the api response
      * @throws MPException
      */
-    protected static MPResourceArray processMethodBulk(Class clazz, String methodName, HashMap<String, String> mapParams, Boolean useCache) throws MPException {
+    protected static MPResourceArray processMethodBulk(Class clazz, String methodName, HashMap<String, String> mapParams, String accessToken, Boolean useCache) throws MPException {
         //Validates the method executed
         if (!ALLOWED_BULK_METHODS.contains(methodName)) {
             throw new MPException("Method \"" + methodName + "\" not allowed");
@@ -259,7 +262,9 @@ public abstract class MPBase {
         AnnotatedElement annotatedMethod = getAnnotatedMethod(clazz, methodName);
         HashMap<String, Object> hashAnnotation = getRestInformation(annotatedMethod);
         HttpMethod httpMethod = (HttpMethod)hashAnnotation.get("method");
-        String path = parsePath(hashAnnotation.get("path").toString(), mapParams, null);
+
+        HashMap<String, String> queryParams= createQueryParams(accessToken);
+        String path = parsePath(hashAnnotation.get("path").toString(), mapParams, null, queryParams);
         int retries = Integer.valueOf(hashAnnotation.get("retries").toString());
         int connectionTimeout = Integer.valueOf(hashAnnotation.get("connectionTimeout").toString());
         int socketTimeout = Integer.valueOf(hashAnnotation.get("socketTimeout").toString());
@@ -280,6 +285,19 @@ public abstract class MPBase {
 
         return resourceArray;
 
+    }
+
+    /**
+     * Init query params HashMap
+     * @param accessToken String with the accessToken.
+     * @return
+     */
+    private static HashMap<String, String> createQueryParams(String accessToken) {
+        HashMap<String, String> queryParams= new HashMap<>();
+        if (StringUtils.isNotEmpty(accessToken)) {
+            queryParams.put(ACCESS_TOKEN_QUERY_PARAM, accessToken);
+        }
+        return queryParams;
     }
 
     /**
@@ -439,11 +457,12 @@ public abstract class MPBase {
     /**
      * Evaluates the path of the resourse and use the args or the attributes members of the instance to complete it.
      * @param path              a String with the path as stated in the declaration of the method caller
-     * @param mapParams         a HashMap with the args passed in the call of the method
+     * @param pathParams        a HashMap with the args passed in the call of the method
+     * @param queryParams       a HashMap with the query params passed in the call of the method
      * @return                  a String with the final path to call the API
      * @throws MPException
      */
-    private static <T extends MPBase> String parsePath(String path, HashMap<String, String> mapParams, T resource) throws MPException {
+    private static <T extends MPBase> String parsePath(String path, HashMap<String, String> pathParams, T resource, HashMap<String, String> queryParams) throws MPException {
         StringBuilder processedPath = new StringBuilder();
         if (path.contains(":")) {
             int paramIterator = 0;
@@ -459,12 +478,12 @@ public abstract class MPBase {
 
                 String value = null;
                 if (paramIterator <= 2 &&
-                        mapParams != null &&
-                        StringUtils.isNotEmpty(mapParams.get("param" + String.valueOf(paramIterator)))) {
-                    value = mapParams.get("param" + String.valueOf(paramIterator));
-                } else if (mapParams != null &&
-                        StringUtils.isNotEmpty(mapParams.get(param))) {
-                    value = mapParams.get(param);
+                        pathParams != null &&
+                        StringUtils.isNotEmpty(pathParams.get("param" + String.valueOf(paramIterator)))) {
+                    value = pathParams.get("param" + String.valueOf(paramIterator));
+                } else if (pathParams != null &&
+                        StringUtils.isNotEmpty(pathParams.get(param))) {
+                    value = pathParams.get(param);
                 } else {
                     if (resource != null) {
                         JsonObject json = MPCoreUtils.getJsonFromResource(resource);
@@ -495,15 +514,15 @@ public abstract class MPBase {
         processedPath.insert(0, MercadoPago.SDK.getBaseUrl());
 
         // Token
-        String accessToken;
-        if (StringUtils.isNotEmpty(MercadoPago.SDK.getUserToken())) {
-            accessToken = MercadoPago.SDK.getUserToken();
-        } else {
+        String accessToken = queryParams.get(ACCESS_TOKEN_QUERY_PARAM);
+        String userToken = MercadoPago.SDK.getUserToken();
+        if (StringUtils.isEmpty(accessToken) && StringUtils.isNotEmpty(userToken)) {
+            accessToken = userToken;
+        } else if (StringUtils.isEmpty(accessToken)) {
             accessToken = MercadoPago.SDK.getAccessToken();
         }
-        processedPath
-                .append("?access_token=")
-                .append(accessToken);
+
+        processedPath.append("?access_token=").append(accessToken);
 
         if (!MPCoreUtils.validateUrl(processedPath.toString())) {
             throw new MPException("Processed URL not valid: " + processedPath.toString());

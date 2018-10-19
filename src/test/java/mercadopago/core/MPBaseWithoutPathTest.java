@@ -21,22 +21,22 @@ public class MPBaseWithoutPathTest extends MPBase {
 
     @GET(path="")
     public MPBaseWithoutPathTest findById(String id) throws MPException {
-        return processMethod(MPBaseWithoutPathTest.class, "findById", id, WITHOUT_CACHE);
+        return processMethod(MPBaseWithoutPathTest.class, "findById", id, null, WITHOUT_CACHE);
     }
 
     @POST(path="")
     public MPBaseWithoutPathTest save() throws MPException {
-        return super.processMethod("save", WITHOUT_CACHE);
+        return super.processMethod("save", null, WITHOUT_CACHE);
     }
 
     @PUT(path="")
     public MPBaseWithoutPathTest update() throws MPException {
-        return super.processMethod("update", WITHOUT_CACHE);
+        return super.processMethod("update", null,WITHOUT_CACHE);
     }
 
     @DELETE(path="")
     public MPBaseWithoutPathTest delete() throws MPException {
-        return super.processMethod("delete", WITHOUT_CACHE);
+        return super.processMethod("delete", null, WITHOUT_CACHE);
     }
 
     /**

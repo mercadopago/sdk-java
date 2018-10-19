@@ -229,19 +229,35 @@ public class Preference extends MPBase {
         return findById(id, WITHOUT_CACHE);
     }
 
-    @GET(path="/checkout/preferences/:id")
+    public static Preference findById(String id, String accessToken) throws MPException {
+        return findById(id, accessToken, WITHOUT_CACHE);
+    }
+
     public static Preference findById(String id, Boolean useCache) throws MPException {
-        return Preference.processMethod(Preference.class, "findById", id, useCache);
+        return findById(id, null, useCache);
+    }
+
+    @GET(path="/checkout/preferences/:id")
+    public static Preference findById(String id, String accessToken, Boolean useCache) throws MPException {
+        return Preference.processMethod(Preference.class, "findById", id, accessToken, useCache);
+    }
+
+    public Preference save() throws MPException {
+        return this.save(null);
     }
 
     @POST(path="/checkout/preferences")
-    public Preference save() throws MPException {
-        return super.processMethod("save", WITHOUT_CACHE);
+    public Preference save(String accessToken) throws MPException {
+        return super.processMethod("save", accessToken, WITHOUT_CACHE);
+    }
+
+    public Preference update() throws MPException {
+        return this.update(null);
     }
 
     @PUT(path="/checkout/preferences/:id")
-    public Preference update() throws MPException {
-        return super.processMethod("update", WITHOUT_CACHE);
+    public Preference update(String accessToken) throws MPException {
+        return super.processMethod("update", accessToken, WITHOUT_CACHE);
     }
 
 }

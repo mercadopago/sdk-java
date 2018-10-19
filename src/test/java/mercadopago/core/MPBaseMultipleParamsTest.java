@@ -32,12 +32,12 @@ public class MPBaseMultipleParamsTest extends MPBase {
 
     @GET(path="/loadpath/slug/:param1")
     public static MPBaseMultipleParamsTest findById(String id) throws MPException {
-        return processMethod(MPBaseMultipleParamsTest.class, "findById", id, WITHOUT_CACHE);
+        return processMethod(MPBaseMultipleParamsTest.class, "findById", id, null, WITHOUT_CACHE);
     }
 
     @POST(path="/createpath/slug/")
     public MPBaseMultipleParamsTest save() throws MPException {
-        return super.processMethod("save", WITHOUT_CACHE);
+        return super.processMethod("save", null, WITHOUT_CACHE);
     }
 
     @GET(path="/getpath/slug/:param1/otherslug/:param2")
@@ -51,7 +51,7 @@ public class MPBaseMultipleParamsTest extends MPBase {
         mapParams.put("card_id", card_id);
         mapParams.put("param2", param2);
         mapParams.put("param3", param3);
-        return super.processMethod(MPBaseMultipleParamsTest.class, this, "delete", mapParams, WITHOUT_CACHE);
+        return super.processMethod(MPBaseMultipleParamsTest.class, this, "delete", mapParams, null, WITHOUT_CACHE);
     }
 
     /**

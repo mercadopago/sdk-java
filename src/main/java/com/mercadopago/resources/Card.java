@@ -156,33 +156,61 @@ public class Card extends MPBase {
         return all(customerId, WITHOUT_CACHE);
     }
 
-    @GET(path="/v1/customers/:customer_id/cards")
+    public static MPResourceArray all(String customerId, String accessToken) throws MPException {
+        return all(customerId, accessToken, WITHOUT_CACHE);
+    }
+
     public static MPResourceArray all(String customerId, Boolean useCache) throws MPException {
-        return Card.processMethodBulk(Card.class, "all", customerId, useCache);
+        return all(customerId, null, useCache);
+    }
+
+    @GET(path="/v1/customers/:customer_id/cards")
+    public static MPResourceArray all(String customerId, String accessToken, Boolean useCache) throws MPException {
+        return Card.processMethodBulk(Card.class, "all", customerId, accessToken, useCache);
     }
 
     public static Card findById(String customerId, String id) throws MPException {
         return findById(customerId, id, WITHOUT_CACHE);
     }
 
-    @GET(path="/v1/customers/:customer_id/cards/:id")
+    public static Card findById(String customerId, String id, String accessToken) throws MPException {
+        return findById(customerId, id, accessToken, WITHOUT_CACHE);
+    }
+
     public static Card findById(String customerId, String id, Boolean useCache) throws MPException {
-        return Card.processMethod(Card.class, "findById", customerId, id, useCache);
+        return findById(customerId, id, null, useCache);
+    }
+
+    @GET(path="/v1/customers/:customer_id/cards/:id")
+    public static Card findById(String customerId, String id, String accessToken, Boolean useCache) throws MPException {
+        return Card.processMethod(Card.class, "findById", customerId, id, accessToken, useCache);
+    }
+
+    public Card save() throws MPException {
+        return this.save(null);
     }
 
     @POST(path="/v1/customers/:customer_id/cards/")
-    public Card save() throws MPException {
-        return super.processMethod("save", WITHOUT_CACHE);
+    public Card save(String accessToken) throws MPException {
+        return super.processMethod("save", accessToken, WITHOUT_CACHE);
+    }
+
+    public Card update() throws MPException {
+        return update(null);
     }
 
     @PUT(path="/v1/customers/:customer_id/cards/:id")
-    public Card update() throws MPException {
-        return super.processMethod("update", WITHOUT_CACHE);
+    public Card update(String accessToken) throws MPException {
+        return super.processMethod("update", accessToken, WITHOUT_CACHE);
+    }
+
+    public Card delete() throws MPException {
+        return this.delete(null);
     }
 
     @DELETE(path="/v1/customers/:customer_id/cards/:id")
-    public Card delete() throws MPException {
-        return super.processMethod("delete", WITHOUT_CACHE);
+    public Card delete(String accessToken) throws MPException {
+        return super.processMethod("delete", accessToken, WITHOUT_CACHE);
     }
 
     public String getPaymentMethodId() {

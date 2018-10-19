@@ -171,33 +171,61 @@ public class Customer extends MPBase {
         return search(WITHOUT_CACHE);
     }
 
-    @GET(path="/v1/customers/search")
+    public static MPResourceArray search(String accessToken) throws MPException {
+        return search(accessToken, WITHOUT_CACHE);
+    }
+
     public static MPResourceArray search(Boolean useCache) throws MPException {
-        return Customer.processMethodBulk(Customer.class, "search", useCache);
+        return search(null, useCache);
+    }
+
+    @GET(path="/v1/customers/search")
+    public static MPResourceArray search(String accessToken, Boolean useCache) throws MPException {
+        return Customer.processMethodBulk(Customer.class, "search", accessToken, useCache);
     }
 
     public static Customer findById(String id) throws MPException {
         return findById(id, WITHOUT_CACHE);
     }
 
-    @GET(path="/v1/customers/:id")
+    public static Customer findById(String id, String accessToken) throws MPException {
+        return findById(id, accessToken, WITHOUT_CACHE);
+    }
+
     public static Customer findById(String id, Boolean useCache) throws MPException {
-        return Customer.processMethod(Customer.class, "findById", id, useCache);
+        return findById(id, null, useCache);
+    }
+
+    @GET(path="/v1/customers/:id")
+    public static Customer findById(String id, String accessToken, Boolean useCache) throws MPException {
+        return Customer.processMethod(Customer.class, "findById", id, accessToken, useCache);
+    }
+
+    public Customer save() throws MPException {
+        return this.save(null);
     }
 
     @POST(path="/v1/customers")
-    public Customer save() throws MPException {
-        return super.processMethod("save", WITHOUT_CACHE);
+    public Customer save(String accessToken) throws MPException {
+        return super.processMethod("save", accessToken, WITHOUT_CACHE);
+    }
+
+    public Customer update() throws MPException {
+        return this.update(null);
     }
 
     @PUT(path="/v1/customers/:id")
-    public Customer update() throws MPException {
-        return super.processMethod("update", WITHOUT_CACHE);
+    public Customer update(String accessToken) throws MPException {
+        return super.processMethod("update", accessToken, WITHOUT_CACHE);
+    }
+
+    public Customer delete() throws MPException {
+        return this.delete(null);
     }
 
     @DELETE(path="/v1/customers/:id")
-    public Customer delete() throws MPException {
-        return super.processMethod("delete", WITHOUT_CACHE);
+    public Customer delete(String accessToken) throws MPException {
+        return super.processMethod("delete", accessToken, WITHOUT_CACHE);
     }
 
 }

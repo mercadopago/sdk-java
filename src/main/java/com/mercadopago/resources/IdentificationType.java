@@ -45,9 +45,17 @@ public class IdentificationType extends MPBase {
         return all(WITHOUT_CACHE);
     }
 
-    @GET(path="/v1/identification_types")
+    public static MPResourceArray all(String accessToken) throws MPException {
+        return all(accessToken, WITHOUT_CACHE);
+    }
+
     public static MPResourceArray all(Boolean useCache) throws MPException {
-        return IdentificationType.processMethodBulk(IdentificationType.class, "all", useCache);
+        return all(null, useCache);
+    }
+
+    @GET(path="/v1/identification_types")
+    public static MPResourceArray all(String accessToken, Boolean useCache) throws MPException {
+        return IdentificationType.processMethodBulk(IdentificationType.class, "all", accessToken, useCache);
     }
 
 }

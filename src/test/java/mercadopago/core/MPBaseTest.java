@@ -11,6 +11,8 @@ import com.mercadopago.exceptions.MPException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.HashMap;
+
 import static org.junit.Assert.*;
 
 /**
@@ -37,29 +39,33 @@ public class MPBaseTest extends MPBase {
 
     @GET(path="/getpath/slug/:id")
     public static MPBaseTest findById(String id, Boolean useCache) throws MPException {
-        return processMethod(MPBaseTest.class, "findById", id, useCache);
+        return processMethod(MPBaseTest.class, "findById", id, null, useCache);
     }
 
     @GET(path="/getpath/slug/")
     @PUT(path="/putpath/slug/")
     public static MPResourceArray all() throws MPException {
-        return processMethodBulk(MPBaseTest.class, "all", WITHOUT_CACHE);
+        return processMethodBulk(MPBaseTest.class, "all", null, WITHOUT_CACHE);
     }
 
     //Save method will be used to test non annotated method
     //@POST(path="/postpath/slug")
     public static MPResourceArray search() throws MPException {
-        return processMethodBulk(MPBaseTest.class, "search", WITHOUT_CACHE);
+        return processMethodBulk(MPBaseTest.class, "search", null, WITHOUT_CACHE);
+    }
+
+    public MPBaseTest save() throws MPException {
+        return this.save(null);
     }
 
     @POST(path="/postpath/slug")
-    public MPBaseTest save() throws MPException {
-        return super.processMethod("save", WITHOUT_CACHE);
+    public MPBaseTest save(String accessToken) throws MPException {
+        return super.processMethod("save", accessToken, WITHOUT_CACHE);
     }
 
     @PUT(path="/putpath/slug/:id")
     public MPBaseTest update() throws MPException {
-        return super.processMethod("update", WITHOUT_CACHE);
+        return super.processMethod("update", null, WITHOUT_CACHE);
     }
 
     //Delete method will be used to test non existing method
@@ -78,7 +84,7 @@ public class MPBaseTest extends MPBase {
     public void nonAllowedMethodTest() throws Exception {
         Exception auxException = null;
         try {
-            super.processMethod("nonallowedmethod", WITHOUT_CACHE);
+            super.processMethod("nonallowedmethod", null, WITHOUT_CACHE);
         } catch (MPException mpException) {
             assertEquals("Exception must have \"Method \"nonallowedmethod\" not allowed\" message", mpException.getMessage(), "Method \"nonallowedmethod\" not allowed");
             auxException = mpException;
@@ -94,7 +100,7 @@ public class MPBaseTest extends MPBase {
     public void notExistentMethodTest() throws Exception {
         Exception auxException = null;
         try {
-            super.processMethod("delete", WITHOUT_CACHE);
+            super.processMethod("delete", null, WITHOUT_CACHE);
         } catch (MPException mpException) {
             assertEquals("Exception must have \"No annotated method found\" message", "No annotated method found", mpException.getMessage());
             auxException = mpException;
@@ -182,6 +188,13 @@ public class MPBaseTest extends MPBase {
         assertEquals("PUT", resource.getLastApiResponse().getMethod());
         assertEquals("https://api.mercadopago.com/putpath/slug/5?access_token=" + MercadoPago.SDK.getAccessToken(), resource.getLastApiResponse().getUrl());
 
+    }
+
+    @Test
+    public void methodPathTestWithAccessToken() throws Exception {
+        MPBaseTest resource = save("TOKEN");
+        assertEquals("POST", resource.getLastApiResponse().getMethod());
+        assertEquals("https://api.mercadopago.com/postpath/slug?access_token=TOKEN", resource.getLastApiResponse().getUrl());
     }
 
     @Test

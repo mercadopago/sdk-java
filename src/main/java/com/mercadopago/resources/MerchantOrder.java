@@ -217,19 +217,35 @@ public class MerchantOrder extends MPBase {
         return findById(id, WITHOUT_CACHE);
     }
 
-    @GET(path="/merchant_orders/:id")
+    public static MerchantOrder findById(String id, String accessToken) throws MPException {
+        return findById(id, accessToken, WITHOUT_CACHE);
+    }
+
     public static MerchantOrder findById(String id, Boolean useCache) throws MPException {
-        return MerchantOrder.processMethod(MerchantOrder.class, "findById", id, useCache);
+        return findById(id, null, useCache);
+    }
+
+    @GET(path="/merchant_orders/:id")
+    public static MerchantOrder findById(String id, String accessToken, Boolean useCache) throws MPException {
+        return MerchantOrder.processMethod(MerchantOrder.class, "findById", id, accessToken, useCache);
+    }
+
+    public MerchantOrder save() throws MPException {
+        return this.save(null);
     }
 
     @POST(path="/merchant_orders")
-    public MerchantOrder save() throws MPException {
-        return super.processMethod("save", WITHOUT_CACHE);
+    public MerchantOrder save(String accessToken) throws MPException {
+        return super.processMethod("save", accessToken, WITHOUT_CACHE);
+    }
+
+    public MerchantOrder update() throws MPException {
+        return this.update(null);
     }
 
     @PUT(path="/merchant_orders/:id")
-    public MerchantOrder update() throws MPException {
-        return super.processMethod("update", WITHOUT_CACHE);
+    public MerchantOrder update(String accesssToken) throws MPException {
+        return super.processMethod("update", accesssToken, WITHOUT_CACHE);
     }
 
 }
