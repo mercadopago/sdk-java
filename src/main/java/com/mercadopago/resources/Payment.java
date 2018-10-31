@@ -367,4 +367,19 @@ public class Payment extends MPBase {
         return super.processMethod("update", WITHOUT_CACHE);
     }
 
+    public Payment refund() throws MPException {
+        // Create a refund
+        Refund refund = new Refund();
+        refund.setPaymentId(this.getId());
+        refund.save();
+        // If refund has been successfully created then update the instance values
+        if (refund.getId() != null) {
+            Payment payment = Payment.findById(this.getId()); // Get updated payment instance
+            this.status = payment.getStatus();
+            this.refunds = payment.getRefunds();
+            this.transactionAmountRefunded = payment.getTransactionAmountRefunded();
+        }
+        return this;
+    }
+
 }
