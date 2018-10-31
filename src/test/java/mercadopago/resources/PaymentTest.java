@@ -236,8 +236,8 @@ public class PaymentTest {
         assertEquals(Payment.Status.refunded, payment.getStatus());
     }
 
-    /*@Test
-    public void paymentFindByIdTest() throws MPException {
+    @Test
+    public void stage5_paymentFindByIdTest() throws MPException {
         Payment payment = Payment.findById(lastPayment.getId(), MPBase.WITHOUT_CACHE);
         assertEquals(200, payment.getLastApiResponse().getStatusCode());
         assertEquals(lastPayment.getId(), payment.getId());
@@ -245,7 +245,7 @@ public class PaymentTest {
         assertEquals(Float.valueOf(100f), payment.getTransactionAmount());
         assertEquals(Integer.valueOf(1), payment.getInstallments());
         assertFalse(payment.getLastApiResponse().fromCache);
-    }*/
+    }
 
 
 
