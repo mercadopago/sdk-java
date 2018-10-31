@@ -13,7 +13,7 @@ public class Refund extends MPBase {
 
     private String id = null;
 
-    private String paymentId = null;
+    private transient String paymentId = null;
 
     private Float amount = null;
 
@@ -22,7 +22,6 @@ public class Refund extends MPBase {
     private Date dateCreated = null;
 
     private String uniqueSequenceNumber = null;
-
 
     public String getId() {
         return id;
@@ -86,10 +85,4 @@ public class Refund extends MPBase {
         return super.processMethod("save", WITHOUT_CACHE);
     }
 
-    @Override
-    public String toString() {
-        return "Refund{" +
-                "id='" + id + '\'' +
-                '}';
-    }
 }
