@@ -16,16 +16,14 @@ import com.mercadopago.core.annotations.rest.*;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPRestClient;
+import com.mercadopago.resources.Refund;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 import java.util.*;
 
 
@@ -458,18 +456,32 @@ public abstract class MPBase {
                 }
 
                 String value = null;
-                if (paramIterator <= 2 &&
-                        mapParams != null &&
+                if (paramIterator <= 2 && mapParams != null &&
                         StringUtils.isNotEmpty(mapParams.get("param" + String.valueOf(paramIterator)))) {
                     value = mapParams.get("param" + String.valueOf(paramIterator));
-                } else if (mapParams != null &&
-                        StringUtils.isNotEmpty(mapParams.get(param))) {
+                } else if (mapParams != null && StringUtils.isNotEmpty(mapParams.get(param))) {
                     value = mapParams.get(param);
                 } else {
                     if (resource != null) {
                         JsonObject json = MPCoreUtils.getJsonFromResource(resource);
                         if (json.get(param) != null) {
                             value = json.get(param).getAsString();
+                        } else { // Search in no serialized properties
+                            Class aClass = resource.getClass();
+                            String paramAccessorName = null;
+                            paramAccessorName = MPCoreUtils.toCamelCase("get_" + param);
+
+                            try {
+                                Method method = aClass.getMethod(paramAccessorName);
+                                value = method.invoke(resource).toString();
+                            } catch (NoSuchMethodException e) {
+                                // Accessor method not found
+                            } catch (InvocationTargetException e) {
+                                // Do nothing
+                            } catch (IllegalAccessException e) {
+                                // Accessor is private
+                            }
+
                         }
                     }
                 }
