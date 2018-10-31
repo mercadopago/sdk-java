@@ -51,6 +51,7 @@ public class Preference extends MPBase {
     @Size(max=256) private String marketplace = null;
     private Float marketplaceFee = null;
     private DifferentialPricing differentialPricing = null;
+    private String sponsorId = null;
 
 
     public ArrayList<Item> getItems() {
@@ -222,6 +223,14 @@ public class Preference extends MPBase {
     public Preference setDifferentialPricing(DifferentialPricing differentialPricing) {
         this.differentialPricing = differentialPricing;
         return this;
+    }
+
+    public String getSponsorId() {
+        return sponsorId;
+    }
+
+    public void setSponsorId(String sponsorId) {
+        this.sponsorId = sponsorId;
     }
 
 

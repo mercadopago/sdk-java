@@ -12,6 +12,7 @@ import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.datastructures.payment.*;
 import org.apache.commons.lang3.StringUtils;
 
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -377,6 +378,21 @@ public class Payment extends MPBase {
     @PUT(path="/v1/payments/:id")
     public Payment update(String accessToken) throws MPException {
         return super.processMethod("update", accessToken, WITHOUT_CACHE);
+    }
+
+    public Payment refund() throws MPException {
+        // Create a refund
+        Refund refund = new Refund();
+        refund.setPaymentId(this.getId());
+        refund.save();
+        // If refund has been successfully created then update the instance values
+        if (refund.getId() != null) {
+            Payment payment = Payment.findById(this.getId()); // Get updated payment instance
+            this.status = payment.getStatus();
+            this.refunds = payment.getRefunds();
+            this.transactionAmountRefunded = payment.getTransactionAmountRefunded();
+        }
+        return this;
     }
 
 }
