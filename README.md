@@ -1,10 +1,10 @@
-[![Build Status](https://travis-ci.org/mercadopago/dx-java.svg?branch=master)](https://travis-ci.org/mercadopago/dx-java)
+[![Build Status](https://travis-ci.com/mercadopago/dx-java.svg?branch=master)](https://travis-ci.com/mercadopago/dx-java)
 
 # MercadoPago SDK for Java
 
 This library provides developers with a simple set of bindings to the Mercado Pago API.
 
-## Installation 
+## Installation
 
 ### Using Maven
 1. Append MercadoPago dependencies to pom.xml
@@ -33,7 +33,7 @@ This library provides developers with a simple set of bindings to the Mercado Pa
     ```
   - **For API or Custom-checkout:**
     ```java
-      MercadoPago.SDK.setAccessToken("ACCESS_TOKEN"); 
+      MercadoPago.SDK.setAccessToken("ACCESS_TOKEN");
     ```
 3. Using Resource objects.
 
@@ -72,8 +72,8 @@ This library provides developers with a simple set of bindings to the Mercado Pa
   }
 ```
 
-### Support 
+### Support
 
-1. Create an issue https://github.com/mercadopago/dx-java/issues 
+1. Create an issue https://github.com/mercadopago/dx-java/issues
 2. Follow your issue status in Issues Support Dashboard https://github.com/mercadopago/dx-java/projects/2
 
