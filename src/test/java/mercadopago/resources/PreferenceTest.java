@@ -8,6 +8,7 @@ import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.Preference;
 import com.mercadopago.resources.datastructures.preference.*;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.text.DateFormat;
@@ -203,6 +204,7 @@ public class PreferenceTest {
 
     }
 
+    @Ignore
     @Test
     public void preferenceLoadTest() throws MPException {
         Preference preference = Preference.findById("236939761-d2d4c87c-3aa0-4015-9089-2047817399e4", MPBase.WITH_CACHE);

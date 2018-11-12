@@ -33,7 +33,7 @@ public class CustomerTest {
     @BeforeClass
     public static void beforeTest() throws MPException {
         MercadoPago.SDK.cleanConfiguration();
-        MercadoPago.SDK.setAccessToken(System.getenv("ACCESS_TOKEN_TEST_OK"));
+        MercadoPago.SDK.setAccessToken(System.getenv("ACCESS_TOKEN_TEST"));
     }
 
     @Test
@@ -69,6 +69,9 @@ public class CustomerTest {
 
         MPResourceArray resourceArray = null;
         resourceArray = Customer.search(MPBase.WITH_CACHE);
+
+
+
         assertEquals(200, resourceArray.getLastApiResponse().getStatusCode());
         assertFalse(resourceArray.getLastApiResponse().fromCache);
 
