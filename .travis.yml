@@ -1,5 +1,6 @@
 language: java
-
+sudo: false
 script:
-  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true
-  - mvn test
+  - mvn clean
+  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -Dpgp.skip-true
+  - mvn test -Dpgp.skip-true
