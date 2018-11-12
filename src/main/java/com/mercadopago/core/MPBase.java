@@ -47,6 +47,8 @@ public abstract class MPBase {
     private transient String idempotenceKey = null;
     protected transient MPApiResponse lastApiResponse;
 
+    private transient String marketplaceAccessToken = null;
+
     public MPBase() {
         if (admitIdempotenceKey()) {
             this.idempotenceKey = UUID.randomUUID().toString();
@@ -508,8 +510,8 @@ public abstract class MPBase {
 
         // Token
         String accessToken;
-        if (StringUtils.isNotEmpty(MercadoPago.SDK.getUserToken())) {
-            accessToken = MercadoPago.SDK.getUserToken();
+        if (StringUtils.isNotEmpty(resource.getMarketplaceAccessToken())) {
+            accessToken = resource.getMarketplaceAccessToken();
         } else {
             accessToken = MercadoPago.SDK.getAccessToken();
         }
@@ -705,4 +707,11 @@ public abstract class MPBase {
         throw new MPException("No annotated method found");
     }
 
+    public String getMarketplaceAccessToken() {
+        return marketplaceAccessToken;
+    }
+
+    public void setMarketplaceAccessToken(String marketplaceAccessToken) {
+        this.marketplaceAccessToken = marketplaceAccessToken;
+    }
 }
