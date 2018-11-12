@@ -273,8 +273,6 @@ public abstract class MPBase {
 
         MPApiResponse response = callApi(httpMethod, path, payloadType, null, colHeaders, retries, connectionTimeout, socketTimeout, useCache);
 
-        System.out.println(response.getStringResponse());
-
         MPResourceArray resourceArray = new MPResourceArray();
 
         if (response.getStatusCode() >= 200 &&
