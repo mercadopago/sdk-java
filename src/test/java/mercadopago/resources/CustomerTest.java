@@ -69,6 +69,9 @@ public class CustomerTest {
 
         MPResourceArray resourceArray = null;
         resourceArray = Customer.search(MPBase.WITH_CACHE);
+
+
+
         assertEquals(200, resourceArray.getLastApiResponse().getStatusCode());
         assertFalse(resourceArray.getLastApiResponse().fromCache);
 

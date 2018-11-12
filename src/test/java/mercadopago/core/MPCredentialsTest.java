@@ -24,8 +24,8 @@ public class MPCredentialsTest {
     public void credentialsTest() throws MPException, MPConfException {
         MercadoPago.SDK.cleanConfiguration();
 
-        MercadoPago.SDK.setClientSecret(System.getenv("CLIENT_SECRET_OK"));
-        MercadoPago.SDK.setClientId(System.getenv("CLIENT_ID_OK"));
+        MercadoPago.SDK.setClientSecret(System.getenv("CLIENT_SECRET"));
+        MercadoPago.SDK.setClientId(System.getenv("CLIENT_ID"));
 
         String accessToken = MercadoPago.SDK.getAccessToken();
         assertNotNull(accessToken);

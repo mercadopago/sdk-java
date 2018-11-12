@@ -9,6 +9,7 @@ import com.mercadopago.core.annotations.rest.POST;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.Preference;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 
@@ -80,6 +81,7 @@ public class MPBaseMultipleParamsTest extends MPBase {
     /**
      * Test MPBase using a method with two params
      */
+    @Ignore
     @Test
     public void twoParamsMethdTest() throws Exception {
         MPResourceArray resourceArray = MPBaseMultipleParamsTest.all("test1", "test2");

@@ -203,6 +203,7 @@ public abstract class MPBase {
      */
     protected static MPResourceArray processMethodBulk(Class clazz, String methodName, Boolean useCache) throws MPException {
         HashMap<String, String> mapParams = null;
+
         return processMethodBulk(clazz, methodName, mapParams, useCache);
     }
 
@@ -252,6 +253,7 @@ public abstract class MPBase {
      */
     protected static MPResourceArray processMethodBulk(Class clazz, String methodName, HashMap<String, String> mapParams, Boolean useCache) throws MPException {
         //Validates the method executed
+
         if (!ALLOWED_BULK_METHODS.contains(methodName)) {
             throw new MPException("Method \"" + methodName + "\" not allowed");
         }
@@ -259,7 +261,9 @@ public abstract class MPBase {
         AnnotatedElement annotatedMethod = getAnnotatedMethod(clazz, methodName);
         HashMap<String, Object> hashAnnotation = getRestInformation(annotatedMethod);
         HttpMethod httpMethod = (HttpMethod)hashAnnotation.get("method");
+
         String path = parsePath(hashAnnotation.get("path").toString(), mapParams, null);
+
         int retries = Integer.valueOf(hashAnnotation.get("retries").toString());
         int connectionTimeout = Integer.valueOf(hashAnnotation.get("connectionTimeout").toString());
         int socketTimeout = Integer.valueOf(hashAnnotation.get("socketTimeout").toString());
@@ -268,6 +272,8 @@ public abstract class MPBase {
         Collection<Header> colHeaders = getStandardHeaders();
 
         MPApiResponse response = callApi(httpMethod, path, payloadType, null, colHeaders, retries, connectionTimeout, socketTimeout, useCache);
+
+        System.out.println(response.getStringResponse());
 
         MPResourceArray resourceArray = new MPResourceArray();
 
@@ -487,6 +493,8 @@ public abstract class MPBase {
                         }
                     }
                 }
+
+
                 if (StringUtils.isEmpty(value)) {
                     throw new MPException("No argument supplied/found for method path");
                 }
@@ -505,16 +513,23 @@ public abstract class MPBase {
             processedPath.append(path);
         }
 
+
+
         // URL
         processedPath.insert(0, MercadoPago.SDK.getBaseUrl());
 
+
         // Token
-        String accessToken;
-        if (StringUtils.isNotEmpty(resource.getMarketplaceAccessToken())) {
+        String accessToken = null;
+        if (resource != null){
             accessToken = resource.getMarketplaceAccessToken();
+            if (StringUtils.isEmpty(accessToken)) {
+                accessToken = MercadoPago.SDK.getAccessToken();
+            }
         } else {
             accessToken = MercadoPago.SDK.getAccessToken();
         }
+
         processedPath
                 .append("?access_token=")
                 .append(accessToken);
