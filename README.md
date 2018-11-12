@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/mercadopago/dx-java.svg?branch=master)](https://travis-ci.org/mercadopago/dx-java)
+
 # MercadoPago SDK for Java
 
 This library provides developers with a simple set of bindings to the Mercado Pago API.
