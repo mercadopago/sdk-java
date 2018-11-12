@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/mercadopago/dx-java.svg?branch=master)](https://travis-ci.com/mercadopago/dx-java)
+[![Build Status](https://travis-ci.org/mercadopago/dx-java.svg?branch=master)](https://travis-ci.org/mercadopago/dx-java)
 
 # MercadoPago SDK for Java
 

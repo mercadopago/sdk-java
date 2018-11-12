@@ -4,3 +4,5 @@ install:
   - mvn install -DskipTests -Dgpg.skip
 script:
   - mvn test -Dpgp.skip-true
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
