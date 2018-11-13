@@ -32,6 +32,9 @@ public class Preference extends MPBase {
     private String sandboxInitPoint = null;
     private Date dateCreated = null;
     private OperationType operationType = null;
+
+
+
     public enum OperationType {
         regular_payment,
         money_transfer
@@ -52,7 +55,11 @@ public class Preference extends MPBase {
     private Float marketplaceFee = null;
     private DifferentialPricing differentialPricing = null;
     private String sponsorId = null;
-
+    public enum ProcessingMode {
+        aggregator,
+        gatway
+    }
+    private ArrayList<ProcessingMode> processingModes = null;
 
     public ArrayList<Item> getItems() {
         return items;
@@ -233,6 +240,22 @@ public class Preference extends MPBase {
         this.sponsorId = sponsorId;
     }
 
+    public ArrayList<ProcessingMode> getProcessingModes() {
+        return processingModes;
+    }
+
+    public Preference setProcessingModes(ArrayList<ProcessingMode> processingModes) {
+        this.processingModes = processingModes;
+        return this;
+    }
+
+    public Preference appendProcessingModes(ProcessingMode processingMode) {
+        if (processingModes == null) {
+            processingModes = new ArrayList<ProcessingMode>();
+        }
+        processingModes.add(processingMode);
+        return this;
+    }
 
     public static Preference findById(String id) throws MPException {
         return findById(id, WITHOUT_CACHE);

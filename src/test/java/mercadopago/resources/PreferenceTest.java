@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
@@ -281,6 +282,7 @@ public class PreferenceTest {
         preference.setExpires(true);
         preference.setExpirationDateFrom(new Date());
 
+        preference.appendProcessingModes(Preference.ProcessingMode.aggregator);
 
         preference.save();
         assertEquals(201, preference.getLastApiResponse().getStatusCode());
