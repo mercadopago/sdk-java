@@ -284,6 +284,8 @@ public class PreferenceTest {
 
         preference.appendProcessingModes(Preference.ProcessingMode.aggregator);
 
+        preference.setBinaryMode(false);
+
         preference.save();
         assertEquals(201, preference.getLastApiResponse().getStatusCode());
         assertNotNull(preference.getId());

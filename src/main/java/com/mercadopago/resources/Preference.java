@@ -34,7 +34,6 @@ public class Preference extends MPBase {
     private OperationType operationType = null;
 
 
-
     public enum OperationType {
         regular_payment,
         money_transfer
@@ -60,6 +59,7 @@ public class Preference extends MPBase {
         gatway
     }
     private ArrayList<ProcessingMode> processingModes = null;
+    private Boolean binaryMode = null;
 
     public ArrayList<Item> getItems() {
         return items;
@@ -254,6 +254,15 @@ public class Preference extends MPBase {
             processingModes = new ArrayList<ProcessingMode>();
         }
         processingModes.add(processingMode);
+        return this;
+    }
+
+    public Boolean getBinaryMode() {
+        return binaryMode;
+    }
+
+    public Preference setBinaryMode(Boolean binaryMode) {
+        this.binaryMode = binaryMode;
         return this;
     }
 
