@@ -41,7 +41,7 @@ public class PaymentTest {
     @BeforeClass
     public static void beforeTest() throws MPException {
         MercadoPago.SDK.cleanConfiguration();
-        MercadoPago.SDK.setAccessToken(System.getenv("ACCESS_TOKEN_TEST"));
+        MercadoPago.SDK.setAccessToken("TEST-6295877106812064-042916-6cead5bc1e48af95ea61cc9254595865__LC_LA__-202809963");
     }
 
     @Test
@@ -300,7 +300,7 @@ public class PaymentTest {
             MPRestClient client = new MPRestClient();
             response = client.executeRequest(
                     HttpMethod.POST,
-                    MercadoPago.SDK.getBaseUrl() + "/v1/card_tokens?public_key=" + System.getenv("PUBLIC_KEY_TEST"),
+                    MercadoPago.SDK.getBaseUrl() + "/v1/card_tokens?public_key=" + "TEST-90189146-5027-424e-a3fd-f55d376c98c9",
                     PayloadType.JSON,
                     jsonPayload,
                     null);

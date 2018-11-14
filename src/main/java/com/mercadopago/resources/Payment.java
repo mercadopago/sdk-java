@@ -373,6 +373,7 @@ public class Payment extends MPBase {
         refund.setPaymentId(this.getId());
         refund.save();
         // If refund has been successfully created then update the instance values
+
         if (refund.getId() != null) {
             Payment payment = Payment.findById(this.getId()); // Get updated payment instance
             this.status = payment.getStatus();
