@@ -192,7 +192,7 @@ public class PaymentTest {
         payer.setIdentification(new Identification().setType("RUT").setNumber("76262349"));
 
         Payment payment = new Payment();
-        payment.setDescription("")
+        payment.setDescription("Lorem Ipsum dolor");
         payment.setPaymentMethodId("bank_transfer");
         payment.setTransactionDetails(new TransactionDetails().setFinancialInstitution("1234"));
         payment.setAdditionalInfo(new AdditionalInfo().setIpAddres("127.0.0.1"));
