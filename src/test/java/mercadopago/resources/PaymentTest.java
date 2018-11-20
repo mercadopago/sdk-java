@@ -190,16 +190,21 @@ public class PaymentTest {
         Payer payer = new Payer();
         payer.setEmail("test_user_97697694@testuser.com");
         payer.setIdentification(new Identification().setType("RUT").setNumber("76262349"));
-        payer.setEntityType(Payer.EntityType.individual);
 
         Payment payment = new Payment();
+        payment.setDescription("")
+        payment.setPaymentMethodId("bank_transfer");
         payment.setTransactionDetails(new TransactionDetails().setFinancialInstitution("1234"));
         payment.setAdditionalInfo(new AdditionalInfo().setIpAddres("127.0.0.1"));
         payment.setCallbackUrl("http://www.your-site.com");
 
         payment.setTransactionAmount(100f);
 
+        payment.setPayer(payer);
+
         payment.save();
+
+        assertEquals(201, payment.getLastApiResponse().getStatusCode());
 
     }
 
