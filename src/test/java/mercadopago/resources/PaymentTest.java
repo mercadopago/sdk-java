@@ -185,7 +185,26 @@ public class PaymentTest {
     }
 
     @Test
-    public void stage2_paymentPutTest() throws MPException {
+    public void stage2_paymentOffTest() throws MPException {
+
+        Payer payer = new Payer();
+        payer.setEmail("test_user_97697694@testuser.com");
+        payer.setIdentification(new Identification().setType("RUT").setNumber("76262349"));
+        payer.setEntityType(Payer.EntityType.individual);
+
+        Payment payment = new Payment();
+        payment.setTransactionDetails(new TransactionDetails().setFinancialInstitution("1234"));
+        payment.setAdditionalInfo(new AdditionalInfo().setIpAddres("127.0.0.1"));
+        payment.setCallbackUrl("http://www.your-site.com");
+
+        payment.setTransactionAmount(100f);
+
+        payment.save();
+
+    }
+
+    @Test
+    public void stage3_paymentPutTest() throws MPException {
 
         Payment payment = lastPayment;
         payment.setStatus(Payment.Status.cancelled);
@@ -196,7 +215,7 @@ public class PaymentTest {
     }
 
     @Test
-    public void stage3_paymentApprovedTest() throws MPException {
+    public void stage4_paymentApprovedTest() throws MPException {
 
         Payer payer = new Payer();
         payer.setEmail("test_user_97697694@testuser.com");
@@ -227,7 +246,7 @@ public class PaymentTest {
     }
 
     @Test
-    public void stage4_paymentRefund() throws MPException {
+    public void stage5_paymentRefund() throws MPException {
 
         Payment payment = lastApprovedPayment;
         payment.refund();
@@ -237,7 +256,7 @@ public class PaymentTest {
     }
 
     @Test
-    public void stage5_paymentFindByIdTest() throws MPException {
+    public void stage6_paymentFindByIdTest() throws MPException {
         Payment payment = Payment.findById(lastPayment.getId(), MPBase.WITHOUT_CACHE);
         assertEquals(200, payment.getLastApiResponse().getStatusCode());
         assertEquals(lastPayment.getId(), payment.getId());

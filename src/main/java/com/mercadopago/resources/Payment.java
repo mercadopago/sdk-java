@@ -103,6 +103,7 @@ public class Payment extends MPBase {
     private String notificationUrl = null;
     private ArrayList<Refund> refunds = null;
     private AdditionalInfo additionalInfo = null;
+    private String callbackUrl = null;
 
 
     public String getId() {
@@ -235,6 +236,11 @@ public class Payment extends MPBase {
         return transactionDetails;
     }
 
+    public Payment setTransactionDetails(TransactionDetails transactionDetails) {
+        this.transactionDetails = transactionDetails;
+        return this;
+    }
+
     public ArrayList<FeeDetail> getFeeDetails() {
         return feeDetails;
     }
@@ -328,7 +334,6 @@ public class Payment extends MPBase {
         return this;
     }
 
-
     public String getNotificationUrl() {
         return notificationUrl;
     }
@@ -347,6 +352,13 @@ public class Payment extends MPBase {
         return this;
     }
 
+    public String getCallbackUrl() {
+        return callbackUrl;
+    }
+
+    public void setCallbackUrl(String callbackUrl) {
+        this.callbackUrl = callbackUrl;
+    }
 
     public static Payment findById(String id) throws MPException {
         return findById(id, WITHOUT_CACHE);

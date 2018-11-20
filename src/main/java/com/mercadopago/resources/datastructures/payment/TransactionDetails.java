@@ -45,4 +45,38 @@ public class TransactionDetails {
         return paymentMethodReferenceId;
     }
 
+    public TransactionDetails setFinancialInstitution(String financialInstitution) {
+        this.financialInstitution = financialInstitution;
+        return this;
+    }
+
+    public TransactionDetails setNetReceivedAmount(Float netReceivedAmount) {
+        this.netReceivedAmount = netReceivedAmount;
+        return this;
+    }
+
+    public TransactionDetails setTotalPaidAmount(Float totalPaidAmount) {
+        this.totalPaidAmount = totalPaidAmount;
+        return this;
+    }
+
+    public TransactionDetails setInstallmentAmount(Float installmentAmount) {
+        this.installmentAmount = installmentAmount;
+        return this;
+    }
+
+    public TransactionDetails setOverpaidAmount(Float overpaidAmount) {
+        this.overpaidAmount = overpaidAmount;
+        return this;
+    }
+
+    public TransactionDetails setExternalResourceUrl(String externalResourceUrl) {
+        this.externalResourceUrl = externalResourceUrl;
+        return this;
+    }
+
+    public TransactionDetails setPaymentMethodReferenceId(String paymentMethodReferenceId) {
+        this.paymentMethodReferenceId = paymentMethodReferenceId;
+        return this;
+    }
 }

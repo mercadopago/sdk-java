@@ -9,6 +9,7 @@ package com.mercadopago.resources.datastructures.payment;
 public class Payer {
 
     private type type = null;
+
     public enum type {
         customer,
         registered,
@@ -22,6 +23,11 @@ public class Payer {
     private String firstName = null;
     private String lastName = null;
     private Address address = null;
+    public enum EntityType {
+        individual,
+        association
+    }
+    private EntityType entityType = null;
 
     public Payer.type getType() {
         return type;
@@ -94,4 +100,14 @@ public class Payer {
         this.phone = phone;
         return this;
     }
+
+    public EntityType getEntityType() {
+        return entityType;
+    }
+
+    public Payer setEntityType(EntityType entityType) {
+        this.entityType = entityType;
+        return this;
+    }
+
 }
