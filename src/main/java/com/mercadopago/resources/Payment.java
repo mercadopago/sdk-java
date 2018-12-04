@@ -2,6 +2,7 @@ package com.mercadopago.resources;
 
 import com.google.gson.JsonObject;
 import com.mercadopago.core.MPBase;
+import com.mercadopago.core.MPResourceArray;
 import com.mercadopago.core.annotations.idempotent.Idempotent;
 import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.core.annotations.rest.POST;
@@ -14,6 +15,7 @@ import com.mercadopago.resources.datastructures.payment.*;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * Mercado Pago SDK
@@ -362,6 +364,11 @@ public class Payment extends MPBase {
 
     public static Payment findById(String id) throws MPException {
         return findById(id, WITHOUT_CACHE);
+    }
+
+    @GET(path="/v1/payments/search")
+    public static MPResourceArray search(HashMap<String, String> filters, Boolean useCache) throws MPException {
+        return Customer.processMethodBulk(Customer.class, "search", filters, useCache);
     }
 
     @GET(path="/v1/payments/:id")
