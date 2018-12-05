@@ -15,6 +15,7 @@ import com.mercadopago.resources.Payment;
 import com.mercadopago.resources.datastructures.payment.*;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
@@ -250,6 +251,7 @@ public class PaymentTest {
         assertEquals("credit_card", payment.getPaymentTypeId().toString());
     }
 
+    @Ignore
     @Test
     public void stage5_paymentRefund() throws MPException {
 
