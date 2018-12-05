@@ -16,7 +16,7 @@ This library provides developers with a simple set of bindings to the Mercado Pa
         <dependency>
             <groupId> com.mercadopago </groupId>
             <artifactId> dx-java </artifactId>
-            <version> 1.0.33 </version>
+            <version> 1.0.34 </version>
         </dependency>
     </dependencies>
     ...
