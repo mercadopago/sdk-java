@@ -1,5 +1,6 @@
 package mercadopago;
 
+import com.mercadopago.core.MPApiResponse;
 import com.mercadopago.exceptions.MPConfException;
 import com.mercadopago.exceptions.MPException;
 
@@ -9,8 +10,7 @@ import org.junit.Test;
 
 import java.util.HashMap;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 /**
  * Mercado Pago MercadoPago
@@ -140,6 +140,15 @@ public class MercadoPagoTest {
         }
         assertSame("Exception must be \"MPException\"", MPException.class, auxException.getClass());
         assertEquals("App Id must be \"null\" at this point", MercadoPago.SDK.getAppId(), null);
+    }
+
+    @Test
+    public void genericGetTests() throws Exception {
+        MercadoPago.SDK.cleanConfiguration();
+        MercadoPago.SDK.setBaseUrl("https://api.mercadopago.com");
+        MercadoPago.SDK.setAccessToken(System.getenv("ACCESS_TOKEN_TEST"));
+        MPApiResponse response = MercadoPago.SDK.Get("/v1/payment_methods");
+        assertNotNull(response);
     }
 
     @Ignore

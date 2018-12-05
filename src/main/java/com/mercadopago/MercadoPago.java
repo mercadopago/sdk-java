@@ -241,19 +241,19 @@ public class MercadoPago {
 
         public static MPApiResponse Get(String uri) throws MPRestException {
             MPRestClient client = new MPRestClient();
-            MPApiResponse response = client.executeRequest(HttpMethod.GET, uri, PayloadType.JSON, null, null);
+            MPApiResponse response = client.executeGenericRequest(HttpMethod.GET, uri, PayloadType.JSON, null, null);
             return response;
         }
 
         public static MPApiResponse Post(String uri, JsonObject payload) throws MPRestException {
             MPRestClient client = new MPRestClient();
-            MPApiResponse response =  client.executeRequest(HttpMethod.POST, uri, PayloadType.JSON, payload, null);
+            MPApiResponse response =  client.executeGenericRequest(HttpMethod.POST, uri, PayloadType.JSON, payload, null);
             return response;
         }
 
         public static MPApiResponse Put(String uri, JsonObject payload) throws MPRestException {
             MPRestClient client = new MPRestClient();
-            MPApiResponse response =  client.executeRequest(HttpMethod.PUT, uri, PayloadType.JSON, payload, null);
+            MPApiResponse response =  client.executeGenericRequest(HttpMethod.PUT, uri, PayloadType.JSON, payload, null);
             return response;
         }
 
