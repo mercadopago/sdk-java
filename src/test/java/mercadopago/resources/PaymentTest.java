@@ -251,7 +251,7 @@ public class PaymentTest {
         assertEquals("credit_card", payment.getPaymentTypeId().toString());
     }
 
-    @Ignore
+
     @Test
     public void stage5_paymentRefund() throws MPException {
 
