@@ -185,17 +185,17 @@ public class PaymentTest {
         assertEquals("credit_card", payment.getPaymentTypeId().toString());
     }
 
+    @Ignore
     @Test
     public void stage2_paymentOffTest() throws MPException {
 
         Payer payer = new Payer();
         payer.setEmail("test_user_97697694@testuser.com");
-        payer.setIdentification(new Identification().setType("RUT").setNumber("76262349"));
+        payer.setIdentification(new Identification().setType("DNI").setNumber("76262349"));
 
         Payment payment = new Payment();
         payment.setDescription("Lorem Ipsum dolor");
-        payment.setPaymentMethodId("bank_transfer");
-        payment.setTransactionDetails(new TransactionDetails().setFinancialInstitution("1234"));
+        payment.setPaymentMethodId("visa");
         payment.setAdditionalInfo(new AdditionalInfo().setIpAddres("127.0.0.1"));
         payment.setCallbackUrl("http://www.your-site.com");
 
