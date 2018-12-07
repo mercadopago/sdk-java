@@ -368,7 +368,7 @@ public class Payment extends MPBase {
 
     @GET(path="/v1/payments/search")
     public static MPResourceArray search(HashMap<String, String> filters, Boolean useCache) throws MPException {
-        return Payment.processMethodBulk(Customer.class, "search", filters, useCache);
+        return Payment.processMethodBulk(Payment.class, "search", filters, useCache);
     }
 
     @GET(path="/v1/payments/:id")
