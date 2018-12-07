@@ -12,11 +12,9 @@ import com.google.gson.reflect.TypeToken;
 import com.mercadopago.*;
 import com.mercadopago.core.annotations.idempotent.Idempotent;
 import com.mercadopago.core.annotations.rest.*;
-import com.mercadopago.core.annotations.rest.*;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPRestClient;
-import com.mercadopago.resources.Refund;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
@@ -87,7 +85,7 @@ public abstract class MPBase {
      * @return                  a resourse obj fill with the api response
      * @throws MPException
      */
-    protected <T extends MPBase> T processMethod(String methodName, Boolean useCache) throws MPException {
+	protected <T extends MPBase> T processMethod(String methodName, Boolean useCache) throws MPException {
         HashMap<String, String> mapParams = null;
         T resource = processMethod(this.getClass(), (T)this, methodName, mapParams, useCache);
         fillResource(resource, this);
@@ -511,11 +509,8 @@ public abstract class MPBase {
             processedPath.append(path);
         }
 
-
-
         // URL
         processedPath.insert(0, MercadoPago.SDK.getBaseUrl());
-
 
         // Token
         String accessToken = null;

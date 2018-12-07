@@ -11,78 +11,73 @@ import java.util.Date;
 
 public class Refund extends MPBase {
 
-    private String id = null;
+	private String id = null;
+	private transient String paymentId = null;
+	private Float amount = null;
+	private Source source = null;
+	private Date dateCreated = null;
+	private String uniqueSequenceNumber = null;
 
-    private transient String paymentId = null;
+	public String getId() {
+		return id;
+	}
 
-    private Float amount = null;
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    private Source source = null;
+	public String getPaymentId() {
+		return paymentId;
+	}
 
-    private Date dateCreated = null;
+	public void setPaymentId(String paymentId) {
+		this.paymentId = paymentId;
+	}
 
-    private String uniqueSequenceNumber = null;
+	public Float getAmount() {
+		return amount;
+	}
 
-    public String getId() {
-        return id;
-    }
+	public void setAmount(Float amount) {
+		this.amount = amount;
+	}
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public Source getSource() {
+		return source;
+	}
 
-    public String getPaymentId() {
-        return paymentId;
-    }
+	public void setSource(Source source) {
+		this.source = source;
+	}
 
-    public void setPaymentId(String paymentId) {
-        this.paymentId = paymentId;
-    }
+	public Date getDateCreated() {
+		return dateCreated;
+	}
 
-    public Float getAmount() {
-        return amount;
-    }
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated = dateCreated;
+	}
 
-    public void setAmount(Float amount) {
-        this.amount = amount;
-    }
+	public String getUniqueSequenceNumber() {
+		return uniqueSequenceNumber;
+	}
 
-    public Source getSource() {
-        return source;
-    }
+	public void setUniqueSequenceNumber(String uniqueSequenceNumber) {
+		this.uniqueSequenceNumber = uniqueSequenceNumber;
+	}
 
-    public void setSource(Source source) {
-        this.source = source;
-    }
+	public static MPResourceArray all(String paymentId) throws MPException {
+		return all(paymentId, WITHOUT_CACHE);
+	}
 
-    public Date getDateCreated() {
-        return dateCreated;
-    }
+	@GET(path = "/v1/payments/:payment_id/refunds")
+	public static MPResourceArray all(String paymentId, Boolean useCache) throws MPException {
+		return Refund.processMethodBulk(Refund.class, "all", paymentId, useCache);
+	}
 
-    public void setDateCreated(Date dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-
-    public String getUniqueSequenceNumber() {
-        return uniqueSequenceNumber;
-    }
-
-    public void setUniqueSequenceNumber(String uniqueSequenceNumber) {
-        this.uniqueSequenceNumber = uniqueSequenceNumber;
-    }
-
-    public static MPResourceArray all(String paymentId) throws MPException {
-        return all(paymentId, WITHOUT_CACHE);
-    }
-
-    @GET(path="/v1/payments/:payment_id/refunds")
-    public static MPResourceArray all(String paymentId, Boolean useCache) throws MPException {
-        return Refund.processMethodBulk(Refund.class, "all", paymentId, useCache);
-    }
-
-    @POST(path="/v1/payments/:payment_id/refunds")
-    public Refund save() throws MPException {
-        return super.processMethod("save", WITHOUT_CACHE);
-    }
+	@POST(path = "/v1/payments/:payment_id/refunds")
+	public Refund save() throws MPException {
+		return super.processMethod("save", WITHOUT_CACHE);
+	}
 
 }

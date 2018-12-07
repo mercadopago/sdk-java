@@ -13,276 +13,283 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Mercado Pago MercadoPago
- * This resource allows you to set up, during the Payment process, all the item information,
- * any accepted means of Payment and many other options.
+ * Mercado Pago MercadoPago This resource allows you to set up, during the
+ * Payment process, all the item information, any accepted means of Payment and
+ * many other options.
  *
  * Created by Eduardo Paoletta on 11/9/16.
  */
 public class Preference extends MPBase {
 
-    @NotNull private ArrayList<Item> items = null;
-    @NotNull private Payer payer = null;
-    private PaymentMethods paymentMethods = null;
-    private Shipments shipments = null;
-    private BackUrls backUrls = null;
-    @Size(max=500) private String notificationUrl = null;
-    private String id = null;
-    private String initPoint = null;
-    private String sandboxInitPoint = null;
-    private Date dateCreated = null;
-    private OperationType operationType = null;
+	@NotNull
+	private ArrayList<Item> items = null;
+	@NotNull
+	private Payer payer = null;
+	private PaymentMethods paymentMethods = null;
+	private Shipments shipments = null;
+	private BackUrls backUrls = null;
+	@Size(max = 500)
+	private String notificationUrl = null;
+	private String id = null;
+	private String initPoint = null;
+	private String sandboxInitPoint = null;
+	private Date dateCreated = null;
+	private OperationType operationType = null;
 
+	public enum OperationType {
+		regular_payment, money_transfer
+	}
 
-    public enum OperationType {
-        regular_payment,
-        money_transfer
-    }
-    @Size(max=600) private String additionalInfo = null;
-    private AutoReturn autoReturn = null;
-    public enum AutoReturn {
-        approved,
-        all
-    }
-    @Size(max=256) private String externalReference = null;
-    private Boolean expires = null;
-    private Date expirationDateFrom = null;
-    private Date expirationDateTo = null;
-    private Float collectorId = null;
-    private Float clientId = null;
-    @Size(max=256) private String marketplace = null;
-    private Float marketplaceFee = null;
-    private DifferentialPricing differentialPricing = null;
-    private String sponsorId = null;
-    public enum ProcessingMode {
-        aggregator,
-        gatway
-    }
-    private ArrayList<ProcessingMode> processingModes = null;
-    private Boolean binaryMode = null;
+	@Size(max = 600)
+	private String additionalInfo = null;
+	private AutoReturn autoReturn = null;
 
-    public ArrayList<Item> getItems() {
-        return items;
-    }
+	public enum AutoReturn {
+		approved, all
+	}
 
-    public Preference setItems(ArrayList<Item> items) {
-        this.items = items;
-        return this;
-    }
+	@Size(max = 256)
+	private String externalReference = null;
+	private Boolean expires = null;
+	private Date expirationDateFrom = null;
+	private Date expirationDateTo = null;
+	private Float collectorId = null;
+	private Float clientId = null;
+	@Size(max = 256)
+	private String marketplace = null;
+	private Float marketplaceFee = null;
+	private DifferentialPricing differentialPricing = null;
+	private String sponsorId = null;
 
-    public Preference appendItem(Item item) {
-        if (items == null) {
-            items = new ArrayList<Item>();
-        }
-        items.add(item);
-        return this;
-    }
+	public enum ProcessingMode {
+		aggregator, gatway
+	}
 
-    public Payer getPayer() {
-        return payer;
-    }
+	private ArrayList<ProcessingMode> processingModes = null;
+	private Boolean binaryMode = null;
 
-    public Preference setPayer(Payer payer) {
-        this.payer = payer;
-        return this;
-    }
+	public ArrayList<Item> getItems() {
+		return items;
+	}
 
-    public PaymentMethods getPaymentMethods() {
-        return paymentMethods;
-    }
+	public Preference setItems(ArrayList<Item> items) {
+		this.items = items;
+		return this;
+	}
 
-    public Preference setPaymentMethods(PaymentMethods paymentMethods) {
-        this.paymentMethods = paymentMethods;
-        return this;
-    }
+	public Preference appendItem(Item item) {
+		if (items == null) {
+			items = new ArrayList<Item>();
+		}
+		items.add(item);
+		return this;
+	}
 
-    public Shipments getShipments() {
-        return shipments;
-    }
+	public Payer getPayer() {
+		return payer;
+	}
 
-    public Preference setShipments(Shipments shipments) {
-        this.shipments = shipments;
-        return this;
-    }
+	public Preference setPayer(Payer payer) {
+		this.payer = payer;
+		return this;
+	}
 
-    public BackUrls getBackUrls() {
-        return backUrls;
-    }
+	public PaymentMethods getPaymentMethods() {
+		return paymentMethods;
+	}
 
-    public Preference setBackUrls(BackUrls backUrls) {
-        this.backUrls = backUrls;
-        return this;
-    }
+	public Preference setPaymentMethods(PaymentMethods paymentMethods) {
+		this.paymentMethods = paymentMethods;
+		return this;
+	}
 
-    public String getNotificationUrl() {
-        return notificationUrl;
-    }
+	public Shipments getShipments() {
+		return shipments;
+	}
 
-    public Preference setNotificationUrl(String notificationUrl) {
-        this.notificationUrl = notificationUrl;
-        return this;
-    }
+	public Preference setShipments(Shipments shipments) {
+		this.shipments = shipments;
+		return this;
+	}
 
-    public String getId() {
-        return id;
-    }
+	public BackUrls getBackUrls() {
+		return backUrls;
+	}
 
-    public String getInitPoint() {
-        return initPoint;
-    }
+	public Preference setBackUrls(BackUrls backUrls) {
+		this.backUrls = backUrls;
+		return this;
+	}
 
-    public String getSandboxInitPoint() {
-        return sandboxInitPoint;
-    }
+	public String getNotificationUrl() {
+		return notificationUrl;
+	}
 
-    public Date getDateCreated() {
-        return dateCreated;
-    }
+	public Preference setNotificationUrl(String notificationUrl) {
+		this.notificationUrl = notificationUrl;
+		return this;
+	}
 
-    public OperationType getOperationType() {
-        return operationType;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public String getAdditionalInfo() {
-        return additionalInfo;
-    }
+	public String getInitPoint() {
+		return initPoint;
+	}
 
-    public Preference setAdditionalInfo(String additionalInfo) {
-        this.additionalInfo = additionalInfo;
-        return this;
-    }
+	public String getSandboxInitPoint() {
+		return sandboxInitPoint;
+	}
 
-    public AutoReturn getAutoReturn() {
-        return autoReturn;
-    }
+	public Date getDateCreated() {
+		return dateCreated;
+	}
 
-    public Preference setAutoReturn(AutoReturn autoReturn) {
-        this.autoReturn = autoReturn;
-        return this;
-    }
+	public OperationType getOperationType() {
+		return operationType;
+	}
 
-    public String getExternalReference() {
-        return externalReference;
-    }
+	public String getAdditionalInfo() {
+		return additionalInfo;
+	}
 
-    public Preference setExternalReference(String externalReference) {
-        this.externalReference = externalReference;
-        return this;
-    }
+	public Preference setAdditionalInfo(String additionalInfo) {
+		this.additionalInfo = additionalInfo;
+		return this;
+	}
 
-    public Boolean getExpires() {
-        return expires;
-    }
+	public AutoReturn getAutoReturn() {
+		return autoReturn;
+	}
 
-    public Preference setExpires(Boolean expires) {
-        this.expires = expires;
-        return this;
-    }
+	public Preference setAutoReturn(AutoReturn autoReturn) {
+		this.autoReturn = autoReturn;
+		return this;
+	}
 
-    public Date getExpirationDateFrom() {
-        return expirationDateFrom;
-    }
+	public String getExternalReference() {
+		return externalReference;
+	}
 
-    public Preference setExpirationDateFrom(Date expirationDateFrom) {
-        this.expirationDateFrom = expirationDateFrom;
-        return this;
-    }
+	public Preference setExternalReference(String externalReference) {
+		this.externalReference = externalReference;
+		return this;
+	}
 
-    public Date getExpirationDateTo() {
-        return expirationDateTo;
-    }
+	public Boolean getExpires() {
+		return expires;
+	}
 
-    public Preference setExpirationDateTo(Date expirationDateTo) {
-        this.expirationDateTo = expirationDateTo;
-        return this;
-    }
+	public Preference setExpires(Boolean expires) {
+		this.expires = expires;
+		return this;
+	}
 
-    public Float getCollectorId() {
-        return collectorId;
-    }
+	public Date getExpirationDateFrom() {
+		return expirationDateFrom;
+	}
 
-    public Float getClientId() {
-        return clientId;
-    }
+	public Preference setExpirationDateFrom(Date expirationDateFrom) {
+		this.expirationDateFrom = expirationDateFrom;
+		return this;
+	}
 
-    public String getMarketplace() {
-        return marketplace;
-    }
+	public Date getExpirationDateTo() {
+		return expirationDateTo;
+	}
 
-    public Preference setMarketplace(String marketplace) {
-        this.marketplace = marketplace;
-        return this;
-    }
+	public Preference setExpirationDateTo(Date expirationDateTo) {
+		this.expirationDateTo = expirationDateTo;
+		return this;
+	}
 
-    public Float getMarketplaceFee() {
-        return marketplaceFee;
-    }
+	public Float getCollectorId() {
+		return collectorId;
+	}
 
-    public Preference setMarketplaceFee(Float marketplaceFee) {
-        this.marketplaceFee = marketplaceFee;
-        return this;
-    }
+	public Float getClientId() {
+		return clientId;
+	}
 
-    public DifferentialPricing getDifferentialPricing() {
-        return differentialPricing;
-    }
+	public String getMarketplace() {
+		return marketplace;
+	}
 
-    public Preference setDifferentialPricing(DifferentialPricing differentialPricing) {
-        this.differentialPricing = differentialPricing;
-        return this;
-    }
+	public Preference setMarketplace(String marketplace) {
+		this.marketplace = marketplace;
+		return this;
+	}
 
-    public String getSponsorId() {
-        return sponsorId;
-    }
+	public Float getMarketplaceFee() {
+		return marketplaceFee;
+	}
 
-    public void setSponsorId(String sponsorId) {
-        this.sponsorId = sponsorId;
-    }
+	public Preference setMarketplaceFee(Float marketplaceFee) {
+		this.marketplaceFee = marketplaceFee;
+		return this;
+	}
 
-    public ArrayList<ProcessingMode> getProcessingModes() {
-        return processingModes;
-    }
+	public DifferentialPricing getDifferentialPricing() {
+		return differentialPricing;
+	}
 
-    public Preference setProcessingModes(ArrayList<ProcessingMode> processingModes) {
-        this.processingModes = processingModes;
-        return this;
-    }
+	public Preference setDifferentialPricing(DifferentialPricing differentialPricing) {
+		this.differentialPricing = differentialPricing;
+		return this;
+	}
 
-    public Preference appendProcessingModes(ProcessingMode processingMode) {
-        if (processingModes == null) {
-            processingModes = new ArrayList<ProcessingMode>();
-        }
-        processingModes.add(processingMode);
-        return this;
-    }
+	public String getSponsorId() {
+		return sponsorId;
+	}
 
-    public Boolean getBinaryMode() {
-        return binaryMode;
-    }
+	public void setSponsorId(String sponsorId) {
+		this.sponsorId = sponsorId;
+	}
 
-    public Preference setBinaryMode(Boolean binaryMode) {
-        this.binaryMode = binaryMode;
-        return this;
-    }
+	public ArrayList<ProcessingMode> getProcessingModes() {
+		return processingModes;
+	}
 
-    public static Preference findById(String id) throws MPException {
-        return findById(id, WITHOUT_CACHE);
-    }
+	public Preference setProcessingModes(ArrayList<ProcessingMode> processingModes) {
+		this.processingModes = processingModes;
+		return this;
+	}
 
-    @GET(path="/checkout/preferences/:id")
-    public static Preference findById(String id, Boolean useCache) throws MPException {
-        return Preference.processMethod(Preference.class, "findById", id, useCache);
-    }
+	public Preference appendProcessingModes(ProcessingMode processingMode) {
+		if (processingModes == null) {
+			processingModes = new ArrayList<ProcessingMode>();
+		}
+		processingModes.add(processingMode);
+		return this;
+	}
 
-    @POST(path="/checkout/preferences")
-    public Preference save() throws MPException {
-        return super.processMethod("save", WITHOUT_CACHE);
-    }
+	public Boolean getBinaryMode() {
+		return binaryMode;
+	}
 
-    @PUT(path="/checkout/preferences/:id")
-    public Preference update() throws MPException {
-        return super.processMethod("update", WITHOUT_CACHE);
-    }
+	public Preference setBinaryMode(Boolean binaryMode) {
+		this.binaryMode = binaryMode;
+		return this;
+	}
+
+	public static Preference findById(String id) throws MPException {
+		return findById(id, WITHOUT_CACHE);
+	}
+
+	@GET(path = "/checkout/preferences/:id")
+	public static Preference findById(String id, Boolean useCache) throws MPException {
+		return Preference.processMethod(Preference.class, "findById", id, useCache);
+	}
+
+	@POST(path = "/checkout/preferences")
+	public Preference save() throws MPException {
+		return super.processMethod("save", WITHOUT_CACHE);
+	}
+
+	@PUT(path = "/checkout/preferences/:id")
+	public Preference update() throws MPException {
+		return super.processMethod("update", WITHOUT_CACHE);
+	}
 
 }
