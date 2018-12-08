@@ -4,6 +4,7 @@ public class CauseError {
 
 	private String description;
 	private String code;
+	private String data;
 
 	/**
 	 * @return el description
@@ -31,6 +32,25 @@ public class CauseError {
 	 */
 	public void setCode(String code) {
 		this.code = code;
+	}
+	
+	/**
+	 * @return el data
+	 */
+	public String getData() {
+		return data;
+	}
+
+	/**
+	 * @param data el data a establecer
+	 */
+	public void setData(String data) {
+		this.data = data;
+	}
+
+	@Override
+	public String toString() {
+		return "{description: " + description + ", code: " + code + ", data: " + data + "}";
 	}
 
 }

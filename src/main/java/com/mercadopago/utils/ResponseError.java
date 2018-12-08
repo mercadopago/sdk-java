@@ -64,5 +64,10 @@ public class ResponseError {
 	public void setCause(List<CauseError> cause) {
 		this.cause = cause;
 	}
+	
+	@Override
+	public String toString() {
+		return "{message: " + message + ", status: " + status + ", error: " + error + ", cause: [" + cause + "]}";
+	}
 
 }

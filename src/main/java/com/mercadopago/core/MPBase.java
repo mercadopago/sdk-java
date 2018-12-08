@@ -557,8 +557,6 @@ public abstract class MPBase {
 
             payload = new JsonObject();
 
-
-
             for (Map.Entry<String, MapDifference.ValueDifference<Object>> entry : mapDifferences.entriesDiffering().entrySet()) {
 
                 if (entry.getValue().rightValue() instanceof LinkedTreeMap) {
