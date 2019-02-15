@@ -59,7 +59,8 @@ public class Payment extends MPBase {
         MXN,
         COP,
         PEN,
-        UYU
+        UYU,
+        USD
     }
     private Float transactionAmount = null;
     private Float transactionAmountRefunded = null;
