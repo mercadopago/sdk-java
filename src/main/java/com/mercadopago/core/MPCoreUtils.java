@@ -11,7 +11,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -125,6 +126,15 @@ public class MPCoreUtils {
             jsonArray = ((JsonObject) jsonElement).get("results").getAsJsonArray();
         }
         return jsonArray;
+    }
+
+    public static String toCamelCase(String str) {
+        for(int i=0;i<str.length()-1;i++){
+            if(str.charAt(i)=='_' && (int) str.charAt(i+1)>=97 && (int) str.charAt(i+1)<=122){
+                str=str.replace(str.substring(i, i+2),""+(char)((int) str.charAt(i+1)-32));
+            }
+        }
+        return str;
     }
 
 }

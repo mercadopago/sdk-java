@@ -14,7 +14,10 @@ import com.mercadopago.resources.Card;
 import com.mercadopago.resources.Payment;
 import com.mercadopago.resources.datastructures.payment.*;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -29,14 +32,17 @@ import static org.junit.Assert.*;
  *
  * Created by Eduardo Paoletta on 12/6/16.
  */
+
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PaymentTest {
 
     static Payment lastPayment = null;
+    static Payment lastApprovedPayment = null;
 
     @BeforeClass
     public static void beforeTest() throws MPException {
         MercadoPago.SDK.cleanConfiguration();
-        MercadoPago.SDK.setAccessToken(System.getenv("ACCESS_TOKEN_TEST_OK"));
+        MercadoPago.SDK.setAccessToken(System.getenv("ACCESS_TOKEN_TEST"));
     }
 
     @Test
@@ -148,7 +154,7 @@ public class PaymentTest {
     }
 
     @Test
-    public void paymentTest() throws MPException {
+    public void stage1_paymentPendingTest() throws MPException {
         //String token = getCardToken();
 
         Payer payer = new Payer();
@@ -179,8 +185,85 @@ public class PaymentTest {
         assertEquals("credit_card", payment.getPaymentTypeId().toString());
     }
 
+    @Ignore
     @Test
-    public void paymentFindByIdTest() throws MPException {
+    public void stage2_paymentOffTest() throws MPException {
+
+        Payer payer = new Payer();
+        payer.setEmail("test_user_97697694@testuser.com");
+        payer.setIdentification(new Identification().setType("DNI").setNumber("76262349"));
+
+        Payment payment = new Payment();
+        payment.setDescription("Lorem Ipsum dolor");
+        payment.setPaymentMethodId("visa");
+        payment.setAdditionalInfo(new AdditionalInfo().setIpAddres("127.0.0.1"));
+        payment.setCallbackUrl("http://www.your-site.com");
+
+        payment.setTransactionAmount(100f);
+
+        payment.setPayer(payer);
+
+        payment.save();
+
+        assertEquals(201, payment.getLastApiResponse().getStatusCode());
+
+    }
+
+    @Test
+    public void stage3_paymentPutTest() throws MPException {
+
+        Payment payment = lastPayment;
+        payment.setStatus(Payment.Status.cancelled);
+        payment.update();
+
+        assertEquals(200, payment.getLastApiResponse().getStatusCode());
+        assertEquals(Payment.Status.cancelled, payment.getStatus());
+    }
+
+    @Test
+    public void stage4_paymentApprovedTest() throws MPException {
+
+        Payer payer = new Payer();
+        payer.setEmail("test_user_97697694@testuser.com");
+        payer.setFirstName("Dummy");
+        payer.setLastName("Lastname");
+        payer.setAddress(new Address()
+                .setStreetName("Anywhere avennue")
+                .setStreetNumber(1500)
+                .setCity("Gotham")
+                .setZipCode("12333"));
+
+        Payment payment = new Payment();
+        payment.setTransactionAmount(100f);
+        payment.setPaymentMethodId("visa");
+        payment.setDescription("Payment test 100 pesos");
+        payment.setToken(getCardToken(CardResultExpected.APPROVED));
+        payment.setInstallments(1);
+        payment.setPayer(payer);
+
+        payment.save();
+
+        lastApprovedPayment = payment;
+
+        assertEquals(201, payment.getLastApiResponse().getStatusCode());
+        assertNotNull(payment.getId());
+        assertEquals("approved", payment.getStatus().toString());
+        assertEquals("credit_card", payment.getPaymentTypeId().toString());
+    }
+
+
+    @Test
+    public void stage5_paymentRefund() throws MPException {
+
+        Payment payment = lastApprovedPayment;
+        payment.refund();
+
+        assertEquals(201, payment.getLastApiResponse().getStatusCode());
+        assertEquals(Payment.Status.refunded, payment.getStatus());
+    }
+
+    @Test
+    public void stage6_paymentFindByIdTest() throws MPException {
         Payment payment = Payment.findById(lastPayment.getId(), MPBase.WITHOUT_CACHE);
         assertEquals(200, payment.getLastApiResponse().getStatusCode());
         assertEquals(lastPayment.getId(), payment.getId());
@@ -190,16 +273,9 @@ public class PaymentTest {
         assertFalse(payment.getLastApiResponse().fromCache);
     }
 
-    @Test
-    public void paymentPutTest() throws MPException {
 
-        Payment payment = lastPayment;
-        payment.setStatus(Payment.Status.cancelled);
-        payment.update();
 
-        assertEquals(200, payment.getLastApiResponse().getStatusCode());
-        assertEquals(Payment.Status.cancelled, payment.getStatus());
-    }
+
 
     private enum CardResultExpected {
         APPROVED("APRO"),
@@ -250,7 +326,7 @@ public class PaymentTest {
             MPRestClient client = new MPRestClient();
             response = client.executeRequest(
                     HttpMethod.POST,
-                    MercadoPago.SDK.getBaseUrl() + "/v1/card_tokens?public_key=" + System.getenv("PUBLIC_KEY_TEST_OK"),
+                    MercadoPago.SDK.getBaseUrl() + "/v1/card_tokens?public_key=" + System.getenv("PUBLIC_KEY_TEST"),
                     PayloadType.JSON,
                     jsonPayload,
                     null);

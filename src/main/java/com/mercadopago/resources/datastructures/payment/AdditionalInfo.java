@@ -13,6 +13,7 @@ public class AdditionalInfo {
     private ArrayList<Item> items = null;
     private AdditionalInfoPayer payer = null;
     private Shipments shipments = null;
+    private String ipAddress = null;
 
 
     public AdditionalInfo setItems(ArrayList<Item> items) {
@@ -38,4 +39,12 @@ public class AdditionalInfo {
         return this;
     }
 
+    public String getIpAddres() {
+        return ipAddress;
+    }
+
+    public AdditionalInfo setIpAddres(String ipAddres) {
+        this.ipAddress = ipAddres;
+        return this;
+    }
 }

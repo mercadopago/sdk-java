@@ -8,10 +8,12 @@ import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.Preference;
 import com.mercadopago.resources.datastructures.preference.*;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
@@ -203,6 +205,7 @@ public class PreferenceTest {
 
     }
 
+    @Ignore
     @Test
     public void preferenceLoadTest() throws MPException {
         Preference preference = Preference.findById("236939761-d2d4c87c-3aa0-4015-9089-2047817399e4", MPBase.WITH_CACHE);
@@ -279,6 +282,9 @@ public class PreferenceTest {
         preference.setExpires(true);
         preference.setExpirationDateFrom(new Date());
 
+        preference.appendProcessingModes(Preference.ProcessingMode.aggregator);
+
+        preference.setBinaryMode(false);
 
         preference.save();
         assertEquals(201, preference.getLastApiResponse().getStatusCode());

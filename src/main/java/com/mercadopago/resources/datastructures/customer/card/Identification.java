@@ -8,16 +8,16 @@ package com.mercadopago.resources.datastructures.customer.card;
  */
 public class Identification {
 
-    private Long number = null;
+    private String number = null;
     private String subtype = null;
     private String type = null;
 
 
-    public Long getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public Identification setNumber(Long number) {
+    public Identification setNumber(String number) {
         this.number = number;
         return this;
     }

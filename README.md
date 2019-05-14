@@ -1,8 +1,11 @@
+[![Build Status](https://travis-ci.org/mercadopago/dx-java.svg?branch=master)](https://travis-ci.org/mercadopago/dx-java)
+[![codecov](https://codecov.io/gh/mercadopago/dx-java/branch/master/graph/badge.svg)](https://codecov.io/gh/mercadopago/dx-java)
+
 # MercadoPago SDK for Java
 
 This library provides developers with a simple set of bindings to the Mercado Pago API.
 
-## Installation 
+## Installation
 
 ### Using Maven
 1. Append MercadoPago dependencies to pom.xml
@@ -13,7 +16,7 @@ This library provides developers with a simple set of bindings to the Mercado Pa
         <dependency>
             <groupId> com.mercadopago </groupId>
             <artifactId> dx-java </artifactId>
-            <version> 1.0.23 </version>
+            <version> 1.0.36 </version>
         </dependency>
     </dependencies>
     ...
@@ -26,12 +29,12 @@ This library provides developers with a simple set of bindings to the Mercado Pa
 2. Setup your credentials.
   - **For Web-checkout:**
     ```java
-      MercadoPago.SDK.setClientSecret("CLIENT_SECRET_OK");
-      MercadoPago.SDK.setClientId("CLIENT_ID_OK");
+      MercadoPago.SDK.setClientSecret("CLIENT_SECRET");
+      MercadoPago.SDK.setClientId("CLIENT_ID");
     ```
   - **For API or Custom-checkout:**
     ```java
-      MercadoPago.SDK.setAccessToken("ACCESS_TOKEN"); 
+      MercadoPago.SDK.setAccessToken("ACCESS_TOKEN");
     ```
 3. Using Resource objects.
 
@@ -50,7 +53,7 @@ This library provides developers with a simple set of bindings to the Mercado Pa
 
       public static void main(String[] args)throws MPException, MPConfException {
 
-          MercadoPago.SDK.setClientSecret(System.getenv("CLIENT_SECRET_OK"));
+          MercadoPago.SDK.setClientSecret(System.getenv("CLIENT_SECRET"));
           MercadoPago.SDK.setClientId(System.getenv("CLIENT_ID_OK"));
 
           Payment payment = new Payment()
@@ -70,8 +73,8 @@ This library provides developers with a simple set of bindings to the Mercado Pa
   }
 ```
 
-### Support 
+### Support
 
-1. Create an issue https://github.com/mercadopago/dx-java/issues 
+1. Create an issue https://github.com/mercadopago/dx-java/issues
 2. Follow your issue status in Issues Support Dashboard https://github.com/mercadopago/dx-java/projects/2
 

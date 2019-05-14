@@ -6,6 +6,7 @@ import com.mercadopago.core.MPIPN;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.MerchantOrder;
 import com.mercadopago.resources.Payment;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -52,6 +53,7 @@ public class MPIPNTest {
 
     }
 
+    @Ignore
     @Test
     public <T extends MPBase> void managerTest() throws MPException {
         MercadoPago.SDK.cleanConfiguration();

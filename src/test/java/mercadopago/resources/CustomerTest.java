@@ -30,97 +30,60 @@ import static org.junit.Assert.*;
  */
 public class CustomerTest {
 
+    static Customer createdCustomer = null;
+
     @BeforeClass
     public static void beforeTest() throws MPException {
         MercadoPago.SDK.cleanConfiguration();
-        MercadoPago.SDK.setAccessToken(System.getenv("ACCESS_TOKEN_TEST_OK"));
+        MercadoPago.SDK.setAccessToken(System.getenv("ACCESS_TOKEN_TEST"));
     }
 
     @Test
-    public void customerTest() throws MPException {
-
+    public void stage1_CreateCustomerTest() throws MPException {
         Random rand = new Random();
-        //Customers
-        Customer customer = new Customer();
-        customer
+        Customer customer = new Customer()
                 .setEmail(rand.nextInt(500) + "dummy@mail.com")
-                .setFirstName("Tete")
-                .setLastName("Garcia")
+                .setFirstName("Dummy")
+                .setLastName("Demo")
                 .setPhone(
                         new Phone()
-                                .setAreaCode("666")
-                                .setNumber("1234-6543"))
+                            .setAreaCode("123")
+                            .setNumber("1234-6543"))
                 .setIdentification(
                         new Identification()
-                                .setType("DNI")
-                                .setNumber("12.321.456"));
+                            .setType("DNI")
+                            .setNumber("12345456"));
+
         customer.save();
+
+        createdCustomer = customer;
+
         assertEquals(201, customer.getLastApiResponse().getStatusCode());
         assertNotNull(customer.getId());
 
-        customer = Customer.findById(customer.getId(), MPBase.WITH_CACHE);
+    }
+
+    @Test
+    public void stage2_GetCustomerTest() throws MPException {
+
+        Customer customer = Customer.findById(createdCustomer.getId());
+
         assertEquals(200, customer.getLastApiResponse().getStatusCode());
         assertNotNull(customer.getId());
-        assertEquals("Tete", customer.getFirstName());
-        assertFalse(customer.getLastApiResponse().fromCache);
-        customer = Customer.findById(customer.getId(), MPBase.WITH_CACHE);
-        assertEquals(200, customer.getLastApiResponse().getStatusCode());
-        assertTrue(customer.getLastApiResponse().fromCache);
-
-        MPResourceArray resourceArray = null;
-        resourceArray = Customer.search(MPBase.WITH_CACHE);
-        assertEquals(200, resourceArray.getLastApiResponse().getStatusCode());
-        assertFalse(resourceArray.getLastApiResponse().fromCache);
-
-        String random = UUID.randomUUID().toString();
-        customer.setDescription(random);
-        customer.update();
-        assertEquals(200, customer.getLastApiResponse().getStatusCode());
-        assertEquals(random, customer.getDescription());
-
-        //Cards
-        String customerId = customer.getId();
-        Card card = new Card()
-                .setCustomerId(customerId)
-                .setToken(getCardToken());
-        card.save();
-        assertEquals(201, card.getLastApiResponse().getStatusCode());
-        assertNotNull(card.getId());
-
-        card = Card.findById(customerId, card.getId(), MPBase.WITH_CACHE);
-        assertEquals(200, card.getLastApiResponse().getStatusCode());
-        assertEquals(customerId, card.getCustomerId());
-        assertFalse(card.getLastApiResponse().fromCache);
-        card = Card.findById(customerId, card.getId(), MPBase.WITH_CACHE);
-        assertEquals(200, card.getLastApiResponse().getStatusCode());
-        assertTrue(card.getLastApiResponse().fromCache);
-
-        resourceArray = Card.all(customerId, MPBase.WITH_CACHE);
-        assertEquals(200, resourceArray.getLastApiResponse().getStatusCode());
-        assertEquals(1, resourceArray.size());
-        assertFalse(resourceArray.getLastApiResponse().fromCache);
-        resourceArray = Card.all(customerId, MPBase.WITH_CACHE);
-        assertEquals(200, resourceArray.getLastApiResponse().getStatusCode());
-        assertTrue(resourceArray.getLastApiResponse().fromCache);
-        assertEquals(card.getId(), ((Card) resourceArray.getByIndex(0)).getId());
-
-        customer = Customer.findById(customer.getId());
-        assertEquals(200, customer.getLastApiResponse().getStatusCode());
-        assertEquals(1, customer.getCards().size());
-
-        card = Card.findById(customerId, card.getId());
-        assertEquals(200, card.getLastApiResponse().getStatusCode());
-        card.delete();
-        assertEquals(200, card.getLastApiResponse().getStatusCode());
-        resourceArray = Card.all(customerId);
-        assertEquals(200, resourceArray.getLastApiResponse().getStatusCode());
-        assertEquals(0, resourceArray.size());
-
-        customer.delete();
-        assertEquals(200, customer.getLastApiResponse().getStatusCode());
-        assertNull(customer.getId());
 
     }
+
+    @Test
+    public void stage3_RemoveCustomerTest() throws MPException {
+
+        Customer customer = Customer.findById(createdCustomer.getId());
+        customer.delete();
+
+        Customer customer_removed = Customer.findById(createdCustomer.getId());
+        assertEquals(404, customer_removed.getLastApiResponse().getStatusCode());
+
+    }
+
 
     private String getCardToken() throws MPException {
         JsonObject jsonPayload = new JsonObject();

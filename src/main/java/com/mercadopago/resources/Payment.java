@@ -2,6 +2,7 @@ package com.mercadopago.resources;
 
 import com.google.gson.JsonObject;
 import com.mercadopago.core.MPBase;
+import com.mercadopago.core.MPResourceArray;
 import com.mercadopago.core.annotations.idempotent.Idempotent;
 import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.core.annotations.rest.POST;
@@ -11,8 +12,10 @@ import com.mercadopago.core.annotations.validation.Size;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.datastructures.payment.*;
 
+
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * Mercado Pago SDK
@@ -56,7 +59,8 @@ public class Payment extends MPBase {
         MXN,
         COP,
         PEN,
-        UYU
+        UYU,
+        USD
     }
     private Float transactionAmount = null;
     private Float transactionAmountRefunded = null;
@@ -102,6 +106,7 @@ public class Payment extends MPBase {
     private String notificationUrl = null;
     private ArrayList<Refund> refunds = null;
     private AdditionalInfo additionalInfo = null;
+    private String callbackUrl = null;
 
 
     public String getId() {
@@ -234,6 +239,11 @@ public class Payment extends MPBase {
         return transactionDetails;
     }
 
+    public Payment setTransactionDetails(TransactionDetails transactionDetails) {
+        this.transactionDetails = transactionDetails;
+        return this;
+    }
+
     public ArrayList<FeeDetail> getFeeDetails() {
         return feeDetails;
     }
@@ -327,7 +337,6 @@ public class Payment extends MPBase {
         return this;
     }
 
-
     public String getNotificationUrl() {
         return notificationUrl;
     }
@@ -346,9 +355,21 @@ public class Payment extends MPBase {
         return this;
     }
 
+    public String getCallbackUrl() {
+        return callbackUrl;
+    }
+
+    public void setCallbackUrl(String callbackUrl) {
+        this.callbackUrl = callbackUrl;
+    }
 
     public static Payment findById(String id) throws MPException {
         return findById(id, WITHOUT_CACHE);
+    }
+
+    @GET(path="/v1/payments/search")
+    public static MPResourceArray search(HashMap<String, String> filters, Boolean useCache) throws MPException {
+        return Payment.processMethodBulk(Payment.class, "search", filters, useCache);
     }
 
     @GET(path="/v1/payments/:id")
@@ -364,6 +385,22 @@ public class Payment extends MPBase {
     @PUT(path="/v1/payments/:id")
     public Payment update() throws MPException {
         return super.processMethod("update", WITHOUT_CACHE);
+    }
+
+    public Payment refund() throws MPException {
+        // Create a refund
+        Refund refund = new Refund();
+        refund.setPaymentId(this.getId());
+        refund.save();
+        // If refund has been successfully created then update the instance values
+
+        if (refund.getId() != null) {
+            Payment payment = Payment.findById(this.getId()); // Get updated payment instance
+            this.status = payment.getStatus();
+            this.refunds = payment.getRefunds();
+            this.transactionAmountRefunded = payment.getTransactionAmountRefunded();
+        }
+        return this;
     }
 
 }

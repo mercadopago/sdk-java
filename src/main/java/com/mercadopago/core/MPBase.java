@@ -16,16 +16,14 @@ import com.mercadopago.core.annotations.rest.*;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPRestClient;
+import com.mercadopago.resources.Refund;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 import java.util.*;
 
 
@@ -48,6 +46,8 @@ public abstract class MPBase {
 
     private transient String idempotenceKey = null;
     protected transient MPApiResponse lastApiResponse;
+
+    private transient String marketplaceAccessToken = null;
 
     public MPBase() {
         if (admitIdempotenceKey()) {
@@ -203,6 +203,7 @@ public abstract class MPBase {
      */
     protected static MPResourceArray processMethodBulk(Class clazz, String methodName, Boolean useCache) throws MPException {
         HashMap<String, String> mapParams = null;
+
         return processMethodBulk(clazz, methodName, mapParams, useCache);
     }
 
@@ -252,6 +253,7 @@ public abstract class MPBase {
      */
     protected static MPResourceArray processMethodBulk(Class clazz, String methodName, HashMap<String, String> mapParams, Boolean useCache) throws MPException {
         //Validates the method executed
+
         if (!ALLOWED_BULK_METHODS.contains(methodName)) {
             throw new MPException("Method \"" + methodName + "\" not allowed");
         }
@@ -259,7 +261,9 @@ public abstract class MPBase {
         AnnotatedElement annotatedMethod = getAnnotatedMethod(clazz, methodName);
         HashMap<String, Object> hashAnnotation = getRestInformation(annotatedMethod);
         HttpMethod httpMethod = (HttpMethod)hashAnnotation.get("method");
+
         String path = parsePath(hashAnnotation.get("path").toString(), mapParams, null);
+
         int retries = Integer.valueOf(hashAnnotation.get("retries").toString());
         int connectionTimeout = Integer.valueOf(hashAnnotation.get("connectionTimeout").toString());
         int socketTimeout = Integer.valueOf(hashAnnotation.get("socketTimeout").toString());
@@ -458,21 +462,37 @@ public abstract class MPBase {
                 }
 
                 String value = null;
-                if (paramIterator <= 2 &&
-                        mapParams != null &&
+                if (paramIterator <= 2 && mapParams != null &&
                         StringUtils.isNotEmpty(mapParams.get("param" + String.valueOf(paramIterator)))) {
                     value = mapParams.get("param" + String.valueOf(paramIterator));
-                } else if (mapParams != null &&
-                        StringUtils.isNotEmpty(mapParams.get(param))) {
+                } else if (mapParams != null && StringUtils.isNotEmpty(mapParams.get(param))) {
                     value = mapParams.get(param);
                 } else {
                     if (resource != null) {
                         JsonObject json = MPCoreUtils.getJsonFromResource(resource);
                         if (json.get(param) != null) {
                             value = json.get(param).getAsString();
+                        } else { // Search in no serialized properties
+                            Class aClass = resource.getClass();
+                            String paramAccessorName = null;
+                            paramAccessorName = MPCoreUtils.toCamelCase("get_" + param);
+
+                            try {
+                                Method method = aClass.getMethod(paramAccessorName);
+                                value = method.invoke(resource).toString();
+                            } catch (NoSuchMethodException e) {
+                                // Accessor method not found
+                            } catch (InvocationTargetException e) {
+                                // Do nothing
+                            } catch (IllegalAccessException e) {
+                                // Accessor is private
+                            }
+
                         }
                     }
                 }
+
+
                 if (StringUtils.isEmpty(value)) {
                     throw new MPException("No argument supplied/found for method path");
                 }
@@ -491,16 +511,23 @@ public abstract class MPBase {
             processedPath.append(path);
         }
 
+
+
         // URL
         processedPath.insert(0, MercadoPago.SDK.getBaseUrl());
 
+
         // Token
-        String accessToken;
-        if (StringUtils.isNotEmpty(MercadoPago.SDK.getUserToken())) {
-            accessToken = MercadoPago.SDK.getUserToken();
+        String accessToken = null;
+        if (resource != null){
+            accessToken = resource.getMarketplaceAccessToken();
+            if (StringUtils.isEmpty(accessToken)) {
+                accessToken = MercadoPago.SDK.getAccessToken();
+            }
         } else {
             accessToken = MercadoPago.SDK.getAccessToken();
         }
+
         processedPath
                 .append("?access_token=")
                 .append(accessToken);
@@ -693,4 +720,11 @@ public abstract class MPBase {
         throw new MPException("No annotated method found");
     }
 
+    public String getMarketplaceAccessToken() {
+        return marketplaceAccessToken;
+    }
+
+    public void setMarketplaceAccessToken(String marketplaceAccessToken) {
+        this.marketplaceAccessToken = marketplaceAccessToken;
+    }
 }

@@ -83,7 +83,7 @@ public class MerchantOrderTest {
                 .setExternalReference("externalReference")
                 .setMarketplace("marketplace");
 
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
         JsonObject jsonMerchantOrder = MPCoreUtils.getJsonFromResource(merchantOrder);
         assertNotNull(jsonMerchantOrder);

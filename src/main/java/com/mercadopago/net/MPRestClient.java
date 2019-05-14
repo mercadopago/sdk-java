@@ -3,9 +3,11 @@ package com.mercadopago.net;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.mercadopago.MercadoPago;
 import com.mercadopago.core.MPApiResponse;
 import com.mercadopago.core.MPCoreUtils;
 import com.mercadopago.core.annotations.rest.PayloadType;
+import com.mercadopago.exceptions.MPException;
 import com.mercadopago.exceptions.MPRestException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.*;
@@ -53,7 +55,21 @@ public class MPRestClient {
 
     public MPApiResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders)
             throws MPRestException {
+
         return this.executeRequest(httpMethod, uri, payloadType, payload, colHeaders, 0, 0, 0);
+    }
+
+    public MPApiResponse executeGenericRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders)
+            throws MPRestException {
+
+        String full_uri = "";
+        try {
+            full_uri = MercadoPago.SDK.getBaseUrl() + uri + "?access_token=" + MercadoPago.SDK.getAccessToken();
+        } catch (MPException e) {
+            full_uri = MercadoPago.SDK.getBaseUrl() + uri;
+        }
+
+        return this.executeRequest(httpMethod, full_uri, payloadType, payload, colHeaders, 0, 0, 0);
     }
 
 

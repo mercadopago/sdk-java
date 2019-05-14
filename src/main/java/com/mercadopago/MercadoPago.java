@@ -5,6 +5,7 @@ package com.mercadopago;
  */
 
 import com.google.gson.JsonObject;
+import com.mercadopago.core.MPApiResponse;
 import com.mercadopago.core.MPCredentials;
 import com.mercadopago.core.annotations.rest.PayloadType;
 import com.mercadopago.exceptions.MPConfException;
@@ -238,14 +239,22 @@ public class MercadoPago {
             baseUrl = DEFAULT_BASE_URL;
         }
 
-        public static void Get(String uri) throws MPRestException {
+        public static MPApiResponse Get(String uri) throws MPRestException {
             MPRestClient client = new MPRestClient();
-            client.executeRequest(HttpMethod.GET, uri, PayloadType.JSON, null, null);
+            MPApiResponse response = client.executeGenericRequest(HttpMethod.GET, uri, PayloadType.JSON, null, null);
+            return response;
         }
 
-        public static void Post(String uri, JsonObject payload) throws MPRestException {
+        public static MPApiResponse Post(String uri, JsonObject payload) throws MPRestException {
             MPRestClient client = new MPRestClient();
-            client.executeRequest(HttpMethod.POST, uri, PayloadType.JSON, payload, null);
+            MPApiResponse response =  client.executeGenericRequest(HttpMethod.POST, uri, PayloadType.JSON, payload, null);
+            return response;
+        }
+
+        public static MPApiResponse Put(String uri, JsonObject payload) throws MPRestException {
+            MPRestClient client = new MPRestClient();
+            MPApiResponse response =  client.executeGenericRequest(HttpMethod.PUT, uri, PayloadType.JSON, payload, null);
+            return response;
         }
 
     }

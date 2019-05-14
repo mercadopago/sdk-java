@@ -15,6 +15,7 @@ import com.mercadopago.resources.datastructures.customer.Phone;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * Mercado Pago SDK
@@ -167,13 +168,10 @@ public class Customer extends MPBase {
     }
 
 
-    public static MPResourceArray search() throws MPException {
-        return search(WITHOUT_CACHE);
-    }
 
     @GET(path="/v1/customers/search")
-    public static MPResourceArray search(Boolean useCache) throws MPException {
-        return Customer.processMethodBulk(Customer.class, "search", useCache);
+    public static MPResourceArray search(HashMap<String, String> filters, Boolean useCache) throws MPException {
+        return Customer.processMethodBulk(Customer.class, "search", filters, useCache);
     }
 
     public static Customer findById(String id) throws MPException {
