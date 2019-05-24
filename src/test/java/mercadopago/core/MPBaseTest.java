@@ -160,7 +160,7 @@ public class MPBaseTest extends MPBase {
 
         resource = findById("test_id");
         assertEquals("GET", resource.getLastApiResponse().getMethod());
-        assertEquals("https://api.mercadopago.com/getpath/slug/test_id?access_token=" + MercadoPago.SDK.getAccessToken(), resource.getLastApiResponse().getUrl());
+        assertEquals("https://api.mercadopago.com/getpath/slug/test_id?access_token=" + MercadoPago.SDK.getAccessToken() + "&param1=test_id", resource.getLastApiResponse().getUrl());
 
         resource = save();
         assertEquals("POST", resource.getLastApiResponse().getMethod());

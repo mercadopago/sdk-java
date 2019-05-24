@@ -9,22 +9,35 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
-import com.mercadopago.*;
+import com.mercadopago.MercadoPago;
 import com.mercadopago.core.annotations.idempotent.Idempotent;
-import com.mercadopago.core.annotations.rest.*;
-import com.mercadopago.core.annotations.rest.*;
+import com.mercadopago.core.annotations.rest.DELETE;
+import com.mercadopago.core.annotations.rest.GET;
+import com.mercadopago.core.annotations.rest.POST;
+import com.mercadopago.core.annotations.rest.PUT;
+import com.mercadopago.core.annotations.rest.PayloadType;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPRestClient;
-import com.mercadopago.resources.Refund;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.*;
-import java.util.*;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.Vector;
 
 
 /**
@@ -531,6 +544,14 @@ public abstract class MPBase {
         processedPath
                 .append("?access_token=")
                 .append(accessToken);
+
+        if(mapParams !=null)
+            for ( Map.Entry<String, String> entry : mapParams.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+
+                processedPath.append("&" + key + "=" + value);
+            }
 
         if (!MPCoreUtils.validateUrl(processedPath.toString())) {
             throw new MPException("Processed URL not valid: " + processedPath.toString());
