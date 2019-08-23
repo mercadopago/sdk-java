@@ -532,11 +532,14 @@ public abstract class MPBase {
                 .append("?access_token=")
                 .append(accessToken);
 
-        for ( Map.Entry<String, String> entry : mapParams.entrySet()) {
-            String key = entry.getKey();
-            String value = entry.getValue();
-            
-            processedPath.append("&" + key + "=" + value);
+        
+        if (!mapParams.isEmpty()) {
+	        for ( Map.Entry<String, String> entry : mapParams.entrySet()) {
+	            String key = entry.getKey();
+	            String value = entry.getValue();
+	            
+	            processedPath.append("&" + key + "=" + value);
+	        }
         }
 
         if (!MPCoreUtils.validateUrl(processedPath.toString())) {
