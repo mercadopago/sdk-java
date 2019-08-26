@@ -13,7 +13,6 @@ import org.junit.Test;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
@@ -100,6 +99,10 @@ public class PreferenceTest {
         DifferentialPricing differentialPricing = new DifferentialPricing();
         differentialPricing.setId(0);
 
+        Tax tax = new Tax();
+        tax.setType(Tax.TaxType.IVA);
+        tax.setValue(500f);
+
         Preference preference = new Preference();
         preference.appendItem(item);
         preference.setPayer(payer);
@@ -116,6 +119,7 @@ public class PreferenceTest {
         preference.setMarketplace("Marketplace");
         preference.setMarketplaceFee(.01f);
         preference.setDifferentialPricing(differentialPricing);
+        preference.appendTax(tax);
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
@@ -185,6 +189,10 @@ public class PreferenceTest {
 
         JsonObject jsonDifferentialPricing = (JsonObject) jsonPreference.get("differential_pricing");
         assertEquals(differentialPricing.getId().intValue(), jsonDifferentialPricing.get("id").getAsInt());
+
+        JsonObject jsonTax = (JsonObject) jsonPreference.get("taxes").getAsJsonArray().get(0);
+        assertEquals(tax.getType().toString(), jsonTax.get("type").getAsString());
+        assertEquals(tax.getValue(), jsonTax.get("value").getAsFloat(), 0.0f);
 
         assertEquals(preference.getNotificationUrl(), jsonPreference.get("notification_url").getAsString());
         assertNull(jsonPreference.get("id"));

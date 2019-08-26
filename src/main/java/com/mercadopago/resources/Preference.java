@@ -21,8 +21,10 @@ import java.util.Date;
  */
 public class Preference extends MPBase {
 
-    @NotNull private ArrayList<Item> items = null;
-    @NotNull private Payer payer = null;
+    @NotNull
+    private ArrayList<Item> items = null;
+    @NotNull
+    private Payer payer = null;
     private PaymentMethods paymentMethods = null;
     private Shipments shipments = null;
     private BackUrls backUrls = null;
@@ -60,6 +62,7 @@ public class Preference extends MPBase {
     }
     private ArrayList<ProcessingMode> processingModes = null;
     private Boolean binaryMode = null;
+    private ArrayList<Tax> taxes = null;
 
     public ArrayList<Item> getItems() {
         return items;
@@ -265,6 +268,22 @@ public class Preference extends MPBase {
         this.binaryMode = binaryMode;
         return this;
     }
+
+    public ArrayList<Tax> getTaxes() { return this.taxes; }
+
+    public Preference setTaxes(ArrayList<Tax> taxes) {
+        this.taxes = taxes;
+        return this;
+    }
+
+    public Preference appendTax(Tax tax) {
+        if (this.taxes == null) {
+            this.taxes = new ArrayList<>();
+        }
+        this.taxes.add(tax);
+        return this;
+    }
+
 
     public static Preference findById(String id) throws MPException {
         return findById(id, WITHOUT_CACHE);
