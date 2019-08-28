@@ -533,7 +533,7 @@ public abstract class MPBase {
                 .append(accessToken);
 
         
-        if (!mapParams.isEmpty()) {
+        if (mapParams != null && !mapParams.isEmpty()) {
 	        for ( Map.Entry<String, String> entry : mapParams.entrySet()) {
 	            String key = entry.getKey();
 	            String value = entry.getValue();
