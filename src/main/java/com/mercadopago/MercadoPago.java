@@ -14,11 +14,8 @@ import com.mercadopago.exceptions.MPRestException;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPRestClient;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.Header;
 
-import java.io.Console;
 import java.io.InputStream;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -33,13 +30,25 @@ public class MercadoPago {
     public static class SDK {
 
         private static final String DEFAULT_BASE_URL = "https://api.mercadopago.com";
+        private static final String CURRENT_VERSION = "1.1.0";
+        private static final String PRODUCT_ID = "BC32A7VTRPP001U8NHJ0";
 
-        private static String clientSecret = null;
-        private static String clientId = null;
-        private static String accessToken = null;
-        private static String userToken = null;
-        private static String appId = null;
-        private static String baseUrl = DEFAULT_BASE_URL;
+        private static final int DEFAULT_CONNECTION_TIMEOUT_MS = 30000;
+        private static final int DEFAULT_CONNECTION_REQUEST_TIMEOUT_MS = 30000;
+        private static final int DEFAULT_SOCKET_TIMEOUT_MS = 30000;
+        private static final int DEFAULT_RETRIES = 3;
+
+        private static volatile String clientSecret = null;
+        private static volatile String clientId = null;
+        private static volatile String accessToken = null;
+        private static volatile String userToken = null;
+        private static volatile String appId = null;
+        private static volatile String baseUrl = DEFAULT_BASE_URL;
+
+        private static volatile int connectionTimeout = -1;
+        private static volatile int connectionRequestTimeout = -1;
+        private static volatile int socketTimeout = -1;
+        private static volatile int retries = -1;
 
         /**
          * Configure Methods
@@ -125,6 +134,94 @@ public class MercadoPago {
 
         public static void setBaseUrl(String value) {
             baseUrl = value;
+        }
+
+        /**
+         * Get current SDK version
+         * @return Current version
+         */
+        public static String getVersion() { return CURRENT_VERSION; }
+
+        /**
+         * Get product ID
+         * @return Product ID
+         */
+        public static String getProductId() { return PRODUCT_ID; }
+
+        /**
+         * Get connection timeout
+         * @return Connection timeout in millis
+         */
+        public static int getConnectionTimeout() {
+            if (connectionTimeout == -1) {
+                return DEFAULT_CONNECTION_TIMEOUT_MS;
+            }
+            return connectionTimeout;
+        }
+
+        /**
+         * Set connection timeout
+         * @param value connection timeout in millis
+         */
+        public static void setConnectionTimeout(int value) {
+            connectionTimeout = value;
+        }
+
+        /**
+         * Get connection request timeout
+         * @return Connection request timeout in millis
+         */
+        public static int getConnectionRequestTimeout() {
+            if (connectionRequestTimeout == -1) {
+                return DEFAULT_CONNECTION_REQUEST_TIMEOUT_MS;
+            }
+            return connectionRequestTimeout;
+        }
+
+        /**
+         * Set connection request timeout
+         * @param value connection request timeout in millis
+         */
+        public static void setConnectionRequestTimeout(int value) {
+            connectionRequestTimeout = value;
+        }
+
+        /**
+         * Get socket timeout
+         * @return Socket timeout in millis
+         */
+        public static int getSocketTimeout() {
+            if (socketTimeout == -1) {
+                return DEFAULT_SOCKET_TIMEOUT_MS;
+            }
+            return socketTimeout;
+        }
+
+        /**
+         * Set socket timeout
+         * @param value socket timeout in millis
+         */
+        public static void setSocketTimeout(int value) {
+            socketTimeout = value;
+        }
+
+        /**
+         * Get number os retries per request if has failure
+         * @return Number of retries
+         */
+        public static int getRetries() {
+            if (retries == -1) {
+                return DEFAULT_RETRIES;
+            }
+            return retries;
+        }
+
+        /**
+         * Set number os retries per request
+         * @param value number of retries
+         */
+        public static void setRetries(int value) {
+            retries = value;
         }
 
         /**
@@ -239,24 +336,26 @@ public class MercadoPago {
             baseUrl = DEFAULT_BASE_URL;
         }
 
+        @Deprecated
         public static MPApiResponse Get(String uri) throws MPRestException {
             MPRestClient client = new MPRestClient();
             MPApiResponse response = client.executeGenericRequest(HttpMethod.GET, uri, PayloadType.JSON, null, null);
             return response;
         }
 
+        @Deprecated
         public static MPApiResponse Post(String uri, JsonObject payload) throws MPRestException {
             MPRestClient client = new MPRestClient();
             MPApiResponse response =  client.executeGenericRequest(HttpMethod.POST, uri, PayloadType.JSON, payload, null);
             return response;
         }
 
+        @Deprecated
         public static MPApiResponse Put(String uri, JsonObject payload) throws MPRestException {
             MPRestClient client = new MPRestClient();
             MPApiResponse response =  client.executeGenericRequest(HttpMethod.PUT, uri, PayloadType.JSON, payload, null);
             return response;
         }
-
     }
 
 

@@ -5,14 +5,23 @@ import com.mercadopago.MercadoPago;
 import com.mercadopago.core.MPApiResponse;
 import com.mercadopago.core.MPBase;
 import com.mercadopago.core.MPCoreUtils;
+import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.core.annotations.rest.PayloadType;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.exceptions.MPRestException;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPRestClient;
-import com.mercadopago.resources.Card;
 import com.mercadopago.resources.Payment;
-import com.mercadopago.resources.datastructures.payment.*;
+import com.mercadopago.resources.datastructures.payment.AdditionalInfo;
+import com.mercadopago.resources.datastructures.payment.AdditionalInfoPayer;
+import com.mercadopago.resources.datastructures.payment.Address;
+import com.mercadopago.resources.datastructures.payment.AddressReceiver;
+import com.mercadopago.resources.datastructures.payment.Identification;
+import com.mercadopago.resources.datastructures.payment.Item;
+import com.mercadopago.resources.datastructures.payment.Order;
+import com.mercadopago.resources.datastructures.payment.Payer;
+import com.mercadopago.resources.datastructures.payment.Phone;
+import com.mercadopago.resources.datastructures.payment.Shipments;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Ignore;
@@ -24,7 +33,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Mercado Pago MercadoPago
@@ -329,7 +341,7 @@ public class PaymentTest {
                     MercadoPago.SDK.getBaseUrl() + "/v1/card_tokens?public_key=" + System.getenv("PUBLIC_KEY_TEST"),
                     PayloadType.JSON,
                     jsonPayload,
-                    null);
+                    MPRequestOptions.createDefault());
         } catch (MPRestException rex) {
             throw new MPException(rex);
         }

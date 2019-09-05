@@ -1,8 +1,8 @@
 package com.mercadopago.core;
 
-import com.mercadopago.*;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mercadopago.MercadoPago;
 import com.mercadopago.core.annotations.rest.PayloadType;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
@@ -40,8 +40,7 @@ public class MPCredentials {
                 HttpMethod.POST,
                 baseUri + "/oauth/token",
                 PayloadType.JSON,
-                jsonPayload,
-                null);
+                jsonPayload);
 
 
         if (response.getStatusCode() == 200) {

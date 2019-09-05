@@ -1,17 +1,14 @@
 package mercadopago.resources;
 
 import com.google.gson.JsonObject;
-
-import com.mercadopago.*;
+import com.mercadopago.MercadoPago;
 import com.mercadopago.core.MPApiResponse;
-import com.mercadopago.core.MPBase;
-import com.mercadopago.core.MPResourceArray;
+import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.core.annotations.rest.PayloadType;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.exceptions.MPRestException;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPRestClient;
-import com.mercadopago.resources.Card;
 import com.mercadopago.resources.Customer;
 import com.mercadopago.resources.datastructures.customer.Identification;
 import com.mercadopago.resources.datastructures.customer.Phone;
@@ -19,8 +16,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.Random;
-import java.util.UUID;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Mercado Pago MercadoPago
@@ -110,7 +108,7 @@ public class CustomerTest {
                     MercadoPago.SDK.getBaseUrl() + "/v1/card_tokens?public_key=" + TestUserData.publicKey,
                     PayloadType.JSON,
                     jsonPayload,
-                    null);
+                    MPRequestOptions.createDefault());
         } catch (MPRestException rex) {
             throw new MPException(rex);
         }
