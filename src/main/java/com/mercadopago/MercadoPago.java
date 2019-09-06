@@ -14,9 +14,10 @@ import com.mercadopago.exceptions.MPRestException;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPRestClient;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpHost;
 
 import java.io.InputStream;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 
@@ -49,6 +50,7 @@ public class MercadoPago {
         private static volatile int connectionRequestTimeout = -1;
         private static volatile int socketTimeout = -1;
         private static volatile int retries = -1;
+        private static volatile HttpHost proxy = null;
 
         /**
          * Configure Methods
@@ -225,32 +227,90 @@ public class MercadoPago {
         }
 
         /**
-         * Set configuration params with a hashmap.
-         * Valid keys are: clientSecret, clientId, accessToken, appId
-         * @param hashConfigurationParams a String, String hashmap with the configuration params
-         * throws MPConfException
+         * Get the proxy host for http requests
+         * @return the proxy host
          */
-        public static void setConfiguration(HashMap<String, String> hashConfigurationParams) throws MPException {
-            if (hashConfigurationParams == null) {
-                throw new IllegalArgumentException("Invalid hashConfigurationParams parameter");
-            }
-
-            setClientSecret(getValueFromHashMap(hashConfigurationParams, "clientSecret"));
-            setClientId(getValueFromHashMap(hashConfigurationParams, "clientId"));
-            setAccessToken(getValueFromHashMap(hashConfigurationParams, "accessToken"));
-            setAppId(getValueFromHashMap(hashConfigurationParams, "appId"));
+        public static HttpHost getProxy() {
+            return proxy;
         }
 
         /**
-         * Extract a value from a HashMap if is not null or empty
-         * @param hashMap a String, String hashmap with the configuration params.
+         * Set the proxy host for http requests
+         * @param value the proxy host
+         */
+        public static void setProxy(HttpHost value) {
+            proxy = value;
+        }
+
+        /**
+         * Set configuration params with a map.
+         * Valid keys are: clientSecret, clientId, accessToken, appId, connectionTimeout, socketTimeout,
+         * connectionRequestTimeout, retries, proxyHost, proxyPort
+         * @param configurationParams a String, String map with the configuration params
+         * throws MPConfException
+         */
+        public static void setConfiguration(Map<String, String> configurationParams) throws MPException {
+            if (configurationParams == null) {
+                throw new IllegalArgumentException("Invalid configurationParams parameter");
+            }
+
+            setClientSecret(getValueFromMap(configurationParams, "clientSecret"));
+            setClientId(getValueFromMap(configurationParams, "clientId"));
+            setAccessToken(getValueFromMap(configurationParams, "accessToken"));
+            setAppId(getValueFromMap(configurationParams, "appId"));
+
+            if (configurationParams.containsKey("connectionTimeout")) {
+                try {
+                    setConnectionTimeout(Integer.parseInt(getValueFromMap(configurationParams, "connectionTimeout")));
+                } catch (NumberFormatException e) {
+                    throw new MPException("Invalid value for connectionTimeout");
+                }
+            }
+
+            if (configurationParams.containsKey("socketTimeout")) {
+                try {
+                    setSocketTimeout(Integer.parseInt(getValueFromMap(configurationParams, "socketTimeout")));
+                } catch (NumberFormatException e) {
+                    throw new MPException("Invalid value for socketTimeout");
+                }
+            }
+
+            if (configurationParams.containsKey("connectionRequestTimeout")) {
+                try {
+                    setConnectionRequestTimeout(Integer.parseInt(getValueFromMap(configurationParams, "connectionRequestTimeout")));
+                } catch (NumberFormatException e) {
+                    throw new MPException("Invalid value for connectionRequestTimeout");
+                }
+            }
+
+            if (configurationParams.containsKey("retries")) {
+                try {
+                    setRetries(Integer.parseInt(getValueFromMap(configurationParams, "retries")));
+                } catch (NumberFormatException e) {
+                    throw new MPException("Invalid value for retries");
+                }
+            }
+
+            if (configurationParams.containsKey("proxyHostName") && configurationParams.containsKey("proxyPort")) {
+                String proxyHostName = getValueFromMap(configurationParams, "proxyHostName");
+                String proxyPort = getValueFromMap(configurationParams, "proxyPort");
+                try {
+                    setProxy(new HttpHost(proxyHostName, Integer.parseInt(proxyPort)));
+                } catch (Exception e) {
+                    throw new MPException("Invalid values for proxyHostName and proxyPort");
+                }
+            }
+        }
+
+        /**
+         * Extract a value from a Map if is not null or empty
+         * @param map a String, String map with the configuration params.
          * @param key value key
          * @return the configuration param or null if the key does not exists or value is empty
          */
-        private static String getValueFromHashMap(HashMap<String, String> hashMap, String key) {
-            if (hashMap.containsKey(key) &&
-                    StringUtils.isNotEmpty(hashMap.get(key))) {
-                return hashMap.get(key);
+        private static String getValueFromMap(Map<String, String> map, String key) {
+            if (map.containsKey(key) && StringUtils.isNotEmpty(map.get(key))) {
+                return map.get(key);
             }
             return null;
         }
@@ -308,6 +368,49 @@ public class MercadoPago {
                 setClientId(getValueFromProperties(properties, "clientId"));
             }
 
+            if (StringUtils.isNotEmpty(getValueFromProperties(properties, "connectionTimeout"))) {
+                try {
+                    setConnectionTimeout(Integer.parseInt(getValueFromProperties(properties, "connectionTimeout")));
+                } catch (NumberFormatException e) {
+                    throw new MPException("Invalid value for connectionTimeout");
+                }
+            }
+
+            if (StringUtils.isNotEmpty(getValueFromProperties(properties, "socketTimeout"))) {
+                try {
+                    setSocketTimeout(Integer.parseInt(getValueFromProperties(properties, "socketTimeout")));
+                } catch (NumberFormatException e) {
+                    throw new MPException("Invalid value for socketTimeout");
+                }
+            }
+
+            if (StringUtils.isNotEmpty(getValueFromProperties(properties, "connectionRequestTimeout"))) {
+                try {
+                    setConnectionRequestTimeout(Integer.parseInt(getValueFromProperties(properties, "connectionRequestTimeout")));
+                } catch (NumberFormatException e) {
+                    throw new MPException("Invalid value for connectionRequestTimeout");
+                }
+            }
+
+            if (StringUtils.isNotEmpty(getValueFromProperties(properties, "retries"))) {
+                try {
+                    setRetries(Integer.parseInt(getValueFromProperties(properties, "retries")));
+                } catch (NumberFormatException e) {
+                    throw new MPException("Invalid value for retries");
+                }
+            }
+
+            if (StringUtils.isNotEmpty(getValueFromProperties(properties, "proxyHostName"))
+                    && StringUtils.isNotEmpty(getValueFromProperties(properties, "proxyPort"))) {
+                String proxyHostName = getValueFromProperties(properties, "proxyHostName");
+                String proxyPort = getValueFromProperties(properties, "proxyPort");
+                try {
+                    setProxy(new HttpHost(proxyHostName, Integer.parseInt(proxyPort)));
+                } catch (Exception e) {
+                    throw new MPException("Invalid values for proxyHostName and proxyPort");
+                }
+            }
+
         }
 
         /**
@@ -317,8 +420,7 @@ public class MercadoPago {
          * @return the configuration param or null if the key does not exists or value is empty
          */
         private static String getValueFromProperties(Properties properties, String key) {
-            if (properties.containsKey(key) &&
-                    StringUtils.isNotEmpty(properties.getProperty(key))) {
+            if (properties.containsKey(key) && StringUtils.isNotEmpty(properties.getProperty(key))) {
                 return properties.getProperty(key);
             }
             return null;
@@ -334,6 +436,11 @@ public class MercadoPago {
             accessToken = null;
             appId = null;
             baseUrl = DEFAULT_BASE_URL;
+            connectionTimeout = -1;
+            socketTimeout = -1;
+            connectionRequestTimeout = -1;
+            retries = -1;
+            proxy = null;
         }
 
         @Deprecated

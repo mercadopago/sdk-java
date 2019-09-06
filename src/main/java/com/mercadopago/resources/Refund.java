@@ -82,7 +82,7 @@ public class Refund extends MPBase {
 
     @GET(path="/v1/payments/:payment_id/refunds")
     public static MPResourceArray all(String paymentId, Boolean useCache, MPRequestOptions requestOptions) throws MPException {
-        return processBulkParams(Refund.class, "all", useCache, requestOptions, paymentId);
+        return processMethodBulk(Refund.class, "all", useCache, requestOptions, paymentId);
     }
 
     public Refund save() throws MPException {

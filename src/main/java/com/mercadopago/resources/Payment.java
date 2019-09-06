@@ -387,7 +387,7 @@ public class Payment extends MPBase {
 
     @GET(path="/v1/payments/:id")
     public static Payment findById(String id, Boolean useCache, MPRequestOptions requestOptions) throws MPException {
-        return processMethodParams(Payment.class, "findById", useCache, requestOptions, id);
+        return processMethod(Payment.class, "findById", useCache, requestOptions, id);
     }
 
     public Payment save() throws MPException {

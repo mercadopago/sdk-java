@@ -1,12 +1,17 @@
 package com.mercadopago.resources;
 
 import com.mercadopago.core.MPBase;
+import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.core.annotations.rest.POST;
 import com.mercadopago.core.annotations.rest.PUT;
 import com.mercadopago.core.annotations.validation.Size;
 import com.mercadopago.exceptions.MPException;
-import com.mercadopago.resources.datastructures.merchantorder.*;
+import com.mercadopago.resources.datastructures.merchantorder.Collector;
+import com.mercadopago.resources.datastructures.merchantorder.Item;
+import com.mercadopago.resources.datastructures.merchantorder.MerchantOrderPayment;
+import com.mercadopago.resources.datastructures.merchantorder.Payer;
+import com.mercadopago.resources.datastructures.merchantorder.Shipment;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -217,19 +222,31 @@ public class MerchantOrder extends MPBase {
         return findById(id, WITHOUT_CACHE);
     }
 
-    @GET(path="/merchant_orders/:id")
     public static MerchantOrder findById(String id, Boolean useCache) throws MPException {
-        return MerchantOrder.processMethod(MerchantOrder.class, "findById", id, useCache);
+        return findById(id, useCache, MPRequestOptions.createDefault());
+    }
+
+    @GET(path="/merchant_orders/:id")
+    public static MerchantOrder findById(String id, Boolean useCache, MPRequestOptions requestOptions) throws MPException {
+        return processMethod(MerchantOrder.class, "findById", useCache, requestOptions, id);
+    }
+
+    public MerchantOrder save() throws MPException {
+        return save(MPRequestOptions.createDefault());
     }
 
     @POST(path="/merchant_orders")
-    public MerchantOrder save() throws MPException {
-        return super.processMethod("save", WITHOUT_CACHE);
+    public MerchantOrder save(MPRequestOptions requestOptions) throws MPException {
+        return super.processMethod("save", WITHOUT_CACHE, requestOptions);
+    }
+
+    public MerchantOrder update() throws MPException {
+        return update(MPRequestOptions.createDefault());
     }
 
     @PUT(path="/merchant_orders/:id")
-    public MerchantOrder update() throws MPException {
-        return super.processMethod("update", WITHOUT_CACHE);
+    public MerchantOrder update(MPRequestOptions requestOptions) throws MPException {
+        return super.processMethod("update", WITHOUT_CACHE, requestOptions);
     }
 
 }

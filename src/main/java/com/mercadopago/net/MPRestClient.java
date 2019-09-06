@@ -63,27 +63,29 @@ public class MPRestClient {
     private static final String KEEP_ALIVE_TIMEOUT_PARAM_NAME = "timeout";
 
     private HttpClient httpClient;
-    private Map<String, String> standardHeaders;
+    private HttpHost httpProxy = null;
 
     public MPRestClient() {
-        this(null);
+        this.httpClient = createHttpClient();
     }
 
     public MPRestClient(String proxyHostName, int proxyPort) {
-        this(new HttpHost(proxyHostName, proxyPort));
+        this.httpClient = createHttpClient();
+        this.httpProxy = new HttpHost(proxyHostName, proxyPort);
     }
 
-    public MPRestClient(HttpHost proxy) {
-        this.standardHeaders = buildStandardHeaders();
-        this.httpClient = buildHttpClient(proxy);
+    public MPRestClient(HttpClient httpClient) {
+        this.httpClient = httpClient;
     }
 
+    @Deprecated
     public MPApiResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders)
             throws MPRestException {
 
         return this.executeRequest(httpMethod, uri, payloadType, payload, colHeaders, 0, 0, 0);
     }
 
+    @Deprecated
     public MPApiResponse executeGenericRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders)
             throws MPRestException {
 
@@ -112,6 +114,7 @@ public class MPRestClient {
      * @return                          MPApiResponse with parsed info of the http response
      * @throws MPRestException
      */
+    @Deprecated
     public MPApiResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders, int retries, int connectionTimeout, int socketTimeout)
             throws MPRestException {
         Map<String, String> headers = new HashMap<>();
@@ -143,10 +146,7 @@ public class MPRestClient {
      */
     public MPApiResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload)
             throws MPRestException {
-        MPRequestOptions requestOptions = new MPRequestOptions.MPRequestOptionsBuilder()
-                .build();
-
-        return executeRequest(httpMethod, uri, payloadType, payload, requestOptions);
+        return executeRequest(httpMethod, uri, payloadType, payload, MPRequestOptions.createDefault());
     }
 
     /**
@@ -169,10 +169,17 @@ public class MPRestClient {
 
             HttpEntity entity = normalizePayload(payloadType, payload);
             HttpRequestBase request = getRequestMethod(httpMethod, uri, entity);
+
+            Map<String, String> headers = new HashMap<>();
+            headers.put(HTTP.USER_AGENT, String.format("MercadoPago Java SDK/%s", MercadoPago.SDK.getVersion()));
+            headers.put("x-product-id", MercadoPago.SDK.getProductId());
             for (String headerName : requestOptions.getCustomHeaders().keySet()) {
-                if (!standardHeaders.containsKey(headerName)) {
-                    request.addHeader(new BasicHeader(headerName, requestOptions.getCustomHeaders().get(headerName)));
+                if (!headers.containsKey(headerName)) {
+                    headers.put(headerName, requestOptions.getCustomHeaders().get(headerName));
                 }
+            }
+            for (Map.Entry<String, String> header : headers.entrySet()) {
+                request.addHeader(new BasicHeader(header.getKey(), header.getValue()));
             }
 
             if (payloadType == PayloadType.JSON) {
@@ -181,12 +188,17 @@ public class MPRestClient {
                 request.addHeader(new BasicHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_FORM_URLENCODED.toString()));
             }
 
-            RequestConfig requestConfig = RequestConfig.custom()
+            RequestConfig.Builder requestConfigBuilder = RequestConfig.custom()
                     .setSocketTimeout(requestOptions.getSocketTimeout())
                     .setConnectTimeout(requestOptions.getConnectionTimeout())
-                    .setConnectionRequestTimeout(requestOptions.getConnectionRequestTimeout())
-                    .build();
-            request.setConfig(requestConfig);
+                    .setConnectionRequestTimeout(requestOptions.getConnectionRequestTimeout());
+
+            HttpHost proxy = httpProxy == null ? MercadoPago.SDK.getProxy() : httpProxy;
+            if (proxy != null) {
+                requestConfigBuilder.setProxy(proxy);
+            }
+
+            request.setConfig(requestConfigBuilder.build());
 
             HttpResponse response;
             long startMillis = System.currentTimeMillis();
@@ -194,7 +206,7 @@ public class MPRestClient {
                 response = httpClient.execute(request);
             } catch (ClientProtocolException e) {
                 response = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 400, null));
-            } catch (SSLPeerUnverifiedException e){
+            } catch (SSLPeerUnverifiedException e) {
                 response = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 403, null));
             } catch (IOException e) {
                 response = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 404, null));
@@ -211,20 +223,11 @@ public class MPRestClient {
         }
     }
 
-    private Map<String, String> buildStandardHeaders() {
-        Map<String, String> headers = new HashMap<>();
-        headers.put(HTTP.USER_AGENT, String.format("MercadoPago Java SDK/%s", MercadoPago.SDK.getVersion()));
-        headers.put("x-product-id", MercadoPago.SDK.getProductId());
-
-        return headers;
-    }
-
     /**
-     * Build a HttpClient
-     * @param proxy the proxy host
+     * Create a HttpClient
      * @return a HttpClient
      */
-    private HttpClient buildHttpClient(HttpHost proxy) {
+    private HttpClient createHttpClient() {
         PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
         connectionManager.setMaxTotal(MAX_CONNECTIONS_TOTAL);
         connectionManager.setDefaultMaxPerRoute(MAX_CONNECTION_PER_ROUTE);
@@ -245,21 +248,11 @@ public class MPRestClient {
 
         DefaultHttpRequestRetryHandler retryHandler = new DefaultHttpRequestRetryHandler(MercadoPago.SDK.getRetries(), false);
 
-        Collection<Header> defaultHeaders = new ArrayList<>();
-        for (Map.Entry<String, String> entry : standardHeaders.entrySet()) {
-            defaultHeaders.add(new BasicHeader(entry.getKey(), entry.getValue()));
-        }
-
         HttpClientBuilder httpClientBuilder = HttpClients.custom()
                 .setConnectionManager(connectionManager)
                 .setKeepAliveStrategy(keepAliveStrategy)
                 .setRetryHandler(retryHandler)
-                .setDefaultHeaders(defaultHeaders)
                 .disableCookieManagement();
-
-        if (proxy != null) {
-            httpClientBuilder.setProxy(proxy);
-        }
 
         return httpClientBuilder.build();
     }

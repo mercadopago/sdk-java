@@ -41,7 +41,7 @@ import java.util.UUID;
  */
 public abstract class MPBase {
 
-    private transient static final List<String> ALLOWED_METHODS = Arrays.asList("findById", "save", "update", "delete");
+    private transient static final List<String> ALLOWED_METHODS = Arrays.asList("findById", "find", "save", "update", "delete");
     private transient static final List<String> ALLOWED_BULK_METHODS = Arrays.asList("all", "search");
     private transient static final List<String> METHODS_TO_VALIDATE = Arrays.asList("save", "update");
 
@@ -91,35 +91,12 @@ public abstract class MPBase {
      * Process the method to call the api, usually used for create, update and delete methods
      *
      * @param methodName        a String with the decorated method to be processed
-     * @return                  a resource obj fill with the api response
-     * @throws MPException
-     */
-    protected <T extends MPBase> T processMethod(String methodName) throws MPException {
-        return processMethod(methodName, false, MPRequestOptions.createDefault());
-    }
-
-    /**
-     * Process the method to call the api, usually used for create, update and delete methods
-     *
-     * @param methodName        a String with the decorated method to be processed
      * @param useCache          a Boolean flag that indicates if the cache must be used
      * @return                  a resource obj fill with the api response
      * @throws MPException
      */
     protected <T extends MPBase> T processMethod(String methodName, Boolean useCache) throws MPException {
         return processMethod(methodName, useCache, MPRequestOptions.createDefault());
-    }
-
-    /**
-     * Process the method to call the api, usually used for create, update and delete methods
-     *
-     * @param methodName        a String with the decorated method to be processed
-     * @param requestOptions    a Object with request options that overrides default options
-     * @return                  a resourse obj fill with the api response
-     * @throws MPException
-     */
-    protected <T extends MPBase> T processMethod(String methodName, MPRequestOptions requestOptions) throws MPException {
-        return processMethod(methodName, false, requestOptions);
     }
 
     /**
@@ -148,7 +125,7 @@ public abstract class MPBase {
      * @throws MPException
      */
     protected static <T extends MPBase> T processMethod(Class clazz, String methodName, String param1, Boolean useCache) throws MPException {
-        return processMethodParams(clazz, methodName, useCache, MPRequestOptions.createDefault(), param1);
+        return processMethod(clazz, methodName, useCache, MPRequestOptions.createDefault(), param1);
     }
 
     /**
@@ -163,7 +140,7 @@ public abstract class MPBase {
      * @throws MPException
      */
     protected static <T extends MPBase> T processMethod(Class clazz, String methodName, String param1, String param2, Boolean useCache) throws MPException {
-        return processMethodParams(clazz, methodName, useCache, MPRequestOptions.createDefault(), param1, param2);
+        return processMethod(clazz, methodName, useCache, MPRequestOptions.createDefault(), param1, param2);
     }
 
     /**
@@ -177,7 +154,7 @@ public abstract class MPBase {
      * @return
      * @throws MPException
      */
-    protected static <T extends MPBase> T processMethodParams(Class clazz, String methodName, Boolean useCache, MPRequestOptions requestOptions, String... params) throws MPException {
+    protected static <T extends MPBase> T processMethod(Class clazz, String methodName, Boolean useCache, MPRequestOptions requestOptions, String... params) throws MPException {
         Map<String, String> mapParams = new HashMap<>();
         if (params != null) {
             for (int i = 1; i <= params.length; i++) {
@@ -201,21 +178,6 @@ public abstract class MPBase {
      */
     protected static <T extends MPBase> T processMethod(Class clazz, T resource, String methodName, Map<String, String> mapParams, Boolean useCache) throws MPException {
         return processMethod(clazz, resource, methodName, mapParams, useCache, MPRequestOptions.createDefault());
-    }
-
-    /**
-     * Process the method to call the api
-     *
-     * @param clazz             a MPBase extended class
-     * @param resource          an instance of the MPBase extended class, if its called from a non static method
-     * @param methodName        a String with the decorated method to be processed
-     * @param mapParams         a hashmap with the args passed in the call of the method
-     * @param requestOptions    a Object with request options that overrides default options
-     * @return                  a resourse obj fill with the api response
-     * @throws MPException
-     */
-    protected static <T extends MPBase> T processMethod(Class clazz, T resource, String methodName, Map<String, String> mapParams, MPRequestOptions requestOptions) throws MPException {
-        return processMethod(clazz, resource, methodName, mapParams, false, requestOptions);
     }
 
     /**
@@ -300,7 +262,7 @@ public abstract class MPBase {
      * @throws MPException
      */
     protected static MPResourceArray processMethodBulk(Class clazz, String methodName, String param1, Boolean useCache) throws MPException {
-        return processBulkParams(clazz, methodName, useCache, MPRequestOptions.createDefault(), param1);
+        return processMethodBulk(clazz, methodName, useCache, MPRequestOptions.createDefault(), param1);
     }
 
     /**
@@ -315,7 +277,7 @@ public abstract class MPBase {
      * @throws MPException
      */
     protected static MPResourceArray processMethodBulk(Class clazz, String methodName, String param1, String param2, Boolean useCache) throws MPException {
-        return processBulkParams(clazz, methodName, useCache, MPRequestOptions.createDefault(), param1, param2);
+        return processMethodBulk(clazz, methodName, useCache, MPRequestOptions.createDefault(), param1, param2);
     }
 
     /**
@@ -329,7 +291,7 @@ public abstract class MPBase {
      * @return
      * @throws MPException
      */
-    protected static MPResourceArray processBulkParams(Class clazz, String methodName, Boolean useCache, MPRequestOptions requestOptions, String... params) throws MPException {
+    protected static MPResourceArray processMethodBulk(Class clazz, String methodName, Boolean useCache, MPRequestOptions requestOptions, String... params) throws MPException {
         Map<String, String> mapParams = new HashMap<>();
         if (params != null) {
             for (int i = 1; i <= params.length; i++) {
@@ -346,40 +308,12 @@ public abstract class MPBase {
      * @param clazz             a MPBase extended class
      * @param methodName        a String with the decorated method to be processed
      * @param mapParams         a Map with the args passed in the call of the method
-     * @return                  a resourse obj fill with the api response
-     * @throws MPException
-     */
-    protected static MPResourceArray processMethodBulk(Class clazz, String methodName, Map<String, String> mapParams) throws MPException {
-        return processMethodBulk(clazz, methodName, mapParams, false, MPRequestOptions.createDefault());
-    }
-
-    /**
-     * Process the method to call the api
-     *
-     * @param clazz             a MPBase extended class
-     * @param methodName        a String with the decorated method to be processed
-     * @param mapParams         a Map with the args passed in the call of the method
      * @param useCache          a Boolean flag that indicates if the cache must be used
      * @return                  a resourse obj fill with the api response
      * @throws MPException
      */
     protected static MPResourceArray processMethodBulk(Class clazz, String methodName, Map<String, String> mapParams, Boolean useCache) throws MPException {
         return processMethodBulk(clazz, methodName, mapParams, useCache, MPRequestOptions.createDefault());
-    }
-
-    /**
-     * Process the method to call the api
-     *
-     * @param clazz             a MPBase extended class
-     * @param methodName        a String with the decorated method to be processed
-     * @param mapParams         a Map with the args passed in the call of the method
-     * @param requestOptions    a Object with request options that overrides default options
-     * @return                  a resourse obj fill with the api response
-     * @throws MPException
-     */
-    protected static MPResourceArray processMethodBulk(Class clazz, String methodName, Map<String, String> mapParams, MPRequestOptions requestOptions) throws MPException {
-        return processMethodBulk(clazz, methodName, mapParams, false, requestOptions);
-
     }
 
     /**
@@ -838,8 +772,7 @@ public abstract class MPBase {
      */
     private static AnnotatedElement getAnnotatedMethod(Class clazz, String methodName) throws MPException {
         for (Method method : clazz.getDeclaredMethods()) {
-            if (method.getName().equals(methodName) &&
-                    method.getDeclaredAnnotations().length > 0) {
+            if (method.getName().equals(methodName) && method.getDeclaredAnnotations().length > 0) {
                 return method;
             }
         }
