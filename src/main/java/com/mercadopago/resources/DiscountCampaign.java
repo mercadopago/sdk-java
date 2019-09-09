@@ -8,6 +8,9 @@ import com.mercadopago.exceptions.MPException;
 import java.util.Collections;
 import java.util.Map;
 
+/**
+ * This resource allows you to find current valid discount campaigns
+ */
 public class DiscountCampaign extends MPBase {
 
     private String id;

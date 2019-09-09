@@ -40,7 +40,7 @@ public class MPCredentials {
 
         String access_token = null;
         String baseUri = MercadoPago.SDK.getBaseUrl();
-        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+        try (CloseableHttpClient httpClient = HttpClients.createMinimal()) {
             MPApiResponse response = new MPRestClient(httpClient).executeRequest(
                     HttpMethod.POST,
                     baseUri + "/oauth/token",

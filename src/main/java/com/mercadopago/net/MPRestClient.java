@@ -56,8 +56,6 @@ import java.util.Map;
  */
 public class MPRestClient {
 
-    private static final int MAX_CONNECTIONS_TOTAL = 10;
-    private static final int MAX_CONNECTION_PER_ROUTE = 10;
     private static final int VALIDATE_INACTIVITY_INTERVAL_MS = 30000;
     private static final int DEFAULT_KEEP_ALIVE_TIMEOUT_MS = 10000;
     private static final String KEEP_ALIVE_TIMEOUT_PARAM_NAME = "timeout";
@@ -128,7 +126,6 @@ public class MPRestClient {
                 .setCustomHeaders(headers)
                 .setConnectionTimeout(connectionTimeout)
                 .setSocketTimeout(socketTimeout)
-                .setConnectionRequestTimeout(socketTimeout)
                 .build();
 
         return executeRequest(httpMethod, uri, payloadType, payload, requestOptions);
@@ -229,8 +226,8 @@ public class MPRestClient {
      */
     private HttpClient createHttpClient() {
         PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
-        connectionManager.setMaxTotal(MAX_CONNECTIONS_TOTAL);
-        connectionManager.setDefaultMaxPerRoute(MAX_CONNECTION_PER_ROUTE);
+        connectionManager.setMaxTotal(MercadoPago.SDK.getMaxConnections());
+        connectionManager.setDefaultMaxPerRoute(MercadoPago.SDK.getMaxConnections());
         connectionManager.setValidateAfterInactivity(VALIDATE_INACTIVITY_INTERVAL_MS);
 
         ConnectionKeepAliveStrategy keepAliveStrategy = (response, context) -> {
@@ -252,7 +249,8 @@ public class MPRestClient {
                 .setConnectionManager(connectionManager)
                 .setKeepAliveStrategy(keepAliveStrategy)
                 .setRetryHandler(retryHandler)
-                .disableCookieManagement();
+                .disableCookieManagement()
+                .disableRedirectHandling();
 
         return httpClientBuilder.build();
     }

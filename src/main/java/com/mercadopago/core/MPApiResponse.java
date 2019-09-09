@@ -10,6 +10,7 @@ import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.util.EntityUtils;
 
 /**
  * Mercado Pago SDK
@@ -109,17 +110,16 @@ public class MPApiResponse implements Cloneable {
             HttpEntity respEntity = response.getEntity();
             try {
                 this.stringResponse = MPCoreUtils.inputStreamToString(respEntity.getContent());
-            } catch (Exception ex) {
-                throw new MPException(ex);
-            }
 
-            // Try to parse the response to a json, and a extract the entity of the response.
-            // When the response is not a json parseable string then the string response must be used.
-            try {
+                // Try to parse the response to a json, and a extract the entity of the response.
+                // When the response is not a json parseable string then the string response must be used.
                 this.jsonElementResponse = new JsonParser().parse(this.stringResponse);
-
-            } catch (JsonParseException jsonParseException) {
-                // Do nothing
+            } catch (Exception e) {
+                if (!(e instanceof JsonParseException)) {
+                    throw new MPException(e);
+                }
+            } finally {
+                EntityUtils.consumeQuietly(respEntity);
             }
         }
     }

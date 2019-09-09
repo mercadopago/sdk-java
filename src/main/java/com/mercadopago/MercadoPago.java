@@ -34,9 +34,10 @@ public class MercadoPago {
         private static final String CURRENT_VERSION = "1.1.0";
         private static final String PRODUCT_ID = "BC32A7VTRPP001U8NHJ0";
 
-        private static final int DEFAULT_CONNECTION_TIMEOUT_MS = 30000;
-        private static final int DEFAULT_CONNECTION_REQUEST_TIMEOUT_MS = 30000;
-        private static final int DEFAULT_SOCKET_TIMEOUT_MS = 30000;
+        private static final int DEFAULT_MAX_CONNECTIONS = 10;
+        private static final int DEFAULT_CONNECTION_TIMEOUT_MS = 5000;
+        private static final int DEFAULT_CONNECTION_REQUEST_TIMEOUT_MS = 5000;
+        private static final int DEFAULT_SOCKET_TIMEOUT_MS = 5000;
         private static final int DEFAULT_RETRIES = 3;
 
         private static volatile String clientSecret = null;
@@ -46,6 +47,7 @@ public class MercadoPago {
         private static volatile String appId = null;
         private static volatile String baseUrl = DEFAULT_BASE_URL;
 
+        private static volatile int maxConnections = -1;
         private static volatile int connectionTimeout = -1;
         private static volatile int connectionRequestTimeout = -1;
         private static volatile int socketTimeout = -1;
@@ -71,9 +73,6 @@ public class MercadoPago {
         }
         public static void setClientSecret(String value) throws MPException {
             clientSecret = value;
-            if (StringUtils.isNotEmpty(clientId)) {
-                getAccessToken();
-            }
         }
 
         /**
@@ -84,9 +83,6 @@ public class MercadoPago {
         }
         public static void setClientId(String value) throws MPException {
             clientId = value;
-            if (StringUtils.isNotEmpty(clientSecret)) {
-                getAccessToken();
-            }
         }
 
         /**
@@ -149,6 +145,25 @@ public class MercadoPago {
          * @return Product ID
          */
         public static String getProductId() { return PRODUCT_ID; }
+
+        /**
+         * Get the number of max simultaneous connections in the pool
+         * @return max simultaneous connections
+         */
+        public static int getMaxConnections() {
+            if (maxConnections == -1) {
+                return DEFAULT_MAX_CONNECTIONS;
+            }
+            return maxConnections;
+        }
+
+        /**
+         * Set the number of max simultaneous connections in the pool
+         * @param value max simultaneous connections
+         */
+        public static void setMaxConnections(int value) {
+            maxConnections = value;
+        }
 
         /**
          * Get connection timeout
@@ -259,36 +274,29 @@ public class MercadoPago {
             setAccessToken(getValueFromMap(configurationParams, "accessToken"));
             setAppId(getValueFromMap(configurationParams, "appId"));
 
-            if (configurationParams.containsKey("connectionTimeout")) {
-                try {
-                    setConnectionTimeout(Integer.parseInt(getValueFromMap(configurationParams, "connectionTimeout")));
-                } catch (NumberFormatException e) {
-                    throw new MPException("Invalid value for connectionTimeout");
-                }
+            int maxConnections = getIntValueFromMap(configurationParams, "maxConnections");
+            if (maxConnections > 0) {
+                setMaxConnections(maxConnections);
             }
 
-            if (configurationParams.containsKey("socketTimeout")) {
-                try {
-                    setSocketTimeout(Integer.parseInt(getValueFromMap(configurationParams, "socketTimeout")));
-                } catch (NumberFormatException e) {
-                    throw new MPException("Invalid value for socketTimeout");
-                }
+            int connectionTimeout = getIntValueFromMap(configurationParams, "connectionTimeout");
+            if (connectionTimeout > -1) {
+                setConnectionTimeout(connectionTimeout);
             }
 
-            if (configurationParams.containsKey("connectionRequestTimeout")) {
-                try {
-                    setConnectionRequestTimeout(Integer.parseInt(getValueFromMap(configurationParams, "connectionRequestTimeout")));
-                } catch (NumberFormatException e) {
-                    throw new MPException("Invalid value for connectionRequestTimeout");
-                }
+            int socketTimeout = getIntValueFromMap(configurationParams, "socketTimeout");
+            if (socketTimeout > -1) {
+                setSocketTimeout(socketTimeout);
             }
 
-            if (configurationParams.containsKey("retries")) {
-                try {
-                    setRetries(Integer.parseInt(getValueFromMap(configurationParams, "retries")));
-                } catch (NumberFormatException e) {
-                    throw new MPException("Invalid value for retries");
-                }
+            int connectionRequestTimeout = getIntValueFromMap(configurationParams, "connectionRequestTimeout");
+            if (connectionRequestTimeout > -1) {
+                setConnectionRequestTimeout(connectionRequestTimeout);
+            }
+
+            int retries = getIntValueFromMap(configurationParams, "retries");
+            if (retries > 0) {
+                setRetries(retries);
             }
 
             if (configurationParams.containsKey("proxyHostName") && configurationParams.containsKey("proxyPort")) {
@@ -313,6 +321,26 @@ public class MercadoPago {
                 return map.get(key);
             }
             return null;
+        }
+
+        /**
+         * Extract a int value from a Map
+         * @param map a String, String map with the configuration params.
+         * @param key value key
+         * @return the configuration value or -1 if the key does not exists or value is not a integer
+         * @throws MPException
+         */
+        private static int getIntValueFromMap(Map<String, String> map, String key) throws MPException {
+            String value = getValueFromMap(map, key);
+            if (StringUtils.isEmpty(value)) {
+                return -1;
+            }
+
+            try {
+                return Integer.parseInt(value);
+            } catch (NumberFormatException e) {
+                throw new MPException("Invalid value for " + key);
+            }
         }
 
         /**
@@ -368,36 +396,29 @@ public class MercadoPago {
                 setClientId(getValueFromProperties(properties, "clientId"));
             }
 
-            if (StringUtils.isNotEmpty(getValueFromProperties(properties, "connectionTimeout"))) {
-                try {
-                    setConnectionTimeout(Integer.parseInt(getValueFromProperties(properties, "connectionTimeout")));
-                } catch (NumberFormatException e) {
-                    throw new MPException("Invalid value for connectionTimeout");
-                }
+            int maxConnections = getIntValueFromProperties(properties, "maxConnections");
+            if (maxConnections > 0) {
+                setMaxConnections(maxConnections);
             }
 
-            if (StringUtils.isNotEmpty(getValueFromProperties(properties, "socketTimeout"))) {
-                try {
-                    setSocketTimeout(Integer.parseInt(getValueFromProperties(properties, "socketTimeout")));
-                } catch (NumberFormatException e) {
-                    throw new MPException("Invalid value for socketTimeout");
-                }
+            int connectionTimeout = getIntValueFromProperties(properties, "connectionTimeout");
+            if (connectionTimeout > -1) {
+                setConnectionTimeout(connectionTimeout);
             }
 
-            if (StringUtils.isNotEmpty(getValueFromProperties(properties, "connectionRequestTimeout"))) {
-                try {
-                    setConnectionRequestTimeout(Integer.parseInt(getValueFromProperties(properties, "connectionRequestTimeout")));
-                } catch (NumberFormatException e) {
-                    throw new MPException("Invalid value for connectionRequestTimeout");
-                }
+            int socketTimeout = getIntValueFromProperties(properties, "socketTimeout");
+            if (socketTimeout > -1) {
+                setSocketTimeout(socketTimeout);
             }
 
-            if (StringUtils.isNotEmpty(getValueFromProperties(properties, "retries"))) {
-                try {
-                    setRetries(Integer.parseInt(getValueFromProperties(properties, "retries")));
-                } catch (NumberFormatException e) {
-                    throw new MPException("Invalid value for retries");
-                }
+            int connectionRequestTimeout = getIntValueFromProperties(properties, "connectionRequestTimeout");
+            if (connectionRequestTimeout > -1) {
+                setConnectionRequestTimeout(connectionRequestTimeout);
+            }
+
+            int retries = getIntValueFromProperties(properties, "retries");
+            if (retries > 0) {
+                setRetries(retries);
             }
 
             if (StringUtils.isNotEmpty(getValueFromProperties(properties, "proxyHostName"))
@@ -427,6 +448,26 @@ public class MercadoPago {
         }
 
         /**
+         * Extract a int value from a Properties object
+         * @param properties Properties object
+         * @param key value key
+         * @return the configuration value or -1 if the key does not exists or value is not a integer
+         * @throws MPException
+         */
+        private static int getIntValueFromProperties(Properties properties, String key) throws MPException {
+            String value = getValueFromProperties(properties, key);
+            if (StringUtils.isEmpty(value)) {
+                return -1;
+            }
+
+            try {
+                return Integer.parseInt(value);
+            } catch (NumberFormatException e) {
+                throw new MPException("Invalid value for " + key);
+            }
+        }
+
+        /**
          * Clean all the configuration variables
          * (FOR TESTING ONLY)
          */
@@ -436,6 +477,7 @@ public class MercadoPago {
             accessToken = null;
             appId = null;
             baseUrl = DEFAULT_BASE_URL;
+            maxConnections = -1;
             connectionTimeout = -1;
             socketTimeout = -1;
             connectionRequestTimeout = -1;
