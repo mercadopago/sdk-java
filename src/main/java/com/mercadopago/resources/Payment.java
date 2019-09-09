@@ -112,6 +112,8 @@ public class Payment extends MPBase {
     private ArrayList<Refund> refunds = null;
     private AdditionalInfo additionalInfo = null;
     private String callbackUrl = null;
+    private Integer sponsorId = null;
+    private String processingMode = null;
 
 
     public String getId() {
@@ -370,6 +372,24 @@ public class Payment extends MPBase {
 
     public static MPResourceArray search(HashMap<String, String> filters, Boolean useCache) throws MPException {
         return search(filters, useCache, MPRequestOptions.createDefault());
+    }
+
+    public Integer getSponsorId() {
+        return this.sponsorId;
+    }
+
+    public Payment setSponsorId(Integer sponsorId) {
+        this.sponsorId = sponsorId;
+        return this;
+    }
+
+    public String getProcessingMode() {
+        return this.processingMode;
+    }
+
+    public Payment setPaymentMode(String processingMode) {
+        this.processingMode = processingMode;
+        return this;
     }
 
     @GET(path="/v1/payments/search")
