@@ -122,7 +122,7 @@ public class MPRestClient {
             }
         }
 
-        MPRequestOptions requestOptions = new MPRequestOptions.MPRequestOptionsBuilder()
+        MPRequestOptions requestOptions = MPRequestOptions.builder()
                 .setCustomHeaders(headers)
                 .setConnectionTimeout(connectionTimeout)
                 .setSocketTimeout(socketTimeout)
@@ -164,38 +164,7 @@ public class MPRestClient {
                 requestOptions = MPRequestOptions.createDefault();
             }
 
-            HttpEntity entity = normalizePayload(payloadType, payload);
-            HttpRequestBase request = getRequestMethod(httpMethod, uri, entity);
-
-            Map<String, String> headers = new HashMap<>();
-            headers.put(HTTP.USER_AGENT, String.format("MercadoPago Java SDK/%s", MercadoPago.SDK.getVersion()));
-            headers.put("x-product-id", MercadoPago.SDK.getProductId());
-            for (String headerName : requestOptions.getCustomHeaders().keySet()) {
-                if (!headers.containsKey(headerName)) {
-                    headers.put(headerName, requestOptions.getCustomHeaders().get(headerName));
-                }
-            }
-            for (Map.Entry<String, String> header : headers.entrySet()) {
-                request.addHeader(new BasicHeader(header.getKey(), header.getValue()));
-            }
-
-            if (payloadType == PayloadType.JSON) {
-                request.addHeader(new BasicHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString()));
-            } else if (payloadType == PayloadType.X_WWW_FORM_URLENCODED) {
-                request.addHeader(new BasicHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_FORM_URLENCODED.toString()));
-            }
-
-            RequestConfig.Builder requestConfigBuilder = RequestConfig.custom()
-                    .setSocketTimeout(requestOptions.getSocketTimeout())
-                    .setConnectTimeout(requestOptions.getConnectionTimeout())
-                    .setConnectionRequestTimeout(requestOptions.getConnectionRequestTimeout());
-
-            HttpHost proxy = httpProxy == null ? MercadoPago.SDK.getProxy() : httpProxy;
-            if (proxy != null) {
-                requestConfigBuilder.setProxy(proxy);
-            }
-
-            request.setConfig(requestConfigBuilder.build());
+            HttpRequestBase request = createHttpRequest(httpMethod, uri, payloadType, payload, requestOptions);
 
             HttpResponse response;
             long startMillis = System.currentTimeMillis();
@@ -218,6 +187,42 @@ public class MPRestClient {
         } catch (Exception ex) {
             throw new MPRestException(ex);
         }
+    }
+
+    private HttpRequestBase createHttpRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, MPRequestOptions requestOptions) throws MPRestException {
+        HttpEntity entity = normalizePayload(payloadType, payload);
+        HttpRequestBase request = getRequestMethod(httpMethod, uri, entity);
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put(HTTP.USER_AGENT, String.format("MercadoPago Java SDK/%s", MercadoPago.SDK.getVersion()));
+        headers.put("x-product-id", MercadoPago.SDK.getProductId());
+        for (String headerName : requestOptions.getCustomHeaders().keySet()) {
+            if (!headers.containsKey(headerName)) {
+                headers.put(headerName, requestOptions.getCustomHeaders().get(headerName));
+            }
+        }
+        for (Map.Entry<String, String> header : headers.entrySet()) {
+            request.addHeader(new BasicHeader(header.getKey(), header.getValue()));
+        }
+
+        if (payloadType == PayloadType.JSON) {
+            request.addHeader(new BasicHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString()));
+        } else if (payloadType == PayloadType.X_WWW_FORM_URLENCODED) {
+            request.addHeader(new BasicHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_FORM_URLENCODED.toString()));
+        }
+
+        RequestConfig.Builder requestConfigBuilder = RequestConfig.custom()
+                .setSocketTimeout(requestOptions.getSocketTimeout())
+                .setConnectTimeout(requestOptions.getConnectionTimeout())
+                .setConnectionRequestTimeout(requestOptions.getConnectionRequestTimeout());
+
+        HttpHost proxy = httpProxy == null ? MercadoPago.SDK.getProxy() : httpProxy;
+        if (proxy != null) {
+            requestConfigBuilder.setProxy(proxy);
+        }
+
+        request.setConfig(requestConfigBuilder.build());
+        return request;
     }
 
     /**

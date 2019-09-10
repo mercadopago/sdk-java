@@ -7,15 +7,18 @@ import java.util.Map;
 
 public class MPRequestOptions {
 
+    private String accessToken;
     private int connectionTimeout;
     private int connectionRequestTimeout;
     private int socketTimeout;
     private Map<String, String> customHeaders;
 
-    private MPRequestOptions(int connectionTimeout,
+    private MPRequestOptions(String accessToken,
+                             int connectionTimeout,
                              int connectionRequestTimeout,
                              int socketTimeout,
                              Map<String, String> customHeaders) {
+        this.accessToken = accessToken;
         this.connectionTimeout = connectionTimeout;
         this.connectionRequestTimeout = connectionRequestTimeout;
         this.socketTimeout = socketTimeout;
@@ -24,6 +27,18 @@ public class MPRequestOptions {
 
     public static MPRequestOptions createDefault() {
         return new MPRequestOptionsBuilder().build();
+    }
+
+    public static MPRequestOptionsBuilder builder() {
+        return new MPRequestOptionsBuilder();
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 
     public int getConnectionTimeout() {
@@ -60,6 +75,7 @@ public class MPRequestOptions {
 
     public static final class MPRequestOptionsBuilder {
 
+        private String accessToken;
         private int connectionTimeout;
         private int connectionRequestTimeout;
         private int socketTimeout;
@@ -72,6 +88,14 @@ public class MPRequestOptions {
             customHeaders = new HashMap<>();
         }
 
+        public String getAccessToken() {
+            return accessToken;
+        }
+
+        public MPRequestOptionsBuilder setAccessToken(String accessToken) {
+            this.accessToken = accessToken;
+            return this;
+        }
 
         public MPRequestOptionsBuilder setConnectionTimeout(int connectionTimeout) {
             this.connectionTimeout = connectionTimeout;
@@ -98,9 +122,9 @@ public class MPRequestOptions {
             return this;
         }
 
-
         public MPRequestOptions build() {
             return new MPRequestOptions(
+                    accessToken,
                     connectionTimeout,
                     connectionRequestTimeout,
                     socketTimeout,

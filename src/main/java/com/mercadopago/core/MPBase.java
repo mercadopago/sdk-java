@@ -209,7 +209,7 @@ public abstract class MPBase {
         AnnotatedElement annotatedMethod = getAnnotatedMethod(clazz, methodName);
         Map<String, Object> hashAnnotation = getRestInformation(annotatedMethod);
         HttpMethod httpMethod = (HttpMethod)hashAnnotation.get("method");
-        String path = parsePath(hashAnnotation.get("path").toString(), mapParams, resource);
+        String path = parsePath(hashAnnotation.get("path").toString(), mapParams, resource, requestOptions);
 
         if (METHODS_TO_VALIDATE.contains(methodName)) {
             // Validator will throw an MPValidatorException, there is no need to do a conditional
@@ -336,7 +336,7 @@ public abstract class MPBase {
         AnnotatedElement annotatedMethod = getAnnotatedMethod(clazz, methodName);
         Map<String, Object> hashAnnotation = getRestInformation(annotatedMethod);
         HttpMethod httpMethod = (HttpMethod)hashAnnotation.get("method");
-        String path = parsePath(hashAnnotation.get("path").toString(), mapParams, null);
+        String path = parsePath(hashAnnotation.get("path").toString(), mapParams, null, requestOptions);
         PayloadType payloadType = (PayloadType) hashAnnotation.get("payloadType");
 
         MPApiResponse response = callApi(httpMethod, path, payloadType, null, useCache, requestOptions);
@@ -488,10 +488,12 @@ public abstract class MPBase {
      * Evaluates the path of the resourse and use the args or the attributes members of the instance to complete it.
      * @param path              a String with the path as stated in the declaration of the method caller
      * @param mapParams         a HashMap with the args passed in the call of the method
+     * @param resource          a resource object
+     * @param requestOptions    a Object with request options that overrides default options
      * @return                  a String with the final path to call the API
      * @throws MPException
      */
-    private static <T extends MPBase> String parsePath(String path, Map<String, String> mapParams, T resource) throws MPException {
+    private static <T extends MPBase> String parsePath(String path, Map<String, String> mapParams, T resource, MPRequestOptions requestOptions) throws MPException {
         StringBuilder processedPath = new StringBuilder();
         if (path.contains(":")) {
             int paramIterator = 0;
@@ -536,7 +538,6 @@ public abstract class MPBase {
                     }
                 }
 
-
                 if (StringUtils.isEmpty(value)) {
                     throw new MPException("No argument supplied/found for method path");
                 }
@@ -555,15 +556,14 @@ public abstract class MPBase {
             processedPath.append(path);
         }
 
-
-
         // URL
         processedPath.insert(0, MercadoPago.SDK.getBaseUrl());
 
-
         // Token
-        String accessToken = null;
-        if (resource != null){
+        String accessToken;
+        if (StringUtils.isNotEmpty(requestOptions.getAccessToken())) {
+            accessToken = requestOptions.getAccessToken();
+        }else if (resource != null) {
             accessToken = resource.getMarketplaceAccessToken();
             if (StringUtils.isEmpty(accessToken)) {
                 accessToken = MercadoPago.SDK.getAccessToken();
