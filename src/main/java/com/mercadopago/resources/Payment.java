@@ -429,19 +429,29 @@ public class Payment extends MPBase {
     }
 
     public Payment refund() throws MPException {
-        return refund(MPRequestOptions.createDefault());
+        return refund(null, MPRequestOptions.createDefault());
     }
 
     public Payment refund(MPRequestOptions requestOptions) throws MPException {
+        return refund(null, requestOptions);
+    }
+
+    public Payment refund(Float amount) throws MPException {
+        return refund(amount, MPRequestOptions.createDefault());
+    }
+
+    public Payment refund(Float amount, MPRequestOptions requestOptions) throws MPException {
         // Create a refund
         Refund refund = new Refund();
         refund.setPaymentId(this.getId());
+        refund.setAmount(amount);
         refund.save(requestOptions);
         // If refund has been successfully created then update the instance values
 
         if (refund.getId() != null) {
             Payment payment = Payment.findById(this.getId(), WITHOUT_CACHE, requestOptions); // Get updated payment instance
             this.status = payment.getStatus();
+            this.statusDetail = payment.getStatusDetail();
             this.refunds = payment.getRefunds();
             this.transactionAmountRefunded = payment.getTransactionAmountRefunded();
         }

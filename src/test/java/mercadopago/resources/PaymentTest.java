@@ -180,7 +180,7 @@ public class PaymentTest {
                 .setZipCode("12333"));
 
         Payment payment = new Payment();
-        payment.setTransactionAmount(100f);
+        payment.setTransactionAmount(10000f);
         payment.setPaymentMethodId("visa");
         payment.setDescription("Payment test 1 peso");
         payment.setToken(getCardToken(CardResultExpected.PENDING));
@@ -211,7 +211,7 @@ public class PaymentTest {
         payment.setAdditionalInfo(new AdditionalInfo().setIpAddres("127.0.0.1"));
         payment.setCallbackUrl("http://www.your-site.com");
 
-        payment.setTransactionAmount(100f);
+        payment.setTransactionAmount(10000f);
 
         payment.setPayer(payer);
 
@@ -246,7 +246,7 @@ public class PaymentTest {
                 .setZipCode("12333"));
 
         Payment payment = new Payment();
-        payment.setTransactionAmount(100f);
+        payment.setTransactionAmount(10000f);
         payment.setPaymentMethodId("visa");
         payment.setDescription("Payment test 100 pesos");
         payment.setToken(getCardToken(CardResultExpected.APPROVED));
@@ -280,7 +280,7 @@ public class PaymentTest {
         assertEquals(200, payment.getLastApiResponse().getStatusCode());
         assertEquals(lastPayment.getId(), payment.getId());
 
-        assertEquals(Float.valueOf(100f), payment.getTransactionAmount());
+        assertEquals(Float.valueOf(10000f), payment.getTransactionAmount());
         assertEquals(Integer.valueOf(1), payment.getInstallments());
         assertFalse(payment.getLastApiResponse().fromCache);
     }
@@ -322,9 +322,10 @@ public class PaymentTest {
         jsonPayload.addProperty("expiration_year", expiration_year);
         jsonPayload.addProperty("expiration_month", expiration_month);
 
-        JsonObject identification = new JsonObject();
-        identification.addProperty("type", "DNI");
-        identification.addProperty("number", "19119119100");
+        JsonObject identification = getIdentification();
+//        JsonObject identification = new JsonObject();
+//        identification.addProperty("type", "DNI");
+//        identification.addProperty("number", "19119119100");
 
         JsonObject cardHolder = new JsonObject();
 
@@ -333,19 +334,62 @@ public class PaymentTest {
 
         jsonPayload.add("cardholder", cardHolder);
 
-        MPApiResponse response;
-        try {
-            MPRestClient client = new MPRestClient();
-            response = client.executeRequest(
-                    HttpMethod.POST,
-                    MercadoPago.SDK.getBaseUrl() + "/v1/card_tokens?public_key=" + System.getenv("PUBLIC_KEY_TEST"),
-                    PayloadType.JSON,
-                    jsonPayload,
-                    MPRequestOptions.createDefault());
-        } catch (MPRestException rex) {
-            throw new MPException(rex);
-        }
+        MPRestClient client = new MPRestClient();
+        MPApiResponse response = client.executeRequest(
+                HttpMethod.POST,
+                MercadoPago.SDK.getBaseUrl() + "/v1/card_tokens?public_key=" + System.getenv("PUBLIC_KEY_TEST"),
+                PayloadType.JSON,
+                jsonPayload,
+                MPRequestOptions.createDefault());
+
         return ((JsonObject) response.getJsonElementResponse()).get("id").getAsString();
+    }
+
+    private JsonObject getIdentification() throws MPRestException {
+        MPRestClient client = new MPRestClient();
+        MPApiResponse response = client.executeRequest(
+                HttpMethod.GET,
+                MercadoPago.SDK.getBaseUrl() + "/users/me?access_token=" + System.getenv("ACCESS_TOKEN_TEST"),
+                PayloadType.JSON,
+                null,
+                MPRequestOptions.createDefault());
+
+        JsonObject jsonObject = null;
+        if (response != null && response.getJsonElementResponse() != null) {
+            jsonObject = new JsonObject();
+            switch (((JsonObject) response.getJsonElementResponse()).get("site_id").getAsString()) {
+                case "MLA":
+                    jsonObject.addProperty("type", "DNI");
+                    jsonObject.addProperty("number", "19119119100");
+                    break;
+                case "MLB":
+                    jsonObject.addProperty("type", "CPF");
+                    jsonObject.addProperty("number", "60609917692");
+                    break;
+                case "MLC":
+                    jsonObject.addProperty("type", "RUT");
+                    jsonObject.addProperty("number", "96506015");
+                    break;
+                case "MLU":
+                    jsonObject.addProperty("type", "CI");
+                    jsonObject.addProperty("number", "8560749");
+                    break;
+                case "MCO":
+                    jsonObject.addProperty("type", "NIT");
+                    jsonObject.addProperty("number", "17128621626");
+                    break;
+                case "MPE":
+                    jsonObject.addProperty("type", "DNI");
+                    jsonObject.addProperty("number", "92430065B");
+                    break;
+                case "MLV":
+                    jsonObject.addProperty("type", "Pasaporte");
+                    jsonObject.addProperty("number", "1234567890");
+                    break;
+            }
+        }
+
+        return jsonObject;
     }
 
 }

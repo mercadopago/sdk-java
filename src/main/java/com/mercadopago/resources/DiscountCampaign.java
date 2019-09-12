@@ -6,6 +6,7 @@ import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.exceptions.MPException;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -74,17 +75,24 @@ public class DiscountCampaign extends MPBase {
         return this;
     }
 
-    public static DiscountCampaign find(Float transactionAmount) throws MPException {
-        return find(transactionAmount, WITHOUT_CACHE, MPRequestOptions.createDefault());
+    public static DiscountCampaign find(Float transactionAmount, String payerEmail) throws MPException {
+        return find(transactionAmount, payerEmail, null, WITHOUT_CACHE, MPRequestOptions.createDefault());
     }
 
-    public static DiscountCampaign find(Float transactionAmount, Boolean useCache) throws MPException {
-        return find(transactionAmount, useCache, MPRequestOptions.createDefault());
+    public static DiscountCampaign find(Float transactionAmount, String payerEmail, String couponCode) throws MPException {
+        return find(transactionAmount, payerEmail, couponCode, WITHOUT_CACHE, MPRequestOptions.createDefault());
+    }
+
+    public static DiscountCampaign find(Float transactionAmount, String payerEmail, String couponCode, Boolean useCache) throws MPException {
+        return find(transactionAmount, payerEmail, couponCode, useCache, MPRequestOptions.createDefault());
     }
 
     @GET(path = "/v1/discount_campaigns")
-    public static DiscountCampaign find(Float transactionAmount, Boolean useCache, MPRequestOptions requestOptions) throws MPException {
-        Map<String, String> params = Collections.singletonMap("transaction_amount", Float.toString(transactionAmount));
+    public static DiscountCampaign find(Float transactionAmount, String payerEmail, String couponCode, Boolean useCache, MPRequestOptions requestOptions) throws MPException {
+        Map<String, String> params = new HashMap<>();
+        params.put("transaction_amount", Float.toString(transactionAmount));
+        params.put("payer_email", payerEmail);
+        params.put("coupon_code", couponCode);
         return processMethod(DiscountCampaign.class, null, "find", params, useCache, requestOptions);
     }
 }

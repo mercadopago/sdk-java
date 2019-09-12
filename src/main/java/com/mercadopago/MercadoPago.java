@@ -47,11 +47,11 @@ public class MercadoPago {
         private static volatile String appId = null;
         private static volatile String baseUrl = DEFAULT_BASE_URL;
 
-        private static volatile int maxConnections = -1;
-        private static volatile int connectionTimeout = -1;
-        private static volatile int connectionRequestTimeout = -1;
-        private static volatile int socketTimeout = -1;
-        private static volatile int retries = -1;
+        private static volatile int maxConnections = DEFAULT_MAX_CONNECTIONS;
+        private static volatile int connectionTimeout = DEFAULT_CONNECTION_TIMEOUT_MS;
+        private static volatile int connectionRequestTimeout = DEFAULT_CONNECTION_REQUEST_TIMEOUT_MS;
+        private static volatile int socketTimeout = DEFAULT_SOCKET_TIMEOUT_MS;
+        private static volatile int retries = DEFAULT_RETRIES;
         private static volatile HttpHost proxy = null;
 
         /**
@@ -151,9 +151,6 @@ public class MercadoPago {
          * @return max simultaneous connections
          */
         public static int getMaxConnections() {
-            if (maxConnections == -1) {
-                return DEFAULT_MAX_CONNECTIONS;
-            }
             return maxConnections;
         }
 
@@ -170,9 +167,6 @@ public class MercadoPago {
          * @return Connection timeout in millis
          */
         public static int getConnectionTimeout() {
-            if (connectionTimeout == -1) {
-                return DEFAULT_CONNECTION_TIMEOUT_MS;
-            }
             return connectionTimeout;
         }
 
@@ -189,9 +183,6 @@ public class MercadoPago {
          * @return Connection request timeout in millis
          */
         public static int getConnectionRequestTimeout() {
-            if (connectionRequestTimeout == -1) {
-                return DEFAULT_CONNECTION_REQUEST_TIMEOUT_MS;
-            }
             return connectionRequestTimeout;
         }
 
@@ -208,9 +199,6 @@ public class MercadoPago {
          * @return Socket timeout in millis
          */
         public static int getSocketTimeout() {
-            if (socketTimeout == -1) {
-                return DEFAULT_SOCKET_TIMEOUT_MS;
-            }
             return socketTimeout;
         }
 
@@ -227,9 +215,6 @@ public class MercadoPago {
          * @return Number of retries
          */
         public static int getRetries() {
-            if (retries == -1) {
-                return DEFAULT_RETRIES;
-            }
             return retries;
         }
 
@@ -477,11 +462,11 @@ public class MercadoPago {
             accessToken = null;
             appId = null;
             baseUrl = DEFAULT_BASE_URL;
-            maxConnections = -1;
-            connectionTimeout = -1;
-            socketTimeout = -1;
-            connectionRequestTimeout = -1;
-            retries = -1;
+            maxConnections = DEFAULT_MAX_CONNECTIONS;
+            connectionTimeout = DEFAULT_CONNECTION_TIMEOUT_MS;
+            socketTimeout = DEFAULT_SOCKET_TIMEOUT_MS;
+            connectionRequestTimeout = DEFAULT_CONNECTION_REQUEST_TIMEOUT_MS;
+            retries = DEFAULT_RETRIES;
             proxy = null;
         }
 

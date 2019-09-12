@@ -29,8 +29,7 @@ public class PreferenceTest {
     @BeforeClass
     public static void beforeTest() throws MPException {
         MercadoPago.SDK.cleanConfiguration();
-        MercadoPago.SDK.setClientId(System.getenv("CLIENT_ID"));
-        MercadoPago.SDK.setClientSecret(System.getenv("CLIENT_SECRET"));
+        MercadoPago.SDK.setAccessToken(System.getenv("ACCESS_TOKEN_TEST"));
     }
 
     @Test
@@ -234,7 +233,7 @@ public class PreferenceTest {
         item.setDescription("Description");
         item.setQuantity(1);
         item.setCurrencyId("ARS");
-        item.setUnitPrice(.01f);
+        item.setUnitPrice(10f);
 
         Payer payer = new Payer();
         payer.setName("Name");

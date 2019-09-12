@@ -578,11 +578,12 @@ public abstract class MPBase {
 
         
         if (mapParams != null && !mapParams.isEmpty()) {
-	        for ( Map.Entry<String, String> entry : mapParams.entrySet()) {
+	        for (Map.Entry<String, String> entry : mapParams.entrySet()) {
 	            String key = entry.getKey();
 	            String value = entry.getValue();
-	            
-	            processedPath.append("&" + key + "=" + value);
+	            if (StringUtils.isNotEmpty(value)) {
+                    processedPath.append("&").append(key).append("=").append(value);
+                }
 	        }
         }
 
