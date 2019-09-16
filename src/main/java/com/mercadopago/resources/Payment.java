@@ -2,6 +2,7 @@ package com.mercadopago.resources;
 
 import com.google.gson.JsonObject;
 import com.mercadopago.core.MPBase;
+import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.core.MPResourceArray;
 import com.mercadopago.core.annotations.idempotent.Idempotent;
 import com.mercadopago.core.annotations.rest.GET;
@@ -10,8 +11,11 @@ import com.mercadopago.core.annotations.rest.PUT;
 import com.mercadopago.core.annotations.validation.Numeric;
 import com.mercadopago.core.annotations.validation.Size;
 import com.mercadopago.exceptions.MPException;
-import com.mercadopago.resources.datastructures.payment.*;
-
+import com.mercadopago.resources.datastructures.payment.AdditionalInfo;
+import com.mercadopago.resources.datastructures.payment.FeeDetail;
+import com.mercadopago.resources.datastructures.payment.Order;
+import com.mercadopago.resources.datastructures.payment.Payer;
+import com.mercadopago.resources.datastructures.payment.TransactionDetails;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -108,6 +112,8 @@ public class Payment extends MPBase {
     private ArrayList<Refund> refunds = null;
     private AdditionalInfo additionalInfo = null;
     private String callbackUrl = null;
+    private Integer sponsorId = null;
+    private String processingMode = null;
 
 
     public String getId() {
@@ -364,40 +370,88 @@ public class Payment extends MPBase {
         this.callbackUrl = callbackUrl;
     }
 
+    public static MPResourceArray search(HashMap<String, String> filters, Boolean useCache) throws MPException {
+        return search(filters, useCache, MPRequestOptions.createDefault());
+    }
+
+    public Integer getSponsorId() {
+        return this.sponsorId;
+    }
+
+    public Payment setSponsorId(Integer sponsorId) {
+        this.sponsorId = sponsorId;
+        return this;
+    }
+
+    public String getProcessingMode() {
+        return this.processingMode;
+    }
+
+    public Payment setPaymentMode(String processingMode) {
+        this.processingMode = processingMode;
+        return this;
+    }
+
+    @GET(path="/v1/payments/search")
+    public static MPResourceArray search(HashMap<String, String> filters, Boolean useCache, MPRequestOptions requestOptions) throws MPException {
+        return processMethodBulk(Payment.class, "search", filters, useCache, requestOptions);
+    }
+
     public static Payment findById(String id) throws MPException {
         return findById(id, WITHOUT_CACHE);
     }
 
-    @GET(path="/v1/payments/search")
-    public static MPResourceArray search(HashMap<String, String> filters, Boolean useCache) throws MPException {
-        return Payment.processMethodBulk(Payment.class, "search", filters, useCache);
+    public static Payment findById(String id, Boolean useCache) throws MPException {
+        return findById(id, useCache, MPRequestOptions.createDefault());
     }
 
     @GET(path="/v1/payments/:id")
-    public static Payment findById(String id, Boolean useCache) throws MPException {
-        return Payment.processMethod(Payment.class, "findById", id, useCache);
+    public static Payment findById(String id, Boolean useCache, MPRequestOptions requestOptions) throws MPException {
+        return processMethod(Payment.class, "findById", useCache, requestOptions, id);
+    }
+
+    public Payment save() throws MPException {
+        return save(MPRequestOptions.createDefault());
     }
 
     @POST(path="/v1/payments")
-    public Payment save() throws MPException {
-        return super.processMethod("save", WITHOUT_CACHE);
+    public Payment save(MPRequestOptions requestOptions) throws MPException {
+        return processMethod("save", WITHOUT_CACHE, requestOptions);
+    }
+
+    public Payment update() throws MPException {
+        return update(MPRequestOptions.createDefault());
     }
 
     @PUT(path="/v1/payments/:id")
-    public Payment update() throws MPException {
-        return super.processMethod("update", WITHOUT_CACHE);
+    public Payment update(MPRequestOptions requestOptions) throws MPException {
+        return processMethod("update", WITHOUT_CACHE, requestOptions);
     }
 
     public Payment refund() throws MPException {
+        return refund(null, MPRequestOptions.createDefault());
+    }
+
+    public Payment refund(MPRequestOptions requestOptions) throws MPException {
+        return refund(null, requestOptions);
+    }
+
+    public Payment refund(Float amount) throws MPException {
+        return refund(amount, MPRequestOptions.createDefault());
+    }
+
+    public Payment refund(Float amount, MPRequestOptions requestOptions) throws MPException {
         // Create a refund
         Refund refund = new Refund();
         refund.setPaymentId(this.getId());
-        refund.save();
+        refund.setAmount(amount);
+        refund.save(requestOptions);
         // If refund has been successfully created then update the instance values
 
         if (refund.getId() != null) {
-            Payment payment = Payment.findById(this.getId()); // Get updated payment instance
+            Payment payment = Payment.findById(this.getId(), WITHOUT_CACHE, requestOptions); // Get updated payment instance
             this.status = payment.getStatus();
+            this.statusDetail = payment.getStatusDetail();
             this.refunds = payment.getRefunds();
             this.transactionAmountRefunded = payment.getTransactionAmountRefunded();
         }

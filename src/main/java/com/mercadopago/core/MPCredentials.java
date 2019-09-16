@@ -1,13 +1,17 @@
 package com.mercadopago.core;
 
-import com.mercadopago.*;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mercadopago.MercadoPago;
 import com.mercadopago.core.annotations.rest.PayloadType;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPRestClient;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+
+import java.io.IOException;
 
 /**
  * Mercado Pago MercadoPago
@@ -36,22 +40,26 @@ public class MPCredentials {
 
         String access_token = null;
         String baseUri = MercadoPago.SDK.getBaseUrl();
-        MPApiResponse response = new MPRestClient().executeRequest(
-                HttpMethod.POST,
-                baseUri + "/oauth/token",
-                PayloadType.JSON,
-                jsonPayload,
-                null);
+        try (CloseableHttpClient httpClient = HttpClients.createMinimal()) {
+            MPApiResponse response = new MPRestClient(httpClient).executeRequest(
+                    HttpMethod.POST,
+                    baseUri + "/oauth/token",
+                    PayloadType.JSON,
+                    jsonPayload);
 
 
-        if (response.getStatusCode() == 200) {
-            JsonElement jsonElement = response.getJsonElementResponse();
-            if (jsonElement.isJsonObject()) {
-                access_token = ((JsonObject)jsonElement).get("access_token").getAsString();
+            if (response.getStatusCode() == 200) {
+                JsonElement jsonElement = response.getJsonElementResponse();
+                if (jsonElement.isJsonObject()) {
+                    access_token = ((JsonObject)jsonElement).get("access_token").getAsString();
+                }
+            } else {
+                throw new MPException("Can not retrieve the \"access_token\"");
             }
-        } else {
+        } catch (IOException e) {
             throw new MPException("Can not retrieve the \"access_token\"");
         }
+
         return access_token;
     }
 

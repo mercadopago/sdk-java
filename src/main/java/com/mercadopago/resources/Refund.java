@@ -1,6 +1,7 @@
 package com.mercadopago.resources;
 
 import com.mercadopago.core.MPBase;
+import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.core.MPResourceArray;
 import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.core.annotations.rest.POST;
@@ -75,14 +76,22 @@ public class Refund extends MPBase {
         return all(paymentId, WITHOUT_CACHE);
     }
 
-    @GET(path="/v1/payments/:payment_id/refunds")
     public static MPResourceArray all(String paymentId, Boolean useCache) throws MPException {
-        return Refund.processMethodBulk(Refund.class, "all", paymentId, useCache);
+        return all(paymentId, useCache, MPRequestOptions.createDefault());
+    }
+
+    @GET(path="/v1/payments/:payment_id/refunds")
+    public static MPResourceArray all(String paymentId, Boolean useCache, MPRequestOptions requestOptions) throws MPException {
+        return processMethodBulk(Refund.class, "all", useCache, requestOptions, paymentId);
+    }
+
+    public Refund save() throws MPException {
+        return save(MPRequestOptions.createDefault());
     }
 
     @POST(path="/v1/payments/:payment_id/refunds")
-    public Refund save() throws MPException {
-        return super.processMethod("save", WITHOUT_CACHE);
+    public Refund save(MPRequestOptions requestOptions) throws MPException {
+        return processMethod("save", WITHOUT_CACHE, requestOptions);
     }
 
 }

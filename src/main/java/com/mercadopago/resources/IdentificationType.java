@@ -1,6 +1,7 @@
 package com.mercadopago.resources;
 
 import com.mercadopago.core.MPBase;
+import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.core.MPResourceArray;
 import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.exceptions.MPException;
@@ -45,9 +46,13 @@ public class IdentificationType extends MPBase {
         return all(WITHOUT_CACHE);
     }
 
-    @GET(path="/v1/identification_types")
     public static MPResourceArray all(Boolean useCache) throws MPException {
-        return IdentificationType.processMethodBulk(IdentificationType.class, "all", useCache);
+        return all(useCache, MPRequestOptions.createDefault());
+    }
+
+    @GET(path="/v1/identification_types")
+    public static MPResourceArray all(Boolean useCache, MPRequestOptions requestOptions) throws MPException {
+        return processMethodBulk(IdentificationType.class, "all", null, useCache, requestOptions);
     }
 
 }

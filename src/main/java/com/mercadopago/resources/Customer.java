@@ -2,6 +2,7 @@ package com.mercadopago.resources;
 
 import com.google.gson.JsonObject;
 import com.mercadopago.core.MPBase;
+import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.core.MPResourceArray;
 import com.mercadopago.core.annotations.rest.DELETE;
 import com.mercadopago.core.annotations.rest.GET;
@@ -167,35 +168,53 @@ public class Customer extends MPBase {
         return liveMode;
     }
 
-
+    public static MPResourceArray search(HashMap<String, String> filters, Boolean useCache) throws MPException {
+        return search(filters, useCache, MPRequestOptions.createDefault());
+    }
 
     @GET(path="/v1/customers/search")
-    public static MPResourceArray search(HashMap<String, String> filters, Boolean useCache) throws MPException {
-        return Customer.processMethodBulk(Customer.class, "search", filters, useCache);
+    public static MPResourceArray search(HashMap<String, String> filters, Boolean useCache, MPRequestOptions requestOptions) throws MPException {
+        return processMethodBulk(Customer.class, "search", filters, useCache, requestOptions);
     }
 
     public static Customer findById(String id) throws MPException {
         return findById(id, WITHOUT_CACHE);
     }
 
-    @GET(path="/v1/customers/:id")
     public static Customer findById(String id, Boolean useCache) throws MPException {
-        return Customer.processMethod(Customer.class, "findById", id, useCache);
+        return findById(id, useCache, MPRequestOptions.createDefault());
+    }
+
+    @GET(path="/v1/customers/:id")
+    public static Customer findById(String id, Boolean useCache, MPRequestOptions requestOptions) throws MPException {
+        return processMethod(Customer.class, "findById", useCache, requestOptions, id);
+    }
+
+    public Customer save() throws MPException {
+        return save(MPRequestOptions.createDefault());
     }
 
     @POST(path="/v1/customers")
-    public Customer save() throws MPException {
-        return super.processMethod("save", WITHOUT_CACHE);
+    public Customer save(MPRequestOptions requestOptions) throws MPException {
+        return processMethod("save", WITHOUT_CACHE, requestOptions);
+    }
+
+    public Customer update() throws MPException {
+        return update(MPRequestOptions.createDefault());
     }
 
     @PUT(path="/v1/customers/:id")
-    public Customer update() throws MPException {
-        return super.processMethod("update", WITHOUT_CACHE);
+    public Customer update(MPRequestOptions requestOptions) throws MPException {
+        return processMethod("update", WITHOUT_CACHE, requestOptions);
+    }
+
+    public Customer delete() throws MPException {
+        return delete(MPRequestOptions.createDefault());
     }
 
     @DELETE(path="/v1/customers/:id")
-    public Customer delete() throws MPException {
-        return super.processMethod("delete", WITHOUT_CACHE);
+    public Customer delete(MPRequestOptions requestOptions) throws MPException {
+        return processMethod("delete", WITHOUT_CACHE, requestOptions);
     }
 
 }

@@ -1,6 +1,10 @@
 package com.mercadopago.core.annotations.rest;
 
-import java.lang.annotation.*;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * Mercado Pago SDK
@@ -18,5 +22,6 @@ public @interface POST {
 
     int retries() default 0;
     int connectionTimeout() default 0;
+    int connectionRequestTimeout() default 0;
     int socketTimeout() default 0;
 }
