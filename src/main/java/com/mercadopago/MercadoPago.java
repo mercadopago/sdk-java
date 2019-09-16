@@ -31,7 +31,7 @@ public class MercadoPago {
     public static class SDK {
 
         private static final String DEFAULT_BASE_URL = "https://api.mercadopago.com";
-        private static final String CURRENT_VERSION = "1.1.0";
+        private static final String CURRENT_VERSION = "1.2.0";
         private static final String PRODUCT_ID = "BC32A7VTRPP001U8NHJ0";
 
         private static final int DEFAULT_MAX_CONNECTIONS = 10;
