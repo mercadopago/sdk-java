@@ -21,6 +21,7 @@ public class CardToken extends MPBase {
     private Boolean luhnValidation;
     private Boolean lineMode;
     private Boolean requireEsc;
+    private String securityCode;
 
 
     public String getId() {
@@ -120,6 +121,14 @@ public class CardToken extends MPBase {
     public CardToken setRequireEsc(Boolean requireEsc) {
         this.requireEsc = requireEsc;
         return this;
+    }
+
+    public String getSecurityCode() {
+        return securityCode;
+    }
+
+    public void setSecurityCode(String securityCode) {
+        this.securityCode = securityCode;
     }
 
     public CardToken save() throws MPException {
