@@ -11,7 +11,7 @@ public class DefaultAddress {
     private String id = null;
     private String zipCode = null;
     private String streetName = null;
-    private String streetNumber = null;
+    private Integer streetNumber = null;
 
 
     public String getId() {
@@ -36,11 +36,11 @@ public class DefaultAddress {
         return this;
     }
 
-    public String getStreetNumber() {
+    public Integer getStreetNumber() {
         return streetNumber;
     }
 
-    public DefaultAddress setStreetNumber(String streetNumber) {
+    public DefaultAddress setStreetNumber(Integer streetNumber) {
         this.streetNumber = streetNumber;
         return this;
     }
