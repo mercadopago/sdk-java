@@ -19,7 +19,7 @@ public class Item {
     @Size(max=256) private String categoryId = null;
     @NotNull @Numeric(min=1) private Integer quantity = null;
     @Size(min=3, max=3) private String currencyId = null;
-    @NotNull @Numeric(min=.01f, max=999999f, fractionDigits=2) private Float unitPrice = 0f;
+    @NotNull @Numeric(min=-9999998.5f, max=9999999f, fractionDigits=2) private Float unitPrice = 0f;
 
 
     public String getId() {
