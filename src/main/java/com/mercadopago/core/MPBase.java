@@ -155,7 +155,7 @@ public abstract class MPBase {
      * @throws MPException
      */
     protected static <T extends MPBase> T processMethod(Class clazz, String methodName, Boolean useCache, MPRequestOptions requestOptions, String... params) throws MPException {
-        Map<String, String> mapParams = new HashMap<>();
+        Map<String, String> mapParams = new HashMap<String, String>();
         if (params != null) {
             for (int i = 1; i <= params.length; i++) {
                 mapParams.put("param" + i, params[i - 1]);
@@ -292,7 +292,7 @@ public abstract class MPBase {
      * @throws MPException
      */
     protected static MPResourceArray processMethodBulk(Class clazz, String methodName, Boolean useCache, MPRequestOptions requestOptions, String... params) throws MPException {
-        Map<String, String> mapParams = new HashMap<>();
+        Map<String, String> mapParams = new HashMap<String, String>();
         if (params != null) {
             for (int i = 1; i <= params.length; i++) {
                 mapParams.put("param" + i, params[i - 1]);
@@ -662,7 +662,7 @@ public abstract class MPBase {
             throw new MPException("No rest method found");
         }
 
-        Map<String, Object> hashAnnotation = new HashMap<>();
+        Map<String, Object> hashAnnotation = new HashMap<String, Object>();
         for (Annotation annotation : element.getAnnotations()) {
             if (annotation instanceof DELETE) {
                 DELETE delete = (DELETE) annotation;
