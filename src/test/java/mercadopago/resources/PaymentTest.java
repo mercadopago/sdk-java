@@ -357,35 +357,34 @@ public class PaymentTest {
         JsonObject jsonObject = null;
         if (response != null && response.getJsonElementResponse() != null) {
             jsonObject = new JsonObject();
-            switch (((JsonObject) response.getJsonElementResponse()).get("site_id").getAsString()) {
-                case "MLA":
-                    jsonObject.addProperty("type", "DNI");
-                    jsonObject.addProperty("number", "19119119100");
-                    break;
-                case "MLB":
-                    jsonObject.addProperty("type", "CPF");
-                    jsonObject.addProperty("number", "60609917692");
-                    break;
-                case "MLC":
-                    jsonObject.addProperty("type", "RUT");
-                    jsonObject.addProperty("number", "96506015");
-                    break;
-                case "MLU":
-                    jsonObject.addProperty("type", "CI");
-                    jsonObject.addProperty("number", "8560749");
-                    break;
-                case "MCO":
-                    jsonObject.addProperty("type", "NIT");
-                    jsonObject.addProperty("number", "17128621626");
-                    break;
-                case "MPE":
-                    jsonObject.addProperty("type", "DNI");
-                    jsonObject.addProperty("number", "92430065B");
-                    break;
-                case "MLV":
-                    jsonObject.addProperty("type", "Pasaporte");
-                    jsonObject.addProperty("number", "1234567890");
-                    break;
+            String siteId = ((JsonObject) response.getJsonElementResponse()).get("site_id").getAsString();
+            if (siteId.equals("MLA")) {
+                jsonObject.addProperty("type", "DNI");
+                jsonObject.addProperty("number", "19119119100");
+            }
+            else if (siteId.equals("MLB")) {
+                jsonObject.addProperty("type", "CPF");
+                jsonObject.addProperty("number", "60609917692");
+            }
+            else if (siteId.equals("MLC")) {
+                jsonObject.addProperty("type", "RUT");
+                jsonObject.addProperty("number", "96506015");
+            }
+            else if (siteId.equals("MLU")) {
+                jsonObject.addProperty("type", "CI");
+                jsonObject.addProperty("number", "8560749");
+            }
+            else if (siteId.equals("MCO")) {
+                jsonObject.addProperty("type", "NIT");
+                jsonObject.addProperty("number", "17128621626");
+            }
+            else if (siteId.equals("MPE")) {
+                jsonObject.addProperty("type", "DNI");
+                jsonObject.addProperty("number", "92430065B");
+            }
+            else if (siteId.equals("MLV")) {
+                jsonObject.addProperty("type", "Pasaporte");
+                jsonObject.addProperty("number", "1234567890");
             }
         }
 

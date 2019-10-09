@@ -285,7 +285,7 @@ public class Preference extends MPBase {
 
     public Preference appendTax(Tax tax) {
         if (this.taxes == null) {
-            this.taxes = new ArrayList<>();
+            this.taxes = new ArrayList<Tax>();
         }
         this.taxes.add(tax);
         return this;
