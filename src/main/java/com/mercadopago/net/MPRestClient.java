@@ -57,8 +57,6 @@ import java.util.Map;
 public class MPRestClient {
 
     private static final int VALIDATE_INACTIVITY_INTERVAL_MS = 30000;
-    private static final int DEFAULT_KEEP_ALIVE_TIMEOUT_MS = 10000;
-    private static final String KEEP_ALIVE_TIMEOUT_PARAM_NAME = "timeout";
 
     private HttpClient httpClient;
     private HttpHost httpProxy = null;
@@ -115,7 +113,7 @@ public class MPRestClient {
     @Deprecated
     public MPApiResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders, int retries, int connectionTimeout, int socketTimeout)
             throws MPRestException {
-        Map<String, String> headers = new HashMap<>();
+        Map<String, String> headers = new HashMap<String, String>();
         if (colHeaders != null) {
             for (Header header : colHeaders) {
                 headers.put(header.getName(), header.getValue());
@@ -193,7 +191,7 @@ public class MPRestClient {
         HttpEntity entity = normalizePayload(payloadType, payload);
         HttpRequestBase request = getRequestMethod(httpMethod, uri, entity);
 
-        Map<String, String> headers = new HashMap<>();
+        Map<String, String> headers = new HashMap<String, String>();
         headers.put(HTTP.USER_AGENT, String.format("MercadoPago Java SDK/%s", MercadoPago.SDK.getVersion()));
         headers.put("x-product-id", MercadoPago.SDK.getProductId());
         for (String headerName : requestOptions.getCustomHeaders().keySet()) {
@@ -235,24 +233,11 @@ public class MPRestClient {
         connectionManager.setDefaultMaxPerRoute(MercadoPago.SDK.getMaxConnections());
         connectionManager.setValidateAfterInactivity(VALIDATE_INACTIVITY_INTERVAL_MS);
 
-        ConnectionKeepAliveStrategy keepAliveStrategy = (response, context) -> {
-            HeaderElementIterator it = new BasicHeaderElementIterator(response.headerIterator(HTTP.CONN_KEEP_ALIVE));
-            while (it.hasNext()) {
-                HeaderElement he = it.nextElement();
-                String param = he.getName();
-                String value = he.getValue();
-                if (value != null && param.equalsIgnoreCase(KEEP_ALIVE_TIMEOUT_PARAM_NAME)) {
-                    return Long.parseLong(value) * 1000;
-                }
-            }
-            return DEFAULT_KEEP_ALIVE_TIMEOUT_MS;
-        };
-
         DefaultHttpRequestRetryHandler retryHandler = new DefaultHttpRequestRetryHandler(MercadoPago.SDK.getRetries(), false);
 
         HttpClientBuilder httpClientBuilder = HttpClients.custom()
                 .setConnectionManager(connectionManager)
-                .setKeepAliveStrategy(keepAliveStrategy)
+                .setKeepAliveStrategy(new KeepAliveStrategy())
                 .setRetryHandler(retryHandler)
                 .disableCookieManagement()
                 .disableRedirectHandling();
@@ -282,7 +267,7 @@ public class MPRestClient {
 
             } else {
                 Map<String, Object> map = new Gson().fromJson(payload.toString(), new TypeToken<Map<String, Object>>(){}.getType());
-                List<NameValuePair> params = new ArrayList<>(2);
+                List<NameValuePair> params = new ArrayList<NameValuePair>(2);
                 for (Map.Entry<String, Object> entry : map.entrySet()) {
                     params.add(new BasicNameValuePair(entry.getKey(), entry.getValue().toString()));
                 }

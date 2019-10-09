@@ -3,7 +3,7 @@
 
     <groupId>com.mercadopago</groupId>
     <artifactId>dx-java</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Mercadopago SDK</name>
@@ -47,8 +47,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>1.6</source>
+                    <target>1.6</target>
                 </configuration>
             </plugin>
 

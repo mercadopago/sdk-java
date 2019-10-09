@@ -301,4 +301,45 @@ public class PreferenceTest {
 
     }
 
+    @Test
+    public void preferenceNegativeItemValueTest() throws MPException {
+        Item item1 = new Item();
+        item1.setTitle("Title");
+        item1.setDescription("Description");
+        item1.setQuantity(1);
+        item1.setCurrencyId("ARS");
+        item1.setUnitPrice(10.0f);
+
+        Item item2 = new Item();
+        item2.setTitle("Discount");
+        item2.setDescription("Description");
+        item2.setQuantity(1);
+        item2.setCurrencyId("ARS");
+        item2.setUnitPrice(-5.0f);
+
+        Payer payer = new Payer();
+        payer.setName("Name");
+        payer.setSurname("Surname");
+        payer.setEmail("email@fakeemail.com");
+        payer.setDateCreated(new Date().toString());
+
+        Preference preference = new Preference();
+        preference.appendItem(item1);
+        preference.appendItem(item2);
+        preference.setPayer(payer);
+        preference.setExpires(true);
+        preference.setExpirationDateFrom(new Date());
+
+        preference.appendProcessingModes(Preference.ProcessingMode.aggregator);
+
+        preference.setBinaryMode(false);
+
+        preference.save();
+        assertEquals(201, preference.getLastApiResponse().getStatusCode());
+        assertNotNull(preference.getId());
+        assertEquals(2, preference.getItems().size());
+        assertEquals("regular_payment", preference.getOperationType().toString());
+
+    }
+
 }

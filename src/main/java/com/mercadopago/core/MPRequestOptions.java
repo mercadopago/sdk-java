@@ -85,7 +85,7 @@ public class MPRequestOptions {
             connectionTimeout = MercadoPago.SDK.getConnectionTimeout();
             connectionRequestTimeout = MercadoPago.SDK.getConnectionRequestTimeout();
             socketTimeout = MercadoPago.SDK.getSocketTimeout();
-            customHeaders = new HashMap<>();
+            customHeaders = new HashMap<String, String>();
         }
 
         public String getAccessToken() {
