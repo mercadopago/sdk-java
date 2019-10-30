@@ -45,7 +45,8 @@ public class Preference extends MPBase {
 
     public enum OperationType {
         regular_payment,
-        money_transfer
+        money_transfer,
+        pos_payment
     }
     @Size(max=600) private String additionalInfo = null;
     private AutoReturn autoReturn = null;
@@ -151,6 +152,11 @@ public class Preference extends MPBase {
 
     public OperationType getOperationType() {
         return operationType;
+    }
+
+    public Preference setOperationType(OperationType operationType){
+        this.operationType = operationType;
+        return this;
     }
 
     public String getAdditionalInfo() {
