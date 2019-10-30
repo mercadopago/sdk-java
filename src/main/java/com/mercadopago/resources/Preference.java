@@ -65,7 +65,7 @@ public class Preference extends MPBase {
     private String sponsorId = null;
     public enum ProcessingMode {
         aggregator,
-        gatway
+        gateway
     }
     private ArrayList<ProcessingMode> processingModes = null;
     private Boolean binaryMode = null;
