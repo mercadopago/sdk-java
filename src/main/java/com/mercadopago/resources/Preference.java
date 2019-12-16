@@ -1,5 +1,6 @@
 package com.mercadopago.resources;
 
+import com.google.gson.JsonObject;
 import com.mercadopago.core.MPBase;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.core.annotations.rest.GET;
@@ -41,7 +42,7 @@ public class Preference extends MPBase {
     private String sandboxInitPoint = null;
     private Date dateCreated = null;
     private OperationType operationType = null;
-
+    private JsonObject metadata = null;
 
     public enum OperationType {
         regular_payment,
@@ -294,6 +295,15 @@ public class Preference extends MPBase {
             this.taxes = new ArrayList<Tax>();
         }
         this.taxes.add(tax);
+        return this;
+    }
+
+    public JsonObject getMetadata() {
+        return metadata;
+    }
+
+    public Preference setMetadata(JsonObject metadata) {
+        this.metadata = metadata;
         return this;
     }
 
