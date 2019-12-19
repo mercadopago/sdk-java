@@ -273,7 +273,7 @@ public class MPRestClient {
             if (payloadType == PayloadType.JSON) {
                 StringEntity stringEntity;
                 try {
-                    stringEntity = new StringEntity(payload.toString());
+                    stringEntity = new StringEntity(payload.toString(), "UTF-8");
                 } catch(Exception ex) {
                     throw new MPRestException(ex);
                 }
