@@ -1,6 +1,7 @@
 package com.mercadopago.resources;
 
 import com.google.gson.JsonObject;
+import com.mercadopago.MercadoPago;
 import com.mercadopago.core.MPBase;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.core.annotations.rest.GET;
@@ -9,16 +10,11 @@ import com.mercadopago.core.annotations.rest.PUT;
 import com.mercadopago.core.annotations.validation.NotNull;
 import com.mercadopago.core.annotations.validation.Size;
 import com.mercadopago.exceptions.MPException;
-import com.mercadopago.resources.datastructures.preference.BackUrls;
-import com.mercadopago.resources.datastructures.preference.DifferentialPricing;
-import com.mercadopago.resources.datastructures.preference.Item;
-import com.mercadopago.resources.datastructures.preference.Payer;
-import com.mercadopago.resources.datastructures.preference.PaymentMethods;
-import com.mercadopago.resources.datastructures.preference.Shipments;
-import com.mercadopago.resources.datastructures.preference.Tax;
+import com.mercadopago.resources.datastructures.preference.*;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * Mercado Pago MercadoPago
@@ -72,6 +68,7 @@ public class Preference extends MPBase {
     private ArrayList<ProcessingMode> processingModes = null;
     private Boolean binaryMode = null;
     private ArrayList<Tax> taxes = null;
+    private ArrayList<Track> tracks = null;
 
     public ArrayList<Item> getItems() {
         return items;
@@ -307,6 +304,23 @@ public class Preference extends MPBase {
         return this;
     }
 
+    public ArrayList<Track> getTracks() {
+        return tracks;
+    }
+
+    public Preference setTracks(ArrayList<Track> tracks) {
+        this.tracks = tracks;
+        return this;
+    }
+
+    public Preference appendTrack(Track track) {
+        if (this.tracks != null) {
+            this.tracks = new ArrayList<Track>();
+        }
+        this.tracks.add(track);
+        return this;
+    }
+
     public static Preference findById(String id) throws MPException {
         return findById(id, WITHOUT_CACHE);
     }
@@ -326,6 +340,10 @@ public class Preference extends MPBase {
 
     @POST(path="/checkout/preferences")
     public Preference save(MPRequestOptions requestOptions) throws MPException {
+        if (requestOptions == null) {
+            requestOptions = MPRequestOptions.createDefault();
+        }
+        addTrackingHeaders(requestOptions);
         return processMethod("save", WITHOUT_CACHE, requestOptions);
     }
 

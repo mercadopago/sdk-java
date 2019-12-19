@@ -787,4 +787,17 @@ public abstract class MPBase {
     public void setMarketplaceAccessToken(String marketplaceAccessToken) {
         this.marketplaceAccessToken = marketplaceAccessToken;
     }
+
+    protected void addTrackingHeaders(MPRequestOptions requestOptions) {
+        Map<String, String> customHeaders = requestOptions.getCustomHeaders();
+        if (MercadoPago.SDK.getPlatformId() != null && !MercadoPago.SDK.getPlatformId().trim().equals("") && !customHeaders.containsKey("x-platform-id")) {
+            customHeaders.put("x-platform-id", MercadoPago.SDK.getPlatformId());
+        }
+        if (MercadoPago.SDK.getCorporationId() != null && !MercadoPago.SDK.getCorporationId().trim().equals("") && !customHeaders.containsKey("x-corporation-id")) {
+            customHeaders.put("x-corporation-id", MercadoPago.SDK.getCorporationId());
+        }
+        if (MercadoPago.SDK.getIntegratorId() != null && !MercadoPago.SDK.getIntegratorId().trim().equals("") && !customHeaders.containsKey("x-integrator-id")) {
+            customHeaders.put("x-integrator-id", MercadoPago.SDK.getIntegratorId());
+        }
+    }
 }
