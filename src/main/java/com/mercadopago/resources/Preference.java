@@ -314,7 +314,7 @@ public class Preference extends MPBase {
     }
 
     public Preference appendTrack(Track track) {
-        if (this.tracks != null) {
+        if (this.tracks == null) {
             this.tracks = new ArrayList<Track>();
         }
         this.tracks.add(track);
