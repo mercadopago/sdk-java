@@ -416,6 +416,10 @@ public class Payment extends MPBase {
 
     @POST(path="/v1/payments")
     public Payment save(MPRequestOptions requestOptions) throws MPException {
+        if (requestOptions == null) {
+            requestOptions = MPRequestOptions.createDefault();
+        }
+        addTrackingHeaders(requestOptions);
         return processMethod("save", WITHOUT_CACHE, requestOptions);
     }
 
@@ -446,6 +450,7 @@ public class Payment extends MPBase {
         refund.setPaymentId(this.getId());
         refund.setAmount(amount);
         refund.save(requestOptions);
+        this.lastApiResponse = refund.getLastApiResponse();
         // If refund has been successfully created then update the instance values
 
         if (refund.getId() != null) {

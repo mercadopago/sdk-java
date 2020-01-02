@@ -45,6 +45,9 @@ public class MercadoPago {
         private static volatile String accessToken = null;
         private static volatile String userToken = null;
         private static volatile String appId = null;
+        private static volatile String platformId = null;
+        private static volatile String corporationId = null;
+        private static volatile String integratorId = null;
         private static volatile String baseUrl = DEFAULT_BASE_URL;
 
         private static volatile int maxConnections = DEFAULT_MAX_CONNECTIONS;
@@ -120,6 +123,39 @@ public class MercadoPago {
                 throw new MPException("appId setting can not be changed");
             }
             appId = value;
+        }
+
+        /**
+         * Getter/Setter for PlatformId
+         */
+        public static String getPlatformId() {
+            return platformId;
+        }
+
+        public static void setPlatformId(String value) {
+            platformId = value;
+        }
+
+        /**
+         * Getter/Setter for CorporationId
+         */
+        public static String getCorporationId() {
+            return corporationId;
+        }
+
+        public static void setCorporationId(String value) {
+            corporationId = value;
+        }
+
+        /**
+         * Getter/Setter for IntegratorId
+         */
+        public static String getIntegratorId() {
+            return integratorId;
+        }
+
+        public static void setIntegratorId(String value) {
+            integratorId = value;
         }
 
         /**
@@ -258,6 +294,9 @@ public class MercadoPago {
             setClientId(getValueFromMap(configurationParams, "clientId"));
             setAccessToken(getValueFromMap(configurationParams, "accessToken"));
             setAppId(getValueFromMap(configurationParams, "appId"));
+            setPlatformId(getValueFromMap(configurationParams, "platformId"));
+            setCorporationId(getValueFromMap(configurationParams, "corporationId"));
+            setIntegratorId(getValueFromMap(configurationParams, "integratorId"));
 
             int maxConnections = getIntValueFromMap(configurationParams, "maxConnections");
             if (maxConnections > 0) {
@@ -371,6 +410,9 @@ public class MercadoPago {
         public static void setConfiguration(Properties properties) throws MPException {
 
             setAppId(getValueFromProperties(properties, "appId"));
+            setPlatformId(getValueFromProperties(properties, "platformId"));
+            setCorporationId(getValueFromProperties(properties, "corporationId"));
+            setIntegratorId(getValueFromProperties(properties, "integratorId"));
 
             if (StringUtils.isNotEmpty(getValueFromProperties(properties, "accessToken"))) {
                 setAccessToken(getValueFromProperties(properties, "accessToken"));
@@ -461,6 +503,9 @@ public class MercadoPago {
             clientId = null;
             accessToken = null;
             appId = null;
+            platformId = null;
+            corporationId = null;
+            integratorId = null;
             baseUrl = DEFAULT_BASE_URL;
             maxConnections = DEFAULT_MAX_CONNECTIONS;
             connectionTimeout = DEFAULT_CONNECTION_TIMEOUT_MS;
