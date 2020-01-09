@@ -33,6 +33,7 @@ public class MercadoPago {
         private static final String DEFAULT_BASE_URL = "https://api.mercadopago.com";
         private static final String CURRENT_VERSION = "1.2.0";
         private static final String PRODUCT_ID = "BC32A7VTRPP001U8NHJ0";
+        private static final String CLIENT_NAME = "MercadoPago-SDK-Java";
 
         private static final int DEFAULT_MAX_CONNECTIONS = 10;
         private static final int DEFAULT_CONNECTION_TIMEOUT_MS = 5000;
@@ -145,6 +146,12 @@ public class MercadoPago {
          * @return Product ID
          */
         public static String getProductId() { return PRODUCT_ID; }
+
+         /**
+         * Get client name
+         * @return client name
+         */
+        public static String getClientName() { return CLIENT_NAME; }
 
         /**
          * Get the number of max simultaneous connections in the pool

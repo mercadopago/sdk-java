@@ -16,6 +16,7 @@ import com.mercadopago.core.annotations.rest.POST;
 import com.mercadopago.core.annotations.rest.PUT;
 import com.mercadopago.core.annotations.rest.PayloadType;
 import com.mercadopago.exceptions.MPException;
+import com.mercadopago.insight.Stats;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPRestClient;
 import org.apache.commons.lang.StringUtils;
@@ -385,6 +386,7 @@ public abstract class MPBase {
                     payloadType,
                     payload,
                     requestOptions);
+           
 
             if (useCache) {
                 MPCache.addToCache(cacheKey, response);

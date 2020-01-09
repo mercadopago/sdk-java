@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.mercadopago.exceptions.MPException;
+import com.mercadopago.insight.*;
 import com.mercadopago.net.HttpMethod;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -46,6 +47,9 @@ public class MPApiResponse implements Cloneable {
         this._responseMillis = responseMillis;
         parseRequest(httpMethod, request, payload);
         parseResponse(response);
+        //call Insight TEST
+        Stats stats = new Stats(request, response);
+        stats.start();
     }
 
     public String getMethod() {

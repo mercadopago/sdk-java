@@ -48,13 +48,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 /**
  * Mercado Pago MercadoPago
  * Simple Rest Client
  *
  * Created by Eduardo Paoletta on 11/11/16.
  */
-public class MPRestClient {
+public class MPRestClient{
 
     private static final int VALIDATE_INACTIVITY_INTERVAL_MS = 30000;
     private static final int DEFAULT_KEEP_ALIVE_TIMEOUT_MS = 10000;
@@ -179,7 +180,7 @@ public class MPRestClient {
             }
             long endMillis = System.currentTimeMillis();
             long responseMillis = endMillis - startMillis;
-
+            
             return new MPApiResponse(httpMethod, request, payload, response, responseMillis);
 
         } catch (MPRestException restEx) {
