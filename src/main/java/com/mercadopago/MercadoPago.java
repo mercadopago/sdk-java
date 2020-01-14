@@ -31,8 +31,9 @@ public class MercadoPago {
     public static class SDK {
 
         private static final String DEFAULT_BASE_URL = "https://api.mercadopago.com";
-        private static final String CURRENT_VERSION = "1.2.0";
+        private static final String CURRENT_VERSION = "1.4.0";
         private static final String PRODUCT_ID = "BC32A7VTRPP001U8NHJ0";
+        private static final String TRACKING_ID = String.format("platform:%s,type:SDK%s,so;", getJavaVersion(System.getProperty("java.runtime.version")), CURRENT_VERSION);
 
         private static final int DEFAULT_MAX_CONNECTIONS = 10;
         private static final int DEFAULT_CONNECTION_TIMEOUT_MS = 5000;
@@ -175,6 +176,12 @@ public class MercadoPago {
          * @return Current version
          */
         public static String getVersion() { return CURRENT_VERSION; }
+
+        /**
+         * Get tracking ID
+         * @return Tracking ID
+         */
+        public static String getTrackingId() { return TRACKING_ID; }
 
         /**
          * Get product ID
@@ -332,6 +339,24 @@ public class MercadoPago {
                     throw new MPException("Invalid values for proxyHostName and proxyPort");
                 }
             }
+        }
+
+        /**
+         * Get Java major runtime version
+         * @return Java major runtime version
+         */
+        private static String getJavaVersion(String version) {
+            if (version == null) {
+                return null;
+            }
+
+            String major = version.replaceAll("^1\\.", "");
+            int dotIndex = major.indexOf('.');
+            if (dotIndex != -1) {
+                major = major.substring(0, dotIndex);
+            }
+
+            return major + "|" + version;
         }
 
         /**
