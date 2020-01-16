@@ -1,16 +1,13 @@
 package com.mercadopago.insight;
 
-import java.io.IOException;
-
+import com.google.gson.Gson;
 import com.mercadopago.MercadoPago;
 import com.mercadopago.insight.dto.BusinessFlowInfo;
 import com.mercadopago.insight.dto.ClientInfo;
 import com.mercadopago.insight.dto.ConnectionInfo;
-import com.mercadopago.insight.dto.EventInfo;
 import com.mercadopago.insight.dto.ProtocolHttp;
 import com.mercadopago.insight.dto.ProtocolInfo;
 import com.mercadopago.insight.dto.StructuredMetricRequest;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -20,7 +17,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import com.google.gson.Gson;
+
+import java.io.IOException;
 
 public class InsightDataManager {
 
@@ -32,7 +30,7 @@ public class InsightDataManager {
             HttpPost insightRequest = new HttpPost("https://events.mercadopago.com/v2/metric");
 
             // add request headers
-            insightRequest.addHeader(TrafficLightManager.HEADER_X_INSIGHTS_METRIC_LAB_SCOPE, "test");
+            insightRequest.addHeader(TrafficLightManager.HEADER_X_INSIGHTS_METRIC_LAB_SCOPE, MercadoPago.SDK.getMetricsScope());
             insightRequest.addHeader(TrafficLightManager.HEADER_X_INSIGHTS_DATA, TrafficLightManager.INSIGHTS_API_ENDPOINT_METRIC);
             insightRequest.setHeader("Accept", "application/json");
             insightRequest.setHeader(TrafficLightManager.HEADER_CONTENT_TYPE, "application/json");
@@ -84,7 +82,6 @@ public class InsightDataManager {
                 insightResponse.close();
             }
         } catch (Exception e) {
-            System.out.println("SE ROMPIOO TODO METRICAS: " + e.getMessage());
         } finally {
             try {
                 httpClient.close();

@@ -1,12 +1,8 @@
 package com.mercadopago.insight;
 
 import com.mercadopago.insight.dto.TrafficLightResponse;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Stats extends Thread {
 
@@ -52,4 +48,4 @@ public class Stats extends Thread {
 
         return false;
     }
-  } 
+}

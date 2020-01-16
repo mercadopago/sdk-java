@@ -19,16 +19,13 @@ import com.google.gson.Gson;
 public class TrafficLightManager {
 
     public static final String HEADER_X_INSIGHTS_BUSINESS_FLOW = "X-Insights-Business-Flow";
-    public static final String HEADER_X_INSIGHTS_EVENT_NAME = "X-Insights-Event-Name";
 
     static final String HEADER_X_INSIGHTS_METRIC_LAB_SCOPE = "X-Insights-Metric-Lab-Scope";
     static final String HEADER_X_INSIGHTS_DATA = "X-Insights-Data";
-    static final String HEADER_X_INSIGHTS_DATA_ID = "X-Insights-Data-Id";
     static final String HEADER_X_PRODUCT_ID = "X-Product-Id";
     static final String HEADER_USER_AGENT = "User-Agent";
     static final String HEADER_CONTENT_TYPE = "Content-Type";
 
-    static final String INSIGHTS_API_BASE_PATH = "v2";
     static final String INSIGHTS_API_ENDPOINT_TRAFFIC_LIGHT = "traffic-light";
     static final String INSIGHTS_API_ENDPOINT_METRIC = "metric";
 
@@ -67,7 +64,7 @@ public class TrafficLightManager {
 
             // add request headers
             request.addHeader(HEADER_X_INSIGHTS_DATA, INSIGHTS_API_ENDPOINT_TRAFFIC_LIGHT);
-            request.addHeader(HEADER_X_INSIGHTS_METRIC_LAB_SCOPE, "test");
+            request.addHeader(HEADER_X_INSIGHTS_METRIC_LAB_SCOPE, MercadoPago.SDK.getMetricsScope());
             request.setHeader("Accept", "application/json");
             request.setHeader("Content-type", "application/json");
 
