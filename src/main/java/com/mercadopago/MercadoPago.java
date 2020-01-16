@@ -31,14 +31,17 @@ public class MercadoPago {
     public static class SDK {
 
         private static final String DEFAULT_BASE_URL = "https://api.mercadopago.com";
-        private static final String CURRENT_VERSION = "1.2.0";
+        private static final String CURRENT_VERSION = "1.4.0";
         private static final String PRODUCT_ID = "BC32A7VTRPP001U8NHJ0";
+        private static final String CLIENT_NAME = "MercadoPago-SDK-Java";
+        private static final String TRACKING_ID = String.format("platform:%s,type:SDK%s,so;", getJavaVersion(System.getProperty("java.runtime.version")), CURRENT_VERSION);
 
         private static final int DEFAULT_MAX_CONNECTIONS = 10;
         private static final int DEFAULT_CONNECTION_TIMEOUT_MS = 5000;
         private static final int DEFAULT_CONNECTION_REQUEST_TIMEOUT_MS = 5000;
         private static final int DEFAULT_SOCKET_TIMEOUT_MS = 5000;
         private static final int DEFAULT_RETRIES = 3;
+        private static final String DEFAULT_METRICS_SCOPE = "prod";
 
         private static volatile String clientSecret = null;
         private static volatile String clientId = null;
@@ -49,6 +52,7 @@ public class MercadoPago {
         private static volatile String corporationId = null;
         private static volatile String integratorId = null;
         private static volatile String baseUrl = DEFAULT_BASE_URL;
+        private static volatile String metricsScope = DEFAULT_METRICS_SCOPE;
 
         private static volatile int maxConnections = DEFAULT_MAX_CONNECTIONS;
         private static volatile int connectionTimeout = DEFAULT_CONNECTION_TIMEOUT_MS;
@@ -177,10 +181,22 @@ public class MercadoPago {
         public static String getVersion() { return CURRENT_VERSION; }
 
         /**
+         * Get tracking ID
+         * @return Tracking ID
+         */
+        public static String getTrackingId() { return TRACKING_ID; }
+
+        /**
          * Get product ID
          * @return Product ID
          */
         public static String getProductId() { return PRODUCT_ID; }
+
+         /**
+         * Get client name
+         * @return client name
+         */
+        public static String getClientName() { return CLIENT_NAME; }
 
         /**
          * Get the number of max simultaneous connections in the pool
@@ -279,6 +295,22 @@ public class MercadoPago {
         }
 
         /**
+         * Get the CRE metrics scope
+         * @return metrics scope
+         */
+        public static String getMetricsScope() {
+            return metricsScope;
+        }
+
+        /**
+         * Set CRE metrics scope
+         * @param value metric scope
+         */
+        public static void setMetricsScope(String value) {
+            metricsScope = value;
+        }
+
+        /**
          * Set configuration params with a map.
          * Valid keys are: clientSecret, clientId, accessToken, appId, connectionTimeout, socketTimeout,
          * connectionRequestTimeout, retries, proxyHost, proxyPort
@@ -332,6 +364,24 @@ public class MercadoPago {
                     throw new MPException("Invalid values for proxyHostName and proxyPort");
                 }
             }
+        }
+
+        /**
+         * Get Java major runtime version
+         * @return Java major runtime version
+         */
+        private static String getJavaVersion(String version) {
+            if (version == null) {
+                return null;
+            }
+
+            String major = version.replaceAll("^1\\.", "");
+            int dotIndex = major.indexOf('.');
+            if (dotIndex != -1) {
+                major = major.substring(0, dotIndex);
+            }
+
+            return major + "|" + version;
         }
 
         /**

@@ -20,10 +20,7 @@ import org.apache.http.util.EntityUtils;
  */
 public class MPApiResponse implements Cloneable {
 
-    private HttpRequestBase _httpRequest;
-    private JsonObject _requestPayload;
     private HttpResponse _httpResponse;
-    private long _responseMillis;
 
     private String method;
     private String url;
@@ -40,10 +37,7 @@ public class MPApiResponse implements Cloneable {
 
     public MPApiResponse(HttpMethod httpMethod, HttpRequestBase request, JsonObject payload, HttpResponse response, long responseMillis)
             throws MPException {
-        this._httpRequest = request;
-        this._requestPayload = payload;
         this._httpResponse = response;
-        this._responseMillis = responseMillis;
         parseRequest(httpMethod, request, payload);
         parseResponse(response);
     }

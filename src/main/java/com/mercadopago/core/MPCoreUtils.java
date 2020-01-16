@@ -89,7 +89,6 @@ public class MPCoreUtils {
                     result.write(buffer, 0, length);
                 }
                 value = result.toString("UTF-8");
-
             } catch (Exception ex) {
                 throw new com.mercadopago.exceptions.MPException(ex);
             }
