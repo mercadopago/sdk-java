@@ -202,6 +202,7 @@ public class MPRestClient{
         Map<String, String> headers = new HashMap<String, String>();
         headers.put(HTTP.USER_AGENT, String.format("MercadoPago Java SDK/%s", MercadoPago.SDK.getVersion()));
         headers.put("x-product-id", MercadoPago.SDK.getProductId());
+        headers.put("x-tracking-id", MercadoPago.SDK.getTrackingId());
         for (String headerName : requestOptions.getCustomHeaders().keySet()) {
             if (!headers.containsKey(headerName)) {
                 headers.put(headerName, requestOptions.getCustomHeaders().get(headerName));
