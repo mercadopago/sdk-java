@@ -5,6 +5,9 @@ import com.mercadopago.insight.dto.TrafficLightResponse;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Stats extends Thread {
 
     private HttpRequestBase _httpRequest;
@@ -18,10 +21,35 @@ public class Stats extends Thread {
     @Override
     public void run() {
         TrafficLightResponse trafficLight = TrafficLightManager.getInstance().trafficLightResponse;
-        if (trafficLight.isSendDataEnabled()) {
+        if (trafficLight.isSendDataEnabled() && isEndpointInWhiteList(trafficLight, this._httpRequest.getURI().toString())) {
             InsightDataManager insightDataManager = new  InsightDataManager();
             insightDataManager.call(this._httpRequest, this._httpResponse);
         }
     }
 
+    private boolean isEndpointInWhiteList(TrafficLightResponse trafficLight, String endpoint) {
+        if (trafficLight.getEndpointWhiteList() == null) {
+            return false;
+        }
+
+        for (String pattern : trafficLight.getEndpointWhiteList()) {
+            if (pattern.equals("*")) {
+                return true;
+            }
+
+            boolean matched = true;
+            String[] parts = pattern.split("\\*");
+            for (String part : parts) {
+                if (part.length() == 0) {
+                    continue;
+                }
+                matched = matched && endpoint.toLowerCase().contains(part);
+            }
+            if (matched) {
+                return true;
+            }
+        }
+
+        return false;
+    }
   } 

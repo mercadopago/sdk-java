@@ -67,7 +67,7 @@ public class TrafficLightManager {
 
             // add request headers
             request.addHeader(HEADER_X_INSIGHTS_DATA, INSIGHTS_API_ENDPOINT_TRAFFIC_LIGHT);
-            request.addHeader("X-Insights-Metric-Lab-Scope", "test");
+            request.addHeader(HEADER_X_INSIGHTS_METRIC_LAB_SCOPE, "test");
             request.setHeader("Accept", "application/json");
             request.setHeader("Content-type", "application/json");
 

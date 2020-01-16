@@ -39,8 +39,6 @@ public class InsightDataManager {
            
             ClientInfo clientInfo = new ClientInfo.Builder().withName(MercadoPago.SDK.getClientName()).withVersion(MercadoPago.SDK.getVersion())
                     .build();
-            EventInfo eventInfo = new EventInfo.Builder().withName("test").build();
-
 
             BusinessFlowInfo businessFlowInfo = new BusinessFlowInfo.Builder()
                     .withName(request.getLastHeader(TrafficLightManager.HEADER_X_INSIGHTS_BUSINESS_FLOW)!=null?request.getLastHeader(TrafficLightManager.HEADER_X_INSIGHTS_BUSINESS_FLOW).getValue():"")
@@ -63,7 +61,6 @@ public class InsightDataManager {
 
             StructuredMetricRequest structuredMetricRequest = new StructuredMetricRequest.Builder()
                                                             .withClientInfo(clientInfo)
-                                                            .withEventInfo(eventInfo)
                                                             .withBusinessFlowInfo(businessFlowInfo)
                                                             .withConnectionInfo(connectionInfo)
                                                             .build();
@@ -81,7 +78,6 @@ public class InsightDataManager {
                 if (entityRes != null) {
                     // return it as a String
                     String result = EntityUtils.toString(entityRes);
-                    System.out.println(result);
                 }
 
             } finally {
