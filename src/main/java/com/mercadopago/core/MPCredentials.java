@@ -40,13 +40,16 @@ public class MPCredentials {
 
         String access_token = null;
         String baseUri = MercadoPago.SDK.getBaseUrl();
-        try (CloseableHttpClient httpClient = HttpClients.createMinimal()) {
+
+        CloseableHttpClient httpClient = null;
+        try {
+            httpClient = HttpClients.createMinimal();
+
             MPApiResponse response = new MPRestClient(httpClient).executeRequest(
                     HttpMethod.POST,
                     baseUri + "/oauth/token",
                     PayloadType.JSON,
                     jsonPayload);
-
 
             if (response.getStatusCode() == 200) {
                 JsonElement jsonElement = response.getJsonElementResponse();
@@ -56,11 +59,20 @@ public class MPCredentials {
             } else {
                 throw new MPException("Can not retrieve the \"access_token\"");
             }
-        } catch (IOException e) {
-            throw new MPException("Can not retrieve the \"access_token\"");
+        } finally {
+            closeSilently(httpClient);
         }
 
         return access_token;
     }
 
+    private static void closeSilently(CloseableHttpClient httpClient) throws MPException {
+        if (httpClient != null) {
+            try {
+                httpClient.close();
+            } catch (Throwable t) {
+                throw new MPException("Can not retrieve the \"access_token\"");
+            }
+        }
+    }
 }
