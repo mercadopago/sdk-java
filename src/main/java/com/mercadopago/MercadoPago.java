@@ -41,7 +41,6 @@ public class MercadoPago {
         private static final int DEFAULT_CONNECTION_REQUEST_TIMEOUT_MS = 5000;
         private static final int DEFAULT_SOCKET_TIMEOUT_MS = 5000;
         private static final int DEFAULT_RETRIES = 3;
-        private static final String DEFAULT_METRICS_SCOPE = "prod";
 
         private static volatile String clientSecret = null;
         private static volatile String clientId = null;
@@ -52,7 +51,6 @@ public class MercadoPago {
         private static volatile String corporationId = null;
         private static volatile String integratorId = null;
         private static volatile String baseUrl = DEFAULT_BASE_URL;
-        private static volatile String metricsScope = DEFAULT_METRICS_SCOPE;
 
         private static volatile int maxConnections = DEFAULT_MAX_CONNECTIONS;
         private static volatile int connectionTimeout = DEFAULT_CONNECTION_TIMEOUT_MS;
@@ -292,22 +290,6 @@ public class MercadoPago {
          */
         public static void setProxy(HttpHost value) {
             proxy = value;
-        }
-
-        /**
-         * Get the CRE metrics scope
-         * @return metrics scope
-         */
-        public static String getMetricsScope() {
-            return metricsScope;
-        }
-
-        /**
-         * Set CRE metrics scope
-         * @param value metric scope
-         */
-        public static void setMetricsScope(String value) {
-            metricsScope = value;
         }
 
         /**

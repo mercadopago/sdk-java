@@ -9,7 +9,6 @@ import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.core.annotations.rest.PayloadType;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.exceptions.MPRestException;
-import com.mercadopago.insight.Stats;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -181,10 +180,6 @@ public class MPRestClient{
             }
             long endMillis = System.currentTimeMillis();
             long responseMillis = endMillis - startMillis;
-
-            //call insight
-            Stats stats = new Stats(request, response);
-            stats.start();
             
             return new MPApiResponse(httpMethod, request, payload, response, responseMillis);
 
