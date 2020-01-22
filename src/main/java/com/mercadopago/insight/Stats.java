@@ -8,18 +8,28 @@ public class Stats extends Thread {
 
     private HttpRequestBase _httpRequest;
     private HttpResponse _httpResponse;
+    private long _startMillis;
+    private long _endMillis;
 
     public Stats(HttpRequestBase request, HttpResponse response) {
         this._httpRequest = request;
         this._httpResponse = response;
+        
     }
+ 
+    public Stats(HttpRequestBase request, HttpResponse response, long startMillis, long endMillis) {
+        this._httpRequest = request;
+        this._httpResponse = response;
+        this._startMillis = startMillis;
+        this._endMillis = endMillis;
+	}
 
-    @Override
+	@Override
     public void run() {
         TrafficLightResponse trafficLight = TrafficLightManager.getInstance().trafficLightResponse;
         if (trafficLight.isSendDataEnabled() && isEndpointInWhiteList(trafficLight, this._httpRequest.getURI().toString())) {
             InsightDataManager insightDataManager = new  InsightDataManager();
-            insightDataManager.call(this._httpRequest, this._httpResponse);
+            insightDataManager.call(this._httpRequest, this._httpResponse, this._startMillis, this._endMillis);
         }
     }
 

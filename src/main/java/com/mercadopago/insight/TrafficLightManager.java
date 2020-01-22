@@ -14,13 +14,16 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+
 import com.google.gson.Gson;
 
 public class TrafficLightManager {
 
     public static final String HEADER_X_INSIGHTS_BUSINESS_FLOW = "X-Insights-Business-Flow";
+    public static final String HEADER_X_INSIGHTS_EVENT_NAME = "X-Insights-Event-Name";
 
     static final String HEADER_X_INSIGHTS_METRIC_LAB_SCOPE = "X-Insights-Metric-Lab-Scope";
+    static final String HEADER_X_INSIGHTS_DATA_ID = "X-Insights-Data-Id";
     static final String HEADER_X_INSIGHTS_DATA = "X-Insights-Data";
     static final String HEADER_X_PRODUCT_ID = "X-Product-Id";
     static final String HEADER_USER_AGENT = "User-Agent";
@@ -76,7 +79,6 @@ public class TrafficLightManager {
             request.setEntity(entityReq);
 
             CloseableHttpResponse lightResponse = httpClient.execute(request);
-
             try {
 
                 HttpEntity entityRes = lightResponse.getEntity();
@@ -92,6 +94,7 @@ public class TrafficLightManager {
             } finally {
                 lightResponse.close();
             }
+ 
         } catch (Exception e) {
             getDefaultResponse();
         } finally {

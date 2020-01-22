@@ -180,13 +180,12 @@ public class MPRestClient{
                 response = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 404, null));
             }
             long endMillis = System.currentTimeMillis();
-            long responseMillis = endMillis - startMillis;
 
             //call insight
-            Stats stats = new Stats(request, response);
+            Stats stats = new Stats(request, response, startMillis, endMillis);
             stats.start();
             
-            return new MPApiResponse(httpMethod, request, payload, response, responseMillis);
+            return new MPApiResponse(httpMethod, request, payload, response);
 
         } catch (MPRestException restEx) {
             throw restEx;
