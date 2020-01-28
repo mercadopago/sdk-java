@@ -1,5 +1,15 @@
 package com.mercadopago.net;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLPeerUnverifiedException;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -9,6 +19,8 @@ import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.core.annotations.rest.PayloadType;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.exceptions.MPRestException;
+import com.mercadopago.insight.Stats;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -24,6 +36,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
@@ -41,23 +54,12 @@ import org.apache.http.message.BasicStatusLine;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.ssl.SSLContexts;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLPeerUnverifiedException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-
 /**
- * Mercado Pago MercadoPago
- * Simple Rest Client
+ * Mercado Pago MercadoPago Simple Rest Client
  *
  * Created by Eduardo Paoletta on 11/11/16.
  */
-public class MPRestClient{
+public class MPRestClient {
 
     private static final int VALIDATE_INACTIVITY_INTERVAL_MS = 30000;
 
@@ -78,15 +80,13 @@ public class MPRestClient{
     }
 
     @Deprecated
-    public MPApiResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders)
-            throws MPRestException {
+    public MPApiResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders) throws MPRestException {
 
         return this.executeRequest(httpMethod, uri, payloadType, payload, colHeaders, 0, 0, 0);
     }
 
     @Deprecated
-    public MPApiResponse executeGenericRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders)
-            throws MPRestException {
+    public MPApiResponse executeGenericRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders) throws MPRestException {
 
         String full_uri;
         try {
@@ -98,19 +98,21 @@ public class MPRestClient{
         return this.executeRequest(httpMethod, full_uri, payloadType, payload, colHeaders, 0, 0, 0);
     }
 
-
     /**
      * Executes a http request and returns a response
      *
-     * @param httpMethod                a String with the http method to execute
-     * @param uri                       a String with the uri
-     * @param payloadType               PayloadType NONE, JSON, FORM_DATA, X_WWW_FORM_URLENCODED
-     * @param payload                   JsonObject with the payload
-     * @param colHeaders                custom headers to add in the request
-     * @param retries                   int with the retries for the api request
-     * @param connectionTimeout         int with the connection timeout for the api request expressed in milliseconds
-     * @param socketTimeout             int with the socket timeout for the api request expressed in milliseconds
-     * @return                          MPApiResponse with parsed info of the http response
+     * @param httpMethod        a String with the http method to execute
+     * @param uri               a String with the uri
+     * @param payloadType       PayloadType NONE, JSON, FORM_DATA,
+     *                          X_WWW_FORM_URLENCODED
+     * @param payload           JsonObject with the payload
+     * @param colHeaders        custom headers to add in the request
+     * @param retries           int with the retries for the api request
+     * @param connectionTimeout int with the connection timeout for the api request
+     *                          expressed in milliseconds
+     * @param socketTimeout     int with the socket timeout for the api request
+     *                          expressed in milliseconds
+     * @return MPApiResponse with parsed info of the http response
      * @throws MPRestException
      */
     @Deprecated
@@ -123,11 +125,8 @@ public class MPRestClient{
             }
         }
 
-        MPRequestOptions requestOptions = MPRequestOptions.builder()
-                .setCustomHeaders(headers)
-                .setConnectionTimeout(connectionTimeout)
-                .setSocketTimeout(socketTimeout)
-                .build();
+        MPRequestOptions requestOptions = MPRequestOptions.builder().setCustomHeaders(headers)
+                .setConnectionTimeout(connectionTimeout).setSocketTimeout(socketTimeout).build();
 
         return executeRequest(httpMethod, uri, payloadType, payload, requestOptions);
     }
@@ -135,42 +134,43 @@ public class MPRestClient{
     /**
      * Executes a http request and returns a response
      *
-     * @param httpMethod                a String with the http method to execute
-     * @param uri                       a String with the uri
-     * @param payloadType               PayloadType NONE, JSON, FORM_DATA, X_WWW_FORM_URLENCODED
-     * @param payload                   JsonObject with the payload
-     * @return                          MPApiResponse with parsed info of the http response
+     * @param httpMethod  a String with the http method to execute
+     * @param uri         a String with the uri
+     * @param payloadType PayloadType NONE, JSON, FORM_DATA, X_WWW_FORM_URLENCODED
+     * @param payload     JsonObject with the payload
+     * @return MPApiResponse with parsed info of the http response
      * @throws MPRestException
      */
-    public MPApiResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload)
-            throws MPRestException {
+    public MPApiResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload) throws MPRestException {
         return executeRequest(httpMethod, uri, payloadType, payload, MPRequestOptions.createDefault());
     }
 
     /**
      * Executes a http request and returns a response
      *
-     * @param httpMethod                a String with the http method to execute
-     * @param uri                       a String with the uri
-     * @param payloadType               PayloadType NONE, JSON, FORM_DATA, X_WWW_FORM_URLENCODED
-     * @param payload                   JsonObject with the payload
-     * @param requestOptions            a Object with request options
-     * @return                          MPApiResponse with parsed info of the http response
+     * @param httpMethod     a String with the http method to execute
+     * @param uri            a String with the uri
+     * @param payloadType    PayloadType NONE, JSON, FORM_DATA,
+     *                       X_WWW_FORM_URLENCODED
+     * @param payload        JsonObject with the payload
+     * @param requestOptions a Object with request options
+     * @return MPApiResponse with parsed info of the http response
      * @throws MPRestException
      */
-    public MPApiResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, MPRequestOptions requestOptions)
-            throws MPRestException {
+    public MPApiResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, MPRequestOptions requestOptions) throws MPRestException {
         try {
+            long startRequestMillis = System.currentTimeMillis();
             if (requestOptions == null) {
                 requestOptions = MPRequestOptions.createDefault();
             }
 
             HttpRequestBase request = createHttpRequest(httpMethod, uri, payloadType, payload, requestOptions);
+            HttpClientContext context = HttpClientContext.create();
 
             HttpResponse response;
             long startMillis = System.currentTimeMillis();
             try {
-                response = httpClient.execute(request);
+                response = httpClient.execute(request, context);
             } catch (ClientProtocolException e) {
                 response = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 400, null));
             } catch (SSLPeerUnverifiedException e) {
@@ -179,9 +179,11 @@ public class MPRestClient{
                 response = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 404, null));
             }
             long endMillis = System.currentTimeMillis();
-            long responseMillis = endMillis - startMillis;
+
+            Stats stats = new Stats(context, request, response, startMillis, endMillis, startRequestMillis);
+            stats.start();
             
-            return new MPApiResponse(httpMethod, request, payload, response, responseMillis);
+            return new MPApiResponse(httpMethod, request, payload, response);
 
         } catch (MPRestException restEx) {
             throw restEx;
