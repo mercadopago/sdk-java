@@ -18,7 +18,6 @@ import com.mercadopago.insight.dto.StructuredMetricRequest;
 import com.mercadopago.insight.dto.TcpInfo;
 
 import org.apache.http.Header;
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
@@ -31,18 +30,17 @@ import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicStatusLine;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpCoreContext;
-import org.apache.http.util.EntityUtils;
 
 
 public class InsightDataManager {
 
     public HttpResponse sendMetrics(HttpCoreContext context, HttpRequestBase request, HttpResponse response, long startMillis, long endMillis, long startRequestMillis) {
-        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+        
         HttpResponse insightResponse;
         HttpPost insightRequest = new HttpPost(Stats.INSIGHT_DEFAULT_BASE_URL + Stats.INSIGHTS_API_BASE_PATH +"/"+ Stats.INSIGHTS_API_ENDPOINT_METRIC);
 
         try {
-            
+            CloseableHttpClient httpClient = HttpClientBuilder.create().build();
             // add request headers
             insightRequest.addHeader(Stats.HEADER_X_INSIGHTS_METRIC_LAB_SCOPE, MercadoPago.SDK.getMetricsScope());
             insightRequest.addHeader(Stats.HEADER_X_INSIGHTS_DATA, Stats.INSIGHTS_API_ENDPOINT_METRIC);
@@ -115,6 +113,7 @@ public class InsightDataManager {
             insightRequest.setEntity(entityReq);
 
             insightResponse = httpClient.execute(insightRequest);
+            httpClient.close();
 
         } catch (ClientProtocolException e) {
             insightResponse = new BasicHttpResponse(new BasicStatusLine(insightRequest.getProtocolVersion(), 400, null));
@@ -122,12 +121,6 @@ public class InsightDataManager {
             insightResponse = new BasicHttpResponse(new BasicStatusLine(insightRequest.getProtocolVersion(), 403, null));
         } catch (IOException e) {
             insightResponse = new BasicHttpResponse(new BasicStatusLine(insightRequest.getProtocolVersion(), 404, null));
-        } finally {
-            try {
-                httpClient.close();
-            } catch (IOException e) {
-                //DO nothing
-            }
         }
 
         return insightResponse;

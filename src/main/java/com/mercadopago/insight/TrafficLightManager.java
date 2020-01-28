@@ -39,12 +39,13 @@ public class TrafficLightManager {
     }
 
     private static HttpResponse callTrafficLight() {
-        CloseableHttpClient httpClient = HttpClients.createDefault();
+        
         HttpResponse lightResponse;
         HttpPost request = new HttpPost(Stats.INSIGHT_DEFAULT_BASE_URL + Stats.INSIGHTS_API_BASE_PATH +"/"+ Stats.INSIGHTS_API_ENDPOINT_TRAFFIC_LIGHT);
 
         try {
 
+            CloseableHttpClient httpClient = HttpClients.createDefault();
             // add request headers
             request.addHeader(Stats.HEADER_X_INSIGHTS_DATA, Stats.INSIGHTS_API_ENDPOINT_TRAFFIC_LIGHT);
             request.addHeader(Stats.HEADER_X_INSIGHTS_METRIC_LAB_SCOPE, MercadoPago.SDK.getMetricsScope());
@@ -69,6 +70,8 @@ public class TrafficLightManager {
                 getDefaultResponse();
             }
 
+            httpClient.close();
+
         } catch (ClientProtocolException e) {
             lightResponse = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 400, null));
             getDefaultResponse();
@@ -78,12 +81,6 @@ public class TrafficLightManager {
         } catch (IOException e) {
             lightResponse = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 404, null));
             getDefaultResponse();
-        } finally {
-            try {
-                httpClient.close();
-            } catch (IOException e) {
-                getDefaultResponse();
-            }
         }
 
         return lightResponse;
