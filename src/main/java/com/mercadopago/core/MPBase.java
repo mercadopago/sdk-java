@@ -222,6 +222,8 @@ public abstract class MPBase {
         if (StringUtils.isNotEmpty(resource.getIdempotenceKey()) && !requestOptions.getCustomHeaders().containsKey("x-idempotency-key")) {
             requestOptions.getCustomHeaders().put("x-idempotency-key", resource.getIdempotenceKey());
         }
+        //Insight custom header
+        requestOptions.getCustomHeaders().put("X-Insights-Event-Name", methodName);
 
         MPApiResponse response = callApi(httpMethod, path, payloadType, payload, useCache, requestOptions);
 
