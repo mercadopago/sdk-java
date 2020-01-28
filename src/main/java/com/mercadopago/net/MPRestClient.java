@@ -80,15 +80,13 @@ public class MPRestClient {
     }
 
     @Deprecated
-    public MPApiResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload,
-            Collection<Header> colHeaders) throws MPRestException {
+    public MPApiResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders) throws MPRestException {
 
         return this.executeRequest(httpMethod, uri, payloadType, payload, colHeaders, 0, 0, 0);
     }
 
     @Deprecated
-    public MPApiResponse executeGenericRequest(HttpMethod httpMethod, String uri, PayloadType payloadType,
-            JsonObject payload, Collection<Header> colHeaders) throws MPRestException {
+    public MPApiResponse executeGenericRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders) throws MPRestException {
 
         String full_uri;
         try {
@@ -118,8 +116,7 @@ public class MPRestClient {
      * @throws MPRestException
      */
     @Deprecated
-    public MPApiResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload,
-            Collection<Header> colHeaders, int retries, int connectionTimeout, int socketTimeout)
+    public MPApiResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders, int retries, int connectionTimeout, int socketTimeout)
             throws MPRestException {
         Map<String, String> headers = new HashMap<String, String>();
         if (colHeaders != null) {
@@ -144,8 +141,7 @@ public class MPRestClient {
      * @return MPApiResponse with parsed info of the http response
      * @throws MPRestException
      */
-    public MPApiResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload)
-            throws MPRestException {
+    public MPApiResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload) throws MPRestException {
         return executeRequest(httpMethod, uri, payloadType, payload, MPRequestOptions.createDefault());
     }
 
@@ -161,8 +157,7 @@ public class MPRestClient {
      * @return MPApiResponse with parsed info of the http response
      * @throws MPRestException
      */
-    public MPApiResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload,
-            MPRequestOptions requestOptions) throws MPRestException {
+    public MPApiResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, MPRequestOptions requestOptions) throws MPRestException {
         try {
             long startRequestMillis = System.currentTimeMillis();
             if (requestOptions == null) {
