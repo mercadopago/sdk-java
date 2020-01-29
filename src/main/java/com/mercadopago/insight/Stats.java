@@ -5,6 +5,7 @@ import com.mercadopago.insight.dto.TrafficLightResponse;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.protocol.HttpCoreContext;
+import org.apache.http.util.EntityUtils;
 
 public class Stats extends Thread {
 
@@ -41,7 +42,8 @@ public class Stats extends Thread {
         TrafficLightResponse trafficLight = TrafficLightManager.getInstance();
         if (trafficLight.isSendDataEnabled() && isEndpointInWhiteList(trafficLight, this._httpRequest.getURI().toString())) {
             InsightDataManager insightDataManager = new  InsightDataManager();
-            insightDataManager.sendMetrics(this._context, this._httpRequest, this._httpResponse, this._startMillis, this._endMillis, this._startRequestMillis);
+            HttpResponse response = insightDataManager.sendMetrics(this._context, this._httpRequest, this._httpResponse, this._startMillis, this._endMillis, this._startRequestMillis);
+            EntityUtils.consumeQuietly(response.getEntity());
         }
     }
 

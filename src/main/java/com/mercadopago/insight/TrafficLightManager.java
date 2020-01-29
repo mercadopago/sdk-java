@@ -26,7 +26,8 @@ public class TrafficLightManager {
     // static method to create instance of Singleton class
     public static synchronized TrafficLightResponse getInstance() {
         if (trafficLightResponse == null || (System.currentTimeMillis() > sendDataDeadlineMillis)) {
-            callTrafficLight();
+            HttpResponse response = callTrafficLight();
+            EntityUtils.consumeQuietly(response.getEntity());
         }
 
         return trafficLightResponse;
