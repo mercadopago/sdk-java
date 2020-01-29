@@ -109,6 +109,7 @@ public class StatsTest {
         TrafficLightResponse trafficLight = new TrafficLightResponse();
         assertFalse(Stats.isEndpointInWhiteList(trafficLight,"/ping"));
         assertFalse(Stats.isEndpointInWhiteList(trafficLight,"/something"));
+        
     }
 
     @Test

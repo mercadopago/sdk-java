@@ -1,9 +1,6 @@
 package com.mercadopago.insight;
 
-import java.io.IOException;
 import java.net.InetAddress;
-
-import javax.net.ssl.SSLPeerUnverifiedException;
 
 import com.google.gson.Gson;
 import com.mercadopago.MercadoPago;
@@ -19,20 +16,20 @@ import com.mercadopago.insight.dto.TcpInfo;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicStatusLine;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpCoreContext;
+import org.apache.http.util.EntityUtils;
 
 
 public class InsightDataManager {
+
+    private static InsightConnectionManager restClient = new InsightConnectionManager();
 
     public HttpResponse sendMetrics(HttpCoreContext context, HttpRequestBase request, HttpResponse response, long startMillis, long endMillis, long startRequestMillis) {
         
@@ -40,8 +37,6 @@ public class InsightDataManager {
         HttpPost insightRequest = new HttpPost(Stats.INSIGHT_DEFAULT_BASE_URL + Stats.INSIGHTS_API_BASE_PATH +"/"+ Stats.INSIGHTS_API_ENDPOINT_METRIC);
 
         try {
-            CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-            // add request headers
             insightRequest.addHeader(Stats.HEADER_X_INSIGHTS_METRIC_LAB_SCOPE, MercadoPago.SDK.getMetricsScope());
             insightRequest.addHeader(Stats.HEADER_X_INSIGHTS_DATA, Stats.INSIGHTS_API_ENDPOINT_METRIC);
             insightRequest.setHeader(Stats.HEADER_ACCEPT_TYPE, ContentType.APPLICATION_JSON.toString());
@@ -112,16 +107,13 @@ public class InsightDataManager {
             StringEntity entityReq = new StringEntity(requestJson, "UTF-8");
             insightRequest.setEntity(entityReq);
 
-            insightResponse = httpClient.execute(insightRequest);
-            httpClient.close();
+            insightResponse = restClient.executeRequest(insightRequest); 
+            System.out.println("************************************");
+            System.out.println(EntityUtils.toString(insightResponse.getEntity()));
 
-        } catch (ClientProtocolException e) {
-            insightResponse = new BasicHttpResponse(new BasicStatusLine(insightRequest.getProtocolVersion(), 400, null));
-        } catch (SSLPeerUnverifiedException e) {
-            insightResponse = new BasicHttpResponse(new BasicStatusLine(insightRequest.getProtocolVersion(), 403, null));
-        } catch (IOException e) {
-            insightResponse = new BasicHttpResponse(new BasicStatusLine(insightRequest.getProtocolVersion(), 404, null));
-        }
+        } catch (Exception e) {
+            insightResponse = new BasicHttpResponse(new BasicStatusLine(insightRequest.getProtocolVersion(), 500, e.getMessage()));
+        } 
 
         return insightResponse;
 

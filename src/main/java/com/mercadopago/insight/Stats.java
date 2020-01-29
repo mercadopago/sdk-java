@@ -26,8 +26,6 @@ public class Stats extends Thread {
     private long _endMillis;
     private long _startRequestMillis;
     private HttpCoreContext _context;
-
-    
  
     public Stats(HttpCoreContext context, HttpRequestBase request, HttpResponse response, long startMillis, long endMillis, long startRequestMillis) {
         this._httpRequest = request;

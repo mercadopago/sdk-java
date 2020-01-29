@@ -7,10 +7,11 @@ import java.util.List;
 
 public final class TrafficLightResponse implements Serializable {
 
+
     /**
      *
      */
-    private static final long serialVersionUID = 2096836946202768746L;
+    private static final long serialVersionUID = 1L;
 
     @SerializedName(value = "send-data", alternate = "send_insight_data")
     private boolean sendDataEnabled;

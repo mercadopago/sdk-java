@@ -8,6 +8,11 @@ import java.io.Serializable;
 public final class DeviceInfo implements Serializable {
 
     /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
+    /**
      * Since we use Builder pattern, we can use public final class attributes
      */
     @SerializedName("os-name")

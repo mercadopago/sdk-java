@@ -1,9 +1,5 @@
 package com.mercadopago.insight;
 
-import java.io.IOException;
-
-import javax.net.ssl.SSLPeerUnverifiedException;
-
 import com.google.gson.Gson;
 import com.mercadopago.MercadoPago;
 import com.mercadopago.insight.dto.ClientInfo;
@@ -12,12 +8,9 @@ import com.mercadopago.insight.dto.TrafficLightResponse;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicStatusLine;
 import org.apache.http.protocol.HTTP;
@@ -26,6 +19,7 @@ import org.apache.http.util.EntityUtils;
 public class TrafficLightManager {
 
     private static TrafficLightResponse trafficLightResponse;
+    private static InsightConnectionManager restClient = new InsightConnectionManager();
 
     private static long sendDataDeadlineMillis = Long.MIN_VALUE;
 
@@ -44,9 +38,6 @@ public class TrafficLightManager {
         HttpPost request = new HttpPost(Stats.INSIGHT_DEFAULT_BASE_URL + Stats.INSIGHTS_API_BASE_PATH +"/"+ Stats.INSIGHTS_API_ENDPOINT_TRAFFIC_LIGHT);
 
         try {
-
-            CloseableHttpClient httpClient = HttpClients.createDefault();
-            // add request headers
             request.addHeader(Stats.HEADER_X_INSIGHTS_DATA, Stats.INSIGHTS_API_ENDPOINT_TRAFFIC_LIGHT);
             request.addHeader(Stats.HEADER_X_INSIGHTS_METRIC_LAB_SCOPE, MercadoPago.SDK.getMetricsScope());
             request.setHeader(Stats.HEADER_ACCEPT_TYPE, ContentType.APPLICATION_JSON.toString());
@@ -59,29 +50,20 @@ public class TrafficLightManager {
             StringEntity entityReq = new StringEntity(requestJson, "UTF-8");
             request.setEntity(entityReq);
 
-            lightResponse = httpClient.execute(request);
+            lightResponse =  restClient.executeRequest(request);
+           
             HttpEntity entityRes = lightResponse.getEntity();
             if (entityRes != null) {
-                // return it as a String
-                String result = EntityUtils.toString(entityRes);
-                trafficLightResponse = new Gson().fromJson(result, TrafficLightResponse.class);
+                trafficLightResponse = new Gson().fromJson(EntityUtils.toString(entityRes), TrafficLightResponse.class);
                 sendDataDeadlineMillis = System.currentTimeMillis() + (Math.abs(trafficLightResponse.getSendTTL()) * 1000);
             }else {
                 getDefaultResponse();
             }
 
-            httpClient.close();
-
-        } catch (ClientProtocolException e) {
-            lightResponse = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 400, null));
+        } catch (Exception e) {
+            lightResponse = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 500, e.getMessage()));
             getDefaultResponse();
-        } catch (SSLPeerUnverifiedException e) {
-            lightResponse = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 403, null));
-            getDefaultResponse();
-        } catch (IOException e) {
-            lightResponse = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 404, null));
-            getDefaultResponse();
-        }
+        } 
 
         return lightResponse;
     }

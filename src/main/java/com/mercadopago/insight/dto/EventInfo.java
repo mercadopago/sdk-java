@@ -6,6 +6,10 @@ import java.io.Serializable;
 
 public final class EventInfo implements Serializable {
     /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    /**
      * Since we use Builder pattern, we can use public final class attributes
      */
     @SerializedName("name")

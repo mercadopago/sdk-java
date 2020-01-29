@@ -31,7 +31,7 @@ public class MercadoPago {
     public static class SDK {
 
         private static final String DEFAULT_BASE_URL = "https://api.mercadopago.com";
-        private static final String CURRENT_VERSION = "1.4.0";
+        private static final String CURRENT_VERSION = "1.5.0";
         private static final String PRODUCT_ID = "BC32A7VTRPP001U8NHJ0";
         private static final String CLIENT_NAME = "MercadoPago-SDK-Java";
         private static final String TRACKING_ID = String.format("platform:%s,type:SDK%s,so;", getJavaVersion(System.getProperty("java.runtime.version")), CURRENT_VERSION);
@@ -41,7 +41,7 @@ public class MercadoPago {
         private static final int DEFAULT_CONNECTION_REQUEST_TIMEOUT_MS = 5000;
         private static final int DEFAULT_SOCKET_TIMEOUT_MS = 5000;
         private static final int DEFAULT_RETRIES = 3;
-        private static final String DEFAULT_METRICS_SCOPE = "prod";
+        private static final String DEFAULT_METRICS_SCOPE = "test";
 
         private static volatile String clientSecret = null;
         private static volatile String clientId = null;
@@ -296,7 +296,7 @@ public class MercadoPago {
 
         /**
          * Get the CRE metrics scope
-         * @return metrics scope
+         * @return metrics scope 
          */
         public static String getMetricsScope() {
             return metricsScope;
@@ -304,7 +304,7 @@ public class MercadoPago {
 
         /**
          * Set CRE metrics scope
-         * @param value metric scope
+         * @param value metric scope 
          */
         public static void setMetricsScope(String value) {
             metricsScope = value;
