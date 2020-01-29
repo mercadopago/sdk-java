@@ -108,8 +108,6 @@ public class InsightDataManager {
             insightRequest.setEntity(entityReq);
 
             insightResponse = restClient.executeRequest(insightRequest); 
-            System.out.println("************************************");
-            System.out.println(EntityUtils.toString(insightResponse.getEntity()));
 
         } catch (Exception e) {
             insightResponse = new BasicHttpResponse(new BasicStatusLine(insightRequest.getProtocolVersion(), 500, e.getMessage()));
