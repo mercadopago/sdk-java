@@ -1,6 +1,9 @@
 package com.mercadopago.insight;
 
+import java.io.IOException;
 import java.net.InetAddress;
+
+import javax.net.ssl.SSLPeerUnverifiedException;
 
 import com.google.gson.Gson;
 import com.mercadopago.MercadoPago;
@@ -13,13 +16,24 @@ import com.mercadopago.insight.dto.ProtocolHttp;
 import com.mercadopago.insight.dto.ProtocolInfo;
 import com.mercadopago.insight.dto.StructuredMetricRequest;
 import com.mercadopago.insight.dto.TcpInfo;
+import com.mercadopago.insight.dto.TrafficLightRequest;
+import com.mercadopago.insight.dto.TrafficLightResponse;
+import com.mercadopago.net.KeepAliveStrategy;
 
 import org.apache.http.Header;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicStatusLine;
 import org.apache.http.protocol.HTTP;
@@ -29,29 +43,114 @@ import org.apache.http.util.EntityUtils;
 
 public class InsightDataManager {
 
-    private static InsightConnectionManager restClient = new InsightConnectionManager();
+    static final int DEFAULT_TTL = 600;
+    static final String INSIGHT_DEFAULT_BASE_URL = "https://events.mercadopago.com/";
+    static final String INSIGHTS_API_BASE_PATH = "v2";
+    static final String HEADER_X_INSIGHTS_BUSINESS_FLOW = "X-Insights-Business-Flow";
+    static final String HEADER_X_INSIGHTS_EVENT_NAME = "X-Insights-Event-Name";
+    static final String HEADER_X_INSIGHTS_METRIC_LAB_SCOPE = "X-Insights-Metric-Lab-Scope";
+    static final String HEADER_X_INSIGHTS_DATA_ID = "X-Insights-Data-Id";
+    static final String HEADER_X_INSIGHTS_DATA = "X-Insights-Data";
+    static final String HEADER_X_PRODUCT_ID = "X-Product-Id";
+    static final String HEADER_ACCEPT_TYPE = "Accept";
+    static final String INSIGHTS_API_ENDPOINT_TRAFFIC_LIGHT = "traffic-light";
+    static final String INSIGHTS_API_ENDPOINT_METRIC = "metric";
 
-    public HttpResponse sendMetrics(HttpCoreContext context, HttpRequestBase request, HttpResponse response, long startMillis, long endMillis, long startRequestMillis) {
+    private static final int DEFAULT_MAX_CONNECTIONS = 10;
+    private static final int DEFAULT_CONNECTION_TIMEOUT_MS = 3000;
+    private static final int VALIDATE_INACTIVITY_INTERVAL_MS = 30000;
+    private static final int DEFAULT_CONNECTION_REQUEST_TIMEOUT_MS = 5000;
+    private static final int DEFAULT_SOCKET_TIMEOUT_MS = 5000;
+
+    private static HttpClient restClient;
+    private static TrafficLightResponse trafficLight;
+    private static long sendDataDeadlineMillis = Long.MIN_VALUE;
+    private static InsightDataManager insightDataManager = null;
+
+    public static  InsightDataManager getInsightDataManager(){
+        if (insightDataManager==null) {
+            insightDataManager = new InsightDataManager();
+        }
+        return insightDataManager;
+    }
+
+    private  InsightDataManager(){
+        restClient = createHttpClient();
+        HttpResponse response = callTrafficLight();
+        EntityUtils.consumeQuietly(response.getEntity());
+    }
+
+    /**
+     * Method to ask the back-end if the client should send Insights Data (or not).
+     * @return HttpResponse 
+     */
+    public HttpResponse callTrafficLight() {
         
-        HttpResponse insightResponse;
-        HttpPost insightRequest = new HttpPost(Stats.INSIGHT_DEFAULT_BASE_URL + Stats.INSIGHTS_API_BASE_PATH +"/"+ Stats.INSIGHTS_API_ENDPOINT_METRIC);
+        HttpResponse lightResponse;
+        HttpPost request = new HttpPost(INSIGHT_DEFAULT_BASE_URL + INSIGHTS_API_BASE_PATH +"/"+ INSIGHTS_API_ENDPOINT_TRAFFIC_LIGHT);
 
         try {
-            insightRequest.addHeader(Stats.HEADER_X_INSIGHTS_METRIC_LAB_SCOPE, MercadoPago.SDK.getMetricsScope());
-            insightRequest.addHeader(Stats.HEADER_X_INSIGHTS_DATA, Stats.INSIGHTS_API_ENDPOINT_METRIC);
-            insightRequest.setHeader(Stats.HEADER_ACCEPT_TYPE, ContentType.APPLICATION_JSON.toString());
+            request.addHeader(HEADER_X_INSIGHTS_DATA, INSIGHTS_API_ENDPOINT_TRAFFIC_LIGHT);
+            request.addHeader(HEADER_X_INSIGHTS_METRIC_LAB_SCOPE, MercadoPago.SDK.getMetricsScope());
+            request.setHeader(HEADER_ACCEPT_TYPE, ContentType.APPLICATION_JSON.toString());
+            request.setHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString());
+
+            ClientInfo clientInfo = new ClientInfo.Builder().withName(MercadoPago.SDK.getClientName()).withVersion(MercadoPago.SDK.getVersion()).build();
+            TrafficLightRequest trafficLightRequest = new TrafficLightRequest.Builder().withClientInfo(clientInfo).build();
+            Gson gson = new Gson();
+            String requestJson =  gson.toJson(trafficLightRequest);
+            StringEntity entityReq = new StringEntity(requestJson, "UTF-8");
+            request.setEntity(entityReq);
+
+            lightResponse =  executeRequest(request);
+           
+            HttpEntity entityRes = lightResponse.getEntity();
+            if (entityRes != null) {
+                trafficLight = new Gson().fromJson(EntityUtils.toString(entityRes), TrafficLightResponse.class);
+                sendDataDeadlineMillis = System.currentTimeMillis() + (Math.abs(trafficLight.getSendTTL()) * 1000);
+            }else {
+                getDefaultResponse();
+            }
+
+        } catch (Exception e) {
+            lightResponse = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 500, e.getMessage()));
+            getDefaultResponse();
+        } 
+
+        return lightResponse;
+    }
+
+    /**
+     * Method to receive Insights Data from the client.
+     * @param context
+     * @param request
+     * @param response
+     * @param startMillis
+     * @param endMillis
+     * @param startRequestMillis
+     * @return HttpResponse
+     */
+    public HttpResponse sendInsightMetrics(HttpCoreContext context, HttpRequestBase request, HttpResponse response, long startMillis, long endMillis, long startRequestMillis) {
+        
+        HttpResponse insightResponse;
+        HttpPost insightRequest = new HttpPost(INSIGHT_DEFAULT_BASE_URL + INSIGHTS_API_BASE_PATH +"/"+ INSIGHTS_API_ENDPOINT_METRIC);
+
+        try {
+            insightRequest.addHeader(HEADER_X_INSIGHTS_METRIC_LAB_SCOPE, MercadoPago.SDK.getMetricsScope());
+            insightRequest.addHeader(HEADER_X_INSIGHTS_DATA, INSIGHTS_API_ENDPOINT_METRIC);
+            insightRequest.setHeader(HEADER_ACCEPT_TYPE, ContentType.APPLICATION_JSON.toString());
             insightRequest.setHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString());
            
             ClientInfo clientInfo = new ClientInfo.Builder().withName(MercadoPago.SDK.getClientName()).withVersion(MercadoPago.SDK.getVersion()).build();
 
             BusinessFlowInfo.Builder businessFlowInfoBuilder = new BusinessFlowInfo.Builder()
-            .withUID(request.getLastHeader(Stats.HEADER_X_PRODUCT_ID)!=null?request.getLastHeader(Stats.HEADER_X_PRODUCT_ID).getValue():"");
+            .withUID(request.getLastHeader(HEADER_X_PRODUCT_ID)!=null?request.getLastHeader(HEADER_X_PRODUCT_ID).getValue():"");
             
-            if(request.getLastHeader(Stats.HEADER_X_INSIGHTS_BUSINESS_FLOW)!=null){
-                businessFlowInfoBuilder.withName(request.getLastHeader(Stats.HEADER_X_INSIGHTS_BUSINESS_FLOW).getValue());
+            if(request.getLastHeader(HEADER_X_INSIGHTS_BUSINESS_FLOW)!=null){
+                businessFlowInfoBuilder.withName(request.getLastHeader(HEADER_X_INSIGHTS_BUSINESS_FLOW).getValue());
             }
 
-            EventInfo eventInfo = new EventInfo.Builder().withName(request.getLastHeader(Stats.HEADER_X_INSIGHTS_EVENT_NAME)!=null?request.getLastHeader(Stats.HEADER_X_INSIGHTS_EVENT_NAME).getValue():"Unknown").build();
+            EventInfo eventInfo = new EventInfo.Builder().withName(request.getLastHeader(HEADER_X_INSIGHTS_EVENT_NAME)!=null?request.getLastHeader(HEADER_X_INSIGHTS_EVENT_NAME).getValue():"Unknown").build();
 
             ProtocolHttp.Builder protocolHttpBuilder = new ProtocolHttp.Builder().withRequestUrl(request.getURI().toString())
             .withResponseCode(response.getStatusLine().getStatusCode())
@@ -61,7 +160,7 @@ public class InsightDataManager {
             
             if (request.getAllHeaders() != null) {
                 for (Header header: request.getAllHeaders()) {
-                    if (header.getName().equalsIgnoreCase(Stats.HEADER_X_INSIGHTS_DATA_ID)) {
+                    if (header.getName().equalsIgnoreCase(HEADER_X_INSIGHTS_DATA_ID)) {
                         continue;
                     }
                     if (header.getName().equalsIgnoreCase(HTTP.USER_AGENT)) {
@@ -84,11 +183,14 @@ public class InsightDataManager {
 
             TcpInfo tcpInfo = new TcpInfo.Builder().withSourceAddress(getHostAddress()).build();
 
-            ConnectionInfo connectionInfo = new ConnectionInfo.Builder().withUserAgent(request.getLastHeader(HTTP.USER_AGENT)!=null?request.getLastHeader(HTTP.USER_AGENT).getValue():"")
+            ConnectionInfo.Builder connectionInfoBuilder = new ConnectionInfo.Builder()
             .withProtocolInfo(protocolInfo)
             .withTcpInfo(tcpInfo)
-            .withCompleteData(endMillis>0)
-            .build();
+            .withCompleteData(endMillis>0);
+
+            if(request.getLastHeader(HTTP.USER_AGENT)!=null){
+               connectionInfoBuilder.withUserAgent(request.getLastHeader(HTTP.USER_AGENT).getValue());
+            }
 
             DeviceInfo deviceInfo = new DeviceInfo.Builder().withOsName(getOS())
             .withCpuType(System.getProperty("os.arch"))
@@ -98,7 +200,7 @@ public class InsightDataManager {
             .withEventInfo(eventInfo)
             .withClientInfo(clientInfo)
             .withBusinessFlowInfo(businessFlowInfoBuilder.build())
-            .withConnectionInfo(connectionInfo)
+            .withConnectionInfo(connectionInfoBuilder.build())
             .withDeviceInfo(deviceInfo)
             .build();
 
@@ -107,14 +209,49 @@ public class InsightDataManager {
             StringEntity entityReq = new StringEntity(requestJson, "UTF-8");
             insightRequest.setEntity(entityReq);
 
-            insightResponse = restClient.executeRequest(insightRequest); 
+            insightResponse = executeRequest(insightRequest); 
 
         } catch (Exception e) {
             insightResponse = new BasicHttpResponse(new BasicStatusLine(insightRequest.getProtocolVersion(), 500, e.getMessage()));
-        } 
-
+        }
+        
         return insightResponse;
+    }
 
+    public Boolean isInsightMetricsEnable(String url){
+        if(System.currentTimeMillis() > sendDataDeadlineMillis){
+            callTrafficLight();
+        }
+        if(trafficLight.isSendDataEnabled() && isEndpointInWhiteList(trafficLight, url)){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isEndpointInWhiteList(TrafficLightResponse trafficLight, String endpoint) {
+        if (trafficLight.getEndpointWhiteList() == null) {
+            return false;
+        }
+
+        for (String pattern : trafficLight.getEndpointWhiteList()) {
+            if (pattern.equals("*")) {
+                return true;
+            }
+
+            boolean matched = true;
+            String[] parts = pattern.split("\\*");
+            for (String part : parts) {
+                if (part.length() == 0) {
+                    continue;
+                }
+                matched = matched && endpoint.toLowerCase().contains(part);
+            }
+            if (matched) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private String getHostAddress(){
@@ -125,8 +262,6 @@ public class InsightDataManager {
         } catch (Exception e) {
             //DO nothing
         }
-
-       
         return localhost!=null?localhost.getHostAddress():"";
     }
 
@@ -145,6 +280,64 @@ public class InsightDataManager {
         }
         
         return retry - 1;
+    }
+    
+    private static void getDefaultResponse(){
+        trafficLight = new TrafficLightResponse();
+        trafficLight.setSendDataEnabled(false);
+        trafficLight.setSendTTL(DEFAULT_TTL);
+    }
+
+    /**
+     * Create a HttpClient
+     * 
+     * @return a HttpClient
+     */
+    private HttpClient createHttpClient() {
+        PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
+        connectionManager.setMaxTotal(DEFAULT_MAX_CONNECTIONS);
+        connectionManager.setDefaultMaxPerRoute(MercadoPago.SDK.getMaxConnections());
+        connectionManager.setValidateAfterInactivity(VALIDATE_INACTIVITY_INTERVAL_MS);
+        DefaultHttpRequestRetryHandler retryHandler = new DefaultHttpRequestRetryHandler(MercadoPago.SDK.getRetries(),
+                false);
+
+        HttpClientBuilder httpClientBuilder = HttpClients.custom().setConnectionManager(connectionManager)
+                .setKeepAliveStrategy(new KeepAliveStrategy()).setRetryHandler(retryHandler).disableCookieManagement()
+                .disableRedirectHandling();
+
+        return httpClientBuilder.build();
+    }
+
+    private HttpRequestBase createHttpRequest(HttpPost request) {
+        HttpRequestBase requestBase = null;
+        RequestConfig.Builder requestConfigBuilder = RequestConfig.custom()
+            .setSocketTimeout(DEFAULT_SOCKET_TIMEOUT_MS)
+            .setConnectTimeout(DEFAULT_CONNECTION_TIMEOUT_MS)
+            .setConnectionRequestTimeout(DEFAULT_CONNECTION_REQUEST_TIMEOUT_MS);
+        
+        requestBase = request;
+        request.setConfig(requestConfigBuilder.build());
+        return requestBase;
+    }
+
+    private HttpResponse executeRequest(HttpPost request) {
+        HttpResponse response;
+        
+        try {
+            HttpRequestBase requestBase = createHttpRequest(request);
+            response= restClient.execute(requestBase);
+        } catch (ClientProtocolException e) {
+            response = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 400, null));
+        } catch (SSLPeerUnverifiedException e) {
+            response = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 403, null));
+        } catch (IOException e) {
+            response = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 404, null));
+        }
+		return response;
+    }
+    
+    public TrafficLightResponse getTrafficLightResponse(){
+        return trafficLight;
     }
 
 }

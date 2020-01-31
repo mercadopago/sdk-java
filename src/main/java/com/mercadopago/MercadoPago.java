@@ -41,7 +41,7 @@ public class MercadoPago {
         private static final int DEFAULT_CONNECTION_REQUEST_TIMEOUT_MS = 5000;
         private static final int DEFAULT_SOCKET_TIMEOUT_MS = 5000;
         private static final int DEFAULT_RETRIES = 3;
-        private static final String DEFAULT_METRICS_SCOPE = "prod";
+        private static final String DEFAULT_METRICS_SCOPE = "test";
 
         private static volatile String clientSecret = null;
         private static volatile String clientId = null;

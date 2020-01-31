@@ -15,8 +15,6 @@ import com.mercadopago.MercadoPago;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.exceptions.MPRestException;
 import com.mercadopago.insight.InsightDataManager;
-import com.mercadopago.insight.Stats;
-import com.mercadopago.insight.TrafficLightManager;
 import com.mercadopago.insight.dto.TrafficLightResponse;
 
 import org.apache.http.HttpResponse;
@@ -47,6 +45,7 @@ public class StatsTest {
     private static long endMillis;
     private static long startRequestMillis;
     private static HttpCoreContext context;
+    private static InsightDataManager insightDataManager;
 
     @BeforeClass
     public static void beforeTest() throws MPException {
@@ -67,6 +66,8 @@ public class StatsTest {
             httpResponse = new BasicHttpResponse(new BasicStatusLine(httpRequest.getProtocolVersion(), 404, null));
         }
         endMillis = System.currentTimeMillis();
+
+        insightDataManager = InsightDataManager.getInsightDataManager();
     }
 
     @Test
@@ -78,13 +79,13 @@ public class StatsTest {
         endpoints.add("/another/*/thing");
         endpoints.add("/what/*");
         trafficLight.setEndpointWhiteList(endpoints);
-        assertFalse(Stats.isEndpointInWhiteList(trafficLight, "/ping"));
-        assertTrue(Stats.isEndpointInWhiteList(trafficLight,"/something"));
-        assertTrue(Stats.isEndpointInWhiteList(trafficLight,"/something/else"));
-        assertTrue(Stats.isEndpointInWhiteList(trafficLight,"/another/one/thing"));
-        assertFalse(Stats.isEndpointInWhiteList(trafficLight,"/another/one/thong"));
-        assertTrue(Stats.isEndpointInWhiteList(trafficLight,"/what/is/this"));
-        assertFalse(Stats.isEndpointInWhiteList(trafficLight,"/what"));
+        assertFalse(insightDataManager.isEndpointInWhiteList(trafficLight, "/ping"));
+        assertTrue(insightDataManager.isEndpointInWhiteList(trafficLight,"/something"));
+        assertTrue(insightDataManager.isEndpointInWhiteList(trafficLight,"/something/else"));
+        assertTrue(insightDataManager.isEndpointInWhiteList(trafficLight,"/another/one/thing"));
+        assertFalse(insightDataManager.isEndpointInWhiteList(trafficLight,"/another/one/thong"));
+        assertTrue(insightDataManager.isEndpointInWhiteList(trafficLight,"/what/is/this"));
+        assertFalse(insightDataManager.isEndpointInWhiteList(trafficLight,"/what"));
     }
 
     @Test
@@ -95,42 +96,33 @@ public class StatsTest {
         endpoints.add("/*");
 
         trafficLight.setEndpointWhiteList(endpoints);
-        assertTrue(Stats.isEndpointInWhiteList(trafficLight,"/ping"));
-        assertTrue(Stats.isEndpointInWhiteList(trafficLight,"/something"));
-        assertTrue(Stats.isEndpointInWhiteList(trafficLight,"/something/else"));
-        assertTrue(Stats.isEndpointInWhiteList(trafficLight,"/another/one/thing"));
-        assertTrue(Stats.isEndpointInWhiteList(trafficLight,"/another/one/thong"));
-        assertTrue(Stats.isEndpointInWhiteList(trafficLight,"/what/is/this"));
-        assertTrue(Stats.isEndpointInWhiteList(trafficLight,"/what"));
-    }
-
-    @Test
-    public void validEndpointListNull(){
-        TrafficLightResponse trafficLight = new TrafficLightResponse();
-        assertFalse(Stats.isEndpointInWhiteList(trafficLight,"/ping"));
-        assertFalse(Stats.isEndpointInWhiteList(trafficLight,"/something"));
-        
+        assertTrue(insightDataManager.isEndpointInWhiteList(trafficLight,"/ping"));
+        assertTrue(insightDataManager.isEndpointInWhiteList(trafficLight,"/something"));
+        assertTrue(insightDataManager.isEndpointInWhiteList(trafficLight,"/something/else"));
+        assertTrue(insightDataManager.isEndpointInWhiteList(trafficLight,"/another/one/thing"));
+        assertTrue(insightDataManager.isEndpointInWhiteList(trafficLight,"/another/one/thong"));
+        assertTrue(insightDataManager.isEndpointInWhiteList(trafficLight,"/what/is/this"));
+        assertTrue(insightDataManager.isEndpointInWhiteList(trafficLight,"/what"));
     }
 
     @Test
     public void getInsighLight() throws MPRestException {
-        TrafficLightResponse trafficLight = TrafficLightManager.getInstance();
-        assertNotNull(trafficLight);
-        assertNotNull(trafficLight.getSendTTL());
-        assertNotNull(trafficLight.isSendDataEnabled());
+        TrafficLightResponse trafficLightResponse = insightDataManager.getTrafficLightResponse();
+        assertNotNull(trafficLightResponse);
+        assertNotNull(trafficLightResponse.getSendTTL());
+        assertNotNull(trafficLightResponse.isSendDataEnabled());
     }
 
     @Test
-    public void sendMetrics() {
-        InsightDataManager insightDataManager = new InsightDataManager();
-        HttpResponse insightResponse = insightDataManager.sendMetrics(context, httpRequest, httpResponse, System.currentTimeMillis(), 0L, 0L);
+    public void sendInsightMetricsBadRequest() {
+        
+        HttpResponse insightResponse = insightDataManager.sendInsightMetrics(context, httpRequest, httpResponse, System.currentTimeMillis(), 0L, 0L);
         assertEquals(400, insightResponse.getStatusLine().getStatusCode());
     }
 
     @Test
-    public void sendMetricsBadRequest() {
-        InsightDataManager insightDataManager = new InsightDataManager();
-        HttpResponse insightResponse = insightDataManager.sendMetrics(context, httpRequest, httpResponse, startMillis, endMillis, startRequestMillis);
+    public void sendInsightMetrics() {
+        HttpResponse insightResponse = insightDataManager.sendInsightMetrics(context, httpRequest, httpResponse, startMillis, endMillis, startRequestMillis);
         assertEquals(202, insightResponse.getStatusLine().getStatusCode());
     }
 
