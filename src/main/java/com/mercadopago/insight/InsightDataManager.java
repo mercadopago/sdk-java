@@ -101,8 +101,9 @@ public class InsightDataManager {
             String requestJson =  gson.toJson(trafficLightRequest);
             StringEntity entityReq = new StringEntity(requestJson, "UTF-8");
             request.setEntity(entityReq);
-
-            lightResponse =  executeRequest(request);
+            
+            HttpRequestBase requestBase = createHttpRequest(request);
+            lightResponse= restClient.execute(requestBase);
            
             HttpEntity entityRes = lightResponse.getEntity();
             if (entityRes != null) {
@@ -112,6 +113,15 @@ public class InsightDataManager {
                 getDefaultResponse();
             }
 
+        } catch (ClientProtocolException e) {
+            lightResponse = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 400, null));
+            getDefaultResponse();
+        } catch (SSLPeerUnverifiedException e) {
+            lightResponse = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 403, null));
+            getDefaultResponse();
+        } catch (IOException e) {
+            lightResponse = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 404, null));
+            getDefaultResponse();
         } catch (Exception e) {
             lightResponse = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 500, e.getMessage()));
             getDefaultResponse();
