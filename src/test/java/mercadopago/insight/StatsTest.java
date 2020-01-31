@@ -67,7 +67,7 @@ public class StatsTest {
         }
         endMillis = System.currentTimeMillis();
 
-        insightDataManager = InsightDataManager.getInsightDataManager();
+        insightDataManager = InsightDataManager.getInstance();
     }
 
     @Test
@@ -115,7 +115,6 @@ public class StatsTest {
 
     @Test
     public void sendInsightMetricsBadRequest() {
-        
         HttpResponse insightResponse = insightDataManager.sendInsightMetrics(context, httpRequest, httpResponse, System.currentTimeMillis(), 0L, 0L);
         assertEquals(400, insightResponse.getStatusLine().getStatusCode());
     }

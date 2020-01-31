@@ -25,7 +25,7 @@ public class Stats extends Thread {
 
 	@Override
     public void run() {
-        InsightDataManager insightDataManager = InsightDataManager.getInsightDataManager();
+        InsightDataManager insightDataManager = InsightDataManager.getInstance();
         if (insightDataManager.isInsightMetricsEnable(this._httpRequest.getURI().toString())) {
             HttpResponse response = insightDataManager.sendInsightMetrics(this._context, this._httpRequest, this._httpResponse, this._startMillis, this._endMillis, this._startRequestMillis);
             EntityUtils.consumeQuietly(response.getEntity());
