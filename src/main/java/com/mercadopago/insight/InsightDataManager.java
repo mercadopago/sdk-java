@@ -64,6 +64,9 @@ public class InsightDataManager {
     private static TrafficLightResponse trafficLight;
     private static long sendDataDeadlineMillis = Long.MIN_VALUE;
     private static InsightDataManager insightDataManager = null;
+    private static String osName;
+    private static String deviceRam;
+    private static String cpuType;
 
     public static InsightDataManager getInstance() {
         if (insightDataManager == null) {
@@ -74,6 +77,7 @@ public class InsightDataManager {
 
     private InsightDataManager() {
         restClient = createHttpClient();
+        initializeDeviceInfo();
         HttpResponse response = callTrafficLight();
         EntityUtils.consumeQuietly(response.getEntity());
     }
@@ -224,12 +228,21 @@ public class InsightDataManager {
                 connectionInfoBuilder.withUserAgent(request.getLastHeader(HTTP.USER_AGENT).getValue());
             }
 
+            DeviceInfo deviceInfo = null;
+            if(!isNullOrEmpty(osName) || !isNullOrEmpty(deviceRam) || !isNullOrEmpty(cpuType)){
+                deviceInfo = new DeviceInfo.Builder()
+                    .withCpuType(cpuType)
+                    .withOsName(osName)
+                    .withRamSize(deviceRam)
+                    .build();
+            }
+
             StructuredMetricRequest structuredMetricRequest = new StructuredMetricRequest.Builder()
                 .withEventInfo(eventInfo)
                 .withClientInfo(clientInfo)
                 .withBusinessFlowInfo(businessFlowInfo)
                 .withConnectionInfo(connectionInfoBuilder.build())
-                .withDeviceInfo(getDeviceInfo())
+                .withDeviceInfo(deviceInfo)
                 .build();
 
             Gson gson = new Gson();
@@ -301,48 +314,41 @@ public class InsightDataManager {
         return false;
     }
 
-    private static void getDefaultResponse() {
+    private void getDefaultResponse() {
         trafficLight = new TrafficLightResponse();
         trafficLight.setSendDataEnabled(false);
         trafficLight.setSendTTL(DEFAULT_TTL);
     }
 
-    private DeviceInfo getDeviceInfo(){
-        DeviceInfo.Builder deviceInfo = new DeviceInfo.Builder();
-        try {
-            int availableCPU = Runtime.getRuntime().availableProcessors();
-            String osName = System.getProperty("os.name")!=null?System.getProperty("os.name"):"";
-            String osVersion = System.getProperty("os.version")!=null?System.getProperty("os.version"):"";
-            String deviceRam = getMemorySize();
-            String modelName = System.getProperty("os.arch")!=null?System.getProperty("os.arch"):"";
-    
-            if(!isNullOrEmpty(deviceRam)){
-                deviceInfo.withRamSize(deviceRam);
-            }
-    
-            if(!isNullOrEmpty(osName + " "+ osVersion)){
-                deviceInfo.withOsName(osName + " "+ osVersion);
-            }
-    
-            if(!isNullOrEmpty(modelName)){
-                deviceInfo.withModelName(modelName);
-            }
-    
-            if(availableCPU!=0){
-                deviceInfo.withCpuType("Total CPU - " + availableCPU);
-            }
-        } catch (Exception e) {
-            return null;
+    private void initializeDeviceInfo(){
+        
+        int availableCPU = Runtime.getRuntime().availableProcessors();
+        String osname = System.getProperty("os.name")!=null?System.getProperty("os.name"):"";
+        String osVersion = System.getProperty("os.version")!=null?System.getProperty("os.version"):"";
+        String modelName = System.getProperty("os.arch")!=null?System.getProperty("os.arch"):"";
+        String ram = getMemorySize();
+
+        if(!isNullOrEmpty(ram)){
+            deviceRam = ram;
         }
 
-        return deviceInfo.build();
+        if(!isNullOrEmpty(osName + " "+ osVersion)){
+            osName =osname + " "+ osVersion;
+        }
+
+        if(!isNullOrEmpty(modelName)){
+            cpuType = modelName;
+            if(availableCPU!=0){
+                cpuType += " - " + availableCPU + " core";
+            }
+        }
     }
 
-    private static String getMemorySize() {
+    private String getMemorySize() {
         String memorySize = "";
         try {
             long memSize = ((com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalPhysicalMemorySize();
-            memorySize = "RAM Size=" + memSize + " Bytes";
+            memorySize = "RAM Size " + memSize + " Bytes";
         } catch (Exception e) {
             return memorySize;
         }
@@ -419,7 +425,7 @@ public class InsightDataManager {
         return response;
     }
 
-    private static boolean isNullOrEmpty(final String whatString) {
+    private boolean isNullOrEmpty(final String whatString) {
         return (whatString == null) || (whatString.trim().isEmpty());
     }
 
