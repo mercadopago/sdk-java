@@ -94,10 +94,15 @@ public class InsightDataManager {
             request.setHeader(HEADER_ACCEPT_TYPE, ContentType.APPLICATION_JSON.toString());
             request.setHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString());
 
-            ClientInfo clientInfo = new ClientInfo.Builder().withName(MercadoPago.SDK.getClientName())
-                    .withVersion(MercadoPago.SDK.getVersion()).build();
-            TrafficLightRequest trafficLightRequest = new TrafficLightRequest.Builder().withClientInfo(clientInfo)
-                    .build();
+            ClientInfo clientInfo = new ClientInfo.Builder()
+                .withName(MercadoPago.SDK.getClientName())
+                .withVersion(MercadoPago.SDK.getVersion())
+                .build();
+
+            TrafficLightRequest trafficLightRequest = new TrafficLightRequest.Builder()
+                .withClientInfo(clientInfo)
+                .build();
+
             Gson gson = new Gson();
             String requestJson = gson.toJson(trafficLightRequest);
             StringEntity entityReq = new StringEntity(requestJson, "UTF-8");
@@ -123,8 +128,7 @@ public class InsightDataManager {
             lightResponse = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 404, null));
             getDefaultResponse();
         } catch (Exception e) {
-            lightResponse = new BasicHttpResponse(
-                    new BasicStatusLine(request.getProtocolVersion(), 500, e.getMessage()));
+            lightResponse = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 500, e.getMessage()));
             getDefaultResponse();
         }
 
