@@ -296,6 +296,7 @@ public class InsightDataManager {
         trafficLight = new TrafficLightResponse();
         trafficLight.setSendDataEnabled(false);
         trafficLight.setSendTTL(DEFAULT_TTL);
+        sendDataDeadlineMillis = System.currentTimeMillis() + (Math.abs(trafficLight.getSendTTL()) * 1000);
     }
 
     /**
