@@ -45,7 +45,7 @@ public class InsightDataManager {
 
     static final String INSIGHT_DEFAULT_BASE_URL = "https://events.mercadopago.com/v2/";
     static final String HEADER_X_INSIGHTS_BUSINESS_FLOW = "X-Insights-Business-Flow";
-    static final String HEADER_X_INSIGHTS_EVENT_NAME = "X-Insights-Event-Name";
+    public static final String HEADER_X_INSIGHTS_EVENT_NAME = "X-Insights-Event-Name";
     static final String HEADER_X_INSIGHTS_METRIC_LAB_SCOPE = "X-Insights-Metric-Lab-Scope";
     static final String HEADER_X_INSIGHTS_DATA_ID = "X-Insights-Data-Id";
     static final String HEADER_X_PRODUCT_ID = "X-Product-Id";
