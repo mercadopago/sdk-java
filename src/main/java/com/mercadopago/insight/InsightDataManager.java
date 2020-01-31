@@ -348,7 +348,7 @@ public class InsightDataManager {
         String memorySize = "";
         try {
             long memSize = ((com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalPhysicalMemorySize();
-            memorySize = "RAM Size " + memSize + " Bytes";
+            memorySize =  String.valueOf(memSize);
         } catch (Exception e) {
             return memorySize;
         }
