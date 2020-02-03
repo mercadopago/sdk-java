@@ -35,7 +35,7 @@ public class MPApiResponse implements Cloneable {
 
     public Boolean fromCache = Boolean.FALSE;
 
-    public MPApiResponse(HttpMethod httpMethod, HttpRequestBase request, JsonObject payload, HttpResponse response, long responseMillis)
+    public MPApiResponse(HttpMethod httpMethod, HttpRequestBase request, JsonObject payload, HttpResponse response)
             throws MPException {
         this._httpResponse = response;
         parseRequest(httpMethod, request, payload);
