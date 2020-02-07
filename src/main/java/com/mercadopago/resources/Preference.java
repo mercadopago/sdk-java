@@ -60,7 +60,7 @@ public class Preference extends MPBase {
     @Size(max=256) private String marketplace = null;
     private Float marketplaceFee = null;
     private DifferentialPricing differentialPricing = null;
-    private String sponsorId = null;
+    private Integer sponsorId = null;
     public enum ProcessingMode {
         aggregator,
         gateway
@@ -246,11 +246,11 @@ public class Preference extends MPBase {
         return this;
     }
 
-    public String getSponsorId() {
+    public Integer getSponsorId() {
         return sponsorId;
     }
 
-    public void setSponsorId(String sponsorId) {
+    public void setSponsorId(Integer sponsorId) {
         this.sponsorId = sponsorId;
     }
 
