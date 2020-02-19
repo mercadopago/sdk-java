@@ -27,7 +27,6 @@ public class Preference extends MPBase {
 
     @NotNull
     private ArrayList<Item> items = null;
-    @NotNull
     private Payer payer = null;
     private PaymentMethods paymentMethods = null;
     private Shipments shipments = null;
