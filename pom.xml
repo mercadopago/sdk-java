@@ -3,7 +3,7 @@
 
     <groupId>com.mercadopago</groupId>
     <artifactId>dx-java</artifactId>
-    <version>1.5.2</version>
+    <version>1.5.3-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Mercadopago SDK</name>
@@ -156,7 +156,7 @@
 	<url>https://github.com/mercadopago/dx-java.git</url>
         <connection>scm:git:git@github.com:mercadopago/dx-java.git</connection>
         <developerConnection>scm:git:git@github.com:mercadopago/dx-java.git</developerConnection>
-        <tag>1.5.2</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <distributionManagement>
