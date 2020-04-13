@@ -72,9 +72,9 @@ public class OAuth extends MPBase {
         return scope;
     }
 
-
-    public static String getAuthorizationURL(String appId, String redirectUri){
-        return "https://auth.mercadopago.com.br/authorization?client_id="+appId+"&response_type=code&platform_id=mp&redirect_uri="+redirectUri;
+    public static String getAuthorizationURL(String appId, String redirectUri) throws MPException {
+        Users users = new Users();
+        return "https://auth.mercadopago.com.".concat(users.getCountry().getCountryId().toLowerCase()).concat("/authorization?client_id=").concat(appId).concat("&response_type=code&platform_id=mp&redirect_uri=").concat(redirectUri);
     }
 
 
