@@ -5,7 +5,7 @@ import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.exceptions.MPException;
 
-public class Users extends MPBase {
+public class User extends MPBase {
 
     private String countryId;
 
@@ -13,17 +13,10 @@ public class Users extends MPBase {
         return countryId;
     }
 
-    public Users getCountry() throws MPException {
-        return find(MPRequestOptions.createDefault());
-    }
 
     @GET(path="/users/me")
-    public Users find(MPRequestOptions requestOptions) throws MPException {
-        if (requestOptions == null) {
-            requestOptions = MPRequestOptions.createDefault();
-        }
-        addTrackingHeaders(requestOptions);
-        return processMethod("find", WITHOUT_CACHE, requestOptions);
+    public User find() throws MPException {
+        return processMethod(User.class,"find", WITHOUT_CACHE, MPRequestOptions.createDefault());
     }
 
 

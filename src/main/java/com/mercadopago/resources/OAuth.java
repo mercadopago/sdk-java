@@ -8,9 +8,9 @@ import com.mercadopago.exceptions.MPException;
 
 public class OAuth extends MPBase {
 
-    private String clientSecret;
-    private String grantType;
-    private String code;
+    private static String clientSecret;
+    private static String grantType;
+    private static String code;
     private String redirectUri;
     private String accessToken;
     private String refreshToken;
@@ -73,34 +73,30 @@ public class OAuth extends MPBase {
     }
 
     public static String getAuthorizationURL(String appId, String redirectUri) throws MPException {
-        Users users = new Users();
-        return "https://auth.mercadopago.com.".concat(users.getCountry().getCountryId().toLowerCase()).concat("/authorization?client_id=").concat(appId).concat("&response_type=code&platform_id=mp&redirect_uri=").concat(redirectUri);
+        User user = new User();
+        return "https://auth.mercadopago.com.".concat(user.find().getCountryId().toLowerCase()).concat("/authorization?client_id=").concat(appId).concat("&response_type=code&platform_id=mp&redirect_uri=").concat(redirectUri);
     }
 
 
-    public OAuth getOAuthCredentials(String authorizationCode, String redirectUri) throws MPException {
-        this.clientSecret = MercadoPago.SDK.getAccessToken();
-        this.grantType = "authorization_code";
-        this.code = authorizationCode;
-        this.redirectUri = redirectUri;
-
-        return save(MPRequestOptions.createDefault());
+    public static OAuth getOAuthCredentials(String authorizationCode, String redirectUri) throws MPException {
+        clientSecret = MercadoPago.SDK.getAccessToken();
+        grantType = "authorization_code";
+        code = authorizationCode;
+        redirectUri = redirectUri;
+        return save();
     }
 
-    public OAuth refreshOAuthCredentials(String refreshToken) throws MPException {
-        this.clientSecret = MercadoPago.SDK.getAccessToken();
-        this.grantType = "refresh_token";
-        this.refreshToken = refreshToken;
+    public static OAuth refreshOAuthCredentials(String refreshToken) throws MPException {
+        clientSecret = MercadoPago.SDK.getAccessToken();
+        grantType = "refresh_token";
+        refreshToken = refreshToken;
 
-        return save(MPRequestOptions.createDefault());
+        return save();
     }
 
     @POST(path = "/oauth/token")
-    public OAuth save(MPRequestOptions requestOptions) throws MPException {
-        if (requestOptions == null) {
-            requestOptions = MPRequestOptions.createDefault();
-        }
-        addTrackingHeaders(requestOptions);
-        return processMethod("save", WITHOUT_CACHE, requestOptions);
+    public static OAuth save() throws MPException {
+        return processMethod(OAuth.class,"save", WITHOUT_CACHE, MPRequestOptions.createDefault());
+
     }
 }
