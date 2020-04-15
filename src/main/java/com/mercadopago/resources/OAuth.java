@@ -129,7 +129,7 @@ public class OAuth extends MPBase {
         oAuth.grantType = "authorization_code";
         oAuth.code = authorizationCode;
         oAuth.redirectUri = redirectUri;
-        return save(oAuth);
+        return oAuth.save(oAuth);
     }
 
     public static OAuth refreshOAuthCredentials(String refreshToken) throws MPException {
@@ -138,11 +138,11 @@ public class OAuth extends MPBase {
         oAuth.grantType = "refresh_token";
         oAuth.refreshToken = refreshToken;
 
-        return save(oAuth);
+        return oAuth.save(oAuth);
     }
 
     @POST(path = "/oauth/token")
-    public static OAuth save(OAuth oAuth) throws MPException {
+    public  OAuth save(OAuth oAuth) throws MPException {
         return processMethod(OAuth.class, oAuth, "save", null, WITHOUT_CACHE, MPRequestOptions.createDefault());
     }
 
