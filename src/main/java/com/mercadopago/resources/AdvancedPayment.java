@@ -4,42 +4,31 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mercadopago.core.MPBase;
 import com.mercadopago.core.annotations.idempotent.Idempotent;
+import com.mercadopago.resources.datastructures.advancedpayment.AdditionalInfo;
 import com.mercadopago.resources.datastructures.advancedpayment.Disbursement;
+import com.mercadopago.resources.datastructures.advancedpayment.Payer;
 import com.mercadopago.resources.datastructures.advancedpayment.Payment;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 @Idempotent
 public class AdvancedPayment extends MPBase {
 
-    private Payment payer;
+    private Integer id;
+    private String status;
+    private String externalReference;
+    private String description;
+    private Date dateCreated;
+    private Date dateLastUpdated;
+    private Payer payer;
     private ArrayList<Payment> payments;
     private ArrayList<Disbursement> disbursements;
     private boolean binaryMode;
     private JsonObject metadata = null;
-    private String id = null;
     private String applicationId;
-    private String externalReference;
-    private String description;
-    private boolean capture;
+    private AdditionalInfo additionalInfo;
 
-    public String getId() {
-        return id;
-    }
-
-    public AdvancedPayment setId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    public String getApplicationId() {
-        return applicationId;
-    }
-
-    public AdvancedPayment setApplicationId(String applicationId) {
-        this.applicationId = applicationId;
-        return this;
-    }
 
     public ArrayList<Payment> getPayments() {
         return payments;
@@ -64,32 +53,15 @@ public class AdvancedPayment extends MPBase {
         return this;
     }
 
-    public Payment getPayer() {
+    public Payer getPayer() {
         return payer;
     }
 
-    public AdvancedPayment setPayer(Payment payer) {
+    public AdvancedPayment setPayer(Payer payer) {
         this.payer = payer;
         return this;
     }
 
-    public String getExternalReference() {
-        return externalReference;
-    }
-
-    public AdvancedPayment setExternalReference(String externalReference) {
-        this.externalReference = externalReference;
-        return this;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public AdvancedPayment setDescription(String description) {
-        this.description = description;
-        return this;
-    }
 
     public boolean isBinaryMode() {
         return binaryMode;
@@ -100,14 +72,6 @@ public class AdvancedPayment extends MPBase {
         return this;
     }
 
-    public boolean isCapture() {
-        return capture;
-    }
-
-    public AdvancedPayment setCapture(boolean capture) {
-        this.capture = capture;
-        return this;
-    }
 
     public JsonObject getMetadata() {
         return metadata;
@@ -126,4 +90,70 @@ public class AdvancedPayment extends MPBase {
         this.metadata = metadata;
         return this;
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getExternalReference() {
+        return externalReference;
+    }
+
+    public void setExternalReference(String externalReference) {
+        this.externalReference = externalReference;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public Date getDateLastUpdated() {
+        return dateLastUpdated;
+    }
+
+    public void setDateLastUpdated(Date dateLastUpdated) {
+        this.dateLastUpdated = dateLastUpdated;
+    }
+
+    public String getApplicationId() {
+        return applicationId;
+    }
+
+    public void setApplicationId(String applicationId) {
+        this.applicationId = applicationId;
+    }
+
+    public AdditionalInfo getAdditionalInfo() {
+        return additionalInfo;
+    }
+
+    public void setAdditionalInfo(AdditionalInfo additionalInfo) {
+        this.additionalInfo = additionalInfo;
+    }
+
+
 }

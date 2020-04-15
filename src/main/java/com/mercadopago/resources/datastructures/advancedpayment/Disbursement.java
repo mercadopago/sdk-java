@@ -1,54 +1,67 @@
 package com.mercadopago.resources.datastructures.advancedpayment;
 
 public class Disbursement {
+    private Integer id;
     private Float amount;
     private String externalReference;
     private String collectorId;
     private Float applicationFee;
-    private AdditionalInfo additionalInfo = null;
+    private Float moneyReleaseDays;
+    private AdditionalInfo additionalInfo;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Float getAmount() {
         return amount;
     }
 
-    public Disbursement setAmount(Float amount) {
+    public void setAmount(Float amount) {
         this.amount = amount;
-        return this;
     }
 
     public String getExternalReference() {
         return externalReference;
     }
 
-    public Disbursement setExternalReference(String externalReference) {
+    public void setExternalReference(String externalReference) {
         this.externalReference = externalReference;
-        return this;
     }
 
     public String getCollectorId() {
         return collectorId;
     }
 
-    public Disbursement setCollectorId(String collectorId) {
+    public void setCollectorId(String collectorId) {
         this.collectorId = collectorId;
-        return this;
     }
 
     public Float getApplicationFee() {
         return applicationFee;
     }
 
-    public Disbursement setApplicationFee(Float applicationFee) {
+    public void setApplicationFee(Float applicationFee) {
         this.applicationFee = applicationFee;
-        return this;
+    }
+
+    public Float getMoneyReleaseDays() {
+        return moneyReleaseDays;
+    }
+
+    public void setMoneyReleaseDays(Float moneyReleaseDays) {
+        this.moneyReleaseDays = moneyReleaseDays;
     }
 
     public AdditionalInfo getAdditionalInfo() {
         return additionalInfo;
     }
 
-    public Disbursement setAdditionalInfo(AdditionalInfo additionalInfo) {
+    public void setAdditionalInfo(AdditionalInfo additionalInfo) {
         this.additionalInfo = additionalInfo;
-        return this;
     }
 }

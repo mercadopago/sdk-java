@@ -1,5 +1,7 @@
 package com.mercadopago.resources.datastructures.advancedpayment;
 
+import java.util.Date;
+
 public class Payer {
     private String id;
     private String email;
@@ -81,4 +83,6 @@ public class Payer {
         this.lastName = lastName;
         return this;
     }
+
+
 }

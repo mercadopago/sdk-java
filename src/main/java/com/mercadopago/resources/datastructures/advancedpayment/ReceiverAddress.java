@@ -51,4 +51,6 @@ public class ReceiverAddress {
         this.apartment = apartment;
         return this;
     }
+
+
 }
