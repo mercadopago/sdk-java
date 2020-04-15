@@ -15,7 +15,7 @@ public class User extends MPBase {
 
 
     @GET(path="/users/me")
-    public User find() throws MPException {
+    public static User find() throws MPException {
         return processMethod(User.class,"find", WITHOUT_CACHE, MPRequestOptions.createDefault());
     }
 
