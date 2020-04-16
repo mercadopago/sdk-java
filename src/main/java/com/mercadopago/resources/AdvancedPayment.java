@@ -1,9 +1,11 @@
 package com.mercadopago.resources;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mercadopago.core.MPBase;
+import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.core.annotations.idempotent.Idempotent;
+import com.mercadopago.core.annotations.rest.POST;
+import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.datastructures.advancedpayment.AdditionalInfo;
 import com.mercadopago.resources.datastructures.advancedpayment.Disbursement;
 import com.mercadopago.resources.datastructures.advancedpayment.Payer;
@@ -155,5 +157,10 @@ public class AdvancedPayment extends MPBase {
         this.additionalInfo = additionalInfo;
     }
 
+
+    @POST(path="v1/advanced_payments")
+    public Preference save() throws MPException {
+        return processMethod("save", WITHOUT_CACHE, MPRequestOptions.createDefault());
+    }
 
 }

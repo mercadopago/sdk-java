@@ -1,4 +1,4 @@
-
+package com.mercadopago.resources.datastructures.payment;
 
 /**
  * Mercado Pago SDK
