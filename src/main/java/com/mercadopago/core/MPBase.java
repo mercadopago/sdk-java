@@ -576,10 +576,11 @@ public abstract class MPBase {
             accessToken = MercadoPago.SDK.getAccessToken();
         }
 
-        processedPath
-                .append("?access_token=")
-                .append(accessToken);
-
+        if(!path.equals("/oauth/token")) {
+            processedPath
+                    .append("?access_token=")
+                    .append(accessToken);
+        }
         
         if (mapParams != null && !mapParams.isEmpty()) {
 	        for (Map.Entry<String, String> entry : mapParams.entrySet()) {
