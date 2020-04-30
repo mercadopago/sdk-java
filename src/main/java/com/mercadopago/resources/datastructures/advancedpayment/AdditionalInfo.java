@@ -12,31 +12,35 @@ public class AdditionalInfo {
         return ipAddress;
     }
 
-    public void setIpAddress(String ipAddress) {
+    public AdditionalInfo setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
+        return this;
     }
 
     public ArrayList<Item> getItems() {
         return items;
     }
 
-    public void setItems(ArrayList<Item> items) {
+    public AdditionalInfo setItems(ArrayList<Item> items) {
         this.items = items;
+        return this;
     }
 
     public AdditionalInfoPayer getPayer() {
         return payer;
     }
 
-    public void setPayer(AdditionalInfoPayer payer) {
+    public AdditionalInfo setPayer(AdditionalInfoPayer payer) {
         this.payer = payer;
+        return this;
     }
 
     public Shipment getShipments() {
         return shipments;
     }
 
-    public void setShipments(Shipment shipments) {
+    public AdditionalInfo setShipments(Shipment shipments) {
         this.shipments = shipments;
+        return this;
     }
 }

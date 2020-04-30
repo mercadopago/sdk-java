@@ -10,20 +10,15 @@ import com.mercadopago.core.annotations.rest.POST;
 import com.mercadopago.core.annotations.rest.PUT;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.datastructures.advancedpayment.AdditionalInfo;
-import com.mercadopago.resources.datastructures.advancedpayment.Disbursement;
 import com.mercadopago.resources.datastructures.advancedpayment.Payer;
 import com.mercadopago.resources.datastructures.advancedpayment.Payment;
-import com.mercadopago.resources.datastructures.advancedpayment.Refund;
 
-import java.sql.Ref;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Idempotent
 public class AdvancedPayment extends MPBase {
 
-    private Integer id = null;
+    private Long id = null;
     private String status = null;
     private String externalReference = null;
     private String description = null;
@@ -36,6 +31,35 @@ public class AdvancedPayment extends MPBase {
     private JsonObject metadata = null;
     private String applicationId = null;
     private AdditionalInfo additionalInfo = null;
+    private Boolean capture = null;
+    private Date moneyReleaseDate = null;
+
+    public Boolean getCapture() {
+        return capture;
+    }
+
+    public AdvancedPayment setCapture(Boolean capture) {
+        this.capture = capture;
+        return this;
+    }
+
+    public Date getMoneyReleaseDate() {
+        return moneyReleaseDate;
+    }
+
+    public AdvancedPayment setMoneyReleaseDate(Date moneyReleaseDate) {
+        this.moneyReleaseDate = moneyReleaseDate;
+        return this;
+    }
+
+    public boolean isCapture() {
+        return capture;
+    }
+
+    public AdvancedPayment setCapture(boolean capture) {
+        this.capture = capture;
+        return this;
+    }
 
     public ArrayList<Payment> getPayments() {
         return payments;
@@ -97,82 +121,117 @@ public class AdvancedPayment extends MPBase {
         return this;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public AdvancedPayment setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public String getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public AdvancedPayment setStatus(String status) {
         this.status = status;
+        return this;
     }
 
     public String getExternalReference() {
         return externalReference;
     }
 
-    public void setExternalReference(String externalReference) {
+    public AdvancedPayment setExternalReference(String externalReference) {
         this.externalReference = externalReference;
+        return this;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public AdvancedPayment setDescription(String description) {
         this.description = description;
+        return this;
     }
 
     public Date getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(Date dateCreated) {
+    public AdvancedPayment setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
+        return this;
     }
 
     public Date getDateLastUpdated() {
         return dateLastUpdated;
     }
 
-    public void setDateLastUpdated(Date dateLastUpdated) {
+    public AdvancedPayment setDateLastUpdated(Date dateLastUpdated) {
         this.dateLastUpdated = dateLastUpdated;
+        return this;
+    }
+
+    public Boolean getBinaryMode() {
+        return binaryMode;
+    }
+
+    public AdvancedPayment setBinaryMode(Boolean binaryMode) {
+        this.binaryMode = binaryMode;
+        return this;
     }
 
     public String getApplicationId() {
         return applicationId;
     }
 
-    public void setApplicationId(String applicationId) {
+    public AdvancedPayment setApplicationId(String applicationId) {
         this.applicationId = applicationId;
+        return this;
     }
 
     public AdditionalInfo getAdditionalInfo() {
         return additionalInfo;
     }
 
-    public void setAdditionalInfo(AdditionalInfo additionalInfo) {
+    public AdvancedPayment setAdditionalInfo(AdditionalInfo additionalInfo) {
         this.additionalInfo = additionalInfo;
+        return this;
     }
 
-
     @POST(path="/v1/advanced_payments")
-    public AdvancedPayment save(AdvancedPayment advancedPayment) throws MPException {
-        if(advancedPayment.getMetadata() == null){
-            advancedPayment.setMetadata(new JsonObject());
+    public AdvancedPayment save() throws MPException {
+        if(this.getMetadata() == null){
+            this.setMetadata(new JsonObject());
         }
-        return processMethod(AdvancedPayment.class, advancedPayment, "save", null, WITHOUT_CACHE, MPRequestOptions.createDefault());
+        return processMethod(AdvancedPayment.class, this, "save", null, WITHOUT_CACHE, MPRequestOptions.createDefault());
+    }
+
+    public static boolean capture(Long id) throws MPException {
+        return capture(id, MPRequestOptions.createDefault());
     }
 
     @PUT(path="/v1/advanced_payments/:id")
-    public AdvancedPayment update() throws MPException {
-        return processMethod("update", WITHOUT_CACHE,MPRequestOptions.createDefault() );
+    public static boolean capture(Long id, MPRequestOptions requestOptions) throws MPException {
+        AdvancedPayment advancedPayment = new AdvancedPayment()
+                .setCapture(true);
+
+        Map<String, String> queryParams = new HashMap<String, String>();
+        queryParams.put("id", id.toString());
+
+        AdvancedPayment response = processMethod(AdvancedPayment.class, advancedPayment, "update", queryParams, WITHOUT_CACHE, requestOptions);
+        if(response.getLastApiResponse().getStatusCode() >= 200 && response.getLastApiResponse().getStatusCode() < 300){
+            return true;
+        }
+        return false;
+    }
+
+    @PUT(path="/v1/advanced_payments/:id")
+    public AdvancedPayment update(MPRequestOptions requestOptions) throws MPException {
+        return processMethod("update", WITHOUT_CACHE, requestOptions);
     }
 
     @GET(path="/v1/advanced_payments/:id")
@@ -180,42 +239,60 @@ public class AdvancedPayment extends MPBase {
         return processMethod(AdvancedPayment.class, "findById", WITHOUT_CACHE, MPRequestOptions.createDefault(), id);
     }
 
-//    @POST(path="/v1/advanced_payments/:id/refunds")
-//    public ArrayList<Refund> saveReembolso() throws MPException {
-//        ArrayList<Refund> listRefund = new ArrayList<Refund>();
-//        Refund ad =  processMethod( "saveReembolso", WITHOUT_CACHE, MPRequestOptions.createDefault());
-//        listRefund.add(ad);
-//        return listRefund;
-//    }
-
-    @POST(path="/v1/advanced_payments/:id/refunds")
-    public static MPResourceArray all() throws MPException {
-        return  processMethodBulk(Refund.class, "all", WITHOUT_CACHE, MPRequestOptions.createDefault());
+    public static boolean cancel(long id) throws MPException {
+        return cancel(id, MPRequestOptions.createDefault());
     }
 
+    @PUT(path="/v1/advanced_payments/:id")
+    public static boolean cancel(Long id, MPRequestOptions requestOptions) throws MPException {
+        AdvancedPayment advancedPayment = new AdvancedPayment()
+                .setStatus("cancelled");
 
-    @POST(path="/v1/advanced_payments/:id/refunds")
-    public ArrayList<Refund> saveReembolso() throws MPException {
-        ArrayList<Refund> listRefund = new ArrayList<Refund>();
-        Refund ad =  processMethod( "saveReembolso", WITHOUT_CACHE, MPRequestOptions.createDefault());
-        listRefund.add(ad);
-        return listRefund;
+        Map<String, String> queryParams = new HashMap<String, String>();
+        queryParams.put("id", id.toString());
+
+        AdvancedPayment response = processMethod(AdvancedPayment.class, advancedPayment, "update", queryParams, WITHOUT_CACHE, requestOptions);
+        if (response.getLastApiResponse().getStatusCode() >= 200 && response.getLastApiResponse().getStatusCode() < 300){
+            return true;
+        }
+
+        return false;
     }
 
-    @POST(path="/v1/advanced_payments/:id/disbursements/:disbursementId/refunds")
-    public List<AdvancedPayment> saveReembolsoParcial() throws MPException {
-        return processMethod( "saveReembolsoParcial", WITHOUT_CACHE, MPRequestOptions.createDefault());
+    public static boolean updateReleaseDate(Long advancedPaymentId, Date releaseDate) throws MPException {
+        return updateReleaseDate(advancedPaymentId, releaseDate, MPRequestOptions.createDefault());
     }
 
     @POST(path="/v1/advanced_payments/:id/disburses")
-    public AdvancedPayment saveMudancaDataLancamento() throws MPException {
-        return processMethod( "saveMudancaDataLancamento", WITHOUT_CACHE, MPRequestOptions.createDefault());
+    public static boolean updateReleaseDate(Long advancedPaymentId, Date releaseDate, MPRequestOptions requestOptions) throws MPException {
+        AdvancedPayment advancedPayment = new AdvancedPayment()
+                .setMoneyReleaseDate(releaseDate);
+
+        Map<String, String> queryParams = new HashMap<String, String>();
+        queryParams.put("id", advancedPaymentId.toString());
+
+        AdvancedPayment response = processMethod(AdvancedPayment.class, advancedPayment, "updateReleaseDate", queryParams, WITHOUT_CACHE, requestOptions);
+        if (response.getLastApiResponse().getStatusCode() >= 200 && response.getLastApiResponse().getStatusCode() < 300){
+            return true;
+        }
+
+        return false;
     }
 
-    @POST(path="/v1/advanced_payments/:id/disbursements/:disbursementId/disburses")
-    public AdvancedPayment saveAlteracaoDataLancamento() throws MPException {
-        return processMethod( "saveAlteracaoDataLancamento", WITHOUT_CACHE, MPRequestOptions.createDefault());
+    public static DisbursementRefund refund(Long advancedPaymentId, Long disbursementId, float amount, MPRequestOptions requestOptions) throws MPException {
+        return DisbursementRefund.create(advancedPaymentId, disbursementId,amount, requestOptions);
     }
 
+    public static DisbursementRefund refund(Long advancedPaymentId, Long disbursementId, float amount) throws MPException {
+        return DisbursementRefund.create(advancedPaymentId, disbursementId,amount, MPRequestOptions.createDefault());
+    }
 
+    public static MPResourceArray refundAll(long advancedPaymentId) throws MPException {
+        return DisbursementRefund.createAll(advancedPaymentId, MPRequestOptions.createDefault());
+    }
+
+    @POST(path="/v1/advanced_payments/:advanced_payment_id/refunds")
+    public static MPResourceArray refundAll(long advancedPaymentId, MPRequestOptions requestOptions) throws MPException {
+        return DisbursementRefund.createAll(advancedPaymentId, requestOptions);
+    }
 }
