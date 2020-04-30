@@ -1,0 +1,16 @@
+com.mercadopago
+com.mercadopago.core
+com.mercadopago.core.annotations.idempotent
+com.mercadopago.core.annotations.rest
+com.mercadopago.core.annotations.validation
+com.mercadopago.exceptions
+com.mercadopago.insight
+com.mercadopago.insight.dto
+com.mercadopago.net
+com.mercadopago.resources
+com.mercadopago.resources.datastructures.advancedpayment
+com.mercadopago.resources.datastructures.customer
+com.mercadopago.resources.datastructures.customer.card
+com.mercadopago.resources.datastructures.merchantorder
+com.mercadopago.resources.datastructures.payment
+com.mercadopago.resources.datastructures.preference

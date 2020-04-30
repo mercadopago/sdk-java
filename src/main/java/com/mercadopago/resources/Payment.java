@@ -11,11 +11,12 @@ import com.mercadopago.core.annotations.rest.PUT;
 import com.mercadopago.core.annotations.validation.Numeric;
 import com.mercadopago.core.annotations.validation.Size;
 import com.mercadopago.exceptions.MPException;
+import com.mercadopago.resources.datastructures.payment.TransactionDetails;
 import com.mercadopago.resources.datastructures.payment.AdditionalInfo;
 import com.mercadopago.resources.datastructures.payment.FeeDetail;
 import com.mercadopago.resources.datastructures.payment.Order;
 import com.mercadopago.resources.datastructures.payment.Payer;
-import com.mercadopago.resources.datastructures.payment.TransactionDetails;
+
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -442,6 +443,10 @@ public class Payment extends MPBase {
 
     @POST(path="/v1/payments")
     public Payment save(MPRequestOptions requestOptions) throws MPException {
+        if (requestOptions == null) {
+            requestOptions = MPRequestOptions.createDefault();
+        }
+        addTrackingHeaders(requestOptions);
         return processMethod("save", WITHOUT_CACHE, requestOptions);
     }
 
@@ -472,6 +477,7 @@ public class Payment extends MPBase {
         refund.setPaymentId(this.getId());
         refund.setAmount(amount);
         refund.save(requestOptions);
+        this.lastApiResponse = refund.getLastApiResponse();
         // If refund has been successfully created then update the instance values
 
         if (refund.getId() != null) {

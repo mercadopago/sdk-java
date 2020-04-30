@@ -1,5 +1,15 @@
 package com.mercadopago.net;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLPeerUnverifiedException;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -9,10 +19,10 @@ import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.core.annotations.rest.PayloadType;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.exceptions.MPRestException;
+import com.mercadopago.insight.Stats;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
-import org.apache.http.HeaderElement;
-import org.apache.http.HeaderElementIterator;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -26,7 +36,11 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.conn.ConnectionKeepAliveStrategy;
+import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.config.Registry;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
@@ -34,31 +48,20 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicHeader;
-import org.apache.http.message.BasicHeaderElementIterator;
 import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.message.BasicStatusLine;
 import org.apache.http.protocol.HTTP;
-
-import javax.net.ssl.SSLPeerUnverifiedException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.apache.http.ssl.SSLContexts;
 
 /**
- * Mercado Pago MercadoPago
- * Simple Rest Client
+ * Mercado Pago MercadoPago Simple Rest Client
  *
  * Created by Eduardo Paoletta on 11/11/16.
  */
 public class MPRestClient {
 
     private static final int VALIDATE_INACTIVITY_INTERVAL_MS = 30000;
-    private static final int DEFAULT_KEEP_ALIVE_TIMEOUT_MS = 10000;
-    private static final String KEEP_ALIVE_TIMEOUT_PARAM_NAME = "timeout";
 
     private HttpClient httpClient;
     private HttpHost httpProxy = null;
@@ -77,15 +80,13 @@ public class MPRestClient {
     }
 
     @Deprecated
-    public MPApiResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders)
-            throws MPRestException {
+    public MPApiResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders) throws MPRestException {
 
         return this.executeRequest(httpMethod, uri, payloadType, payload, colHeaders, 0, 0, 0);
     }
 
     @Deprecated
-    public MPApiResponse executeGenericRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders)
-            throws MPRestException {
+    public MPApiResponse executeGenericRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders) throws MPRestException {
 
         String full_uri;
         try {
@@ -97,36 +98,35 @@ public class MPRestClient {
         return this.executeRequest(httpMethod, full_uri, payloadType, payload, colHeaders, 0, 0, 0);
     }
 
-
     /**
      * Executes a http request and returns a response
      *
-     * @param httpMethod                a String with the http method to execute
-     * @param uri                       a String with the uri
-     * @param payloadType               PayloadType NONE, JSON, FORM_DATA, X_WWW_FORM_URLENCODED
-     * @param payload                   JsonObject with the payload
-     * @param colHeaders                custom headers to add in the request
-     * @param retries                   int with the retries for the api request
-     * @param connectionTimeout         int with the connection timeout for the api request expressed in milliseconds
-     * @param socketTimeout             int with the socket timeout for the api request expressed in milliseconds
-     * @return                          MPApiResponse with parsed info of the http response
+     * @param httpMethod        a String with the http method to execute
+     * @param uri               a String with the uri
+     * @param payloadType       PayloadType NONE, JSON, FORM_DATA,
+     *                          X_WWW_FORM_URLENCODED
+     * @param payload           JsonObject with the payload
+     * @param colHeaders        custom headers to add in the request
+     * @param retries           int with the retries for the api request
+     * @param connectionTimeout int with the connection timeout for the api request
+     *                          expressed in milliseconds
+     * @param socketTimeout     int with the socket timeout for the api request
+     *                          expressed in milliseconds
+     * @return MPApiResponse with parsed info of the http response
      * @throws MPRestException
      */
     @Deprecated
     public MPApiResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, Collection<Header> colHeaders, int retries, int connectionTimeout, int socketTimeout)
             throws MPRestException {
-        Map<String, String> headers = new HashMap<>();
+        Map<String, String> headers = new HashMap<String, String>();
         if (colHeaders != null) {
             for (Header header : colHeaders) {
                 headers.put(header.getName(), header.getValue());
             }
         }
 
-        MPRequestOptions requestOptions = MPRequestOptions.builder()
-                .setCustomHeaders(headers)
-                .setConnectionTimeout(connectionTimeout)
-                .setSocketTimeout(socketTimeout)
-                .build();
+        MPRequestOptions requestOptions = MPRequestOptions.builder().setCustomHeaders(headers)
+                .setConnectionTimeout(connectionTimeout).setSocketTimeout(socketTimeout).build();
 
         return executeRequest(httpMethod, uri, payloadType, payload, requestOptions);
     }
@@ -134,42 +134,43 @@ public class MPRestClient {
     /**
      * Executes a http request and returns a response
      *
-     * @param httpMethod                a String with the http method to execute
-     * @param uri                       a String with the uri
-     * @param payloadType               PayloadType NONE, JSON, FORM_DATA, X_WWW_FORM_URLENCODED
-     * @param payload                   JsonObject with the payload
-     * @return                          MPApiResponse with parsed info of the http response
+     * @param httpMethod  a String with the http method to execute
+     * @param uri         a String with the uri
+     * @param payloadType PayloadType NONE, JSON, FORM_DATA, X_WWW_FORM_URLENCODED
+     * @param payload     JsonObject with the payload
+     * @return MPApiResponse with parsed info of the http response
      * @throws MPRestException
      */
-    public MPApiResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload)
-            throws MPRestException {
+    public MPApiResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload) throws MPRestException {
         return executeRequest(httpMethod, uri, payloadType, payload, MPRequestOptions.createDefault());
     }
 
     /**
      * Executes a http request and returns a response
      *
-     * @param httpMethod                a String with the http method to execute
-     * @param uri                       a String with the uri
-     * @param payloadType               PayloadType NONE, JSON, FORM_DATA, X_WWW_FORM_URLENCODED
-     * @param payload                   JsonObject with the payload
-     * @param requestOptions            a Object with request options
-     * @return                          MPApiResponse with parsed info of the http response
+     * @param httpMethod     a String with the http method to execute
+     * @param uri            a String with the uri
+     * @param payloadType    PayloadType NONE, JSON, FORM_DATA,
+     *                       X_WWW_FORM_URLENCODED
+     * @param payload        JsonObject with the payload
+     * @param requestOptions a Object with request options
+     * @return MPApiResponse with parsed info of the http response
      * @throws MPRestException
      */
-    public MPApiResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, MPRequestOptions requestOptions)
-            throws MPRestException {
+    public MPApiResponse executeRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, MPRequestOptions requestOptions) throws MPRestException {
         try {
+            long startRequestMillis = System.currentTimeMillis();
             if (requestOptions == null) {
                 requestOptions = MPRequestOptions.createDefault();
             }
 
             HttpRequestBase request = createHttpRequest(httpMethod, uri, payloadType, payload, requestOptions);
+            HttpClientContext context = HttpClientContext.create();
 
             HttpResponse response;
             long startMillis = System.currentTimeMillis();
             try {
-                response = httpClient.execute(request);
+                response = httpClient.execute(request, context);
             } catch (ClientProtocolException e) {
                 response = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 400, null));
             } catch (SSLPeerUnverifiedException e) {
@@ -178,9 +179,11 @@ public class MPRestClient {
                 response = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 404, null));
             }
             long endMillis = System.currentTimeMillis();
-            long responseMillis = endMillis - startMillis;
 
-            return new MPApiResponse(httpMethod, request, payload, response, responseMillis);
+            Stats stats = new Stats(context, request, response, startMillis, endMillis, startRequestMillis);
+            stats.start();
+            
+            return new MPApiResponse(httpMethod, request, payload, response);
 
         } catch (MPRestException restEx) {
             throw restEx;
@@ -193,9 +196,10 @@ public class MPRestClient {
         HttpEntity entity = normalizePayload(payloadType, payload);
         HttpRequestBase request = getRequestMethod(httpMethod, uri, entity);
 
-        Map<String, String> headers = new HashMap<>();
+        Map<String, String> headers = new HashMap<String, String>();
         headers.put(HTTP.USER_AGENT, String.format("MercadoPago Java SDK/%s", MercadoPago.SDK.getVersion()));
         headers.put("x-product-id", MercadoPago.SDK.getProductId());
+        headers.put("x-tracking-id", MercadoPago.SDK.getTrackingId());
         for (String headerName : requestOptions.getCustomHeaders().keySet()) {
             if (!headers.containsKey(headerName)) {
                 headers.put(headerName, requestOptions.getCustomHeaders().get(headerName));
@@ -230,29 +234,23 @@ public class MPRestClient {
      * @return a HttpClient
      */
     private HttpClient createHttpClient() {
-        PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
+        SSLContext sslContext = SSLContexts.createDefault();
+        SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext,
+                new String[]{"TLSv1.1", "TLSv1.2"}, null, SSLConnectionSocketFactory.getDefaultHostnameVerifier());
+        Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
+                .register("https", sslConnectionSocketFactory)
+                .build();
+
+        PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager(registry);
         connectionManager.setMaxTotal(MercadoPago.SDK.getMaxConnections());
         connectionManager.setDefaultMaxPerRoute(MercadoPago.SDK.getMaxConnections());
         connectionManager.setValidateAfterInactivity(VALIDATE_INACTIVITY_INTERVAL_MS);
-
-        ConnectionKeepAliveStrategy keepAliveStrategy = (response, context) -> {
-            HeaderElementIterator it = new BasicHeaderElementIterator(response.headerIterator(HTTP.CONN_KEEP_ALIVE));
-            while (it.hasNext()) {
-                HeaderElement he = it.nextElement();
-                String param = he.getName();
-                String value = he.getValue();
-                if (value != null && param.equalsIgnoreCase(KEEP_ALIVE_TIMEOUT_PARAM_NAME)) {
-                    return Long.parseLong(value) * 1000;
-                }
-            }
-            return DEFAULT_KEEP_ALIVE_TIMEOUT_MS;
-        };
 
         DefaultHttpRequestRetryHandler retryHandler = new DefaultHttpRequestRetryHandler(MercadoPago.SDK.getRetries(), false);
 
         HttpClientBuilder httpClientBuilder = HttpClients.custom()
                 .setConnectionManager(connectionManager)
-                .setKeepAliveStrategy(keepAliveStrategy)
+                .setKeepAliveStrategy(new KeepAliveStrategy())
                 .setRetryHandler(retryHandler)
                 .disableCookieManagement()
                 .disableRedirectHandling();
@@ -274,7 +272,7 @@ public class MPRestClient {
             if (payloadType == PayloadType.JSON) {
                 StringEntity stringEntity;
                 try {
-                    stringEntity = new StringEntity(payload.toString());
+                    stringEntity = new StringEntity(payload.toString(), "UTF-8");
                 } catch(Exception ex) {
                     throw new MPRestException(ex);
                 }
@@ -282,7 +280,7 @@ public class MPRestClient {
 
             } else {
                 Map<String, Object> map = new Gson().fromJson(payload.toString(), new TypeToken<Map<String, Object>>(){}.getType());
-                List<NameValuePair> params = new ArrayList<>(2);
+                List<NameValuePair> params = new ArrayList<NameValuePair>(2);
                 for (Map.Entry<String, Object> entry : map.entrySet()) {
                     params.add(new BasicNameValuePair(entry.getKey(), entry.getValue().toString()));
                 }

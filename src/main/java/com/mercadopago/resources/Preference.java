@@ -1,5 +1,7 @@
 package com.mercadopago.resources;
 
+import com.google.gson.JsonObject;
+import com.mercadopago.MercadoPago;
 import com.mercadopago.core.MPBase;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.core.annotations.rest.GET;
@@ -8,16 +10,11 @@ import com.mercadopago.core.annotations.rest.PUT;
 import com.mercadopago.core.annotations.validation.NotNull;
 import com.mercadopago.core.annotations.validation.Size;
 import com.mercadopago.exceptions.MPException;
-import com.mercadopago.resources.datastructures.preference.BackUrls;
-import com.mercadopago.resources.datastructures.preference.DifferentialPricing;
-import com.mercadopago.resources.datastructures.preference.Item;
-import com.mercadopago.resources.datastructures.preference.Payer;
-import com.mercadopago.resources.datastructures.preference.PaymentMethods;
-import com.mercadopago.resources.datastructures.preference.Shipments;
-import com.mercadopago.resources.datastructures.preference.Tax;
+import com.mercadopago.resources.datastructures.preference.*;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * Mercado Pago MercadoPago
@@ -30,7 +27,6 @@ public class Preference extends MPBase {
 
     @NotNull
     private ArrayList<Item> items = null;
-    @NotNull
     private Payer payer = null;
     private PaymentMethods paymentMethods = null;
     private Shipments shipments = null;
@@ -39,12 +35,15 @@ public class Preference extends MPBase {
     private String id = null;
     private String initPoint = null;
     private String sandboxInitPoint = null;
+    private String purpose = null;
     private Date dateCreated = null;
     private OperationType operationType = null;
+    private JsonObject metadata = null;
 
     public enum OperationType {
         regular_payment,
-        money_transfer
+        money_transfer,
+        pos_payment
     }
     @Size(max=600) private String additionalInfo = null;
     private AutoReturn autoReturn = null;
@@ -61,7 +60,7 @@ public class Preference extends MPBase {
     @Size(max=256) private String marketplace = null;
     private Float marketplaceFee = null;
     private DifferentialPricing differentialPricing = null;
-    private String sponsorId = null;
+    private Integer sponsorId = null;
     public enum ProcessingMode {
         aggregator,
         gateway
@@ -69,6 +68,7 @@ public class Preference extends MPBase {
     private ArrayList<ProcessingMode> processingModes = null;
     private Boolean binaryMode = null;
     private ArrayList<Tax> taxes = null;
+    private ArrayList<Track> tracks = null;
 
     public ArrayList<Item> getItems() {
         return items;
@@ -144,12 +144,26 @@ public class Preference extends MPBase {
         return sandboxInitPoint;
     }
 
+    public String getPurpose() {
+        return purpose;
+    } 
+    
+    public Preference setPurpose(String purpose) {
+        this.purpose = purpose;
+        return this;
+    }
+
     public Date getDateCreated() {
         return dateCreated;
     }
 
     public OperationType getOperationType() {
         return operationType;
+    }
+
+    public Preference setOperationType(OperationType operationType){
+        this.operationType = operationType;
+        return this;
     }
 
     public String getAdditionalInfo() {
@@ -241,11 +255,11 @@ public class Preference extends MPBase {
         return this;
     }
 
-    public String getSponsorId() {
+    public Integer getSponsorId() {
         return sponsorId;
     }
 
-    public void setSponsorId(String sponsorId) {
+    public void setSponsorId(Integer sponsorId) {
         this.sponsorId = sponsorId;
     }
 
@@ -284,9 +298,35 @@ public class Preference extends MPBase {
 
     public Preference appendTax(Tax tax) {
         if (this.taxes == null) {
-            this.taxes = new ArrayList<>();
+            this.taxes = new ArrayList<Tax>();
         }
         this.taxes.add(tax);
+        return this;
+    }
+
+    public JsonObject getMetadata() {
+        return metadata;
+    }
+
+    public Preference setMetadata(JsonObject metadata) {
+        this.metadata = metadata;
+        return this;
+    }
+
+    public ArrayList<Track> getTracks() {
+        return tracks;
+    }
+
+    public Preference setTracks(ArrayList<Track> tracks) {
+        this.tracks = tracks;
+        return this;
+    }
+
+    public Preference appendTrack(Track track) {
+        if (this.tracks == null) {
+            this.tracks = new ArrayList<Track>();
+        }
+        this.tracks.add(track);
         return this;
     }
 
@@ -309,6 +349,10 @@ public class Preference extends MPBase {
 
     @POST(path="/checkout/preferences")
     public Preference save(MPRequestOptions requestOptions) throws MPException {
+        if (requestOptions == null) {
+            requestOptions = MPRequestOptions.createDefault();
+        }
+        addTrackingHeaders(requestOptions);
         return processMethod("save", WITHOUT_CACHE, requestOptions);
     }
 

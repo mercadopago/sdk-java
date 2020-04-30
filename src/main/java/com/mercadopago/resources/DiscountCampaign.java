@@ -89,7 +89,7 @@ public class DiscountCampaign extends MPBase {
 
     @GET(path = "/v1/discount_campaigns")
     public static DiscountCampaign find(Float transactionAmount, String payerEmail, String couponCode, Boolean useCache, MPRequestOptions requestOptions) throws MPException {
-        Map<String, String> params = new HashMap<>();
+        Map<String, String> params = new HashMap<String, String>();
         params.put("transaction_amount", Float.toString(transactionAmount));
         params.put("payer_email", payerEmail);
         params.put("coupon_code", couponCode);

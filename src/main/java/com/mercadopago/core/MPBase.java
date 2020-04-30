@@ -16,6 +16,7 @@ import com.mercadopago.core.annotations.rest.POST;
 import com.mercadopago.core.annotations.rest.PUT;
 import com.mercadopago.core.annotations.rest.PayloadType;
 import com.mercadopago.exceptions.MPException;
+import com.mercadopago.insight.InsightDataManager;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPRestClient;
 import org.apache.commons.lang.StringUtils;
@@ -41,7 +42,7 @@ import java.util.UUID;
  */
 public abstract class MPBase {
 
-    private transient static final List<String> ALLOWED_METHODS = Arrays.asList("findById", "find", "save", "update", "delete");
+    private transient static final List<String> ALLOWED_METHODS = Arrays.asList("findById", "find", "save", "update", "delete", "saveReembolso", "saveReembolsoParcial", "saveMudancaDataLancamento", "saveAlteracaoDataLancamento");
     private transient static final List<String> ALLOWED_BULK_METHODS = Arrays.asList("all", "search");
     private transient static final List<String> METHODS_TO_VALIDATE = Arrays.asList("save", "update");
 
@@ -155,7 +156,7 @@ public abstract class MPBase {
      * @throws MPException
      */
     protected static <T extends MPBase> T processMethod(Class clazz, String methodName, Boolean useCache, MPRequestOptions requestOptions, String... params) throws MPException {
-        Map<String, String> mapParams = new HashMap<>();
+        Map<String, String> mapParams = new HashMap<String, String>();
         if (params != null) {
             for (int i = 1; i <= params.length; i++) {
                 mapParams.put("param" + i, params[i - 1]);
@@ -222,6 +223,8 @@ public abstract class MPBase {
         if (StringUtils.isNotEmpty(resource.getIdempotenceKey()) && !requestOptions.getCustomHeaders().containsKey("x-idempotency-key")) {
             requestOptions.getCustomHeaders().put("x-idempotency-key", resource.getIdempotenceKey());
         }
+        //Insight custom header
+        requestOptions.getCustomHeaders().put(InsightDataManager.HEADER_X_INSIGHTS_EVENT_NAME, methodName); 
 
         MPApiResponse response = callApi(httpMethod, path, payloadType, payload, useCache, requestOptions);
 
@@ -292,7 +295,7 @@ public abstract class MPBase {
      * @throws MPException
      */
     protected static MPResourceArray processMethodBulk(Class clazz, String methodName, Boolean useCache, MPRequestOptions requestOptions, String... params) throws MPException {
-        Map<String, String> mapParams = new HashMap<>();
+        Map<String, String> mapParams = new HashMap<String, String>();
         if (params != null) {
             for (int i = 1; i <= params.length; i++) {
                 mapParams.put("param" + i, params[i - 1]);
@@ -385,6 +388,7 @@ public abstract class MPBase {
                     payloadType,
                     payload,
                     requestOptions);
+           
 
             if (useCache) {
                 MPCache.addToCache(cacheKey, response);
@@ -572,10 +576,11 @@ public abstract class MPBase {
             accessToken = MercadoPago.SDK.getAccessToken();
         }
 
-        processedPath
-                .append("?access_token=")
-                .append(accessToken);
-
+        if(!path.equals("/oauth/token")) {
+            processedPath
+                    .append("?access_token=")
+                    .append(accessToken);
+        }
         
         if (mapParams != null && !mapParams.isEmpty()) {
 	        for (Map.Entry<String, String> entry : mapParams.entrySet()) {
@@ -662,7 +667,7 @@ public abstract class MPBase {
             throw new MPException("No rest method found");
         }
 
-        Map<String, Object> hashAnnotation = new HashMap<>();
+        Map<String, Object> hashAnnotation = new HashMap<String, Object>();
         for (Annotation annotation : element.getAnnotations()) {
             if (annotation instanceof DELETE) {
                 DELETE delete = (DELETE) annotation;
@@ -786,5 +791,18 @@ public abstract class MPBase {
 
     public void setMarketplaceAccessToken(String marketplaceAccessToken) {
         this.marketplaceAccessToken = marketplaceAccessToken;
+    }
+
+    protected void addTrackingHeaders(MPRequestOptions requestOptions) {
+        Map<String, String> customHeaders = requestOptions.getCustomHeaders();
+        if (MercadoPago.SDK.getPlatformId() != null && !MercadoPago.SDK.getPlatformId().trim().equals("") && !customHeaders.containsKey("x-platform-id")) {
+            customHeaders.put("x-platform-id", MercadoPago.SDK.getPlatformId());
+        }
+        if (MercadoPago.SDK.getCorporationId() != null && !MercadoPago.SDK.getCorporationId().trim().equals("") && !customHeaders.containsKey("x-corporation-id")) {
+            customHeaders.put("x-corporation-id", MercadoPago.SDK.getCorporationId());
+        }
+        if (MercadoPago.SDK.getIntegratorId() != null && !MercadoPago.SDK.getIntegratorId().trim().equals("") && !customHeaders.containsKey("x-integrator-id")) {
+            customHeaders.put("x-integrator-id", MercadoPago.SDK.getIntegratorId());
+        }
     }
 }
