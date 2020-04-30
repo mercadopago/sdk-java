@@ -202,12 +202,16 @@ public class AdvancedPayment extends MPBase {
         return this;
     }
 
-    @POST(path="/v1/advanced_payments")
     public AdvancedPayment save() throws MPException {
+        return save(MPRequestOptions.createDefault());
+    }
+
+    @POST(path="/v1/advanced_payments")
+    public AdvancedPayment save(MPRequestOptions requestOptions) throws MPException {
         if(this.getMetadata() == null){
             this.setMetadata(new JsonObject());
         }
-        return processMethod(AdvancedPayment.class, this, "save", null, WITHOUT_CACHE, MPRequestOptions.createDefault());
+        return processMethod(AdvancedPayment.class, this, "save", null, WITHOUT_CACHE, requestOptions);
     }
 
     public static boolean capture(Long id) throws MPException {
@@ -229,14 +233,22 @@ public class AdvancedPayment extends MPBase {
         return false;
     }
 
+    public AdvancedPayment update() throws MPException{
+        return update(MPRequestOptions.createDefault());
+    }
+
     @PUT(path="/v1/advanced_payments/:id")
     public AdvancedPayment update(MPRequestOptions requestOptions) throws MPException {
         return processMethod("update", WITHOUT_CACHE, requestOptions);
     }
 
+    public static AdvancedPayment findById(String id) throws MPException {
+        return findById(id, MPRequestOptions.createDefault());
+    }
+
     @GET(path="/v1/advanced_payments/:id")
-    public static AdvancedPayment findById( String id) throws MPException {
-        return processMethod(AdvancedPayment.class, "findById", WITHOUT_CACHE, MPRequestOptions.createDefault(), id);
+    public static AdvancedPayment findById(String id, MPRequestOptions requestOptions) throws MPException {
+        return processMethod(AdvancedPayment.class, "findById", WITHOUT_CACHE, requestOptions, id);
     }
 
     public static boolean cancel(long id) throws MPException {

@@ -95,16 +95,28 @@ public class DisbursementRefund extends MPBase {
         return this;
     }
 
+    public static MPResourceArray all(String advancedPaymentId, Boolean useCache) throws MPException {
+        return all(advancedPaymentId, useCache, MPRequestOptions.createDefault());
+    }
+
     @GET(path="/v1/advanced_payments/:advanced_payment_id/refunds")
     public static MPResourceArray all(String advancedPaymentId, Boolean useCache, MPRequestOptions requestOptions) throws MPException {
         return processMethodBulk(Refund.class, "all", useCache, requestOptions, advancedPaymentId);
     }
 
     public DisbursementRefund save(float amount) throws MPException {
+        return save(amount, MPRequestOptions.createDefault());
+    }
+
+    public DisbursementRefund save(float amount, MPRequestOptions requestOptions) throws MPException {
         if (amount > 0) {
             this.amount = amount;
         }
 
+        return save(requestOptions);
+    }
+
+    public DisbursementRefund save() throws MPException {
         return save(MPRequestOptions.createDefault());
     }
 
