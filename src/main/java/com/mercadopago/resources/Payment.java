@@ -114,6 +114,8 @@ public class Payment extends MPBase {
     private String callbackUrl = null;
     private Integer sponsorId = null;
     private String processingMode = null;
+    private String merchantAccountId = null;
+    private String paymentMethodOptionId = null;
 
 
     public String getId() {
@@ -387,9 +389,31 @@ public class Payment extends MPBase {
         return this.processingMode;
     }
 
+
+    public Payment setProcessingMode(String processingMode){
+        this.processingMode = processingMode;
+        return this;
+    }
+
     public Payment setPaymentMode(String processingMode) {
         this.processingMode = processingMode;
         return this;
+    }
+
+    public String getMerchantAccountid() {
+        return merchantAccountId;
+    }
+
+    public void setMerchantAccountId(String merchantAccountId) {
+        this.merchantAccountId = merchantAccountId;
+    }
+
+    public String getPaymentMethodOptionId() {
+        return paymentMethodOptionId;
+    }
+
+    public void setPaymentMethodOptionId(String paymentMethodOptionId) {
+        this.paymentMethodOptionId = paymentMethodOptionId;
     }
 
     @GET(path="/v1/payments/search")

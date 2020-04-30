@@ -42,7 +42,6 @@ public class Preference extends MPBase {
     private Date dateCreated = null;
     private OperationType operationType = null;
 
-
     public enum OperationType {
         regular_payment,
         money_transfer
@@ -65,7 +64,7 @@ public class Preference extends MPBase {
     private String sponsorId = null;
     public enum ProcessingMode {
         aggregator,
-        gatway
+        gateway
     }
     private ArrayList<ProcessingMode> processingModes = null;
     private Boolean binaryMode = null;
