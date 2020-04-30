@@ -404,16 +404,18 @@ public class Payment extends MPBase {
         return merchantAccountId;
     }
 
-    public void setMerchantAccountId(String merchantAccountId) {
+    public Payment setMerchantAccountId(String merchantAccountId) {
         this.merchantAccountId = merchantAccountId;
+        return this;
     }
 
     public String getPaymentMethodOptionId() {
         return paymentMethodOptionId;
     }
 
-    public void setPaymentMethodOptionId(String paymentMethodOptionId) {
+    public Payment setPaymentMethodOptionId(String paymentMethodOptionId) {
         this.paymentMethodOptionId = paymentMethodOptionId;
+        return this;
     }
 
     @GET(path="/v1/payments/search")
