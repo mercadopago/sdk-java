@@ -42,7 +42,7 @@ import java.util.UUID;
  */
 public abstract class MPBase {
 
-    private transient static final List<String> ALLOWED_METHODS = Arrays.asList("findById", "find", "save", "update", "delete");
+    private transient static final List<String> ALLOWED_METHODS = Arrays.asList("findById", "find", "save", "update", "delete", "saveReembolso", "saveReembolsoParcial", "saveMudancaDataLancamento", "saveAlteracaoDataLancamento");
     private transient static final List<String> ALLOWED_BULK_METHODS = Arrays.asList("all", "search");
     private transient static final List<String> METHODS_TO_VALIDATE = Arrays.asList("save", "update");
 
@@ -576,10 +576,11 @@ public abstract class MPBase {
             accessToken = MercadoPago.SDK.getAccessToken();
         }
 
-        processedPath
-                .append("?access_token=")
-                .append(accessToken);
-
+        if(!path.equals("/oauth/token")) {
+            processedPath
+                    .append("?access_token=")
+                    .append(accessToken);
+        }
         
         if (mapParams != null && !mapParams.isEmpty()) {
 	        for (Map.Entry<String, String> entry : mapParams.entrySet()) {
