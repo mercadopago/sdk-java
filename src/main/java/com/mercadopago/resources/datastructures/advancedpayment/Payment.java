@@ -10,6 +10,7 @@ public class Payment {
     private String statusDetail;
     private String paymentTypeId;
     private String paymentMethodId;
+    private String paymentMethodOptionId;
     private String token;
     private Float transactionAmount;
     private Integer installments;
@@ -163,6 +164,15 @@ public class Payment {
 
     public Payment setTransactionDetails(TransactionDetails transactionDetails) {
         this.transactionDetails = transactionDetails;
+        return this;
+    }
+
+    public String getPaymentMethodOptionId() {
+        return paymentMethodOptionId;
+    }
+
+    public Payment setPaymentMethodOptionId(String paymentMethodOptionId) {
+        this.paymentMethodOptionId = paymentMethodOptionId;
         return this;
     }
 }
