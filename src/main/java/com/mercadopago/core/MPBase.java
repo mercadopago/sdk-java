@@ -42,8 +42,8 @@ import java.util.UUID;
  */
 public abstract class MPBase {
 
-    private transient static final List<String> ALLOWED_METHODS = Arrays.asList("findById", "find", "save", "update", "delete");
-    private transient static final List<String> ALLOWED_BULK_METHODS = Arrays.asList("all", "search");
+    private transient static final List<String> ALLOWED_METHODS = Arrays.asList("findById", "find", "save", "update", "delete", "partialRefund", "updateReleaseDate", "updateDisbursementReleaseDate", "create");
+    private transient static final List<String> ALLOWED_BULK_METHODS = Arrays.asList("all", "search", "createAll");
     private transient static final List<String> METHODS_TO_VALIDATE = Arrays.asList("save", "update");
 
     public transient static final Boolean WITHOUT_CACHE = Boolean.FALSE;
@@ -342,7 +342,7 @@ public abstract class MPBase {
         String path = parsePath(hashAnnotation.get("path").toString(), mapParams, null, requestOptions);
         PayloadType payloadType = (PayloadType) hashAnnotation.get("payloadType");
 
-        MPApiResponse response = callApi(httpMethod, path, payloadType, null, useCache, requestOptions);
+        MPApiResponse response = callApi(httpMethod, path, payloadType, new JsonObject(), useCache, requestOptions);
 
         MPResourceArray resourceArray = new MPResourceArray();
 
@@ -515,8 +515,10 @@ public abstract class MPBase {
                 if (paramIterator <= 2 && mapParams != null &&
                         StringUtils.isNotEmpty(mapParams.get("param" + String.valueOf(paramIterator)))) {
                     value = mapParams.get("param" + String.valueOf(paramIterator));
+                    mapParams.remove(param);
                 } else if (mapParams != null && StringUtils.isNotEmpty(mapParams.get(param))) {
                     value = mapParams.get(param);
+                    mapParams.remove(param);
                 } else {
                     if (resource != null) {
                         JsonObject json = MPCoreUtils.getJsonFromResource(resource);
@@ -576,10 +578,11 @@ public abstract class MPBase {
             accessToken = MercadoPago.SDK.getAccessToken();
         }
 
-        processedPath
-                .append("?access_token=")
-                .append(accessToken);
-
+        if(!path.equals("/oauth/token")) {
+            processedPath
+                    .append("?access_token=")
+                    .append(accessToken);
+        }
         
         if (mapParams != null && !mapParams.isEmpty()) {
 	        for (Map.Entry<String, String> entry : mapParams.entrySet()) {

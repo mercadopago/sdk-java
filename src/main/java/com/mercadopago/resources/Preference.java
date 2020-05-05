@@ -35,6 +35,7 @@ public class Preference extends MPBase {
     private String id = null;
     private String initPoint = null;
     private String sandboxInitPoint = null;
+    private String purpose = null;
     private Date dateCreated = null;
     private OperationType operationType = null;
     private JsonObject metadata = null;
@@ -141,6 +142,15 @@ public class Preference extends MPBase {
 
     public String getSandboxInitPoint() {
         return sandboxInitPoint;
+    }
+
+    public String getPurpose() {
+        return purpose;
+    } 
+    
+    public Preference setPurpose(String purpose) {
+        this.purpose = purpose;
+        return this;
     }
 
     public Date getDateCreated() {

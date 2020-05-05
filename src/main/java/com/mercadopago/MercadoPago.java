@@ -37,9 +37,9 @@ public class MercadoPago {
         private static final String TRACKING_ID = String.format("platform:%s,type:SDK%s,so;", getJavaVersion(System.getProperty("java.runtime.version")), CURRENT_VERSION);
 
         private static final int DEFAULT_MAX_CONNECTIONS = 10;
-        private static final int DEFAULT_CONNECTION_TIMEOUT_MS = 5000;
-        private static final int DEFAULT_CONNECTION_REQUEST_TIMEOUT_MS = 5000;
-        private static final int DEFAULT_SOCKET_TIMEOUT_MS = 5000;
+        private static final int DEFAULT_CONNECTION_TIMEOUT_MS = 20000;
+        private static final int DEFAULT_CONNECTION_REQUEST_TIMEOUT_MS = 20000;
+        private static final int DEFAULT_SOCKET_TIMEOUT_MS = 20000;
         private static final int DEFAULT_RETRIES = 3;
         private static final String DEFAULT_METRICS_SCOPE = "prod";
 
