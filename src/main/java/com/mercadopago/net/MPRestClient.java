@@ -268,7 +268,7 @@ public class MPRestClient {
      */
     private HttpEntity normalizePayload(PayloadType payloadType, JsonObject payload) throws MPRestException {
         HttpEntity entity = null;
-        if (payload != null) {
+        if (payload != null && payload.size() != 0) {
             if (payloadType == PayloadType.JSON) {
                 StringEntity stringEntity;
                 try {
