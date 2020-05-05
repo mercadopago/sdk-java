@@ -13,57 +13,62 @@ public class Item {
         return id;
     }
 
-    public void setId(String id) {
+    public Item setId(String id) {
         this.id = id;
+        return this;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public Item setTitle(String title) {
         this.title = title;
+        return this;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public Item setDescription(String description) {
         this.description = description;
+        return this;
     }
 
     public String getPictureUrl() {
         return pictureUrl;
     }
 
-    public void setPictureUrl(String pictureUrl) {
+    public Item setPictureUrl(String pictureUrl) {
         this.pictureUrl = pictureUrl;
+        return this;
     }
 
     public String getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(String categoryId) {
+    public Item setCategoryId(String categoryId) {
         this.categoryId = categoryId;
+        return this;
     }
 
     public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public Item setQuantity(Integer quantity) {
         this.quantity = quantity;
+        return this;
     }
 
     public Float getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(Float unitPrice) {
+    public Item setUnitPrice(Float unitPrice) {
         this.unitPrice = unitPrice;
+        return this;
     }
-
-
 }

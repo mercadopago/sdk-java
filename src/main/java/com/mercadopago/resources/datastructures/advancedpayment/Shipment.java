@@ -7,7 +7,8 @@ public class Shipment {
         return receiverAddress;
     }
 
-    public void setReceiverAddress(ReceiverAddress receiverAddress) {
+    public Shipment setReceiverAddress(ReceiverAddress receiverAddress) {
         this.receiverAddress = receiverAddress;
+        return this;
     }
 }
