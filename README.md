@@ -73,9 +73,7 @@ This library provides developers with a simple set of bindings to the Mercado Pa
       }
   }
 ```
+### Support 
 
-### Support
-
-1. Create an issue https://github.com/mercadopago/dx-java/issues
-2. Follow your issue status in Issues Support Dashboard https://github.com/mercadopago/dx-java/projects/2
+Write us at [developers.mercadopago.com](https://developers.mercadopago.com)
 
