@@ -1,14 +1,19 @@
-[![Build Status](https://travis-ci.org/mercadopago/dx-java.svg?branch=master)](https://travis-ci.org/mercadopago/dx-java)
 [![Maven Central](https://img.shields.io/maven-central/v/org.apache.maven/apache-maven.svg?label=Maven%20Central)](https://mvnrepository.com/artifact/com.mercadopago/dx-java)
+![APM](https://img.shields.io/apm/l/vim-mode)
 
 
-# MercadoPago SDK for Java
+# Mercado Pago SDK for Java
 
-This library provides developers with a simple set of bindings to the Mercado Pago API.
+This library provides developers with a simple set of bindings to help you integrate Mercado Pago API to a website and start receiving payments.
 
-## Installation
+## 💡 Requirements
 
-### Using Maven
+Java 1.4 or major
+
+## 📲 Installation 
+
+First time using Mercado Pago? Create your Mercado Pago account, if you don’t have one already.
+
 1. Append MercadoPago dependencies to pom.xml
 
   ```xml
@@ -22,26 +27,16 @@ This library provides developers with a simple set of bindings to the Mercado Pa
     </dependencies>
     ...
   ```
+
 2. Run `mvn install` and thats all, you have Mercado Pago SDK installed.
 
-## Quick Start
+3. Copy the access_token in the [credentials](https://www.mercadopago.com/mlb/account/credentials) section of the page and replace YOUR_ACCESS_TOKEN with it.
 
-1. Import Mercado Pago basic clases. `import com.mercadopago.*;`
-2. Setup your credentials.
-  - **For Web-checkout:**
-    ```java
-      MercadoPago.SDK.setClientSecret("CLIENT_SECRET");
-      MercadoPago.SDK.setClientId("CLIENT_ID");
-    ```
-  - **For API or Custom-checkout:**
-    ```java
-      MercadoPago.SDK.setAccessToken("ACCESS_TOKEN");
-    ```
-3. Using Resource objects.
+Thats all, you have Mercado Pago SDK installed.
 
-![sdk resource structure](https://user-images.githubusercontent.com/864790/34393059-9acad058-eb2e-11e7-9987-494eaf19d109.png)
+## 🌟 Getting Started
 
-**Sample**
+  Simple usage looks like:
 
 ```java
   import com.mercadopago.*;
@@ -53,9 +48,7 @@ This library provides developers with a simple set of bindings to the Mercado Pa
   public class Main {
 
       public static void main(String[] args)throws MPException, MPConfException {
-
-          MercadoPago.SDK.setClientSecret(System.getenv("CLIENT_SECRET"));
-          MercadoPago.SDK.setClientId(System.getenv("CLIENT_ID_OK"));
+          MercadoPago.SDK.setAccessToken("YOUR_ACCESS_TOKEN");
 
           Payment payment = new Payment()
                   .setTransactionAmount(100f)
@@ -67,13 +60,23 @@ This library provides developers with a simple set of bindings to the Mercado Pa
                           .setEmail("dummy_email"));
 
           payment.save();
-
-
-
       }
   }
 ```
-### Support 
 
-Write us at [developers.mercadopago.com](https://developers.mercadopago.com)
+## 📚 Documentation 
 
+See our Documentation with all APIs you can integrate in our DevSite: [Spanish](https://www.mercadopago.com.ar/developers/es/guides/payments/api/introduction/) / [Portuguese](https://www.mercadopago.com.br/developers/pt/guides/payments/api/introduction/)
+
+Check our official code reference to explore all available functionalities.
+
+## ❤️ Support 
+
+If you require technical support, please contact our support team at [developers.mercadopago.com](https://developers.mercadopago.com)
+
+## 🏻 License 
+
+```
+MIT license. Copyright (c) 2018 - Mercado Pago / Mercado Libre 
+For more information, see the LICENSE file.
+```
