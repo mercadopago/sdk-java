@@ -67,7 +67,7 @@ Thats all, you have Mercado Pago SDK installed.
 
 See our Documentation with all APIs you can integrate in our DevSite: [Spanish](https://www.mercadopago.com.ar/developers/es/guides/payments/api/introduction/) / [Portuguese](https://www.mercadopago.com.br/developers/pt/guides/payments/api/introduction/)
 
-Check our official code reference to explore all available functionalities.
+Check [our official code reference](https://mercadopago.github.io/dx-java/) to explore all available functionalities.
 
 ## ❤️ Support 
 
