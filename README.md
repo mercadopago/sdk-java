@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/mercadopago/dx-java.svg?branch=master)](https://travis-ci.org/mercadopago/dx-java)
-[![Maven Central](https://img.shields.io/maven-central/v/com.mercadopago/dx-java)](https://mvnrepository.com/artifact/com.mercadopago/dx-java)
+[![Maven Central](https://img.shields.io/maven-central/v/org.apache.maven/apache-maven.svg?label=Maven%20Central)](https://mvnrepository.com/artifact/com.mercadopago/dx-java)
 
 
 # MercadoPago SDK for Java
