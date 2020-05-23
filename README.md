@@ -12,7 +12,7 @@ Java 1.4 or major
 
 ## 📲 Installation 
 
-First time using Mercado Pago? Create your Mercado Pago account, if you don’t have one already.
+First time using Mercado Pago? Create your [Mercado Pago account](https://www.mercadopago.com), if you don’t have one already.
 
 1. Append MercadoPago dependencies to pom.xml
 
