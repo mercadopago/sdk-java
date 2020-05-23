@@ -1,8 +1,7 @@
+# Mercado Pago SDK for Java
+
 [![Maven Central](https://img.shields.io/maven-central/v/org.apache.maven/apache-maven.svg?label=Maven%20Central)](https://mvnrepository.com/artifact/com.mercadopago/dx-java)
 ![APM](https://img.shields.io/apm/l/vim-mode)
-
-
-# Mercado Pago SDK for Java
 
 This library provides developers with a simple set of bindings to help you integrate Mercado Pago API to a website and start receiving payments.
 
