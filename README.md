@@ -7,7 +7,7 @@ This library provides developers with a simple set of bindings to help you integ
 
 ## 💡 Requirements
 
-Java 1.4 or major
+Java 1.4 or higher
 
 ## 📲 Installation 
 
@@ -31,7 +31,7 @@ First time using Mercado Pago? Create your [Mercado Pago account](https://www.me
 
 3. Copy the access_token in the [credentials](https://www.mercadopago.com/mlb/account/credentials) section of the page and replace YOUR_ACCESS_TOKEN with it.
 
-Thats all, you have Mercado Pago SDK installed.
+That's it! Mercado Pago SDK has been successfully installed.
 
 ## 🌟 Getting Started
 
@@ -65,7 +65,10 @@ Thats all, you have Mercado Pago SDK installed.
 
 ## 📚 Documentation 
 
-See our Documentation with all APIs you can integrate in our DevSite: [Spanish](https://www.mercadopago.com.ar/developers/es/guides/payments/api/introduction/) / [Portuguese](https://www.mercadopago.com.br/developers/pt/guides/payments/api/introduction/)
+Visit our Dev Site for further information regarding:
+ - Payments APIs: [Spanish](https://www.mercadopago.com.ar/developers/es/guides/payments/api/introduction/) / [Portuguese](https://www.mercadopago.com.br/developers/pt/guides/payments/api/introduction/)
+ - Mercado Pago checkout: [Spanish](https://www.mercadopago.com.ar/developers/es/guides/payments/web-payment-checkout/introduction/) / [Portuguese](https://www.mercadopago.com.br/developers/pt/guides/payments/web-payment-checkout/introduction/)
+ - Web Tokenize checkout: [Spanish](https://www.mercadopago.com.ar/developers/es/guides/payments/web-tokenize-checkout/introduction/) / [Portuguese](https://www.mercadopago.com.br/developers/pt/guides/payments/web-tokenize-checkout/introduction/)
 
 Check [our official code reference](https://mercadopago.github.io/dx-java/) to explore all available functionalities.
 
