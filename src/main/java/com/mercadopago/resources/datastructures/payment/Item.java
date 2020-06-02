@@ -18,7 +18,7 @@ public class Item {
     @Size(max=600) private String pictureUrl = null;
     @Size(max=256) private String categoryId = null;
     @NotNull @Numeric(min=1) private Integer quantity = null;
-    @NotNull @Numeric(min=.01f, max=999999f, fractionDigits=2) private Float unitPrice = 0f;
+    @NotNull private Float unitPrice = 0f;
 
 
     public String getId() {
