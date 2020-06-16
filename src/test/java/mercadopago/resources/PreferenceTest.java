@@ -29,7 +29,9 @@ public class PreferenceTest {
     @BeforeClass
     public static void beforeTest() throws MPException {
         MercadoPago.SDK.cleanConfiguration();
-        MercadoPago.SDK.setAccessToken(System.getenv("ACCESS_TOKEN_TEST"));
+      //  MercadoPago.SDK.setAccessToken(System.getenv("ACCESS_TOKEN_TEST"));
+      MercadoPago.SDK.setAccessToken("TEST-1171843254961250-060519-6945ff28b0cd07595e34c562537286ea-571119597");
+
     }
 
     @Test
