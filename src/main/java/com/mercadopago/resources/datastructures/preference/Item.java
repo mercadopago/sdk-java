@@ -25,7 +25,7 @@ public class Item {
     private Passenger passenger = null;
     private Route route = null;
     private Boolean warranty = null;
-    @Size(max=256) private Date eventDate = null;
+    private Date eventDate = null;
 
     public String getId() {
         return id;
