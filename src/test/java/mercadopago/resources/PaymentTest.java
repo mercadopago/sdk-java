@@ -53,7 +53,7 @@
 
 //     @BeforeClass
 //     public static void beforeTest() throws MPException {
-//         MercadoPago.SDK.cleanConfiguration();
+//         //MercadoPago.SDK.cleanConfiguration();
 //         MercadoPago.SDK.setAccessToken("TEST-1171843254961250-060519-6945ff28b0cd07595e34c562537286ea-571119597");
 //     }
 
@@ -167,7 +167,7 @@
 
 //     @Test
 //     public void stage1_paymentPendingTest() throws MPException {
-//         //String token = getCardToken();
+//        String token = getCardToken(CardResultExpected.APPROVED);
 
 //         Payer payer = new Payer();
 //         payer.setEmail("test_user_97697694@testuser.com");
@@ -313,11 +313,11 @@
 
 //         Random rnd = new Random();
 
-//         int expiration_year = rnd.nextInt(20) + 2019;
-//         int expiration_month = 1 + rnd.nextInt(10) + 1;
-//         int security_code = rnd.nextInt(900) + 100;
+//         int expiration_year = 2030;
+//         int expiration_month = 11;
+//         int security_code = 123;
 
-//         jsonPayload.addProperty("card_number", "4235647728025682");
+//         jsonPayload.addProperty("card_number", "4074090000000004");
 //         jsonPayload.addProperty("security_code", String.valueOf(security_code));
 //         jsonPayload.addProperty("expiration_year", expiration_year);
 //         jsonPayload.addProperty("expiration_month", expiration_month);
@@ -337,7 +337,7 @@
 //         MPRestClient client = new MPRestClient();
 //         MPApiResponse response = client.executeRequest(
 //                 HttpMethod.POST,
-//                 MercadoPago.SDK.getBaseUrl() + "/v1/card_tokens?public_key=" + System.getenv("PUBLIC_KEY_TEST"),
+//                 MercadoPago.SDK.getBaseUrl() + "/v1/card_tokens?public_key=" + "TEST-61580d5e-067a-4c9c-854c-3a1de56410cf",
 //                 PayloadType.JSON,
 //                 jsonPayload,
 //                 MPRequestOptions.createDefault());
@@ -349,7 +349,7 @@
 //         MPRestClient client = new MPRestClient();
 //         MPApiResponse response = client.executeRequest(
 //                 HttpMethod.GET,
-//                 MercadoPago.SDK.getBaseUrl() + "/users/me?access_token=" + System.getenv("ACCESS_TOKEN_TEST"),
+//                 MercadoPago.SDK.getBaseUrl() + "/users/me?access_token=" + "TEST-1171843254961250-060519-6945ff28b0cd07595e34c562537286ea-571119597",
 //                 PayloadType.JSON,
 //                 null,
 //                 MPRequestOptions.createDefault());
