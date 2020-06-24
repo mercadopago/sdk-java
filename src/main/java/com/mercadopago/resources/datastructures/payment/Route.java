@@ -2,7 +2,6 @@ package com.mercadopago.resources.datastructures.payment;
 
 import java.util.Date;
 
-import com.mercadopago.core.annotations.validation.Size;
 
 public class Route {
 

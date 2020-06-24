@@ -1,17 +1,13 @@
 package com.mercadopago.resources.datastructures.preference;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import com.mercadopago.core.annotations.validation.NotNull;
 import com.mercadopago.core.annotations.validation.Numeric;
 import com.mercadopago.core.annotations.validation.Size;
 
-/**
- * Mercado Pago MercadoPago
- * Preference Item class
- *
- * Created by Eduardo Paoletta on 12/2/16.
- */
+
 public class Item {
 
     @Size(max=256) private String id = null;
@@ -22,8 +18,7 @@ public class Item {
     @NotNull @Numeric(min=1) private Integer quantity = null;
     @Size(min=3, max=3) private String currencyId = null;
     @NotNull private Float unitPrice = 0f;
-    private Passenger passenger = null;
-    private Route route = null;
+    private Object categoryDescriptors = null;
     private Boolean warranty = null;
     private Date eventDate = null;
 
@@ -99,21 +94,12 @@ public class Item {
         return this;
     }
 
-    public Passenger getPassenger() {
-        return passenger;
-    }
-    
-    public Item setPassenger(Passenger passenger) {
-        this.passenger = passenger;
-        return this;
+    public Object getCategoryDescriptors() {
+        return categoryDescriptors;
     }
 
-    public Route getRoute() {
-        return route;
-    }
-
-    public Item setRoute(Route route) {
-        this.route = route;
+    public Item setCategoryDescriptors(CategoryDescriptor categoryDescriptors) {
+        this.categoryDescriptors = categoryDescriptors;
         return this;
     }
 

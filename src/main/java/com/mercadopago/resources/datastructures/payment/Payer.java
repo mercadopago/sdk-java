@@ -2,12 +2,7 @@ package com.mercadopago.resources.datastructures.payment;
 
 import java.util.Date;
 
-/**
- * Mercado Pago SDK
- * Payer Payment class
- *
- * Created by Eduardo Paoletta on 12/2/16.
- */
+
 public class Payer {
 
     private type type = null;
@@ -30,12 +25,8 @@ public class Payer {
         association
     }
     private EntityType entityType = null;
-    private String authenticationType = null;
-    private Boolean isPrimeUser = null;
-    private Boolean isFirstPurchaseOnline = null;
-    private Date lastPurchase = null;
 
-
+    
     public Payer.type getType() {
         return type;
     }
@@ -114,42 +105,6 @@ public class Payer {
 
     public Payer setEntityType(EntityType entityType) {
         this.entityType = entityType;
-        return this;
-    }
-
-    public String getAuthenticationType() {
-        return authenticationType;
-    }
-
-    public Payer setAuthenticationType(String authenticationType) {
-        this.authenticationType = authenticationType;
-        return this;
-    }
-
-    public Boolean getIsPrimeUser() {
-        return isPrimeUser;
-    }
-
-    public Payer setIsPrimeUser(Boolean isPrimeUser) {
-        this.isPrimeUser = isPrimeUser;
-        return this;
-    }
-
-    public Boolean getIsFirstPurchaseOnline() {
-        return isFirstPurchaseOnline;
-    }
-
-    public Payer setIsFirstPurchaseOnline(Boolean isFirstPurchaseOnline) {
-        this.isFirstPurchaseOnline = isFirstPurchaseOnline;
-        return this;
-    }
-
-    public Date getLastPurchase() {
-        return lastPurchase;
-    }
-
-    public Payer setLastPurchase(Date lastPurchase) {
-        this.lastPurchase = lastPurchase;
         return this;
     }
 

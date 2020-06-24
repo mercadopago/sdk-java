@@ -21,8 +21,7 @@ public class Item {
     @Size(max=256) private String categoryId = null;
     @NotNull @Numeric(min=1) private Integer quantity = null;
     @NotNull private Float unitPrice = 0f;
-    private Passenger passenger = null;
-    private Route route = null;
+    private Object categoryDescriptor = null;
     private Boolean warranty = null;
     private Date eventDate = null;
 
@@ -89,21 +88,12 @@ public class Item {
         return this;
     }
 
-    public Passenger getPassenger() {
-        return passenger;
-    }
-    
-    public Item setPassenger(Passenger passenger) {
-        this.passenger = passenger;
-        return this;
+    public Object getCategoryDescriptor() {
+        return categoryDescriptor;
     }
 
-    public Route getRoute() {
-        return route;
-    }
-
-    public Item setRoute(Route route) {
-        this.route = route;
+    public Item setCategoryDescriptor(CategoryDescriptor categoryDescriptor) {
+        this.categoryDescriptor = categoryDescriptor;
         return this;
     }
 

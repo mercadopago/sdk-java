@@ -1,16 +1,15 @@
 package com.mercadopago.resources.datastructures.payment;
 
-import com.mercadopago.core.annotations.validation.Size;
-
 public class Passenger {
 
     private String firstName = null;
     private String lastName = null;
     private Identification identification = null;
 
-    public void Passenger(String firstName, String lastName){
+    public void Passenger(String firstName, String lastName, Identification identification){
         this.firstName = firstName;
         this.lastName = lastName;
+        this.identification = identification;
     }
 
     public String getFirstName() {
