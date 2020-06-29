@@ -30,7 +30,7 @@ public class PreferenceTest {
     public static void beforeTest() throws MPException {
         MercadoPago.SDK.cleanConfiguration();
         MercadoPago.SDK.setAccessToken(System.getenv("ACCESS_TOKEN"));
-        System.out.println("");
+
     }
 
     @Test
