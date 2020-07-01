@@ -25,7 +25,7 @@ public class Shipments {
     @Numeric(min=.01f) private Float cost = null;
     private Boolean freeShipping = null;
     private AddressReceiver receiverAddress = null;
-
+    private Boolean expressShipment = null;
 
     public AddressReceiver getReceiverAddress() {
         return receiverAddress;
@@ -113,6 +113,15 @@ public class Shipments {
 
     public Shipments setFreeShipping(Boolean freeShipping) {
         this.freeShipping = freeShipping;
+        return this;
+    }
+
+    public Boolean getExpressShipment() {
+        return expressShipment;
+    }
+
+    public Shipments setExpressShipment(Boolean expressShipment) {
+        this.expressShipment = expressShipment;
         return this;
     }
 

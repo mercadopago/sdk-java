@@ -1,15 +1,13 @@
 package com.mercadopago.resources.datastructures.preference;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 import com.mercadopago.core.annotations.validation.NotNull;
 import com.mercadopago.core.annotations.validation.Numeric;
 import com.mercadopago.core.annotations.validation.Size;
 
-/**
- * Mercado Pago MercadoPago
- * Preference Item class
- *
- * Created by Eduardo Paoletta on 12/2/16.
- */
+
 public class Item {
 
     @Size(max=256) private String id = null;
@@ -20,13 +18,15 @@ public class Item {
     @NotNull @Numeric(min=1) private Integer quantity = null;
     @Size(min=3, max=3) private String currencyId = null;
     @NotNull private Float unitPrice = 0f;
-
+    private Object categoryDescriptors = null;
+    private Boolean warranty = null;
+    private Date eventDate = null;
 
     public String getId() {
         return id;
     }
 
-    public Item setId(String id) {
+    public Item setId(final String id) {
         this.id = id;
         return this;
     }
@@ -35,7 +35,7 @@ public class Item {
         return title;
     }
 
-    public Item setTitle(String title) {
+    public Item setTitle(final String title) {
         this.title = title;
         return this;
     }
@@ -44,7 +44,7 @@ public class Item {
         return description;
     }
 
-    public Item setDescription(String description) {
+    public Item setDescription(final String description) {
         this.description = description;
         return this;
     }
@@ -53,7 +53,7 @@ public class Item {
         return pictureUrl;
     }
 
-    public Item setPictureUrl(String pictureUrl) {
+    public Item setPictureUrl(final String pictureUrl) {
         this.pictureUrl = pictureUrl;
         return this;
     }
@@ -62,7 +62,7 @@ public class Item {
         return categoryId;
     }
 
-    public Item setCategoryId(String categoryId) {
+    public Item setCategoryId(final String categoryId) {
         this.categoryId = categoryId;
         return this;
     }
@@ -71,7 +71,7 @@ public class Item {
         return quantity;
     }
 
-    public Item setQuantity(Integer quantity) {
+    public Item setQuantity(final Integer quantity) {
         this.quantity = quantity;
         return this;
     }
@@ -80,7 +80,7 @@ public class Item {
         return currencyId;
     }
 
-    public Item setCurrencyId(String currencyId) {
+    public Item setCurrencyId(final String currencyId) {
         this.currencyId = currencyId;
         return this;
     }
@@ -89,8 +89,35 @@ public class Item {
         return unitPrice;
     }
 
-    public Item setUnitPrice(Float unitPrice) {
+    public Item setUnitPrice(final Float unitPrice) {
         this.unitPrice = unitPrice;
+        return this;
+    }
+
+    public Object getCategoryDescriptors() {
+        return categoryDescriptors;
+    }
+
+    public Item setCategoryDescriptors(CategoryDescriptor categoryDescriptors) {
+        this.categoryDescriptors = categoryDescriptors;
+        return this;
+    }
+
+    public Boolean getWarranty() {
+        return warranty;
+    }
+
+    public Item setWarranty(Boolean warranty) {
+        this.warranty = warranty;
+        return this;
+    }
+
+    public Date getEventDate() {
+        return eventDate;
+    }
+
+    public Item setEventDate(Date eventDate) {
+        this.eventDate = eventDate;
         return this;
     }
 

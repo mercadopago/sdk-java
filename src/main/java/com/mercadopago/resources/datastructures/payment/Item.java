@@ -1,5 +1,7 @@
 package com.mercadopago.resources.datastructures.payment;
 
+import java.util.Date;
+
 import com.mercadopago.core.annotations.validation.NotNull;
 import com.mercadopago.core.annotations.validation.Numeric;
 import com.mercadopago.core.annotations.validation.Size;
@@ -19,7 +21,9 @@ public class Item {
     @Size(max=256) private String categoryId = null;
     @NotNull @Numeric(min=1) private Integer quantity = null;
     @NotNull private Float unitPrice = 0f;
-
+    private Object categoryDescriptor = null;
+    private Boolean warranty = null;
+    private Date eventDate = null;
 
     public String getId() {
         return id;
@@ -81,6 +85,33 @@ public class Item {
 
     public Item setUnitPrice(Float unitPrice) {
         this.unitPrice = unitPrice;
+        return this;
+    }
+
+    public Object getCategoryDescriptor() {
+        return categoryDescriptor;
+    }
+
+    public Item setCategoryDescriptor(CategoryDescriptor categoryDescriptor) {
+        this.categoryDescriptor = categoryDescriptor;
+        return this;
+    }
+
+    public Boolean getWarranty() {
+        return warranty;
+    }
+
+    public Item setWarranty(Boolean warranty) {
+        this.warranty = warranty;
+        return this;
+    }
+
+    public Date getEventDate() {
+        return eventDate;
+    }
+
+    public Item setEventDate(Date eventDate) {
+        this.eventDate = eventDate;
         return this;
     }
 
