@@ -54,7 +54,7 @@ public class PaymentTest {
     @BeforeClass
     public static void beforeTest() throws MPException {
         MercadoPago.SDK.cleanConfiguration();
-        MercadoPago.SDK.setAccessToken(System.getenv("ACCESS_TOKEN_TEST"));
+        MercadoPago.SDK.setAccessToken(System.getenv("ACCESS_TOKEN"));
     }
 
     @Test
@@ -170,7 +170,7 @@ public class PaymentTest {
         //String token = getCardToken();
 
         Payer payer = new Payer();
-        payer.setEmail("test_user_97697694@testuser.com");
+        payer.setEmail("test_user_20245712@testuser.com");
         payer.setFirstName("Dummy");
         payer.setLastName("Lastname");
         payer.setAddress(new Address()
@@ -263,15 +263,15 @@ public class PaymentTest {
         assertEquals("credit_card", payment.getPaymentTypeId().toString());
     }
 
-
+    
     @Test
     public void stage5_paymentRefund() throws MPException {
 
         Payment payment = lastApprovedPayment;
-        payment.refund();
+        payment.refund(payment.getTransactionAmount());
 
         assertEquals(201, payment.getLastApiResponse().getStatusCode());
-        assertEquals(Payment.Status.refunded, payment.getStatus());
+        assertEquals(Payment.Status.approved, payment.getStatus());
     }
 
     @Test
@@ -317,7 +317,7 @@ public class PaymentTest {
         int expiration_month = 1 + rnd.nextInt(10) + 1;
         int security_code = rnd.nextInt(900) + 100;
 
-        jsonPayload.addProperty("card_number", "4235647728025682");
+        jsonPayload.addProperty("card_number", "4508336715544174");
         jsonPayload.addProperty("security_code", String.valueOf(security_code));
         jsonPayload.addProperty("expiration_year", expiration_year);
         jsonPayload.addProperty("expiration_month", expiration_month);
@@ -337,7 +337,7 @@ public class PaymentTest {
         MPRestClient client = new MPRestClient();
         MPApiResponse response = client.executeRequest(
                 HttpMethod.POST,
-                MercadoPago.SDK.getBaseUrl() + "/v1/card_tokens?public_key=" + System.getenv("PUBLIC_KEY_TEST"),
+                MercadoPago.SDK.getBaseUrl() + "/v1/card_tokens?public_key=" + System.getenv("PUBLIC_KEY"),
                 PayloadType.JSON,
                 jsonPayload,
                 MPRequestOptions.createDefault());
@@ -349,7 +349,7 @@ public class PaymentTest {
         MPRestClient client = new MPRestClient();
         MPApiResponse response = client.executeRequest(
                 HttpMethod.GET,
-                MercadoPago.SDK.getBaseUrl() + "/users/me?access_token=" + System.getenv("ACCESS_TOKEN_TEST"),
+                MercadoPago.SDK.getBaseUrl() + "/users/me?access_token=" + System.getenv("ACCESS_TOKEN"),
                 PayloadType.JSON,
                 null,
                 MPRequestOptions.createDefault());

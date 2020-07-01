@@ -24,3 +24,5 @@ jobs:
       run: mvn -B package --file pom.xml
       env: 
         ACCESS_TOKEN: ${{secrets.ACCESS_TOKEN}}
+        PUBLIC_KEY: ${{secrets.PUBLIC_KEY}}
+
