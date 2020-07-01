@@ -21,7 +21,7 @@ First time using Mercado Pago? Create your [Mercado Pago account](https://www.me
         <dependency>
             <groupId> com.mercadopago </groupId>
             <artifactId> dx-java </artifactId>
-            <version> 1.6.1 </version>
+            <version> 1.7.0 </version>
         </dependency>
     </dependencies>
     ...
