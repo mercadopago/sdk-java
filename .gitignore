@@ -9,7 +9,6 @@ maven-central-deploy.log
 *.pem
 .DS_Store
 .classpath
-.settings/org.eclipse.jdt.core.prefs
-.settings/org.eclipse.core.resources.prefs
+.settings
 
 

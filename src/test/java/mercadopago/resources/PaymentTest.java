@@ -170,7 +170,7 @@ public class PaymentTest {
         //String token = getCardToken();
 
         Payer payer = new Payer();
-        payer.setEmail("test_user_20245712@testuser.com	");
+        payer.setEmail("test_user_20245712@testuser.com");
         payer.setFirstName("Dummy");
         payer.setLastName("Lastname");
         payer.setAddress(new Address()
