@@ -193,7 +193,7 @@ public class PaymentTest {
 
         assertEquals(201, payment.getLastApiResponse().getStatusCode());
         assertNotNull(payment.getId());
-       // assertEquals("in_process", payment.getStatus().toString());
+        assertEquals("in_process", payment.getStatus().toString());
         assertEquals("credit_card", payment.getPaymentTypeId().toString());
     }
 
@@ -263,7 +263,7 @@ public class PaymentTest {
         assertEquals("credit_card", payment.getPaymentTypeId().toString());
     }
 
-
+    
     @Test
     public void stage5_paymentRefund() throws MPException {
 
@@ -271,7 +271,7 @@ public class PaymentTest {
         payment.refund(payment.getTransactionAmount());
 
         assertEquals(201, payment.getLastApiResponse().getStatusCode());
-        //assertEquals(Payment.Status.approved, payment.getStatus());
+        assertEquals(Payment.Status.approved, payment.getStatus());
     }
 
     @Test
