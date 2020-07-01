@@ -490,11 +490,4 @@ public class Payment extends MPBase {
         }
         return this;
     }
-
-	public Payment appendItem(Item item) {
-
-		return null;
-    }
-    
-
 }

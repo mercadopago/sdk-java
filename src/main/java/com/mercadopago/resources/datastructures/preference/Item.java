@@ -1,6 +1,5 @@
 package com.mercadopago.resources.datastructures.preference;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import com.mercadopago.core.annotations.validation.NotNull;
@@ -18,7 +17,7 @@ public class Item {
     @NotNull @Numeric(min=1) private Integer quantity = null;
     @Size(min=3, max=3) private String currencyId = null;
     @NotNull private Float unitPrice = 0f;
-    private Object categoryDescriptors = null;
+    private CategoryDescriptor categoryDescriptors = null;
     private Boolean warranty = null;
     private Date eventDate = null;
 
