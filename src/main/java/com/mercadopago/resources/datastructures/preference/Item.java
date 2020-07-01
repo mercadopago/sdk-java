@@ -17,7 +17,7 @@ public class Item {
     @NotNull @Numeric(min=1) private Integer quantity = null;
     @Size(min=3, max=3) private String currencyId = null;
     @NotNull private Float unitPrice = 0f;
-    private CategoryDescriptor categoryDescriptors = null;
+    private CategoryDescriptor categoryDescriptor = null;
     private Boolean warranty = null;
     private Date eventDate = null;
 
@@ -93,12 +93,12 @@ public class Item {
         return this;
     }
 
-    public Object getCategoryDescriptors() {
-        return categoryDescriptors;
+    public Object getCategoryDescriptor() {
+        return categoryDescriptor;
     }
 
-    public Item setCategoryDescriptors(CategoryDescriptor categoryDescriptors) {
-        this.categoryDescriptors = categoryDescriptors;
+    public Item setCategoryDescriptor(CategoryDescriptor categoryDescriptor) {
+        this.categoryDescriptor = categoryDescriptor;
         return this;
     }
 
