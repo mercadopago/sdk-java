@@ -93,7 +93,7 @@ public class Item {
         return this;
     }
 
-    public Object getCategoryDescriptor() {
+    public CategoryDescriptor getCategoryDescriptor() {
         return categoryDescriptor;
     }
 
