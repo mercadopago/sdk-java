@@ -41,8 +41,6 @@
 // /**
 //  * Mercado Pago MercadoPago
 //  * Payment Resource Test
-//  *
-//  * Created by Eduardo Paoletta on 12/6/16.
 //  */
 
 // @FixMethodOrder(MethodSorters.NAME_ASCENDING)

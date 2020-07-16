@@ -14,8 +14,6 @@
 // /**
 //  * Mercado Pago SDK
 //  * MPBase Test class for methods without path
-//  *
-//  * Created by Eduardo Paoletta on 11/10/16.
 //  */
 // public class MPBaseWithoutPathTest extends MPBase {
 

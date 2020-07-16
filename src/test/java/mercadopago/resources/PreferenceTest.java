@@ -21,8 +21,6 @@ import static org.junit.Assert.*;
 /**
  * Mercado Pago MercadoPago
  * Preference Resource Test
- *
- * Created by Eduardo Paoletta on 11/21/16.
  */
 public class PreferenceTest {
 

@@ -9,8 +9,6 @@ import com.mercadopago.exceptions.MPException;
 /**
  * Mercado Pago SDK
  * Identification Types Array class
- *
- * Created by Eduardo Paoletta on 12/15/16.
  */
 public class IdentificationType extends MPBase {
 

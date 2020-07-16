@@ -20,8 +20,6 @@
 // /**
 //  * Mercado Pago SDK
 //  * MPBase Test for methods with params Class
-//  *
-//  * Created by Eduardo Paoletta on 11/15/16.
 //  */
 // public class MPBaseMultipleParamsTest extends MPBase {
 

@@ -5,8 +5,6 @@ import com.mercadopago.core.annotations.validation.Size;
 /**
  * Mercado Pago SDK
  * Receiver address class
- *
- * Created by Eduardo Paoletta on 11/9/16.
  */
 public class AddressReceiver extends Address {
 

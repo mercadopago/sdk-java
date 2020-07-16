@@ -56,8 +56,6 @@ import org.apache.http.ssl.SSLContexts;
 
 /**
  * Mercado Pago MercadoPago Simple Rest Client
- *
- * Created by Eduardo Paoletta on 11/11/16.
  */
 public class MPRestClient {
 

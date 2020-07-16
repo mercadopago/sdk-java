@@ -8,8 +8,6 @@ import java.util.ArrayList;
 /**
  * Mercado Pago SDK
  * Resource Array class
- *
- * Created by Eduardo Paoletta on 12/15/16.
  */
 public class MPResourceArray {
 

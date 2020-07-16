@@ -18,8 +18,6 @@
 // /**
 //  * Mercado Pago SDK
 //  * Rest Client Test Class
-//  *
-//  * Created by Eduardo Paoletta on 11/17/16.
 //  */
 // public class MPRestClientTest {
 

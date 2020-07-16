@@ -18,8 +18,6 @@ import java.util.Date;
 /**
  * Mercado Pago MercadoPago
  * Retrieves information about a customer's cards.
- *
- * Created by Eduardo Paoletta on 12/15/16.
  */
 public class Card extends MPBase {
 

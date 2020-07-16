@@ -5,8 +5,6 @@ import java.lang.annotation.*;
 /**
  * Mercado Pago SDK
  * Interface annotation for validate models.
- *
- * Created by Eduardo Paoletta on 11/22/16.
  */
 @Inherited
 @Target(ElementType.FIELD)

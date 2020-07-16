@@ -7,17 +7,14 @@ import com.mercadopago.core.annotations.rest.PayloadType;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPRestClient;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
-import java.io.IOException;
-
 /**
  * Mercado Pago MercadoPago
  * MPCredentials class
- *
- * Created by Eduardo Paoletta on 11/17/16.
  */
 public class MPCredentials {
 

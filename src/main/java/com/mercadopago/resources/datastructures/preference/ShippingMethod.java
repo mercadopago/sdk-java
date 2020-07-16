@@ -1,8 +1,5 @@
 package com.mercadopago.resources.datastructures.preference;
 
-/**
- * Created by jibaceta on 8/8/17.
- */
 public class ShippingMethod {
 
     private Integer id = null;

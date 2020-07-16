@@ -6,8 +6,6 @@ import java.util.HashMap;
 /**
  * Mercado Pago SDK
  * MPCache class
- *
- * Created by Eduardo Paoletta on 12/12/16.
  */
 class MPCache {
 

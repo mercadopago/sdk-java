@@ -5,8 +5,6 @@ import com.mercadopago.core.annotations.validation.Size;
 /**
  * Mercado Pago SDK
  * Excluded Payment Methods class
- *
- * Created by Eduardo Paoletta on 12/14/16.
  */
 public class ExcludedPaymentMethod {
 

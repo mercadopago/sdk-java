@@ -9,8 +9,6 @@ import java.util.List;
 /**
  * Mercado Libre SDK
  * Payment methods class
- *
- * Created by Eduardo Paoletta on 11/9/16.
  */
 public class PaymentMethods {
 

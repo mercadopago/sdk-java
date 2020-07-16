@@ -20,8 +20,6 @@
 // /**
 //  * Mercado Pago MercadoPago
 //  * Merchant Order Test class
-//  *
-//  * Created by Eduardo Paoletta on 12/14/16.
 //  */
 // public class MerchantOrderTest {
 

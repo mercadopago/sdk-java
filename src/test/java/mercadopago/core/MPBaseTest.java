@@ -16,8 +16,6 @@
 // /**
 //  * Mercado Pago MercadoPago
 //  * Entity Test Class
-//  *
-//  * Created by Eduardo Paoletta on 11/4/16.
 //  */
 // @Idempotent
 // public class MPBaseTest extends MPBase {

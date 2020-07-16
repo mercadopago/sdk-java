@@ -1,7 +1,9 @@
 package com.mercadopago.resources;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 import com.google.gson.JsonObject;
-import com.mercadopago.MercadoPago;
 import com.mercadopago.core.MPBase;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.core.annotations.rest.GET;
@@ -10,18 +12,19 @@ import com.mercadopago.core.annotations.rest.PUT;
 import com.mercadopago.core.annotations.validation.NotNull;
 import com.mercadopago.core.annotations.validation.Size;
 import com.mercadopago.exceptions.MPException;
-import com.mercadopago.resources.datastructures.preference.*;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Map;
+import com.mercadopago.resources.datastructures.preference.BackUrls;
+import com.mercadopago.resources.datastructures.preference.DifferentialPricing;
+import com.mercadopago.resources.datastructures.preference.Item;
+import com.mercadopago.resources.datastructures.preference.Payer;
+import com.mercadopago.resources.datastructures.preference.PaymentMethods;
+import com.mercadopago.resources.datastructures.preference.Shipments;
+import com.mercadopago.resources.datastructures.preference.Tax;
+import com.mercadopago.resources.datastructures.preference.Track;
 
 /**
  * Mercado Pago MercadoPago
  * This resource allows you to set up, during the Payment process, all the item information,
  * any accepted means of Payment and many other options.
- *
- * Created by Eduardo Paoletta on 11/9/16.
  */
 public class Preference extends MPBase {
 

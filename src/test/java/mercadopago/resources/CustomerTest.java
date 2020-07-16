@@ -23,8 +23,6 @@
 // /**
 //  * Mercado Pago MercadoPago
 //  * Customer Test class
-//  *
-//  * Created by Eduardo Paoletta on 12/15/16.
 //  */
 // public class CustomerTest {
 

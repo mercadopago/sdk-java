@@ -25,8 +25,6 @@ import java.util.HashMap;
 /**
  * Mercado Pago SDK
  * This resource allows you to create, modify or read payments
- *
- * Created by Eduardo Paoletta on 12/2/16.
  */
 @Idempotent
 public class Payment extends MPBase {

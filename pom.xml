@@ -17,27 +17,6 @@
         </license>
     </licenses>
 
-    <developers>
-        <developer>
-            <id>jibaceta</id>
-            <name>Joel Ibaceta</name>
-            <email>joel.ibaceta@mercadolibre.com</email>
-            <roles>
-                <role>Developer</role>
-            </roles>
-            <timezone>-3</timezone>
-        </developer>
-        <developer>
-            <id>epaoletta</id>
-            <name>Eduardo Paoletta</name>
-            <email>eduardo.paoletta@mercadolibre.com</email>
-            <roles>
-                <role>Developer</role>
-            </roles>
-            <timezone>-3</timezone>
-        </developer>
-    </developers>
-
     <build>
         <finalName>${artifactId}-${version}</finalName>
         <sourceDirectory>src/main/java</sourceDirectory>

@@ -5,8 +5,6 @@ import java.util.Date;
 /**
  * Mercado Pago SDK
  * Card class
- *
- * Created by Eduardo Paoletta on 12/2/16.
  */
 public class Card {
 

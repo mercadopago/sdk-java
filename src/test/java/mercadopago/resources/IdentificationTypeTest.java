@@ -13,8 +13,6 @@
 // /**
 //  * Mercado Pago MercadoPago
 //  * Identification Types Test class
-//  *
-//  * Created by Eduardo Paoletta on 12/15/16.
 //  */
 // public class IdentificationTypeTest {
 

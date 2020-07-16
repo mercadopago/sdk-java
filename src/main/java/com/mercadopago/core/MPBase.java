@@ -37,8 +37,6 @@ import java.util.UUID;
 /**
  * Mercado Pago MercadoPago
  * Core MPBase class
- *
- * Created by Eduardo Paoletta on 11/4/16.
  */
 public abstract class MPBase {
 
