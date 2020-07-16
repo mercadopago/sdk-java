@@ -2,7 +2,7 @@
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.mercadopago/dx-java.svg)](https://search.maven.org/search?q=g:com.mercadopago%20AND%20a:dx-java)
 ![APM](https://img.shields.io/apm/l/vim-mode)
-[![Actions Status](https://xxx.execute-api.us-west-2.amazonaws.com/production/badge/mercadopago/dx-java?style=flat-square)](https://xxx.execute-api.us-west-2.amazonaws.com/production/results/mercadopago/dx-java)
+[![Coverage Status](https://coveralls.io/repos/github/mercadopago/dx-java/badge.svg)](https://coveralls.io/github/mercadopago/dx-java)
 
 
 This library provides developers with a simple set of bindings to help you integrate Mercado Pago API to a website and start receiving payments.
