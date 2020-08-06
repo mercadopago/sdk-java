@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.mercadopago.MercadoPago;
+import com.mercadopago.MercadoPago.SDK;
 import com.mercadopago.core.MPApiResponse;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.core.annotations.rest.PayloadType;
@@ -192,7 +193,7 @@ public class MPRestClient {
         }
     }
 
-    private HttpRequestBase createHttpRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, MPRequestOptions requestOptions) throws MPRestException {
+    private HttpRequestBase createHttpRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, MPRequestOptions requestOptions) throws MPRestException, MPException {
         HttpEntity entity = normalizePayload(payloadType, payload);
         HttpRequestBase request = getRequestMethod(httpMethod, uri, entity);
 
@@ -200,6 +201,7 @@ public class MPRestClient {
         headers.put(HTTP.USER_AGENT, String.format("MercadoPago Java SDK/%s", MercadoPago.SDK.getVersion()));
         headers.put("x-product-id", MercadoPago.SDK.getProductId());
         headers.put("x-tracking-id", MercadoPago.SDK.getTrackingId());
+        headers.put("access_token", (requestOptions.getAccessToken() != null && requestOptions.getAccessToken().isEmpty()) ? requestOptions.getAccessToken() : SDK.getAccessToken() );
         for (String headerName : requestOptions.getCustomHeaders().keySet()) {
             if (!headers.containsKey(headerName)) {
                 headers.put(headerName, requestOptions.getCustomHeaders().get(headerName));
