@@ -104,7 +104,8 @@ public class Payment extends MPBase {
         credit_card,
         debit_card,
         prepaid_card,
-        digital_currency
+        digital_currency,
+        digital_wallet
     }
     private String token = null;
     private Card card = null;
