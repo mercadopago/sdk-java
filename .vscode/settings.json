@@ -1,4 +1,4 @@
 {
-    "maven.view": "flat",
+    "maven.view": "hierarchical",
     "java.configuration.updateBuildConfiguration": "automatic"
 }

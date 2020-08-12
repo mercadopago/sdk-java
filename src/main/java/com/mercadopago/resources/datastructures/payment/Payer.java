@@ -1,11 +1,8 @@
 package com.mercadopago.resources.datastructures.payment;
 
-/**
- * Mercado Pago SDK
- * Payer Payment class
- *
- * Created by Eduardo Paoletta on 12/2/16.
- */
+import java.util.Date;
+
+
 public class Payer {
 
     private type type = null;
@@ -29,6 +26,7 @@ public class Payer {
     }
     private EntityType entityType = null;
 
+    
     public Payer.type getType() {
         return type;
     }
