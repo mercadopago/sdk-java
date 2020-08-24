@@ -6,6 +6,7 @@ import com.mercadopago.core.MPApiResponse;
 import com.mercadopago.core.MPBase;
 import com.mercadopago.core.MPCoreUtils;
 import com.mercadopago.core.MPRequestOptions;
+import com.mercadopago.core.MPResourceArray;
 import com.mercadopago.core.annotations.rest.PayloadType;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.exceptions.MPRestException;
@@ -31,6 +32,7 @@ import org.junit.runners.MethodSorters;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
@@ -39,8 +41,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Mercado Pago MercadoPago
- * Payment Resource Test
+ * Mercado Pago MercadoPago Payment Resource Test
  *
  * Created by Eduardo Paoletta on 12/6/16.
  */
@@ -60,80 +61,28 @@ public class PaymentTest {
     @Test
     public void paymentGetterSetterTests() {
         Payment payment = new Payment()
-                .setPayer(
-                        new Payer()
-                                .setType(Payer.type.guest)
-                                .setId("id")
-                                .setEmail("email@fakeemail.com")
-                                .setIdentification(
-                                        new Identification()
-                                                .setType("type")
-                                                .setNumber("number"))
-                                .setAddress(
-                                        new Address()
-                                                .setStreetName("ARIAS")
-                                                .setStreetNumber(3751)
-                                                .setZipCode("C1430CRI")
-                                                .setNeighborhood("CABA")
-                                                .setCity("Buenos Aires")
-                                                .setFederalUnit("BA")
-                                )
-                        )
-                .setBinaryMode(Boolean.TRUE)
-                .setOrder(
-                        new Order()
-                                .setId(1234l)
-                                .setType(Order.Type.mercadopago))
-                .setExternalReference("externalReference")
-                .setDescription("description")
-                .setMetadata(new JsonObject())
-                .setTransactionAmount(.01f)
-                .setCouponAmount(.01f)
-                .setCampaignId(1)
-                .setCouponCode("couponCode")
-                .setDifferentialPricingId(1)
-                .setApplicationFee(.01f)
-                .setCapture(Boolean.TRUE)
-                .setPaymentMethodId("paymentMethodId")
-                .setIssuerId("issuerId")
-                .setToken("token")
-                .setStatementDescriptor("statementDescriptor")
-                .setInstallments(1)
-                .setNotificationUrl("notificationUrl")
-                .setAdditionalInfo(
-                        new AdditionalInfo()
-                                .appendItem(
-                                        new Item()
-                                                .setId("id")
-                                                .setTitle("title")
-                                                .setDescription("description")
-                                                .setPictureUrl("pictureUrl")
-                                                .setCategoryId("categoryId")
-                                                .setQuantity(1)
-                                                .setUnitPrice(.01f))
-                                .setPayer(
-                                        new AdditionalInfoPayer()
-                                                .setFirstName("firstName")
-                                                .setLastName("lastName")
-                                                .setPhone(
-                                                        new Phone()
-                                                                .setAreaCode("000")
-                                                                .setNumber("0000-0000"))
-                                                .setAddress(
-                                                        new Address()
-                                                                .setZipCode("0000")
-                                                                .setStreetName("streetName")
-                                                                .setStreetNumber(1234))
-                                                .setRegistrationDate(new Date()))
-                                .setShipments(
-                                        new Shipments()
-                                                .setReceiverAddress(
-                                                        new AddressReceiver()
-                                                                .setZipCode("0000")
-                                                                .setStreetName("streetName")
-                                                                .setStreetNumber(1234)
-                                                                .setFloor("floor")
-                                                                .setApartment("apartment"))));
+                .setPayer(new Payer().setType(Payer.type.guest).setId("id").setEmail(System.getenv("EMAIL"))
+                        .setIdentification(new Identification().setType("type").setNumber("number"))
+                        .setAddress(new Address().setStreetName("ARIAS").setStreetNumber(3751).setZipCode("C1430CRI")
+                                .setNeighborhood("CABA").setCity("Buenos Aires").setFederalUnit("BA")))
+                .setBinaryMode(Boolean.TRUE).setOrder(new Order().setId(1234l).setType(Order.Type.mercadopago))
+                .setExternalReference("externalReference").setDescription("description").setMetadata(new JsonObject())
+                .setTransactionAmount(.01f).setCouponAmount(.01f).setCampaignId(1).setCouponCode("couponCode")
+                .setDifferentialPricingId(1).setApplicationFee(.01f).setCapture(Boolean.TRUE)
+                .setPaymentMethodId("paymentMethodId").setIssuerId("issuerId").setToken("token")
+                .setStatementDescriptor("statementDescriptor").setInstallments(1).setNotificationUrl("notificationUrl")
+                .setAdditionalInfo(new AdditionalInfo()
+                        .appendItem(new Item().setId("id").setTitle("title").setDescription("description")
+                                .setPictureUrl("pictureUrl").setCategoryId("categoryId").setQuantity(1)
+                                .setUnitPrice(.01f))
+                        .setPayer(new AdditionalInfoPayer().setFirstName("firstName").setLastName("lastName")
+                                .setPhone(new Phone().setAreaCode("000").setNumber("0000-0000"))
+                                .setAddress(new Address().setZipCode("0000").setStreetName("streetName")
+                                        .setStreetNumber(1234))
+                                .setRegistrationDate(new Date()))
+                        .setShipments(new Shipments()
+                                .setReceiverAddress(new AddressReceiver().setZipCode("0000").setStreetName("streetName")
+                                        .setStreetNumber(1234).setFloor("floor").setApartment("apartment"))));
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
 
@@ -145,8 +94,10 @@ public class PaymentTest {
         assertEquals(payment.getPayer().getId(), jsonPayer.get("id").getAsString());
         assertEquals(payment.getPayer().getEmail(), jsonPayer.get("email").getAsString());
         JsonObject jsonPayerIdentification = (JsonObject) jsonPayer.get("identification");
-        assertEquals(payment.getPayer().getIdentification().getType(), jsonPayerIdentification.get("type").getAsString());
-        assertEquals(payment.getPayer().getIdentification().getNumber(), jsonPayerIdentification.get("number").getAsString());
+        assertEquals(payment.getPayer().getIdentification().getType(),
+                jsonPayerIdentification.get("type").getAsString());
+        assertEquals(payment.getPayer().getIdentification().getNumber(),
+                jsonPayerIdentification.get("number").getAsString());
         assertTrue(jsonPayment.get("binary_mode").getAsBoolean());
         JsonObject jsonOrder = (JsonObject) jsonPayment.get("order");
         assertEquals(payment.getOrder().getId().longValue(), jsonOrder.get("id").getAsLong());
@@ -156,7 +107,8 @@ public class PaymentTest {
         assertEquals(payment.getMetadata(), jsonPayment.get("metadata"));
         assertEquals(payment.getTransactionAmount(), jsonPayment.get("transaction_amount").getAsFloat(), 0f);
         assertEquals(payment.getCouponAmount(), jsonPayment.get("coupon_amount").getAsFloat(), 0f);
-        assertEquals(payment.getDifferentialPricingId().longValue(), jsonPayment.get("differential_pricing_id").getAsLong());
+        assertEquals(payment.getDifferentialPricingId().longValue(),
+                jsonPayment.get("differential_pricing_id").getAsLong());
         assertEquals(payment.getPaymentMethodId(), jsonPayment.get("payment_method_id").getAsString());
         assertEquals(payment.getIssuerId(), jsonPayment.get("issuer_id").getAsString());
         assertEquals(payment.getStatementDescriptor(), jsonPayment.get("statement_descriptor").getAsString());
@@ -167,16 +119,13 @@ public class PaymentTest {
 
     @Test
     public void stage1_paymentPendingTest() throws MPException {
-        //String token = getCardToken();
+        // String token = getCardToken();
 
         Payer payer = new Payer();
-        payer.setEmail("test_user_20245712@testuser.com");
+        payer.setEmail(System.getenv("EMAIL"));
         payer.setFirstName("Dummy");
         payer.setLastName("Lastname");
-        payer.setAddress(new Address()
-                .setStreetName("Anywhere avennue")
-                .setStreetNumber(1500)
-                .setCity("Gotham")
+        payer.setAddress(new Address().setStreetName("Anywhere avennue").setStreetNumber(1500).setCity("Gotham")
                 .setZipCode("12333"));
 
         Payment payment = new Payment();
@@ -186,6 +135,7 @@ public class PaymentTest {
         payment.setToken(getCardToken(CardResultExpected.PENDING));
         payment.setInstallments(1);
         payment.setPayer(payer);
+        payment.setExternalReference("TESTPAYMENT");
 
         payment.save();
 
@@ -202,7 +152,7 @@ public class PaymentTest {
     public void stage2_paymentOffTest() throws MPException {
 
         Payer payer = new Payer();
-        payer.setEmail("test_user_97697694@testuser.com");
+        payer.setEmail(System.getenv("EMAIL"));
         payer.setIdentification(new Identification().setType("DNI").setNumber("76262349"));
 
         Payment payment = new Payment();
@@ -236,13 +186,10 @@ public class PaymentTest {
     public void stage4_paymentApprovedTest() throws MPException {
 
         Payer payer = new Payer();
-        payer.setEmail("test_user_97697694@testuser.com");
+        payer.setEmail(System.getenv("EMAIL"));
         payer.setFirstName("Dummy");
         payer.setLastName("Lastname");
-        payer.setAddress(new Address()
-                .setStreetName("Anywhere avennue")
-                .setStreetNumber(1500)
-                .setCity("Gotham")
+        payer.setAddress(new Address().setStreetName("Anywhere avennue").setStreetNumber(1500).setCity("Gotham")
                 .setZipCode("12333"));
 
         Payment payment = new Payment();
@@ -263,7 +210,6 @@ public class PaymentTest {
         assertEquals("credit_card", payment.getPaymentTypeId().toString());
     }
 
-    
     @Test
     public void stage5_paymentRefund() throws MPException {
 
@@ -271,7 +217,7 @@ public class PaymentTest {
         payment.refund(payment.getTransactionAmount());
 
         assertEquals(201, payment.getLastApiResponse().getStatusCode());
-        assertEquals(Payment.Status.approved, payment.getStatus());
+        assertEquals(Payment.Status.refunded, payment.getStatus());
     }
 
     @Test
@@ -285,7 +231,51 @@ public class PaymentTest {
         assertFalse(payment.getLastApiResponse().fromCache);
     }
 
+    @Test
+    public void stage7_paymentSearchByExternalReference() throws MPException {
+        HashMap<String, String> filters = new HashMap<String, String>();
+        filters.put("external_reference", "TESTPAYMENT");
+        MPResourceArray payments = Payment.search(filters, false);
+        
+        assertEquals(200, payments.getLastApiResponse().getStatusCode());
+    }
 
+    @Test
+    public void stage8_industrialFieldsPayment() throws MPException {
+        AddressReceiver addressReceiver = new AddressReceiver();
+        addressReceiver.setApartment("52");
+        addressReceiver.setCityName("city");
+        addressReceiver.setFloor("5");
+        addressReceiver.setStreetName("streetName");
+        addressReceiver.setStreetNumber(1);
+        addressReceiver.setZipCode("012345");
+        
+        Shipments shipments = new Shipments();
+        shipments.setReceiverAddress(addressReceiver);
+        
+        AdditionalInfo additionalInfo = new AdditionalInfo();
+        additionalInfo.setShipments(shipments);
+        
+        Payer payer = new Payer();
+        payer.setEmail(System.getenv("EMAIL"));
+        payer.setIdentification(new Identification().setType("DNI").setNumber("76262349"));
+
+        Payment payment = new Payment();
+        payment.setDescription("Lorem Ipsum dolor");
+        payment.setPaymentMethodId("visa");
+        payment.setAdditionalInfo(new AdditionalInfo().setIpAddres("127.0.0.1"));
+        payment.setCallbackUrl("http://www.your-site.com");
+        payment.setTransactionAmount(10000f);
+        payment.setPayer(payer);
+        payment.setAdditionalInfo(additionalInfo);
+        payment.setToken(getCardToken(CardResultExpected.APPROVED));
+        payment.setInstallments(1);
+
+        payment.save();
+
+        assertEquals(payment.getLastApiResponse().getStringResponse(),201, payment.getLastApiResponse().getStatusCode());
+        assertNotNull(payment.getId());
+    }
 
 
 
