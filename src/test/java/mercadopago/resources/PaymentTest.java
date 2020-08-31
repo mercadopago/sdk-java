@@ -252,6 +252,7 @@ public class PaymentTest {
         payment.setToken(getCardToken(CardResultExpected.APPROVED));
         payment.setInstallments(1);
         payment.setPayer(payer);
+        payment.setDateOfExpiration(new Date());
 
         payment.save();
 
@@ -271,7 +272,7 @@ public class PaymentTest {
         payment.refund(payment.getTransactionAmount());
 
         assertEquals(201, payment.getLastApiResponse().getStatusCode());
-        assertEquals(Payment.Status.approved, payment.getStatus());
+        assertEquals(Payment.Status.refunded, payment.getStatus());
     }
 
     @Test
