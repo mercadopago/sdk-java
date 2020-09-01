@@ -16,7 +16,6 @@ public class Payer {
     private String id = null;
     private String email = null;
     private Identification identification = null;
-    private PayerPhone phone = null;
     private String firstName = null;
     private String lastName = null;
     private Address address = null;
@@ -63,10 +62,6 @@ public class Payer {
         return this;
     }
 
-    public PayerPhone getPhone() {
-        return phone;
-    }
-
     public String getFirstName() {
         return firstName;
     }
@@ -91,11 +86,6 @@ public class Payer {
 
     public Payer setAddress(Address address) {
         this.address = address;
-        return this;
-    }
-    
-    public Payer setPhone(PayerPhone phone) {
-        this.phone = phone;
         return this;
     }
 
