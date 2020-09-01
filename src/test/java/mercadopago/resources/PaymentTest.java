@@ -16,11 +16,14 @@ import com.mercadopago.resources.datastructures.payment.AdditionalInfo;
 import com.mercadopago.resources.datastructures.payment.AdditionalInfoPayer;
 import com.mercadopago.resources.datastructures.payment.Address;
 import com.mercadopago.resources.datastructures.payment.AddressReceiver;
+import com.mercadopago.resources.datastructures.payment.CategoryDescriptor;
 import com.mercadopago.resources.datastructures.payment.Identification;
 import com.mercadopago.resources.datastructures.payment.Item;
 import com.mercadopago.resources.datastructures.payment.Order;
+import com.mercadopago.resources.datastructures.payment.Passenger;
 import com.mercadopago.resources.datastructures.payment.Payer;
 import com.mercadopago.resources.datastructures.payment.Phone;
+import com.mercadopago.resources.datastructures.payment.Route;
 import com.mercadopago.resources.datastructures.payment.Shipments;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -30,6 +33,7 @@ import org.junit.runners.MethodSorters;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
@@ -271,7 +275,7 @@ public class PaymentTest {
         payment.refund(payment.getTransactionAmount());
 
         assertEquals(201, payment.getLastApiResponse().getStatusCode());
-        assertEquals(Payment.Status.approved, payment.getStatus());
+        assertEquals(Payment.Status.refunded, payment.getStatus());
     }
 
     @Test
@@ -285,7 +289,71 @@ public class PaymentTest {
         assertFalse(payment.getLastApiResponse().fromCache);
     }
 
+    @Test
+    public void stage7_industrialFieldsPaymentApprovedTest() throws MPException {
 
+        Payer payer = new Payer();
+        payer.setEmail(System.getenv("EMAIL"));
+        
+        Identification identification = new Identification();
+        identification.setType("otro");
+        identification.setNumber("19119119100");
+
+        Passenger passenger = new Passenger();
+        passenger.setFirstName("firstName");
+        passenger.setLastName("lastName");
+        passenger.setIdentification(identification);
+
+        Route route = new Route();
+        route.setArrivalDateTime(new Date());
+        route.setCompany("company");
+        route.setDeparture("departure");
+        route.setDepartureDateTime(new Date());
+        route.setDestination("destination");
+        
+
+        CategoryDescriptor categoryDescriptor = new CategoryDescriptor();
+        categoryDescriptor.setPassenger(passenger);
+        categoryDescriptor.setRoute(route);
+
+        Item item = new Item();
+        item.setCategoryDescriptor(categoryDescriptor);
+        item.setWarranty(false);
+        item.setEventDate(new Date());
+
+        ArrayList<Item> items = new ArrayList<Item>();
+        items.add(item);
+
+        AdditionalInfoPayer additionalInfoPayer = new AdditionalInfoPayer();
+        additionalInfoPayer.setAuthenticationType("authenticationType");
+        additionalInfoPayer.setIsPrimeUser(true);
+        additionalInfoPayer.setIsFirstPurchaseOnline(true);
+        additionalInfoPayer.setLastPurchase(new Date());
+
+        Shipments shipments = new Shipments();
+        shipments.setLocalPickup(false);
+        shipments.setExpressShipment(true);
+
+        AdditionalInfo additionalInfo = new AdditionalInfo();
+        additionalInfo.setItems(items);
+        additionalInfo.setPayer(additionalInfoPayer);
+        additionalInfo.setShipments(shipments);
+
+        Payment payment = new Payment();
+        payment.setTransactionAmount(10000f);
+        payment.setPaymentMethodId("visa");
+        payment.setDescription("Payment test 100 pesos");
+        payment.setToken(getCardToken(CardResultExpected.APPROVED));
+        payment.setInstallments(1);
+        payment.setPayer(payer);
+
+        payment.save();
+
+        assertEquals(201, payment.getLastApiResponse().getStatusCode());
+        assertNotNull(payment.getId());
+        assertEquals("approved", payment.getStatus().toString());
+        assertEquals("credit_card", payment.getPaymentTypeId().toString());
+    }
 
 
 

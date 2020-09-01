@@ -12,10 +12,8 @@ import com.mercadopago.core.annotations.validation.Numeric;
 import com.mercadopago.core.annotations.validation.Size;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.datastructures.payment.TransactionDetails;
-import com.mercadopago.resources.datastructures.preference.Item;
 import com.mercadopago.resources.datastructures.payment.AdditionalInfo;
 import com.mercadopago.resources.datastructures.payment.FeeDetail;
-import com.mercadopago.resources.datastructures.payment.Item;
 import com.mercadopago.resources.datastructures.payment.Order;
 import com.mercadopago.resources.datastructures.payment.Payer;
 
