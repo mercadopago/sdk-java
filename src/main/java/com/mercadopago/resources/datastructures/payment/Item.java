@@ -21,7 +21,7 @@ public class Item {
     @Size(max=256) private String categoryId = null;
     @NotNull @Numeric(min=1) private Integer quantity = null;
     @NotNull private Float unitPrice = 0f;
-    private Object categoryDescriptor = null;
+    private CategoryDescriptor categoryDescriptor = null;
     private Boolean warranty = null;
     private Date eventDate = null;
 
@@ -88,7 +88,7 @@ public class Item {
         return this;
     }
 
-    public Object getCategoryDescriptor() {
+    public CategoryDescriptor getCategoryDescriptor() {
         return categoryDescriptor;
     }
 

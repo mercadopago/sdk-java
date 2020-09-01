@@ -8,4 +8,7 @@ maven-central-deploy.log
 *.cer
 *.pem
 .DS_Store
+.classpath
+.settings
+
 
