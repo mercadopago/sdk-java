@@ -34,6 +34,7 @@ public class Payment extends MPBase {
 
     private String id = null;
     private Date dateCreated = null;
+    private Date dateOfExpiration = null;
     private Date dateApproved = null;
     private Date dateLastUpdated = null;
     private Date moneyReleaseDate = null;
@@ -87,7 +88,8 @@ public class Payment extends MPBase {
         rejected,
         cancelled,
         refunded,
-        charged_back
+        charged_back,
+        detail_expired
     }
     private String statusDetail = null;
     private Boolean capture = null;
@@ -127,6 +129,15 @@ public class Payment extends MPBase {
 
     public Date getDateCreated() {
         return dateCreated;
+    }
+
+    public Date getDateOfExpiration() {
+        return dateOfExpiration;
+    }
+     
+    public Payment setDateOfExpiration(Date dateOfExpiration) {
+        this.dateOfExpiration = dateOfExpiration;
+        return this;
     }
 
     public Date getDateApproved() {

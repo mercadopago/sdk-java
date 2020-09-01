@@ -199,6 +199,7 @@ public class PaymentTest {
         payment.setToken(getCardToken(CardResultExpected.APPROVED));
         payment.setInstallments(1);
         payment.setPayer(payer);
+        payment.setDateOfExpiration(new Date());
 
         payment.save();
 
