@@ -318,16 +318,10 @@ public class MPRestClient {
             }
             request = new HttpGet(uri);
         } else if (httpMethod.equals(HttpMethod.POST)) {
-            if (entity == null) {
-                throw new MPRestException("Must include payload for this method.");
-            }
             HttpPost post = new HttpPost(uri);
             post.setEntity(entity);
             request = post;
         } else if (httpMethod.equals(HttpMethod.PUT)) {
-            if (entity == null) {
-                throw new MPRestException("Must include payload for this method.");
-            }
             HttpPut put = new HttpPut(uri);
             put.setEntity(entity);
             request = put;

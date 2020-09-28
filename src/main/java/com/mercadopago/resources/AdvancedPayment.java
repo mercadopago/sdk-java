@@ -70,6 +70,14 @@ public class AdvancedPayment extends MPBase {
         return this;
     }
 
+    public AdvancedPayment addPayment(Payment payment) {
+        if (this.payments == null) {
+            this.payments = new ArrayList<Payment>();
+        }
+        this.payments.add(payment);
+        return this;
+    }
+
     public AdvancedPayment setDisbursements(ArrayList<Disbursement> disbursements) {
         this.disbursements = disbursements;
         return this;
@@ -80,6 +88,9 @@ public class AdvancedPayment extends MPBase {
     }
 
     public AdvancedPayment addDisbursement(Disbursement disbursement) {
+        if (this.disbursements == null) {
+            this.disbursements = new ArrayList<Disbursement>();
+        }
         this.disbursements.add(disbursement);
         return this;
     }

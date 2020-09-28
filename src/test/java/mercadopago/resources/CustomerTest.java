@@ -1,115 +1,95 @@
 package mercadopago.resources;
 
 import com.google.gson.JsonObject;
-import com.mercadopago.MercadoPago;
-import com.mercadopago.core.MPApiResponse;
-import com.mercadopago.core.MPRequestOptions;
-import com.mercadopago.core.annotations.rest.PayloadType;
+import com.mercadopago.core.MPResourceArray;
 import com.mercadopago.exceptions.MPException;
-import com.mercadopago.exceptions.MPRestException;
-import com.mercadopago.net.HttpMethod;
-import com.mercadopago.net.MPRestClient;
 import com.mercadopago.resources.Customer;
 import com.mercadopago.resources.datastructures.customer.Identification;
 import com.mercadopago.resources.datastructures.customer.Phone;
-import org.junit.BeforeClass;
+import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Random;
+import java.util.HashMap;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-/**
- * Mercado Pago MercadoPago
- * Customer Test class
- */
-public class CustomerTest {
-
-    static Customer createdCustomer = null;
-
-    @BeforeClass
-    public static void beforeTest() throws MPException {
-        MercadoPago.SDK.setAccessToken(System.getenv("ACCESS_TOKEN"));
-    }
+public class CustomerTest extends BaseResourceTest {
 
     @Test
-    public void stage1_CreateCustomerTest() throws MPException {
-        Random rand = new Random();
-        Customer customer = new Customer()
-                .setEmail(rand.nextInt(500) + "dummy@mail.com")
-                .setFirstName("Dummy")
-                .setLastName("Demo")
-                .setPhone(
-                        new Phone()
-                            .setAreaCode("123")
-                            .setNumber("1234-6543"))
-                .setIdentification(
-                        new Identification()
-                            .setType("DNI")
-                            .setNumber("12345456"));
-
+    public void customerCreateTest() throws MPException {
+        final Customer customer = newCustomer();
         customer.save();
+        Assert.assertNotNull(customer.getLastApiResponse());
+        Assert.assertEquals(201, customer.getLastApiResponse().getStatusCode());
+        Assert.assertNotNull(customer.getId());
 
-        createdCustomer = customer;
-
-        assertEquals(201, customer.getLastApiResponse().getStatusCode());
-        assertNotNull(customer.getId());
-
-    }
-
-    @Test
-    public void stage2_GetCustomerTest() throws MPException {
-
-        Customer customer = Customer.findById(createdCustomer.getId());
-
-        assertEquals(200, customer.getLastApiResponse().getStatusCode());
-        assertNotNull(customer.getId());
-
-    }
-
-    @Test
-    public void stage3_RemoveCustomerTest() throws MPException {
-
-        Customer customer = Customer.findById(createdCustomer.getId());
         customer.delete();
-
-        Customer customer_removed = Customer.findById(createdCustomer.getId());
-        assertEquals(404, customer_removed.getLastApiResponse().getStatusCode());
-
+        Assert.assertNotNull(customer.getLastApiResponse());
+        Assert.assertEquals(200, customer.getLastApiResponse().getStatusCode());
     }
 
+    @Test
+    public void customerUpdateTest() throws MPException {
+        final Customer customer = newCustomer();
+        customer.save();
+        Assert.assertNotNull(customer.getId());
 
-    private String getCardToken() throws MPException {
-        JsonObject jsonPayload = new JsonObject();
-        jsonPayload.addProperty("card_number", "4509953566233704");
-        jsonPayload.addProperty("security_code", "123");
-        jsonPayload.addProperty("expiration_year", 2020);
-        jsonPayload.addProperty("expiration_month", 12);
+        customer.setFirstName("New");
+        customer.update();
+        Assert.assertNotNull(customer.getLastApiResponse());
+        Assert.assertEquals(200, customer.getLastApiResponse().getStatusCode());
 
-        JsonObject identification = new JsonObject();
-        identification.addProperty("type", "DNI");
-        identification.addProperty("number", "12345678");
-
-        JsonObject cardHolder = new JsonObject();
-        cardHolder.addProperty("name", "APRO");
-        cardHolder.add("identification", identification);
-
-        jsonPayload.add("cardholder", cardHolder);
-
-        MPApiResponse response;
-        try {
-            MPRestClient client = new MPRestClient();
-            response = client.executeRequest(
-                    HttpMethod.POST,
-                    MercadoPago.SDK.getBaseUrl() + "/v1/card_tokens?public_key=" + System.getenv("ACCESS_TOKEN"),
-                    PayloadType.JSON,
-                    jsonPayload,
-                    MPRequestOptions.createDefault());
-        } catch (MPRestException rex) {
-            throw new MPException(rex);
-        }
-        return ((JsonObject) response.getJsonElementResponse()).get("id").getAsString();
+        customer.delete();
+        Assert.assertNotNull(customer.getLastApiResponse());
+        Assert.assertEquals(200, customer.getLastApiResponse().getStatusCode());
     }
 
+    @Test
+    public void findCustomerTest() throws MPException {
+        final Customer customer = newCustomer();
+        customer.save();
+        Assert.assertNotNull(customer.getId());
+
+        final Customer findCustomer = Customer.findById(customer.getId());
+        Assert.assertNotNull(findCustomer);
+        Assert.assertEquals(customer.getId(), findCustomer.getId());
+
+        customer.delete();
+        Assert.assertNotNull(customer.getLastApiResponse());
+        Assert.assertEquals(200, customer.getLastApiResponse().getStatusCode());
+    }
+
+    @Test
+    public void searchCustomer() throws MPException {
+        final Customer customer = newCustomer();
+        customer.save();
+        Assert.assertNotNull(customer.getId());
+
+        final HashMap<String, String> filters = new HashMap<String, String>();
+        filters.put("email", customer.getEmail());
+        MPResourceArray result = Customer.search(filters, false);
+        Assert.assertNotNull(result);
+        Assert.assertNotNull(result.resources());
+        Assert.assertTrue(result.resources().size() > 0);
+
+        customer.delete();
+        Assert.assertNotNull(customer.getLastApiResponse());
+        Assert.assertEquals(200, customer.getLastApiResponse().getStatusCode());
+    }
+
+    private static Customer newCustomer() {
+        final JsonObject metadata = new JsonObject();
+        metadata.addProperty("test", "123");
+
+        return new Customer()
+            .setFirstName("Test")
+            .setLastName("Payer")
+            .setEmail("test_payer_999955@testuser.com")
+            .setPhone(new Phone()
+                .setAreaCode("11")
+                .setNumber("99999999"))
+            .setDescription("description")
+            .setIdentification(new Identification()
+                .setType("CPF")
+                .setNumber("19119119100"))
+            .setMetadata(metadata);
+    }
 }
