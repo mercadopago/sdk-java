@@ -2,6 +2,7 @@ package mercadopago.resources;
 
 import com.google.gson.JsonObject;
 import com.mercadopago.core.MPApiResponse;
+import com.mercadopago.core.MPResourceArray;
 import com.mercadopago.core.annotations.rest.PayloadType;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.exceptions.MPRestException;
@@ -50,6 +51,37 @@ public class CardTest extends BaseResourceTest {
         Assert.assertNotNull(card.getLastApiResponse());
         Assert.assertEquals(200, card.getLastApiResponse().getStatusCode());
     }
+
+    @Test
+    public void allCardsTest() throws MPException {
+        final Card card = newCard();
+        card.save();
+        Assert.assertNotNull(card.getId());
+
+        MPResourceArray cards = Card.all(card.getCustomerId());
+        Assert.assertNotNull(cards);
+        Assert.assertNotNull(cards.resources());
+        Assert.assertTrue(cards.resources().size() > 0);
+
+        card.delete();
+        Assert.assertNotNull(card.getLastApiResponse());
+        Assert.assertEquals(200, card.getLastApiResponse().getStatusCode());
+    }
+
+//    @Test
+//    public void cardUpdateTest() throws MPException {
+//        final Card card = newCard();
+//        card.save();
+//        Assert.assertNotNull(card.getId());
+//
+//        card.update();
+//        Assert.assertNotNull(card.getLastApiResponse());
+//        Assert.assertEquals(200, card.getLastApiResponse().getStatusCode());
+//
+//        card.delete();
+//        Assert.assertNotNull(card.getLastApiResponse());
+//        Assert.assertEquals(200, card.getLastApiResponse().getStatusCode());
+//    }
 
     private Card newCard() throws MPRestException {
         final JsonObject identification = new JsonObject();

@@ -27,7 +27,7 @@ public class PreferenceTest extends BaseResourceTest {
     @Test
     public void createPreferenceTest() throws MPException {
         Preference preference = newPreference();
-        preference.save();
+        preference.save(null);
         Assert.assertNotNull(preference.getLastApiResponse());
         Assert.assertEquals(201, preference.getLastApiResponse().getStatusCode());
         Assert.assertNotNull(preference.getId());

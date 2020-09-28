@@ -22,7 +22,7 @@ public class RefundTest extends BaseResourceTest {
         refund.save();
         Assert.assertNotNull(refund.getId());
 
-        MPResourceArray result = Refund.all(payment.getId(), false);
+        MPResourceArray result = Refund.all(payment.getId());
         Assert.assertNotNull(result);
         Assert.assertNotNull(result.resources());
         Assert.assertTrue(result.resources().size() > 0);

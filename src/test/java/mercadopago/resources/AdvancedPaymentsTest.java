@@ -47,17 +47,17 @@ public class AdvancedPaymentsTest extends BaseResourceTest {
         Assert.assertTrue(result);
     }
 
-//    @Test
-//    public void advancedPaymentDoCaptureTest() throws MPException {
-//        AdvancedPayment advPayment = newAdvancedPayment(false);
-//        advPayment.save();
-//        Assert.assertNotNull(advPayment.getId());
-//
-//        sleep(5000);
-//
-//        boolean result = AdvancedPayment.capture(advPayment.getId());
-//        Assert.assertTrue(result);
-//    }
+    @Test
+    public void advancedPaymentDoCaptureTest() throws MPException {
+        AdvancedPayment advPayment = newAdvancedPayment(false);
+        advPayment.save();
+        Assert.assertNotNull(advPayment.getId());
+
+        sleep(5000);
+
+        boolean result = AdvancedPayment.capture(advPayment.getId());
+        Assert.assertTrue(result);
+    }
 
     @Test
     public void advancedPaymentUpdateReleaseDateTest() throws MPException {
@@ -166,6 +166,7 @@ public class AdvancedPaymentsTest extends BaseResourceTest {
                                         .setStreetName("Street")
                                         .setStreetName("123")
                                         .setFloor("1")
-                                        .setApartment("300A"))));
+                                        .setApartment("300A"))))
+                .addMetadata("test", "123");
     }
 }

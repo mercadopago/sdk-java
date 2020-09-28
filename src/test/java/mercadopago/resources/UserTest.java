@@ -12,5 +12,6 @@ public class UserTest extends BaseResourceTest {
         User user = User.find();
         Assert.assertNotNull(user.getLastApiResponse());
         Assert.assertEquals(200, user.getLastApiResponse().getStatusCode());
+        Assert.assertEquals("BR", user.getCountryId());
     }
 }

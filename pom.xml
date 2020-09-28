@@ -135,9 +135,19 @@
                 <version>0.8.6</version>
                 <configuration>
                     <excludes>
+                        <exclude>com/mercadopago/core/**/MPCache.*</exclude>
+                        <exclude>com/mercadopago/core/**/MPIPN.*</exclude>
+                        <exclude>com/mercadopago/core/**/MPResourceArray.*</exclude>
+                        <exclude>com/mercadopago/core/**/ValidationViolation.*</exclude>
+                        <exclude>com/mercadopago/exceptions/**/*</exclude>
                         <exclude>com/mercadopago/insight/**/*</exclude>
+                        <exclude>com/mercadopago/net/**/*</exclude>
+                        <exclude>com/mercadopago/resources/CardToken.*</exclude>
+                        <exclude>com/mercadopago/resources/Disbursement.*</exclude>
+                        <exclude>com/mercadopago/resources/DisbursementRefund.*</exclude>
+                        <exclude>com/mercadopago/resources/DiscountCampaign.*</exclude>
+                        <exclude>com/mercadopago/resources/OAuth.*</exclude>
                         <exclude>com/mercadopago/resources/datastructures/**/*</exclude>
-                        <exclude>com/mercadopago/exceptions/*</exclude>
                         <exclude>**/*Test.*</exclude>
                     </excludes>
                 </configuration>

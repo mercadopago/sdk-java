@@ -56,11 +56,6 @@ public class AdvancedPayment extends MPBase {
         return capture;
     }
 
-    public AdvancedPayment setCapture(boolean capture) {
-        this.capture = capture;
-        return this;
-    }
-
     public ArrayList<Payment> getPayments() {
         return payments;
     }
@@ -123,7 +118,7 @@ public class AdvancedPayment extends MPBase {
             metadata = new JsonObject();
         }
 
-        this.metadata.addProperty(key, String.valueOf(value));
+        this.metadata.addProperty(key, value);
         return this;
     }
 
