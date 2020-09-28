@@ -24,13 +24,11 @@ jobs:
 
     - name: Compile
       run: mvn compile
-      env: 
-        ACCESS_TOKEN : ${{secrets.TOKEN}}
 
     - name: Run the tests
       run: mvn test
       env:
-        ACCESS_TOKEN : ${{secrets.TOKEN}}
+        ACCESS_TOKEN : ${{ secrets.ACCESS_TOKEN }}
         PUBLIC_KEY: ${{ secrets.PUBLIC_KEY }}
 
     # Upload coverage result
