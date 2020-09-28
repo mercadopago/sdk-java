@@ -15,7 +15,7 @@ public class RefundTest extends BaseResourceTest {
         payment.save();
         Assert.assertNotNull(payment.getId());
 
-        sleep(3000);
+        sleep(5000);
 
         Refund refund = new Refund();
         refund.setPaymentId(payment.getId());
