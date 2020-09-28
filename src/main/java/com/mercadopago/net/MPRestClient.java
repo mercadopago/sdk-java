@@ -86,8 +86,9 @@ public class MPRestClient {
                 colHeaders = new HashSet<Header>();
             }
 
-            BasicHeader header = new BasicHeader("Authorization", String.format("Bearer " + SDK.getAccessToken()));
-            colHeaders.add(header);
+            if(!uri.contains("/oauth/token"))
+                colHeaders.add(new BasicHeader("Authorization", String.format("Bearer " + SDK.getAccessToken())));
+
         } catch (MPException e) {
             full_uri = MercadoPago.SDK.getBaseUrl() + uri;
         }
