@@ -223,6 +223,8 @@ public abstract class MPBase {
         if (StringUtils.isNotEmpty(resource.getIdempotenceKey()) && !requestOptions.getCustomHeaders().containsKey("x-idempotency-key")) {
             requestOptions.getCustomHeaders().put("x-idempotency-key", resource.getIdempotenceKey());
         }
+        if(StringUtils.isEmpty(requestOptions.getAccessToken()) && StringUtils.isNotEmpty(resource.getMarketplaceAccessToken()))
+            requestOptions.setAccessToken(resource.getMarketplaceAccessToken());
         //Insight custom header
         requestOptions.getCustomHeaders().put(InsightDataManager.HEADER_X_INSIGHTS_EVENT_NAME, methodName); 
 

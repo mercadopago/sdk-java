@@ -193,9 +193,6 @@ public class MPRestClient {
         if (requestOptions.getAccessToken() != null && requestOptions.getAccessToken().isEmpty())
             return requestOptions.getAccessToken();
 
-        if (MercadoPago.SDK.getAccessToken() != null && !MercadoPago.SDK.getAccessToken().isEmpty())
-            return MercadoPago.SDK.getAccessToken();
-
         return SDK.getAccessToken();
     }
 
@@ -207,7 +204,8 @@ public class MPRestClient {
         headers.put(HTTP.USER_AGENT, String.format("MercadoPago Java SDK/%s", MercadoPago.SDK.getVersion()));
         headers.put("x-product-id", MercadoPago.SDK.getProductId());
         headers.put("x-tracking-id", MercadoPago.SDK.getTrackingId());
-        headers.put("Authorization", String.format("Bearer %s", getAccessToken(requestOptions)));
+        if(!uri.contains("/oauth/token")) headers.put("Authorization", String.format("Bearer %s", getAccessToken(requestOptions)));
+
         for (String headerName : requestOptions.getCustomHeaders().keySet()) {
             if (!headers.containsKey(headerName)) {
                 headers.put(headerName, requestOptions.getCustomHeaders().get(headerName));
