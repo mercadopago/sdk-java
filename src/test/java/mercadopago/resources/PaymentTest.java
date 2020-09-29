@@ -199,7 +199,7 @@ import java.util.UUID;
          payment.save();
          Assert.assertNotNull(payment.getId());
 
-         sleep(5000);
+         sleep(7000);
 
          payment.refund();
          Assert.assertNotNull(payment.getLastApiResponse());
@@ -212,7 +212,7 @@ import java.util.UUID;
          payment.save();
          Assert.assertNotNull(payment.getId());
 
-         sleep(5000);
+         sleep(7000);
 
          MPRequestOptions requestOptions = newRequestOptions();
          payment.refund(requestOptions);
@@ -226,7 +226,7 @@ import java.util.UUID;
          payment.save();
          Assert.assertNotNull(payment.getId());
 
-         sleep(5000);
+         sleep(7000);
 
          payment.refund(1f);
          Assert.assertNotNull(payment.getLastApiResponse());
@@ -239,7 +239,7 @@ import java.util.UUID;
          payment.save();
          Assert.assertNotNull(payment.getId());
 
-         sleep(3000);
+         sleep(7000);
 
          MPRequestOptions requestOptions = newRequestOptions();
          payment.refund(1f, requestOptions);
