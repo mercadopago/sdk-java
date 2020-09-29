@@ -37,7 +37,7 @@ public class AdvancedPaymentsTest extends BaseResourceTest {
                 .setPayer(new Payer())
                 .setExternalReference("Adv" + UUID.randomUUID().toString())
                 .setDescription("description")
-                .setBinaryMode(false)
+                .setBinaryMode(true)
                 .setCapture(true)
                 .setAdditionalInfo(new AdditionalInfo())
                 .setMetadata(new JsonObject());
@@ -83,7 +83,7 @@ public class AdvancedPaymentsTest extends BaseResourceTest {
         advPayment.save();
         Assert.assertNotNull(advPayment.getId());
 
-        sleep(5000);
+        sleep(7000);
 
         boolean result = AdvancedPayment.capture(advPayment.getId());
         Assert.assertTrue(result);
