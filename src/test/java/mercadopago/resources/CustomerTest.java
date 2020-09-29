@@ -4,14 +4,42 @@ import com.google.gson.JsonObject;
 import com.mercadopago.core.MPResourceArray;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.Customer;
+import com.mercadopago.resources.datastructures.customer.DefaultAddress;
 import com.mercadopago.resources.datastructures.customer.Identification;
 import com.mercadopago.resources.datastructures.customer.Phone;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Date;
 import java.util.HashMap;
 
 public class CustomerTest extends BaseResourceTest {
+
+    @Test
+    public void gettersAndSettersTest() {
+        Customer customer = new Customer()
+                .setFirstName("Test")
+                .setLastName("Payer")
+                .setEmail("test_payer_999955@testuser.com")
+                .setPhone(new Phone())
+                .setDescription("description")
+                .setIdentification(new Identification())
+                .setMetadata(new JsonObject())
+                .setDefaultAddress("default address")
+                .setDateRegistered(new Date())
+                .setAddress(new DefaultAddress());
+
+        Assert.assertNotNull(customer.getFirstName());
+        Assert.assertNotNull(customer.getLastName());
+        Assert.assertNotNull(customer.getEmail());
+        Assert.assertNotNull(customer.getPhone());
+        Assert.assertNotNull(customer.getDescription());
+        Assert.assertNotNull(customer.getIdentification());
+        Assert.assertNotNull(customer.getMetadata());
+        Assert.assertNotNull(customer.getDefaultAddress());
+        Assert.assertNotNull(customer.getDateRegistered());
+        Assert.assertNotNull(customer.getAddress());
+    }
 
     @Test
     public void customerCreateTest() throws MPException {

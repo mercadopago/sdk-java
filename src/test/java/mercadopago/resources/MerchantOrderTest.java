@@ -4,12 +4,43 @@ import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.MerchantOrder;
 import com.mercadopago.resources.Preference;
 import com.mercadopago.resources.datastructures.merchantorder.Item;
+import com.mercadopago.resources.datastructures.merchantorder.Payer;
+import com.mercadopago.resources.datastructures.merchantorder.Shipment;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class MerchantOrderTest extends BaseResourceTest {
+
+    @Test
+    public void gettersAndSettersTest() {
+        MerchantOrder merchantOrder = new MerchantOrder()
+                .setPreferenceId("pref-id")
+                .setApplicationId("59441713004005")
+                .setSiteId("MLB")
+                .setNotificationUrl("https://seller/notification")
+                .setAdditionalInfo("Aditional info")
+                .setExternalReference(UUID.randomUUID().toString())
+                .setMarketplace("NONE")
+                .setPayer(new Payer())
+                .setSponsorId(123)
+                .appendShipment(new Shipment())
+                .setItems(new ArrayList<Item>());
+
+        Assert.assertNotNull(merchantOrder.getPreferenceId());
+        Assert.assertNotNull(merchantOrder.getApplicationId());
+        Assert.assertNotNull(merchantOrder.getSiteId());
+        Assert.assertNotNull(merchantOrder.getNotificationUrl());
+        Assert.assertNotNull(merchantOrder.getAdditionalInfo());
+        Assert.assertNotNull(merchantOrder.getExternalReference());
+        Assert.assertNotNull(merchantOrder.getMarketplace());
+        Assert.assertNotNull(merchantOrder.getPayer());
+        Assert.assertNotNull(merchantOrder.getSponsorId());
+        Assert.assertNotNull(merchantOrder.getShipments());
+        Assert.assertNotNull(merchantOrder.getItems());
+    }
 
     @Test
     public void merchantOrderCreateTest() throws MPException {

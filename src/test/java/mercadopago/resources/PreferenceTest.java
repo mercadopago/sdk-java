@@ -1,5 +1,6 @@
 package mercadopago.resources;
 
+import com.google.gson.JsonObject;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.Preference;
@@ -19,10 +20,54 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
 public class PreferenceTest extends BaseResourceTest {
+
+    @Test
+    public void gettersAndSettersTest() {
+        Preference preference = new Preference()
+                .setItems(new ArrayList<Item>())
+                .setPayer(new Payer())
+                .setPaymentMethods(new PaymentMethods())
+                .setShipments(new Shipments())
+                .setBackUrls(new BackUrls())
+                .setNotificationUrl("https://seller/notification")
+                .setAdditionalInfo("Additional info")
+                .setAutoReturn(Preference.AutoReturn.all)
+                .setExternalReference(UUID.randomUUID().toString())
+                .setExpires(true)
+                .setExpirationDateFrom(new Date())
+                .setExpirationDateTo(DateUtils.addDays(new Date(), 30))
+                .setBinaryMode(true)
+                .setProcessingModes(new ArrayList<Preference.ProcessingMode>())
+                .setTracks(new ArrayList<Track>())
+                .setTaxes(new ArrayList<Tax>())
+                .setMetadata(new JsonObject())
+                .setSponsorId(123);
+
+        Assert.assertNotNull(preference.getItems());
+        Assert.assertNotNull(preference.getPayer());
+        Assert.assertNotNull(preference.getPaymentMethods());
+        Assert.assertNotNull(preference.getShipments());
+        Assert.assertNotNull(preference.getBackUrls());
+        Assert.assertNotNull(preference.getNotificationUrl());
+        Assert.assertNotNull(preference.getAdditionalInfo());
+        Assert.assertNotNull(preference.getAutoReturn());
+        Assert.assertNotNull(preference.getBinaryMode());
+        Assert.assertNotNull(preference.getExternalReference());
+        Assert.assertNotNull(preference.getExpires());
+        Assert.assertNotNull(preference.getExpirationDateFrom());
+        Assert.assertNotNull(preference.getExpirationDateTo());
+        Assert.assertNotNull(preference.getMetadata());
+        Assert.assertNotNull(preference.getNotificationUrl());
+        Assert.assertNotNull(preference.getProcessingModes());
+        Assert.assertNotNull(preference.getTracks());
+        Assert.assertNotNull(preference.getTaxes());
+        Assert.assertNotNull(preference.getSponsorId());
+    }
 
     @Test
     public void createPreferenceTest() throws MPException {

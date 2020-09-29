@@ -367,8 +367,9 @@ public class Payment extends MPBase {
         return callbackUrl;
     }
 
-    public void setCallbackUrl(String callbackUrl) {
+    public Payment setCallbackUrl(String callbackUrl) {
         this.callbackUrl = callbackUrl;
+        return this;
     }
 
     public static MPResourceArray search(HashMap<String, String> filters, Boolean useCache) throws MPException {

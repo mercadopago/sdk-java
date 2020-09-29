@@ -1,5 +1,6 @@
 package mercadopago.resources;
 
+import com.google.gson.JsonObject;
 import com.mercadopago.core.MPResourceArray;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.AdvancedPayment;
@@ -20,11 +21,38 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AdvancedPaymentsTest extends BaseResourceTest {
+
+    @Test
+    public void gettersAndSettersTest() {
+        AdvancedPayment advancedPayment = new AdvancedPayment()
+                .setApplicationId("59441713004005")
+                .setPayments(new ArrayList<Payment>())
+                .setDisbursements(new ArrayList<Disbursement>())
+                .setPayer(new Payer())
+                .setExternalReference("Adv" + UUID.randomUUID().toString())
+                .setDescription("description")
+                .setBinaryMode(false)
+                .setCapture(true)
+                .setAdditionalInfo(new AdditionalInfo())
+                .setMetadata(new JsonObject());
+
+        Assert.assertNotNull(advancedPayment.getApplicationId());
+        Assert.assertNotNull(advancedPayment.getPayments());
+        Assert.assertNotNull(advancedPayment.getDisbursements());
+        Assert.assertNotNull(advancedPayment.getPayer());
+        Assert.assertNotNull(advancedPayment.getExternalReference());
+        Assert.assertNotNull(advancedPayment.getDescription());
+        Assert.assertNotNull(advancedPayment.getBinaryMode());
+        Assert.assertNotNull(advancedPayment.getCapture());
+        Assert.assertNotNull(advancedPayment.getAdditionalInfo());
+        Assert.assertNotNull(advancedPayment.getMetadata());
+    }
 
     @Test
     public void advancedPaymentCreateTest() throws MPException {

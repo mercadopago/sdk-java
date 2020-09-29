@@ -15,7 +15,8 @@ import com.mercadopago.resources.datastructures.payment.Item;
 import com.mercadopago.resources.datastructures.payment.Payer;
 import com.mercadopago.resources.datastructures.payment.Phone;
 import com.mercadopago.resources.datastructures.payment.Shipments;
-import org.junit.Assert;
+ import com.mercadopago.resources.datastructures.payment.TransactionDetails;
+ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Date;
@@ -23,6 +24,50 @@ import java.util.HashMap;
 import java.util.UUID;
 
  public class PaymentTest extends BaseResourceTest {
+
+     @Test
+     public void gettersAndSettersTest() {
+         Payment payment = new Payment()
+                 .setPayer(new Payer())
+                 .setBinaryMode(Boolean.FALSE)
+                 .setExternalReference(UUID.randomUUID().toString())
+                 .setDescription("description")
+                 .setMetadata(new JsonObject())
+                 .setTransactionAmount(100f)
+                 .setCapture(true)
+                 .setPaymentMethodId("master")
+                 .setToken("cardToken")
+                 .setStatementDescriptor("statementDescriptor")
+                 .setInstallments(1)
+                 .setNotificationUrl("https://seu-site.com.br/webhooks")
+                 .setAdditionalInfo(new AdditionalInfo())
+                 .setTransactionDetails(new TransactionDetails())
+                 .setDifferentialPricingId(123)
+                 .setIssuerId("123")
+                 .setCallbackUrl("https://callback.url")
+                 .setSponsorId(123)
+                 .setProcessingMode("aggregator")
+                 .setPaymentMode("credit")
+                 .setPaymentMethodOptionId("x");
+
+         Assert.assertNotNull(payment.getPayer());
+         Assert.assertNotNull(payment.getBinaryMode());
+         Assert.assertNotNull(payment.getExternalReference());
+         Assert.assertNotNull(payment.getDescription());
+         Assert.assertNotNull(payment.getMetadata());
+         Assert.assertNotNull(payment.getTransactionAmount());
+         Assert.assertNotNull(payment.getPaymentMethodId());
+         Assert.assertNotNull(payment.getStatementDescriptor());
+         Assert.assertNotNull(payment.getInstallments());
+         Assert.assertNotNull(payment.getNotificationUrl());
+         Assert.assertNotNull(payment.getTransactionDetails());
+         Assert.assertNotNull(payment.getDifferentialPricingId());
+         Assert.assertNotNull(payment.getIssuerId());
+         Assert.assertNotNull(payment.getCallbackUrl());
+         Assert.assertNotNull(payment.getSponsorId());
+         Assert.assertNotNull(payment.getProcessingMode());
+         Assert.assertNotNull(payment.getPaymentMethodOptionId());
+     }
 
      @Test
      public void paymentSaveTest() throws MPException {
@@ -55,6 +100,7 @@ import java.util.UUID;
          payment.update();
          Assert.assertNotNull(payment.getLastApiResponse());
          Assert.assertEquals(200, payment.getLastApiResponse().getStatusCode());
+         Assert.assertTrue(payment.getCaptured());
      }
 
      @Test
@@ -70,6 +116,7 @@ import java.util.UUID;
          payment.update(requestOptions);
          Assert.assertNotNull(payment.getLastApiResponse());
          Assert.assertEquals(200, payment.getLastApiResponse().getStatusCode());
+         Assert.assertTrue(payment.getCaptured());
      }
 
      @Test

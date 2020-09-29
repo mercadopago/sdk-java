@@ -262,8 +262,9 @@ public class Preference extends MPBase {
         return sponsorId;
     }
 
-    public void setSponsorId(Integer sponsorId) {
+    public Preference setSponsorId(Integer sponsorId) {
         this.sponsorId = sponsorId;
+        return this;
     }
 
     public ArrayList<ProcessingMode> getProcessingModes() {

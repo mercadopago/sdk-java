@@ -68,21 +68,6 @@ public class CardTest extends BaseResourceTest {
         Assert.assertEquals(200, card.getLastApiResponse().getStatusCode());
     }
 
-//    @Test
-//    public void cardUpdateTest() throws MPException {
-//        final Card card = newCard();
-//        card.save();
-//        Assert.assertNotNull(card.getId());
-//
-//        card.update();
-//        Assert.assertNotNull(card.getLastApiResponse());
-//        Assert.assertEquals(200, card.getLastApiResponse().getStatusCode());
-//
-//        card.delete();
-//        Assert.assertNotNull(card.getLastApiResponse());
-//        Assert.assertEquals(200, card.getLastApiResponse().getStatusCode());
-//    }
-
     private Card newCard() throws MPRestException {
         final JsonObject identification = new JsonObject();
         identification.addProperty("type", "CPF");
