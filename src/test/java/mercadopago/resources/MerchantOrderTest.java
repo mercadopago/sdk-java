@@ -27,7 +27,8 @@ public class MerchantOrderTest extends BaseResourceTest {
                 .setPayer(new Payer())
                 .setSponsorId(123)
                 .appendShipment(new Shipment())
-                .setItems(new ArrayList<Item>());
+                .setItems(new ArrayList<Item>())
+                .setCancelled(true);
 
         Assert.assertNotNull(merchantOrder.getPreferenceId());
         Assert.assertNotNull(merchantOrder.getApplicationId());
@@ -40,6 +41,7 @@ public class MerchantOrderTest extends BaseResourceTest {
         Assert.assertNotNull(merchantOrder.getSponsorId());
         Assert.assertNotNull(merchantOrder.getShipments());
         Assert.assertNotNull(merchantOrder.getItems());
+        Assert.assertNotNull(merchantOrder.getCancelled());
     }
 
     @Test

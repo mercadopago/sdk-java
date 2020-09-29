@@ -25,6 +25,17 @@ public class CardTest extends BaseResourceTest {
     }
 
     @Test
+    public void gettersAndSettersTest() {
+        Card card = new Card()
+                .setId("id")
+                .setCustomerId("123abc")
+                .setToken("token");
+
+        Assert.assertNotNull(card.getId());
+        Assert.assertNotNull(card.getCustomerId());
+    }
+
+    @Test
     public void cardCreateTest() throws MPException {
         final Card card = newCard();
         card.save();

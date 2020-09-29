@@ -103,12 +103,6 @@ public class AdvancedPayment extends MPBase {
         return binaryMode;
     }
 
-    public AdvancedPayment setBinaryMode(boolean binaryMode) {
-        this.binaryMode = binaryMode;
-        return this;
-    }
-
-
     public JsonObject getMetadata() {
         return metadata;
     }

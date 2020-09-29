@@ -48,7 +48,9 @@ import java.util.UUID;
                  .setSponsorId(123)
                  .setProcessingMode("aggregator")
                  .setPaymentMode("credit")
-                 .setPaymentMethodOptionId("x");
+                 .setPaymentMethodOptionId("x")
+                 .setCouponAmount(2f)
+                 .setMerchantAccountId("y");
 
          Assert.assertNotNull(payment.getPayer());
          Assert.assertNotNull(payment.getBinaryMode());
@@ -67,6 +69,8 @@ import java.util.UUID;
          Assert.assertNotNull(payment.getSponsorId());
          Assert.assertNotNull(payment.getProcessingMode());
          Assert.assertNotNull(payment.getPaymentMethodOptionId());
+         Assert.assertNotNull(payment.getCouponAmount());
+         Assert.assertNotNull(payment.getMerchantAccountid());
      }
 
      @Test

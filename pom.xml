@@ -135,10 +135,7 @@
                 <version>0.8.6</version>
                 <configuration>
                     <excludes>
-                        <exclude>com/mercadopago/core/**/MPCache.*</exclude>
-                        <exclude>com/mercadopago/core/**/MPIPN.*</exclude>
-                        <exclude>com/mercadopago/core/**/MPResourceArray.*</exclude>
-                        <exclude>com/mercadopago/core/**/ValidationViolation.*</exclude>
+                        <exclude>com/mercadopago/core/**/*</exclude>
                         <exclude>com/mercadopago/exceptions/**/*</exclude>
                         <exclude>com/mercadopago/insight/**/*</exclude>
                         <exclude>com/mercadopago/net/**/*</exclude>

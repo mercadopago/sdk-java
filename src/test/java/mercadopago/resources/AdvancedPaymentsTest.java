@@ -49,7 +49,9 @@ public class AdvancedPaymentsTest extends BaseResourceTest {
         Assert.assertNotNull(advancedPayment.getExternalReference());
         Assert.assertNotNull(advancedPayment.getDescription());
         Assert.assertNotNull(advancedPayment.getBinaryMode());
+        Assert.assertTrue(advancedPayment.isBinaryMode());
         Assert.assertNotNull(advancedPayment.getCapture());
+        Assert.assertTrue(advancedPayment.isCapture());
         Assert.assertNotNull(advancedPayment.getAdditionalInfo());
         Assert.assertNotNull(advancedPayment.getMetadata());
     }
