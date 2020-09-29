@@ -211,20 +211,6 @@ import java.util.UUID;
      }
 
      @Test
-     public void paymentRefundTotalRequestOptionsTest() throws MPException {
-         Payment payment = newPayment(true);
-         payment.save();
-         Assert.assertNotNull(payment.getId());
-
-         sleep(7000);
-
-         MPRequestOptions requestOptions = newRequestOptions();
-         payment.refund(requestOptions);
-         Assert.assertNotNull(payment.getLastApiResponse());
-         Assert.assertEquals(201, payment.getLastApiResponse().getStatusCode());
-     }
-
-     @Test
      public void paymentRefundPartialTest() throws MPException {
          Payment payment = newPayment(true);
          payment.save();
@@ -233,20 +219,6 @@ import java.util.UUID;
          sleep(7000);
 
          payment.refund(1f);
-         Assert.assertNotNull(payment.getLastApiResponse());
-         Assert.assertEquals(201, payment.getLastApiResponse().getStatusCode());
-     }
-
-     @Test
-     public void paymentRefundPartialRequestOptionsTest() throws MPException {
-         Payment payment = newPayment(true);
-         payment.save();
-         Assert.assertNotNull(payment.getId());
-
-         sleep(7000);
-
-         MPRequestOptions requestOptions = newRequestOptions();
-         payment.refund(1f, requestOptions);
          Assert.assertNotNull(payment.getLastApiResponse());
          Assert.assertEquals(201, payment.getLastApiResponse().getStatusCode());
      }

@@ -459,7 +459,7 @@ public class Payment extends MPBase {
     }
 
     public Payment refund() throws MPException {
-        return refund(null, MPRequestOptions.createDefault());
+        return refund(MPRequestOptions.createDefault());
     }
 
     public Payment refund(MPRequestOptions requestOptions) throws MPException {
