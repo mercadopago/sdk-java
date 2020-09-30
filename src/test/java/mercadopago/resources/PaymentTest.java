@@ -98,26 +98,10 @@ import java.util.UUID;
          payment.save();
          Assert.assertNotNull(payment.getId());
 
-         sleep(3000);
+         sleep(5000);
 
          payment.setCapture(true);
          payment.update();
-         Assert.assertNotNull(payment.getLastApiResponse());
-         Assert.assertEquals(200, payment.getLastApiResponse().getStatusCode());
-         Assert.assertTrue(payment.getCaptured());
-     }
-
-     @Test
-     public void capturePaymentRequestOptionsTest() throws MPException {
-         Payment payment = newPayment(false);
-         payment.save();
-         Assert.assertNotNull(payment.getId());
-
-         sleep(3000);
-
-         MPRequestOptions requestOptions = newRequestOptions();
-         payment.setCapture(true);
-         payment.update(requestOptions);
          Assert.assertNotNull(payment.getLastApiResponse());
          Assert.assertEquals(200, payment.getLastApiResponse().getStatusCode());
          Assert.assertTrue(payment.getCaptured());
