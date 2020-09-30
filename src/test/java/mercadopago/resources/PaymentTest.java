@@ -129,7 +129,7 @@ import java.util.UUID;
          payment.save();
          Assert.assertNotNull(payment.getId());
 
-         sleep(3000);
+         sleep(5000);
 
          payment.setStatus(Payment.Status.cancelled);
          payment.update();
