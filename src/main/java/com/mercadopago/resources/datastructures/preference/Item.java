@@ -7,8 +7,6 @@ import com.mercadopago.core.annotations.validation.Size;
 /**
  * Mercado Pago MercadoPago
  * Preference Item class
- *
- * Created by Eduardo Paoletta on 12/2/16.
  */
 public class Item {
 

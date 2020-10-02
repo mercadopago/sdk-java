@@ -8,8 +8,6 @@ import java.lang.annotation.Target;
 /**
  * Mercado Pago SDK
  * Annotation to mark class as idempotent resource
- *
- * Created by Eduardo Paoletta on 11/30/16.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

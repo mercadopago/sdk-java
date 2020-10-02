@@ -56,17 +56,20 @@ public class AdvancedPayment extends MPBase {
         return capture;
     }
 
-    public AdvancedPayment setCapture(boolean capture) {
-        this.capture = capture;
-        return this;
-    }
-
     public ArrayList<Payment> getPayments() {
         return payments;
     }
 
     public AdvancedPayment setPayments(ArrayList<Payment> payments) {
         this.payments = payments;
+        return this;
+    }
+
+    public AdvancedPayment addPayment(Payment payment) {
+        if (this.payments == null) {
+            this.payments = new ArrayList<Payment>();
+        }
+        this.payments.add(payment);
         return this;
     }
 
@@ -80,6 +83,9 @@ public class AdvancedPayment extends MPBase {
     }
 
     public AdvancedPayment addDisbursement(Disbursement disbursement) {
+        if (this.disbursements == null) {
+            this.disbursements = new ArrayList<Disbursement>();
+        }
         this.disbursements.add(disbursement);
         return this;
     }
@@ -97,12 +103,6 @@ public class AdvancedPayment extends MPBase {
         return binaryMode;
     }
 
-    public AdvancedPayment setBinaryMode(boolean binaryMode) {
-        this.binaryMode = binaryMode;
-        return this;
-    }
-
-
     public JsonObject getMetadata() {
         return metadata;
     }
@@ -112,7 +112,7 @@ public class AdvancedPayment extends MPBase {
             metadata = new JsonObject();
         }
 
-        this.metadata.addProperty(key, String.valueOf(value));
+        this.metadata.addProperty(key, value);
         return this;
     }
 

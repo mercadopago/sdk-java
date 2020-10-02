@@ -20,8 +20,6 @@ import static org.junit.Assert.*;
 /**
  * Mercado Pago SDK
  * MPBase Test for methods with params Class
- *
- * Created by Eduardo Paoletta on 11/15/16.
  */
 public class MPBaseMultipleParamsTest extends MPBase {
 
@@ -36,11 +34,6 @@ public class MPBaseMultipleParamsTest extends MPBase {
         return processMethod(MPBaseMultipleParamsTest.class, "findById", id, WITHOUT_CACHE);
     }
 
-    @POST(path="/createpath/slug/")
-    public MPBaseMultipleParamsTest save() throws MPException {
-        return super.processMethod("save", WITHOUT_CACHE);
-    }
-
     @GET(path="/getpath/slug/:param1/otherslug/:param2")
     public static MPResourceArray all(String param1, String param2) throws MPException {
         return processMethodBulk(MPBaseMultipleParamsTest.class, "all", param1, param2, WITHOUT_CACHE);
@@ -53,18 +46,6 @@ public class MPBaseMultipleParamsTest extends MPBase {
         mapParams.put("param2", param2);
         mapParams.put("param3", param3);
         return super.processMethod(MPBaseMultipleParamsTest.class, this, "delete", mapParams, WITHOUT_CACHE);
-    }
-
-    /**
-     * Test MPBase using a method with no params
-     */
-    @Test
-    public void noParamsMethdTest() throws Exception {
-        MPBaseMultipleParamsTest resource = new MPBaseMultipleParamsTest();
-        resource.save();
-        assertEquals("POST", resource.getLastApiResponse().getMethod());
-        assertEquals("https://api.mercadopago.com/createpath/slug/?access_token=" + MercadoPago.SDK.getAccessToken(), resource.getLastApiResponse().getUrl());
-
     }
 
     /**

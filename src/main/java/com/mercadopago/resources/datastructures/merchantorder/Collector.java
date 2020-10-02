@@ -3,8 +3,6 @@ package com.mercadopago.resources.datastructures.merchantorder;
 /**
  * Mercado Pago SDK
  * Merchant Order Collector class
- *
- * Created by Eduardo Paoletta on 12/13/16.
  */
 public class Collector {
 

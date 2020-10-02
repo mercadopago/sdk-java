@@ -21,8 +21,6 @@ import java.util.HashMap;
 /**
  * Mercado Pago SDK
  * Retrieves information about a customer
- *
- * Created by Eduardo Paoletta on 12/15/16.
  */
 public class Customer extends MPBase {
 

@@ -5,8 +5,6 @@ import java.util.Date;
 /**
  * Mercado Pago SDK
  * Payer Additional Info Payment class
- *
- * Created by Eduardo Paoletta on 12/2/16.
  */
 public class AdditionalInfoPayer {
 

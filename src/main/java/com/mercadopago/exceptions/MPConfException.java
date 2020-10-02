@@ -3,8 +3,6 @@ package com.mercadopago.exceptions;
 /**
  * Mercado Pago SDK
  * Mercado Pago MPConf Exception Class
- *
- * Created by Eduardo Paoletta on 11/1/16.
  */
 public class MPConfException extends MPException {
 
