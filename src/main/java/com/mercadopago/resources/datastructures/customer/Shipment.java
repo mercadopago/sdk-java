@@ -1,13 +1,10 @@
 package com.mercadopago.resources.datastructures.customer;
 
-import java.lang.*;
 import java.util.ArrayList;
 
 /**
  * Mercado Pago SDK
  * Customer Address Verification Shipment class
- *
- * Created by Eduardo Paoletta on 12/15/16.
  */
 public class Shipment {
 

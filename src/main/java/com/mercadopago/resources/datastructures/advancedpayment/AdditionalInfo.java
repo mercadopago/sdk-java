@@ -26,6 +26,14 @@ public class AdditionalInfo {
         return this;
     }
 
+    public AdditionalInfo addItem(Item item) {
+        if (this.items == null) {
+            this.items = new ArrayList<Item>();
+        }
+        this.items.add(item);
+        return this;
+    }
+
     public AdditionalInfoPayer getPayer() {
         return payer;
     }

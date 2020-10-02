@@ -10,8 +10,6 @@ import java.lang.annotation.Target;
  * Mercado Pago SDK
  * Rest Information annotation interface for POST
  * connection and socket timeouts are expressed in milliseconds
- *
- * Created by Eduardo Paoletta on 11/4/16.
  */
 @Inherited
 @Target({ElementType.METHOD})

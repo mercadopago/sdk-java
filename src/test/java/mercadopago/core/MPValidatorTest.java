@@ -17,8 +17,6 @@
 // /**
 //  * Mercado Pago MercadoPago
 //  * MPValidator Test
-//  *
-//  * Created by Eduardo Paoletta on 11/23/16.
 //  */
 // public class MPValidatorTest {
 

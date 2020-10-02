@@ -9,8 +9,6 @@
 // /**
 //  * Mercado Pago SDK
 //  * Test class for MPException
-//  *
-//  * Created by Eduardo Paoletta on 11/10/16.
 //  */
 // public class MPExceptionTest {
 

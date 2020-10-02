@@ -15,8 +15,6 @@ import java.util.Vector;
 /**
  * Mercado Pago SDK
  * Validator class
- *
- * Created by Eduardo Paoletta on 11/21/16.
  */
 public class MPValidator {
 

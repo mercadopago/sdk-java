@@ -15,8 +15,6 @@
 // /**
 //  * Mercado Pago MercadoPago
 //  * MPCredentials Tests class
-//  *
-//  * Created by Eduardo Paoletta on 12/13/16.
 //  */
 // public class MPCredentialsTest {
 

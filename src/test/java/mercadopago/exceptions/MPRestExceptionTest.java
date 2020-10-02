@@ -10,8 +10,6 @@
 // /**
 //  * Mercado Pago SDK
 //  * Test class for MPRestException
-//  *
-//  * Created by Eduardo Paoletta on 11/11/16.
 //  */
 // public class MPRestExceptionTest {
 

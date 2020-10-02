@@ -15,8 +15,6 @@ import static org.junit.Assert.assertSame;
 /**
  * Mercado Pago MercadoPago
  * Mercado Pago configuration test class
- *
- * Created by Eduardo Paoletta on 11/1/16.
  */
 public class MercadoPagoTest {
 

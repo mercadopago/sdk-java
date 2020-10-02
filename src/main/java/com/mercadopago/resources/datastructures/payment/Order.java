@@ -3,8 +3,6 @@ package com.mercadopago.resources.datastructures.payment;
 /**
  * Mercado Pago MercadoPago
  * Order class
- *
- * Created by Eduardo Paoletta on 12/2/16.
  */
 public class Order {
 

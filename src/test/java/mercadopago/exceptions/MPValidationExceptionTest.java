@@ -13,8 +13,6 @@
 // /**
 //  * Mercado Pago SDK
 //  * Test class for MPValidationException
-//  *
-//  * Created by Eduardo Paoletta on 11/23/16.
 //  */
 // public class MPValidationExceptionTest {
 

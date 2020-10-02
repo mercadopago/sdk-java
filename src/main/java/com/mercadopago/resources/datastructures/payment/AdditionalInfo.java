@@ -5,8 +5,6 @@ import java.util.ArrayList;
 /**
  * Mercado Pago SDK
  * Additional Info class
- *
- * Created by Eduardo Paoletta on 12/2/16.
  */
 public class AdditionalInfo {
 

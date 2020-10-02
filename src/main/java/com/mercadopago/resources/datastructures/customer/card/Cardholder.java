@@ -3,8 +3,6 @@ package com.mercadopago.resources.datastructures.customer.card;
 /**
  * Mercado Pago SDK
  * Card Cardholder class
- *
- * Created by Eduardo Paoletta on 12/15/16.
  */
 public class Cardholder {
 

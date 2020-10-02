@@ -7,8 +7,6 @@ import java.util.ArrayList;
 /**
  * Mercado Pago SDK
  * Shipment Payment class
- *
- * Created by Eduardo Paoletta on 12/5/16.
  */
 public class Shipments {
 

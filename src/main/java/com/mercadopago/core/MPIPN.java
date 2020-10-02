@@ -7,8 +7,6 @@ import java.lang.reflect.Method;
 /**
  * Mercado Pago SDK
  * Instant Payment Notification class
- *
- * Created by Eduardo Paoletta on 12/2/16.
  */
 public class MPIPN {
 

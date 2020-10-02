@@ -3,8 +3,6 @@ package com.mercadopago.core;
 /**
  * Mercado Pago SDK
  * Validation violation class
- *
- * Created by Eduardo Paoletta on 11/21/16.
  */
 public class ValidationViolation {
 
