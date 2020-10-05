@@ -155,7 +155,7 @@ public class MercadoPagoTest {
     public void genericGetTests() throws Exception {
         MercadoPago.SDK.cleanConfiguration();
         MercadoPago.SDK.setBaseUrl("https://api.mercadopago.com");
-        MercadoPago.SDK.setAccessToken(System.getenv("ACCESS_TOKEN_TEST"));
+        MercadoPago.SDK.setAccessToken(System.getenv("ACCESS_TOKEN"));
         MPApiResponse response = MercadoPago.SDK.Get("/v1/payment_methods");
         assertNotNull(response);
     }
