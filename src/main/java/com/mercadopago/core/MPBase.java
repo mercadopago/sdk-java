@@ -221,6 +221,8 @@ public abstract class MPBase {
         if (StringUtils.isNotEmpty(resource.getIdempotenceKey()) && !requestOptions.getCustomHeaders().containsKey("x-idempotency-key")) {
             requestOptions.getCustomHeaders().put("x-idempotency-key", resource.getIdempotenceKey());
         }
+        if(StringUtils.isEmpty(requestOptions.getAccessToken()) && StringUtils.isNotEmpty(resource.getMarketplaceAccessToken()))
+            requestOptions.setAccessToken(resource.getMarketplaceAccessToken());
         //Insight custom header
         requestOptions.getCustomHeaders().put(InsightDataManager.HEADER_X_INSIGHTS_EVENT_NAME, methodName); 
 
@@ -562,27 +564,9 @@ public abstract class MPBase {
 
         // URL
         processedPath.insert(0, MercadoPago.SDK.getBaseUrl());
-
-        // Token
-        String accessToken;
-        if (StringUtils.isNotEmpty(requestOptions.getAccessToken())) {
-            accessToken = requestOptions.getAccessToken();
-        }else if (resource != null) {
-            accessToken = resource.getMarketplaceAccessToken();
-            if (StringUtils.isEmpty(accessToken)) {
-                accessToken = MercadoPago.SDK.getAccessToken();
-            }
-        } else {
-            accessToken = MercadoPago.SDK.getAccessToken();
-        }
-
-        if(!path.equals("/oauth/token")) {
-            processedPath
-                    .append("?access_token=")
-                    .append(accessToken);
-        }
         
         if (mapParams != null && !mapParams.isEmpty()) {
+            processedPath.append("?");
 	        for (Map.Entry<String, String> entry : mapParams.entrySet()) {
 	            String key = entry.getKey();
 	            String value = entry.getValue();

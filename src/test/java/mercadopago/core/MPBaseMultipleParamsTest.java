@@ -55,7 +55,7 @@ public class MPBaseMultipleParamsTest extends MPBase {
     public void singleParamsMethdTest() throws Exception {
         MPBaseMultipleParamsTest resource = MPBaseMultipleParamsTest.findById("some_id");
         assertEquals("GET", resource.getLastApiResponse().getMethod());
-        assertEquals("https://api.mercadopago.com/loadpath/slug/some_id?access_token=" + MercadoPago.SDK.getAccessToken(), resource.getLastApiResponse().getUrl());
+        assertEquals("https://api.mercadopago.com/loadpath/slug/some_id", resource.getLastApiResponse().getUrl());
 
     }
 
@@ -78,9 +78,8 @@ public class MPBaseMultipleParamsTest extends MPBase {
         MPBaseMultipleParamsTest resource = new MPBaseMultipleParamsTest();
         resource.delete("test1", "test2", "test3");
         assertEquals("DELETE", resource.getLastApiResponse().getMethod());
-        assertEquals("https://api.mercadopago.com/delete/slug/test1/otherslug/test2/test3?access_token=" + MercadoPago.SDK.getAccessToken(), resource.getLastApiResponse().getUrl());
+        assertEquals("https://api.mercadopago.com/delete/slug/test1/otherslug/test2/test3", resource.getLastApiResponse().getUrl());
     }
-
 
     @Test
     public void idempotenceKeyTest() throws MPException {
