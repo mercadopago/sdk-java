@@ -27,6 +27,7 @@ public class Payer {
     }
     private EntityType entityType = null;
 
+    
     public Payer.type getType() {
         return type;
     }

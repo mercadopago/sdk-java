@@ -1,5 +1,7 @@
 package com.mercadopago.resources.datastructures.preference;
 
+import java.util.Date;
+
 import com.mercadopago.core.annotations.validation.Size;
 
 /**
@@ -15,7 +17,10 @@ public class Payer {
     private Identification identification = null;
     private Address address = null;
     private String dateCreated = null;
-
+    private String authenticationType = null;
+    private Boolean isPrimeUser = null;
+    private Boolean isFirstPurchaseOnline = null;
+    private Date lastPurchase = null;
 
     public String getName() {
         return name;
@@ -77,6 +82,42 @@ public class Payer {
 
     public Payer setDateCreated(String dateCreated) {
         this.dateCreated = dateCreated;
+        return this;
+    }
+
+    public String getAuthenticationType() {
+        return authenticationType;
+    }
+
+    public Payer setAuthenticationType(String authenticationType) {
+        this.authenticationType = authenticationType;
+        return this;
+    }
+
+    public Boolean getIsPrimeUser() {
+        return isPrimeUser;
+    }
+
+    public Payer setIsPrimeUser(Boolean isPrimeUser) {
+        this.isPrimeUser = isPrimeUser;
+        return this;
+    }
+
+    public Boolean getIsFirstPurchaseOnline() {
+        return isFirstPurchaseOnline;
+    }
+
+    public Payer setIsFirstPurchaseOnline(Boolean isFirstPurchaseOnline) {
+        this.isFirstPurchaseOnline = isFirstPurchaseOnline;
+        return this;
+    }
+
+    public Date getLastPurchase() {
+        return lastPurchase;
+    }
+
+    public Payer setLastPurchase(Date lastPurchase) {
+        this.lastPurchase = lastPurchase;
         return this;
     }
 

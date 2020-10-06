@@ -14,6 +14,7 @@ import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.datastructures.payment.TransactionDetails;
 import com.mercadopago.resources.datastructures.payment.AdditionalInfo;
 import com.mercadopago.resources.datastructures.payment.FeeDetail;
+import com.mercadopago.resources.datastructures.payment.Item;
 import com.mercadopago.resources.datastructures.payment.Order;
 import com.mercadopago.resources.datastructures.payment.Payer;
 
@@ -101,7 +102,8 @@ public class Payment extends MPBase {
         credit_card,
         debit_card,
         prepaid_card,
-        digital_currency
+        digital_currency,
+        digital_wallet
     }
     private String token = null;
     private Card card = null;
@@ -488,5 +490,4 @@ public class Payment extends MPBase {
         }
         return this;
     }
-
 }
