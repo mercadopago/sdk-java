@@ -11,13 +11,11 @@
 // import static org.junit.Assert.assertEquals;
 // import static org.junit.Assert.assertSame;
 
-// /**
-//  * Mercado Pago SDK
-//  * MPBase Test class for methods without path
-//  *
-//  * Created by Eduardo Paoletta on 11/10/16.
-//  */
-// public class MPBaseWithoutPathTest extends MPBase {
+/**
+ * Mercado Pago SDK
+ * MPBase Test class for methods without path
+ */
+//public class MPBaseWithoutPathTest extends MPBase {
 
 //     @GET(path="")
 //     public MPBaseWithoutPathTest findById(String id) throws MPException {

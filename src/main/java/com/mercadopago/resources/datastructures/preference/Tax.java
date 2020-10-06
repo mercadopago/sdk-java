@@ -3,8 +3,6 @@ package com.mercadopago.resources.datastructures.preference;
 /**
  * Mercado Pago MercadoPago
  * Preference Tax class
- *
- * Created by Danilo Elias on 26/08/2019.
  */
 public class Tax {
 

@@ -17,27 +17,6 @@
         </license>
     </licenses>
 
-    <developers>
-        <developer>
-            <id>jibaceta</id>
-            <name>Joel Ibaceta</name>
-            <email>joel.ibaceta@mercadolibre.com</email>
-            <roles>
-                <role>Developer</role>
-            </roles>
-            <timezone>-3</timezone>
-        </developer>
-        <developer>
-            <id>epaoletta</id>
-            <name>Eduardo Paoletta</name>
-            <email>eduardo.paoletta@mercadolibre.com</email>
-            <roles>
-                <role>Developer</role>
-            </roles>
-            <timezone>-3</timezone>
-        </developer>
-    </developers>
-
     <build>
         <finalName>${artifactId}-${version}</finalName>
         <sourceDirectory>src/main/java</sourceDirectory>
@@ -148,6 +127,42 @@
                     </formats>
                     <check />
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.6</version>
+                <configuration>
+                    <excludes>
+                        <exclude>com/mercadopago/core/**/*</exclude>
+                        <exclude>com/mercadopago/exceptions/**/*</exclude>
+                        <exclude>com/mercadopago/insight/**/*</exclude>
+                        <exclude>com/mercadopago/net/**/*</exclude>
+                        <exclude>com/mercadopago/resources/CardToken.*</exclude>
+                        <exclude>com/mercadopago/resources/Disbursement.*</exclude>
+                        <exclude>com/mercadopago/resources/DisbursementRefund.*</exclude>
+                        <exclude>com/mercadopago/resources/DiscountCampaign.*</exclude>
+                        <exclude>com/mercadopago/resources/OAuth.*</exclude>
+                        <exclude>com/mercadopago/resources/datastructures/**/*</exclude>
+                        <exclude>**/*Test.*</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <!-- Visualizar em: dx-java/target/site/jacoco/index.html -->
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

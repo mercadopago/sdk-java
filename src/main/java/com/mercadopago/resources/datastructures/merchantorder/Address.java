@@ -5,8 +5,6 @@ import com.mercadopago.core.annotations.validation.Size;
 /**
  * Mercado Pago SDK
  * Mechant Order Shipment Address class
- *
- * Created by Eduardo Paoletta on 12/13/16.
  */
 public class Address {
 

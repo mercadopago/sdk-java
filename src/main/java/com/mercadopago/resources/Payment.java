@@ -26,8 +26,6 @@ import java.util.HashMap;
 /**
  * Mercado Pago SDK
  * This resource allows you to create, modify or read payments
- *
- * Created by Eduardo Paoletta on 12/2/16.
  */
 @Idempotent
 public class Payment extends MPBase {
@@ -371,8 +369,9 @@ public class Payment extends MPBase {
         return callbackUrl;
     }
 
-    public void setCallbackUrl(String callbackUrl) {
+    public Payment setCallbackUrl(String callbackUrl) {
         this.callbackUrl = callbackUrl;
+        return this;
     }
 
     public static MPResourceArray search(HashMap<String, String> filters, Boolean useCache) throws MPException {
@@ -462,7 +461,7 @@ public class Payment extends MPBase {
     }
 
     public Payment refund() throws MPException {
-        return refund(null, MPRequestOptions.createDefault());
+        return refund(MPRequestOptions.createDefault());
     }
 
     public Payment refund(MPRequestOptions requestOptions) throws MPException {

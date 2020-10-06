@@ -3,8 +3,6 @@ package com.mercadopago.resources.datastructures.customer;
 /**
  * Mercado Libre SDK
  * Customer Address Verification Shipment Error class
- *
- * Created by Eduardo Paoletta on 12/15/16.
  */
 public class Error {
 

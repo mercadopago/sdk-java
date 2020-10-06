@@ -6,8 +6,6 @@ import java.util.Date;
 /**
  * Mercado Pago SDK
  * Customer Address class
- *
- * Created by Eduardo Paoletta on 12/15/16.
  */
 public class Address {
 

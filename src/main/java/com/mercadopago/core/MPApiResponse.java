@@ -15,8 +15,6 @@ import org.apache.http.util.EntityUtils;
 /**
  * Mercado Pago SDK
  * MPBase response class
- *
- * Created by Eduardo Paoletta on 11/17/16.
  */
 public class MPApiResponse implements Cloneable {
 

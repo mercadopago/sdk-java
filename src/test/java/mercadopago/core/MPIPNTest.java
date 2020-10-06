@@ -14,8 +14,6 @@
 // /**
 //  * Mercado Pago SDK
 //  * MPIPN test class
-//  *
-//  * Created by Eduardo Paoletta on 12/6/16.
 //  */
 // public class MPIPNTest {
 

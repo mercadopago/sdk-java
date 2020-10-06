@@ -13,8 +13,6 @@
 // /**
 //  * Mercado Pago MercadoPago
 //  * MPCoreUtils test class
-//  *
-//  * Created by Eduardo Paoletta on 11/17/16.
 //  */
 // public class MPCoreUtilsTest {
 

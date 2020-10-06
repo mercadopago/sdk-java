@@ -5,8 +5,6 @@ import com.mercadopago.core.annotations.validation.Size;
 /**
  * Mercado Pago MercadoPago
  * Merchant Order Item class
- *
- * Created by Eduardo Paoletta on 12/13/16.
  */
 public class Item {
 

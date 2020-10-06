@@ -1,9 +1,5 @@
 package com.mercadopago;
 
-/**
- * Created by jibaceta on 1/15/18.
- */
-
 import com.google.gson.JsonObject;
 import com.mercadopago.core.MPApiResponse;
 import com.mercadopago.core.MPCredentials;
@@ -24,8 +20,6 @@ import java.util.Properties;
 /**
  * Mercado Pago MercadoPago
  * MercadoPago Class
- *
- * Created by Eduardo Paoletta on 11/1/16.
  */
 public class MercadoPago {
     public static class SDK {

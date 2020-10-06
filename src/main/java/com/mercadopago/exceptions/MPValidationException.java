@@ -7,8 +7,6 @@ import java.util.Collection;
 /**
  * Mercado Pago SDK
  * MPValidationException class
- *
- * Created by Eduardo Paoletta on 11/22/16.
  */
 public class MPValidationException extends MPException {
 

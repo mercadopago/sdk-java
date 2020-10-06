@@ -2,7 +2,10 @@ package com.mercadopago.resources.datastructures.payment;
 
 import java.util.Date;
 
-
+/**
+ * Mercado Pago SDK
+ * Payer Additional Info Payment class
+ */
 public class AdditionalInfoPayer {
 
     private String firstName = null;

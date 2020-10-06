@@ -7,8 +7,6 @@ import java.util.Date;
 /**
  * Mercado Pago SDK
  * Merchant Order Payment class
- *
- * Created by Eduardo Paoletta on 12/13/16.
  */
 public class MerchantOrderPayment {
 

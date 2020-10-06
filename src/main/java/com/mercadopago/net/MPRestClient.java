@@ -1,11 +1,7 @@
 package com.mercadopago.net;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLPeerUnverifiedException;
@@ -14,6 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.mercadopago.MercadoPago;
+import com.mercadopago.MercadoPago.SDK;
 import com.mercadopago.core.MPApiResponse;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.core.annotations.rest.PayloadType;
@@ -22,11 +19,7 @@ import com.mercadopago.exceptions.MPRestException;
 import com.mercadopago.insight.Stats;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
+import org.apache.http.*;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
@@ -47,17 +40,12 @@ import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.message.BasicHeader;
-import org.apache.http.message.BasicHttpResponse;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.message.BasicStatusLine;
+import org.apache.http.message.*;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.ssl.SSLContexts;
 
 /**
  * Mercado Pago MercadoPago Simple Rest Client
- *
- * Created by Eduardo Paoletta on 11/11/16.
  */
 public class MPRestClient {
 
@@ -90,7 +78,15 @@ public class MPRestClient {
 
         String full_uri;
         try {
-            full_uri = MercadoPago.SDK.getBaseUrl() + uri + "?access_token=" + MercadoPago.SDK.getAccessToken();
+            full_uri = MercadoPago.SDK.getBaseUrl() + uri;
+
+            if (colHeaders == null) {
+                colHeaders = new HashSet<Header>();
+            }
+
+            if(!uri.contains("/oauth/token"))
+                colHeaders.add(new BasicHeader("Authorization", String.format("Bearer " + SDK.getAccessToken())));
+
         } catch (MPException e) {
             full_uri = MercadoPago.SDK.getBaseUrl() + uri;
         }
@@ -192,7 +188,14 @@ public class MPRestClient {
         }
     }
 
-    private HttpRequestBase createHttpRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, MPRequestOptions requestOptions) throws MPRestException {
+    private String getAccessToken(MPRequestOptions requestOptions) throws MPException {
+        if (requestOptions.getAccessToken() != null && requestOptions.getAccessToken().isEmpty())
+            return requestOptions.getAccessToken();
+
+        return SDK.getAccessToken();
+    }
+
+    private HttpRequestBase createHttpRequest(HttpMethod httpMethod, String uri, PayloadType payloadType, JsonObject payload, MPRequestOptions requestOptions) throws MPRestException, MPException {
         HttpEntity entity = normalizePayload(payloadType, payload);
         HttpRequestBase request = getRequestMethod(httpMethod, uri, entity);
 
@@ -200,6 +203,8 @@ public class MPRestClient {
         headers.put(HTTP.USER_AGENT, String.format("MercadoPago Java SDK/%s", MercadoPago.SDK.getVersion()));
         headers.put("x-product-id", MercadoPago.SDK.getProductId());
         headers.put("x-tracking-id", MercadoPago.SDK.getTrackingId());
+        if(!uri.contains("/oauth/token")) headers.put("Authorization", String.format("Bearer %s", getAccessToken(requestOptions)));
+
         for (String headerName : requestOptions.getCustomHeaders().keySet()) {
             if (!headers.containsKey(headerName)) {
                 headers.put(headerName, requestOptions.getCustomHeaders().get(headerName));
@@ -320,16 +325,10 @@ public class MPRestClient {
             }
             request = new HttpGet(uri);
         } else if (httpMethod.equals(HttpMethod.POST)) {
-            if (entity == null) {
-                throw new MPRestException("Must include payload for this method.");
-            }
             HttpPost post = new HttpPost(uri);
             post.setEntity(entity);
             request = post;
         } else if (httpMethod.equals(HttpMethod.PUT)) {
-            if (entity == null) {
-                throw new MPRestException("Must include payload for this method.");
-            }
             HttpPut put = new HttpPut(uri);
             put.setEntity(entity);
             request = put;

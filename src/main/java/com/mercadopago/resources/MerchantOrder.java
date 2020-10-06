@@ -19,8 +19,6 @@ import java.util.Date;
 /**
  * Mercado Pago MercadoPago
  * This resource allows you to keep  the state of an order, grouping items, payments and shipments.
- *
- * Created by Eduardo Paoletta on 12/13/16.
  */
 public class MerchantOrder extends MPBase {
 

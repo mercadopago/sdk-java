@@ -3,8 +3,6 @@ package com.mercadopago.resources.datastructures.payment;
 /**
  * Mercado Pago SDK
  * Fee Detail class
- *
- * Created by Eduardo Paoletta on 12/2/16.
  */
 public class FeeDetail {
 

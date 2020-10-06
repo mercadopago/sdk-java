@@ -6,7 +6,10 @@ import com.mercadopago.core.annotations.validation.NotNull;
 import com.mercadopago.core.annotations.validation.Numeric;
 import com.mercadopago.core.annotations.validation.Size;
 
-
+/**
+ * Mercado Pago MercadoPago
+ * Preference Item class
+ */
 public class Item {
 
     @Size(max=256) private String id = null;

@@ -1,44 +1,27 @@
-// package mercadopago.resources;
+package mercadopago.resources;
 
-// import com.mercadopago.*;
-// import com.mercadopago.core.MPBase;
-// import com.mercadopago.core.MPResourceArray;
-// import com.mercadopago.exceptions.MPException;
-// import com.mercadopago.resources.IdentificationType;
-// import org.junit.BeforeClass;
-// import org.junit.Test;
+import com.mercadopago.core.MPResourceArray;
+import com.mercadopago.exceptions.MPException;
+import com.mercadopago.resources.IdentificationType;
+import org.junit.Assert;
+import org.junit.Test;
 
-// import static org.junit.Assert.*;
+import java.util.List;
 
-// /**
-//  * Mercado Pago MercadoPago
-//  * Identification Types Test class
-//  *
-//  * Created by Eduardo Paoletta on 12/15/16.
-//  */
-// public class IdentificationTypeTest {
+ public class IdentificationTypeTest extends BaseResourceTest {
 
-//     @BeforeClass
-//     public static void beforeTest() throws MPException {
- 
-//         MercadoPago.SDK.cleanConfiguration();
-//         MercadoPago.SDK.setConfiguration("credentials.properties");
- 
-//     }
-
-//     @Test
-//     public void identificationTypesLoadTest() throws MPException {
-//         MPResourceArray resourceArray = IdentificationType.all(MPBase.WITH_CACHE);
-//         assertEquals(200, resourceArray.getLastApiResponse().getStatusCode());
-//         assertFalse(resourceArray.getLastApiResponse().fromCache);
-//         assertEquals(5, resourceArray.size());
-//         IdentificationType identificationType = resourceArray.getById("DNI");
-//         assertEquals("DNI", identificationType.getName());
-
-//         resourceArray = IdentificationType.all(MPBase.WITH_CACHE);
-//         assertEquals(200, resourceArray.getLastApiResponse().getStatusCode());
-//         assertTrue(resourceArray.getLastApiResponse().fromCache);
-
-//     }
-
-// }
+     @Test
+     public void allIdentificationTypes() throws MPException {
+         MPResourceArray result = IdentificationType.all();
+         Assert.assertNotNull(result);
+         Assert.assertNotNull(result.resources());
+         Assert.assertTrue(result.resources().size() > 0);
+         for (IdentificationType identificationType : (List<IdentificationType>) result.resources()) {
+             Assert.assertNotNull(identificationType.getId());
+             Assert.assertNotNull(identificationType.getName());
+             Assert.assertNotNull(identificationType.getType());
+             Assert.assertNotNull(identificationType.getMinLength());
+             Assert.assertNotNull(identificationType.getMaxLength());
+         }
+     }
+ }

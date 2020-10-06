@@ -1,8 +1,9 @@
 package com.mercadopago.resources.datastructures.payment;
 
-import java.util.Date;
-
-
+/**
+ * Mercado Pago SDK
+ * Payer Payment class
+ */
 public class Payer {
 
     private type type = null;

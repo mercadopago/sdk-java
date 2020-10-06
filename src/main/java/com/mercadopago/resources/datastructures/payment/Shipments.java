@@ -1,6 +1,9 @@
 package com.mercadopago.resources.datastructures.payment;
 
-
+/**
+ * Mercado Libre SDk
+ * Shipment class
+ */
 public class Shipments {
 
     private Boolean localPickup = null;
