@@ -3,7 +3,7 @@
 
     <groupId>com.mercadopago</groupId>
     <artifactId>dx-java</artifactId>
-    <version>1.8.1-SNAPSHOT</version>
+    <version>1.8.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Mercadopago SDK</name>
@@ -16,6 +16,15 @@
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
     </licenses>
+
+    <developers>
+        <developer>
+            <name>Mercado Pago</name>
+            <email>mp_sdk@mercadopago.com</email>
+            <organization>Mercado Pago</organization>
+            <organizationUrl>https://www.mercadopago.com/developers</organizationUrl>
+        </developer>
+    </developers>
 
     <build>
         <finalName>${artifactId}-${version}</finalName>
