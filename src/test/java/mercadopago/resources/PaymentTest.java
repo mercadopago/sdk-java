@@ -115,7 +115,7 @@ import java.util.UUID;
 
          sleep(5000);
 
-         payment.setStatus(Payment.Status.cancelled);
+         payment.setStatus(Payment.Status.CANCELLED);
          payment.update();
          Assert.assertNotNull(payment.getLastApiResponse());
          Assert.assertEquals(200, payment.getLastApiResponse().getStatusCode());

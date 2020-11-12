@@ -76,17 +76,19 @@ public class Payment extends MPBase {
     private Integer differentialPricingId = null;
     private Float applicationFee = null;
     private Status status = null;
+
     public enum Status {
-        pending,
-        approved,
-        authorized,
-        in_process,
-        in_mediation,
-        rejected,
-        cancelled,
-        refunded,
-        charged_back
+        PENDING,
+        APPROVED,
+        AUTHORIZED,
+        IN_PROCESS,
+        IN_MEDIATION,
+        REJECTED,
+        CANCELLED,
+        REFUNDED,
+        CHARGED_BACK
     }
+
     private String statusDetail = null;
     private Boolean capture = null;
     private Boolean captured = null;
@@ -105,6 +107,7 @@ public class Payment extends MPBase {
         digital_currency,
         digital_wallet
     }
+
     private String token = null;
     private Card card = null;
     private String statementDescriptor = null;
@@ -117,7 +120,6 @@ public class Payment extends MPBase {
     private String processingMode = null;
     private String merchantAccountId = null;
     private String paymentMethodOptionId = null;
-
 
     public String getId() {
         return id;

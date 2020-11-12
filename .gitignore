@@ -10,5 +10,5 @@ maven-central-deploy.log
 .DS_Store
 .classpath
 .settings
-
-
+.vscode/
+.idea/
