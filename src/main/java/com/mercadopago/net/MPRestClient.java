@@ -189,7 +189,7 @@ public class MPRestClient {
     }
 
     private String getAccessToken(MPRequestOptions requestOptions) throws MPException {
-        if (requestOptions.getAccessToken() != null && requestOptions.getAccessToken().isEmpty())
+        if (requestOptions.getAccessToken() != null && !requestOptions.getAccessToken().isEmpty())
             return requestOptions.getAccessToken();
 
         return SDK.getAccessToken();
