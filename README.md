@@ -1,6 +1,6 @@
 # Mercado Pago SDK for Java
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.mercadopago/dx-java.svg)](https://search.maven.org/search?q=g:com.mercadopago%20AND%20a:dx-java)
+[![Maven Central](https://img.shields.io/maven-central/v/com.mercadopago/sdk-java.svg)](https://search.maven.org/search?q=g:com.mercadopago%20AND%20a:sdk-java)
 ![APM](https://img.shields.io/apm/l/vim-mode)
 
 
@@ -21,8 +21,8 @@ First time using Mercado Pago? Create your [Mercado Pago account](https://www.me
     <dependencies>
         <dependency>
             <groupId> com.mercadopago </groupId>
-            <artifactId> dx-java </artifactId>
-            <version> 1.7.1 </version>
+            <artifactId> sdk-java </artifactId>
+            <version> 1.8.0 </version>
         </dependency>
     </dependencies>
     ...
@@ -71,7 +71,7 @@ Visit our Dev Site for further information regarding:
  - Mercado Pago checkout: [Spanish](https://www.mercadopago.com.ar/developers/es/guides/payments/web-payment-checkout/introduction/) / [Portuguese](https://www.mercadopago.com.br/developers/pt/guides/payments/web-payment-checkout/introduction/)
  - Web Tokenize checkout: [Spanish](https://www.mercadopago.com.ar/developers/es/guides/payments/web-tokenize-checkout/introduction/) / [Portuguese](https://www.mercadopago.com.br/developers/pt/guides/payments/web-tokenize-checkout/introduction/)
 
-Check [our official code reference](https://mercadopago.github.io/dx-java/) to explore all available functionalities.
+Check [our official code reference](https://mercadopago.github.io/sdk-java/) to explore all available functionalities.
 
 ## ❤️ Support 
 
@@ -80,6 +80,6 @@ If you require technical support, please contact our support team at [developers
 ## 🏻 License 
 
 ```
-MIT license. Copyright (c) 2018 - Mercado Pago / Mercado Libre 
+MIT license. Copyright (c) 2021 - Mercado Pago / Mercado Libre 
 For more information, see the LICENSE file.
 ```

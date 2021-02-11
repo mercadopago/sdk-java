@@ -2,13 +2,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.mercadopago</groupId>
-    <artifactId>dx-java</artifactId>
-    <version>1.8.1-SNAPSHOT</version>
+    <artifactId>sdk-java</artifactId>
+    <version>1.8.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Mercadopago SDK</name>
     <description>Mercadopago SDK</description>
-    <url>https://github.com/mercadopago/dx-java</url>
+    <url>https://github.com/mercadopago/sdk-java</url>
 
     <licenses>
         <license>
@@ -163,7 +163,6 @@
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
-                    <!-- Visualizar em: dx-java/target/site/jacoco/index.html -->
                     <execution>
                         <id>report</id>
                         <phase>test</phase>
@@ -177,9 +176,9 @@
     </build>
 
     <scm>
-	<url>https://github.com/mercadopago/dx-java.git</url>
-        <connection>scm:git:git@github.com:mercadopago/dx-java.git</connection>
-        <developerConnection>scm:git:git@github.com:mercadopago/dx-java.git</developerConnection>
+	    <url>https://github.com/mercadopago/sdk-java.git</url>
+        <connection>scm:git:git@github.com:mercadopago/sdk-java.git</connection>
+        <developerConnection>scm:git:git@github.com:mercadopago/sdk-java.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
@@ -252,7 +251,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>4.13.1</version>
             <scope>test</scope>
         </dependency>
     
