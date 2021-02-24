@@ -56,6 +56,7 @@ public class Preference extends MPBase {
     private Boolean expires = null;
     private Date expirationDateFrom = null;
     private Date expirationDateTo = null;
+    private Date dateOfExpiration = null;
     private Float collectorId = null;
     private Float clientId = null;
     @Size(max=256) private String marketplace = null;
@@ -333,6 +334,22 @@ public class Preference extends MPBase {
      */
     public Preference setExpirationDateTo(Date expirationDateTo) {
         this.expirationDateTo = expirationDateTo;
+        return this;
+    }
+
+    /**
+     * @return date of expiration
+     */
+    public Date getDateOfExpiration() {
+        return dateOfExpiration;
+    }
+
+    /**
+     * @param dateOfExpiration payment date of expiration
+     * @return the payment
+     */
+    public Preference setDateOfExpiration(Date dateOfExpiration) {
+        this.dateOfExpiration = dateOfExpiration;
         return this;
     }
 
