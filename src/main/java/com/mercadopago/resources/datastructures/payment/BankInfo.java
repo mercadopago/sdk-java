@@ -6,7 +6,7 @@ package com.mercadopago.resources.datastructures.payment;
 public class BankInfo {
     private BankInfoPayer payer;
     private BankInfoCollector collector;
-    private String isSameBankAccountOwner;
+    private Boolean isSameBankAccountOwner;
 
     /**
      * @return payer
@@ -43,7 +43,7 @@ public class BankInfo {
     /**
      * @return is same bank account owner
      */
-    public String getIsSameBankAccountOwner() {
+    public Boolean getIsSameBankAccountOwner() {
         return isSameBankAccountOwner;
     }
 
@@ -51,7 +51,7 @@ public class BankInfo {
      * @param isSameBankAccountOwner is same bank account owner
      * @return bank info
      */
-    public BankInfo setIsSameBankAccountOwner(String isSameBankAccountOwner) {
+    public BankInfo setIsSameBankAccountOwner(Boolean isSameBankAccountOwner) {
         this.isSameBankAccountOwner = isSameBankAccountOwner;
         return this;
     }
