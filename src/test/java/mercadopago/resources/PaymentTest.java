@@ -1,11 +1,11 @@
  package mercadopago.resources;
 
- import com.google.gson.JsonObject;
+import com.google.gson.JsonObject;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.core.MPResourceArray;
 import com.mercadopago.exceptions.MPException;
-import com.mercadopago.resources.CardToken;
 import com.mercadopago.resources.Payment;
+import com.mercadopago.resources.User;
 import com.mercadopago.resources.datastructures.payment.AdditionalInfo;
 import com.mercadopago.resources.datastructures.payment.AdditionalInfoPayer;
 import com.mercadopago.resources.datastructures.payment.Address;
@@ -15,8 +15,10 @@ import com.mercadopago.resources.datastructures.payment.Item;
 import com.mercadopago.resources.datastructures.payment.Payer;
 import com.mercadopago.resources.datastructures.payment.Phone;
 import com.mercadopago.resources.datastructures.payment.Shipments;
- import com.mercadopago.resources.datastructures.payment.TransactionDetails;
- import org.junit.Assert;
+import com.mercadopago.resources.datastructures.payment.TransactionDetails;
+import mercadopago.helper.CardHelper;
+import mercadopago.helper.IdentificationHelper;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Date;
@@ -113,7 +115,7 @@ import java.util.UUID;
          payment.save();
          Assert.assertNotNull(payment.getId());
 
-         sleep(5000);
+         sleep(7000);
 
          payment.setStatus(Payment.Status.cancelled);
          payment.update();
@@ -127,7 +129,7 @@ import java.util.UUID;
          payment.save();
          Assert.assertNotNull(payment.getId());
 
-         sleep(3000);
+         sleep(5000);
 
          Payment findPayment = Payment.findById(payment.getId());
          Assert.assertNotNull(findPayment);
@@ -154,7 +156,7 @@ import java.util.UUID;
          payment.save();
          Assert.assertNotNull(payment.getId());
 
-         sleep(3000);
+         sleep(5000);
 
          HashMap<String, String> filters = new HashMap<String, String>();
          filters.put("external_reference", payment.getExternalReference());
@@ -170,7 +172,7 @@ import java.util.UUID;
          payment.save();
          Assert.assertNotNull(payment.getId());
 
-         sleep(3000);
+         sleep(5000);
 
          MPRequestOptions requestOptions = newRequestOptions();
          HashMap<String, String> filters = new HashMap<String, String>();
@@ -208,23 +210,20 @@ import java.util.UUID;
      }
 
      public static Payment newPayment(boolean capture) throws MPException {
-         CardToken cardToken = new CardToken();
-         cardToken.setCardId("8940397939");
-         cardToken.setCustomerId("649457098-FybpOkG6zH8QRm");
-         cardToken.setSecurityCode("123");
-         cardToken.save();
+         final User user = User.find();
+         final JsonObject identification = IdentificationHelper.getIdentification(user.getSiteId());
+         final String token = CardHelper.createCardToken("approved", user.getSiteId());
 
          return new Payment()
                  .setPayer(new Payer()
                          .setType(Payer.type.customer)
-                         .setId("649457098-FybpOkG6zH8QRm")
                          .setEmail("test_payer_9999988@testuser.com")
                          .setEntityType(Payer.EntityType.individual)
                          .setFirstName("Test")
                          .setLastName("User")
                          .setIdentification(new Identification()
-                                 .setType("CPF")
-                                 .setNumber("19119119100")))
+                                 .setType(identification.get("type").getAsString())
+                                 .setNumber(identification.get("number").getAsString())))
                  .setBinaryMode(Boolean.FALSE)
                  .setExternalReference(UUID.randomUUID().toString())
                  .setDescription("description")
@@ -232,7 +231,7 @@ import java.util.UUID;
                  .setTransactionAmount(100f)
                  .setCapture(capture)
                  .setPaymentMethodId("master")
-                 .setToken(cardToken.getId())
+                 .setToken(token)
                  .setStatementDescriptor("statementDescriptor")
                  .setInstallments(1)
                  .setNotificationUrl("https://seu-site.com.br/webhooks")

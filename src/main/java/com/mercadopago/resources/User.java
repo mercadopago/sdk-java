@@ -11,12 +11,20 @@ import com.mercadopago.exceptions.MPException;
 public class User extends MPBase {
 
     private String countryId;
+    private String siteId;
 
     /**
      * @return country ID
      */
     public String getCountryId() {
         return countryId;
+    }
+
+    /**
+     * @return site ID
+     */
+    public String getSiteId() {
+        return siteId;
     }
 
     /**
