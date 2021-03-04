@@ -11,6 +11,7 @@ import com.mercadopago.core.annotations.rest.PUT;
 import com.mercadopago.core.annotations.validation.Numeric;
 import com.mercadopago.core.annotations.validation.Size;
 import com.mercadopago.exceptions.MPException;
+import com.mercadopago.resources.datastructures.payment.PointOfInteraction;
 import com.mercadopago.resources.datastructures.payment.TransactionDetails;
 import com.mercadopago.resources.datastructures.payment.AdditionalInfo;
 import com.mercadopago.resources.datastructures.payment.FeeDetail;
@@ -117,6 +118,8 @@ public class Payment extends MPBase {
     private String processingMode = null;
     private String merchantAccountId = null;
     private String paymentMethodOptionId = null;
+    private Date dateOfExpiration = null;
+    private PointOfInteraction pointOfInteraction = null;
 
     /**
      * @return payment ID
@@ -652,6 +655,38 @@ public class Payment extends MPBase {
      */
     public Payment setPaymentMethodOptionId(String paymentMethodOptionId) {
         this.paymentMethodOptionId = paymentMethodOptionId;
+        return this;
+    }
+
+    /**
+     * @return date of expiration
+     */
+    public Date getDateOfExpiration() {
+        return dateOfExpiration;
+    }
+
+    /**
+     * @param dateOfExpiration payment date of expiration
+     * @return the payment
+     */
+    public Payment setDateOfExpiration(Date dateOfExpiration) {
+        this.dateOfExpiration = dateOfExpiration;
+        return this;
+    }
+
+    /**
+     * @return point of interaction
+     */
+    public PointOfInteraction getPointOfInteraction() {
+        return pointOfInteraction;
+    }
+
+    /**
+     * @param pointOfInteraction point of interaction
+     * @return the payment
+     */
+    public Payment setPointOfInteraction(PointOfInteraction pointOfInteraction) {
+        this.pointOfInteraction = pointOfInteraction;
         return this;
     }
 

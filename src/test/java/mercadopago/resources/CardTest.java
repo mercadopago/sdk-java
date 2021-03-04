@@ -1,19 +1,14 @@
 package mercadopago.resources;
 
-import com.google.gson.JsonObject;
-import com.mercadopago.core.MPApiResponse;
 import com.mercadopago.core.MPResourceArray;
-import com.mercadopago.core.annotations.rest.PayloadType;
 import com.mercadopago.exceptions.MPException;
-import com.mercadopago.exceptions.MPRestException;
-import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPRestClient;
 import com.mercadopago.resources.Card;
+import com.mercadopago.resources.User;
+import mercadopago.helper.CardHelper;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import java.util.Calendar;
 
 public class CardTest extends BaseResourceTest {
 
@@ -79,25 +74,10 @@ public class CardTest extends BaseResourceTest {
         Assert.assertEquals(200, card.getLastApiResponse().getStatusCode());
     }
 
-    private Card newCard() throws MPRestException {
-        final JsonObject identification = new JsonObject();
-        identification.addProperty("type", "CPF");
-        identification.addProperty("number", "19119119100");
+    private Card newCard() throws MPException {
+        final User user = User.find();
 
-        final JsonObject cardHolder = new JsonObject();
-        cardHolder.addProperty("name", "APRO");
-        cardHolder.add("identification", identification);
-
-        final JsonObject payload = new JsonObject();
-        payload.addProperty("card_number", "4074090000000004");
-        payload.addProperty("security_code", "123");
-        payload.addProperty("expiration_year", Calendar.getInstance().get(Calendar.YEAR));
-        payload.addProperty("expiration_month", 11);
-        payload.add("cardholder", cardHolder);
-
-        final String url = "https://api.mercadopago.com/v1/card_tokens?public_key=" + this.publicKey;
-        final MPApiResponse response = client.executeRequest(HttpMethod.POST, url, PayloadType.JSON, payload);
-        final String token = ((JsonObject) response.getJsonElementResponse()).get("id").getAsString();
+        final String token = CardHelper.createCardToken("approved", user.getSiteId());
 
         return new Card()
             .setCustomerId("649457098-FybpOkG6zH8QRm")

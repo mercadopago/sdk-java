@@ -4,8 +4,8 @@ import com.google.gson.JsonObject;
 import com.mercadopago.core.MPResourceArray;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.AdvancedPayment;
-import com.mercadopago.resources.CardToken;
 import com.mercadopago.resources.Disbursement;
+import com.mercadopago.resources.User;
 import com.mercadopago.resources.datastructures.advancedpayment.AdditionalInfo;
 import com.mercadopago.resources.datastructures.advancedpayment.AdditionalInfoPayer;
 import com.mercadopago.resources.datastructures.advancedpayment.Address;
@@ -15,6 +15,8 @@ import com.mercadopago.resources.datastructures.advancedpayment.Payer;
 import com.mercadopago.resources.datastructures.advancedpayment.Payment;
 import com.mercadopago.resources.datastructures.advancedpayment.ReceiverAddress;
 import com.mercadopago.resources.datastructures.advancedpayment.Shipment;
+import mercadopago.helper.CardHelper;
+import mercadopago.helper.IdentificationHelper;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
@@ -130,18 +132,16 @@ public class AdvancedPaymentsTest extends BaseResourceTest {
     }
 
     public static AdvancedPayment newAdvancedPayment(boolean capture) throws MPException {
-        CardToken cardToken = new CardToken();
-        cardToken.setCardId("8940397939");
-        cardToken.setCustomerId("649457098-FybpOkG6zH8QRm");
-        cardToken.setSecurityCode("123");
-        cardToken.save();
+        final User user = User.find();
+        final JsonObject identification = IdentificationHelper.getIdentification(user.getSiteId());
+        final String token = CardHelper.createCardToken("approved", user.getSiteId());
 
         return new AdvancedPayment()
                 .setApplicationId("59441713004005")
                 .addPayment(new Payment()
                         .setPaymentMethodId("master")
                         .setPaymentTypeId("credit_card")
-                        .setToken(cardToken.getId())
+                        .setToken(token)
                         .setDateOfExpiration(dateAsString(DateUtils.addYears(new Date(), 5)))
                         .setTransactionAmount(100f)
                         .setInstallments(1)
@@ -160,8 +160,6 @@ public class AdvancedPaymentsTest extends BaseResourceTest {
                         .setCollectorId("488656838")
                         .setApplicationFee(.5f))
                 .setPayer(new Payer()
-                        .setId("649457098-FybpOkG6zH8QRm")
-                        .setType("customer")
                         .setEmail("test_payer_9999988@testuser.com")
                         .setFirstName("Test")
                         .setLastName("User")
@@ -170,8 +168,8 @@ public class AdvancedPaymentsTest extends BaseResourceTest {
                                 .setStreetName("Street")
                                 .setStreetNumber(123))
                         .setIdentification(new Identification()
-                                .setType("CPF")
-                                .setNumber("19119119100")))
+                                .setType(identification.get("type").getAsString())
+                                .setNumber(identification.get("number").getAsString())))
                 .setExternalReference("Adv" + UUID.randomUUID().toString())
                 .setDescription("description")
                 .setBinaryMode(false)
