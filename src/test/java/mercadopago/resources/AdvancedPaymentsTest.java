@@ -192,7 +192,7 @@ public class AdvancedPaymentsTest extends BaseResourceTest {
                                 .setReceiverAddress(new ReceiverAddress()
                                         .setZipCode("06233200")
                                         .setStreetName("Street")
-                                        .setStreetName("123")
+                                        .setStreetNumberString("123")
                                         .setFloor("1")
                                         .setApartment("300A"))))
                 .addMetadata("test", "123");

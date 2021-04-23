@@ -1,9 +1,12 @@
 package com.mercadopago.resources.datastructures.advancedpayment;
 
+import com.google.gson.annotations.SerializedName;
+
 public class ReceiverAddress {
     private String zipCode;
     private String streetName;
-    private int streetNumber;
+    @SerializedName("street_number")
+    private String streetNumberString;
     private String floor;
     private String apartment;
 
@@ -25,12 +28,32 @@ public class ReceiverAddress {
         return this;
     }
 
-    public int getStreetNumber() {
-        return streetNumber;
+    public Integer getStreetNumber() {
+        if (streetNumberString == null) {
+            return null;
+        }
+        try {
+            return Integer.parseInt(streetNumberString, 10);
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 
-    public ReceiverAddress setStreetNumber(int streetNumber) {
-        this.streetNumber = streetNumber;
+    public ReceiverAddress setStreetNumber(Integer streetNumber) {
+        if (streetNumber == null) {
+            streetNumberString = null;
+        } else {
+            streetNumberString = streetNumber.toString();
+        }
+        return this;
+    }
+
+    public String getStreetNumberString() {
+        return streetNumberString;
+    }
+
+    public ReceiverAddress setStreetNumberString(String streetNumberStr) {
+        this.streetNumberString = streetNumberStr;
         return this;
     }
 
@@ -51,6 +74,5 @@ public class ReceiverAddress {
         this.apartment = apartment;
         return this;
     }
-
 
 }
