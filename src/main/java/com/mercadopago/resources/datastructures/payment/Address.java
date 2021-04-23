@@ -1,5 +1,6 @@
 package com.mercadopago.resources.datastructures.payment;
 
+import com.google.gson.annotations.SerializedName;
 import com.mercadopago.core.annotations.validation.Size;
 
 /**
@@ -11,10 +12,11 @@ public class Address {
 
     @Size(max=256) private String zipCode = null;
     @Size(max=256) private String streetName = null;
-    private Integer streetNumber = null;
     private String neighborhood = null;
     private String city = null;
     private String federalUnit = null;
+    @SerializedName("street_number")
+    private String streetNumberString;
 
     public String getZipCode() {
         return zipCode;
@@ -35,11 +37,31 @@ public class Address {
     }
 
     public Integer getStreetNumber() {
-        return streetNumber;
+        if (streetNumberString == null) {
+            return null;
+        }
+        try {
+            return Integer.parseInt(streetNumberString, 10);
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 
     public Address setStreetNumber(Integer streetNumber) {
-        this.streetNumber = streetNumber;
+        if (streetNumber == null) {
+            streetNumberString = null;
+        } else {
+            streetNumberString = streetNumber.toString();
+        }
+        return this;
+    }
+
+    public String getStreetNumberString() {
+        return streetNumberString;
+    }
+
+    public Address setStreetNumberString(String streetNumberStr) {
+        this.streetNumberString = streetNumberStr;
         return this;
     }
 

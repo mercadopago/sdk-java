@@ -27,6 +27,11 @@ public class AddressReceiver extends Address {
         return (AddressReceiver)super.setStreetNumber(streetNumber);
     }
 
+    @Override
+    public AddressReceiver setStreetNumberString(String streetNumberStr) {
+        return (AddressReceiver)super.setStreetNumberString(streetNumberStr);
+    }
+
     public String getFloor() {
         return floor;
     }

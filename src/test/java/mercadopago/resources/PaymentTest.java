@@ -260,7 +260,7 @@ import java.util.UUID;
                                  .setReceiverAddress(new AddressReceiver()
                                          .setZipCode("0000")
                                          .setStreetName("streetName")
-                                         .setStreetNumber(1234)
+                                         .setStreetNumberString("1234")
                                          .setFloor("floor")
                                          .setApartment("apartment"))));
      }
