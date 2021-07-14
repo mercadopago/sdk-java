@@ -22,7 +22,7 @@ First time using Mercado Pago? Create your [Mercado Pago account](https://www.me
         <dependency>
             <groupId> com.mercadopago </groupId>
             <artifactId> sdk-java </artifactId>
-            <version> 1.9.1 </version>
+            <version> 1.10.0 </version>
         </dependency>
     </dependencies>
     ...
