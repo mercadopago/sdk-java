@@ -71,6 +71,7 @@ public class Preference extends MPBase {
     private Boolean binaryMode = null;
     private ArrayList<Tax> taxes = null;
     private ArrayList<Track> tracks = null;
+    private String statementDescriptor = null;
 
     /**
      * @return preference items
@@ -545,6 +546,22 @@ public class Preference extends MPBase {
             this.tracks = new ArrayList<Track>();
         }
         this.tracks.add(track);
+        return this;
+    }
+
+    /**
+     * @return how will look the payment in the card bill
+     */
+    public String getStatementDescriptor() {
+        return statementDescriptor;
+    }
+
+    /**
+     * @param statementDescriptor how will look the payment in the card bill
+     * @return the payment
+     */
+    public Preference setStatementDescriptor(String statementDescriptor) {
+        this.statementDescriptor = statementDescriptor;
         return this;
     }
 

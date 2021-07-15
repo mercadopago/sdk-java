@@ -46,7 +46,8 @@ public class PreferenceTest extends BaseResourceTest {
                 .setTracks(new ArrayList<Track>())
                 .setTaxes(new ArrayList<Tax>())
                 .setMetadata(new JsonObject())
-                .setSponsorId(123);
+                .setSponsorId(123)
+                .setStatementDescriptor("statementDescriptor");
 
         Assert.assertNotNull(preference.getItems());
         Assert.assertNotNull(preference.getPayer());
@@ -67,6 +68,7 @@ public class PreferenceTest extends BaseResourceTest {
         Assert.assertNotNull(preference.getTracks());
         Assert.assertNotNull(preference.getTaxes());
         Assert.assertNotNull(preference.getSponsorId());
+        Assert.assertNotNull(preference.getStatementDescriptor());
     }
 
     @Test
@@ -226,6 +228,7 @@ public class PreferenceTest extends BaseResourceTest {
                 .appendProcessingModes(Preference.ProcessingMode.aggregator)
                 .appendTrack(trackGoogle)
                 .appendTrack(trackFacebook)
-                .appendTax(tax);
+                .appendTax(tax)
+                .setStatementDescriptor("Statement Descriptor");
     }
 }
