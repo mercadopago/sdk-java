@@ -33,6 +33,7 @@ import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
@@ -225,11 +226,6 @@ public class MPRestClient {
                 .setConnectTimeout(requestOptions.getConnectionTimeout())
                 .setConnectionRequestTimeout(requestOptions.getConnectionRequestTimeout());
 
-        HttpHost proxy = httpProxy == null ? MercadoPago.SDK.getProxy() : httpProxy;
-        if (proxy != null) {
-            requestConfigBuilder.setProxy(proxy);
-        }
-
         request.setConfig(requestConfigBuilder.build());
         return request;
     }
@@ -244,6 +240,7 @@ public class MPRestClient {
                 new String[]{"TLSv1.1", "TLSv1.2"}, null, SSLConnectionSocketFactory.getDefaultHostnameVerifier());
         Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
                 .register("https", sslConnectionSocketFactory)
+                .register("http", PlainConnectionSocketFactory.INSTANCE)
                 .build();
 
         PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager(registry);
@@ -259,6 +256,10 @@ public class MPRestClient {
                 .setRetryHandler(retryHandler)
                 .disableCookieManagement()
                 .disableRedirectHandling();
+
+        if (MercadoPago.SDK.getProxy() != null) {
+            httpClientBuilder.setProxy(MercadoPago.SDK.getProxy());
+        }
 
         return httpClientBuilder.build();
     }
