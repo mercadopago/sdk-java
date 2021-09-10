@@ -35,7 +35,7 @@ public class CardTest extends BaseResourceTest {
         final Card card = newCard();
         card.save();
         Assert.assertNotNull(card.getLastApiResponse());
-        Assert.assertEquals(200, card.getLastApiResponse().getStatusCode());
+        Assert.assertEquals(201, card.getLastApiResponse().getStatusCode());
         Assert.assertNotNull(card.getId());
 
         card.delete();

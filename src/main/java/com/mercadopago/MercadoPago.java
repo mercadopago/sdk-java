@@ -25,7 +25,7 @@ public class MercadoPago {
     public static class SDK {
 
         private static final String DEFAULT_BASE_URL = "https://api.mercadopago.com";
-        private static final String CURRENT_VERSION = "1.10.1";
+        private static final String CURRENT_VERSION = "1.10.2";
         private static final String PRODUCT_ID = "BC32A7VTRPP001U8NHJ0";
         private static final String CLIENT_NAME = "MercadoPago-SDK-Java";
         private static final String TRACKING_ID = String.format("platform:%s,type:SDK%s,so;", getJavaVersion(System.getProperty("java.runtime.version")), CURRENT_VERSION);
