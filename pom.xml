@@ -3,7 +3,7 @@
 
     <groupId>com.mercadopago</groupId>
     <artifactId>sdk-java</artifactId>
-    <version>1.10.2-SNAPSHOT</version>
+    <version>1.10.2</version>
     <packaging>jar</packaging>
 
     <name>Mercadopago SDK</name>
@@ -183,7 +183,7 @@
 	    <url>https://github.com/mercadopago/sdk-java.git</url>
         <connection>scm:git:git@github.com:mercadopago/sdk-java.git</connection>
         <developerConnection>scm:git:git@github.com:mercadopago/sdk-java.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>1.10.2</tag>
     </scm>
 
     <distributionManagement>
