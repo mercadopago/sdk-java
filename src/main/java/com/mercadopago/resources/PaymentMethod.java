@@ -1,6 +1,7 @@
 package com.mercadopago.resources;
 
 import com.mercadopago.core.MPBase;
+import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.core.MPResourceArray;
 import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.exceptions.MPException;
@@ -103,11 +104,21 @@ public class PaymentMethod extends MPBase {
 
   /**
    *
-   * @return List of payment methods
-   * @throws MPException exception
+   * @return list of payment methods
+   * @throws MPException an error if the request fails
+   */
+  public static MPResourceArray all() throws MPException {
+    return all(MPRequestOptions.createDefault());
+  }
+
+  /**
+   *
+   * @param requestOptions request options
+   * @return list of payment methods
+   * @throws MPException an error if the request fails
    */
   @GET(path="/v1/payment_methods")
-  public static MPResourceArray all() throws MPException {
-    return processMethodBulk(PaymentMethod.class, "all", false);
+  public static MPResourceArray all(MPRequestOptions requestOptions) throws MPException {
+    return processMethodBulk(PaymentMethod.class, "all", false, requestOptions);
   }
 }
