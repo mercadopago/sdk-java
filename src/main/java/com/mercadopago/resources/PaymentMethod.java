@@ -1,23 +1,14 @@
 package com.mercadopago.resources;
 
-import static com.mercadopago.MercadoPago.SDK.getBaseUrl;
-
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import com.mercadopago.core.MPApiResponse;
-import com.mercadopago.core.annotations.rest.PayloadType;
-import com.mercadopago.exceptions.MPRestException;
-import com.mercadopago.net.HttpMethod;
-import com.mercadopago.net.MPRestClient;
+import com.mercadopago.core.MPBase;
+import com.mercadopago.core.MPResourceArray;
+import com.mercadopago.core.annotations.rest.GET;
+import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.datastructures.paymentmethod.FinancialInstitutions;
 import com.mercadopago.resources.datastructures.paymentmethod.Settings;
-import java.lang.reflect.Type;
 import java.util.List;
-import org.apache.commons.lang3.StringUtils;
 
-public class PaymentMethod {
+public class PaymentMethod extends MPBase {
 
   private final String id;
   private final String name;
@@ -113,25 +104,10 @@ public class PaymentMethod {
   /**
    *
    * @return List of payment methods
-   * @throws MPRestException exception
+   * @throws MPException exception
    */
-  public static List<PaymentMethod> getAll() throws MPRestException {
-    String uri = StringUtils.join(getBaseUrl(), "/v1/payment_methods");
-    MPRestClient client = new MPRestClient();
-    MPApiResponse mpApiResponse = client.executeRequest(HttpMethod.GET, uri, PayloadType.JSON, null);
-    return parsePaymentMethodJson(mpApiResponse);
-  }
-
-  /**
-   *
-   * @param mpApiResponse response from api
-   * @return list of payment methods formatted
-   */
-  private static List<PaymentMethod> parsePaymentMethodJson(MPApiResponse mpApiResponse) {
-    Gson gson =  new GsonBuilder()
-        .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-        .create();
-    Type listType = new TypeToken<List<PaymentMethod>>(){}.getType();
-    return gson.fromJson(mpApiResponse.getJsonElementResponse(), listType);
+  @GET(path="/v1/payment_methods")
+  public static MPResourceArray all() throws MPException {
+    return processMethodBulk(PaymentMethod.class, "all", false);
   }
 }
