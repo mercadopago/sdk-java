@@ -1,6 +1,10 @@
 package com.mercadopago;
 
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.mercadopago.core.MPApiResponse;
 import com.mercadopago.core.MPCredentials;
 import com.mercadopago.core.annotations.rest.PayloadType;
@@ -9,12 +13,14 @@ import com.mercadopago.exceptions.MPException;
 import com.mercadopago.exceptions.MPRestException;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPRestClient;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpHost;
-
+import com.mercadopago.resources.PaymentMethod;
 import java.io.InputStream;
+import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpHost;
 
 
 /**
@@ -557,6 +563,31 @@ public class MercadoPago {
             connectionRequestTimeout = DEFAULT_CONNECTION_REQUEST_TIMEOUT_MS;
             retries = DEFAULT_RETRIES;
             proxy = null;
+        }
+
+        /**
+         *
+         * @return List of payment methods
+         * @throws MPRestException exception
+         */
+        public static List<PaymentMethod> getPaymentMethods() throws MPRestException {
+            String uri = StringUtils.join(getBaseUrl(), "/v1/payment_methods");
+            MPRestClient client = new MPRestClient();
+            MPApiResponse mpApiResponse = client.executeRequest(HttpMethod.GET, uri, PayloadType.JSON, null);
+            return parsePaymentMethodJson(mpApiResponse);
+        }
+
+        /**
+         *
+         * @param mpApiResponse response from api
+         * @return list of payment methods formatted
+         */
+        private static List<PaymentMethod> parsePaymentMethodJson(MPApiResponse mpApiResponse) {
+            Gson gson =  new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .create();
+            Type listType = new TypeToken<List<PaymentMethod>>(){}.getType();
+            return gson.fromJson(mpApiResponse.getJsonElementResponse(), listType);
         }
 
         @Deprecated
