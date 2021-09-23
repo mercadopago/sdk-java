@@ -1,11 +1,16 @@
 package mercadopago.resources;
 
+import static mercadopago.helper.HttpStatusCode.HTTP_STATUS_CREATED;
+import static mercadopago.helper.HttpStatusCode.HTTP_STATUS_OK;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import com.google.gson.JsonObject;
 import com.mercadopago.core.MPResourceArray;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.AdvancedPayment;
 import com.mercadopago.resources.Disbursement;
-import com.mercadopago.resources.User;
 import com.mercadopago.resources.datastructures.advancedpayment.AdditionalInfo;
 import com.mercadopago.resources.datastructures.advancedpayment.AdditionalInfoPayer;
 import com.mercadopago.resources.datastructures.advancedpayment.Address;
@@ -15,20 +20,39 @@ import com.mercadopago.resources.datastructures.advancedpayment.Payer;
 import com.mercadopago.resources.datastructures.advancedpayment.Payment;
 import com.mercadopago.resources.datastructures.advancedpayment.ReceiverAddress;
 import com.mercadopago.resources.datastructures.advancedpayment.Shipment;
-import mercadopago.helper.CardHelper;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.UUID;
 import mercadopago.helper.IdentificationHelper;
 import org.apache.commons.lang3.time.DateUtils;
-import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.UUID;
-
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AdvancedPaymentsTest extends BaseResourceTest {
+
+    private static final String PAYMENT_BASE_JSON = "advancedPayment/payment_base.json";
+
+    private static final String PAYMENT_CANCELLED_JSON = "advancedPayment/payment_cancelled.json";
+
+    private static final String PAYMENT_CAPTURED_JSON = "advancedPayment/payment_captured.json";
+
+    private static final String PAYMENT_UPDATED_JSON = "advancedPayment/payment_updated.json";
+
+    private static final String ADVANCED_PAYMENT_BASE_JSON = "advancedPayment/advanced_payment_base.json";
+
+    private static final String REFUND_JSON = "advancedPayment/refund.json";
+
+    private static final String CAPTURED_JSON = "advancedPayment/captured.json";
+
+    private static final String STATUS_CANCELLED_JSON = "advancedPayment/status_cancelled.json";
+
+    private static final String MONEY_RELEASE_DATE_JSON = "advancedPayment/money_release_date.json";
+
+    private static final String CARD_TOKEN = "bf9edf6ffae3ab5742033f33c557d54e";
 
     @Test
     public void gettersAndSettersTest() {
@@ -44,119 +68,142 @@ public class AdvancedPaymentsTest extends BaseResourceTest {
                 .setAdditionalInfo(new AdditionalInfo())
                 .setMetadata(new JsonObject());
 
-        Assert.assertNotNull(advancedPayment.getApplicationId());
-        Assert.assertNotNull(advancedPayment.getPayments());
-        Assert.assertNotNull(advancedPayment.getDisbursements());
-        Assert.assertNotNull(advancedPayment.getPayer());
-        Assert.assertNotNull(advancedPayment.getExternalReference());
-        Assert.assertNotNull(advancedPayment.getDescription());
-        Assert.assertNotNull(advancedPayment.getBinaryMode());
-        Assert.assertTrue(advancedPayment.isBinaryMode());
-        Assert.assertNotNull(advancedPayment.getCapture());
-        Assert.assertTrue(advancedPayment.isCapture());
-        Assert.assertNotNull(advancedPayment.getAdditionalInfo());
-        Assert.assertNotNull(advancedPayment.getMetadata());
+        assertNotNull(advancedPayment.getApplicationId());
+        assertNotNull(advancedPayment.getPayments());
+        assertNotNull(advancedPayment.getDisbursements());
+        assertNotNull(advancedPayment.getPayer());
+        assertNotNull(advancedPayment.getExternalReference());
+        assertNotNull(advancedPayment.getDescription());
+        assertNotNull(advancedPayment.getBinaryMode());
+        assertTrue(advancedPayment.isBinaryMode());
+        assertNotNull(advancedPayment.getCapture());
+        assertTrue(advancedPayment.isCapture());
+        assertNotNull(advancedPayment.getAdditionalInfo());
+        assertNotNull(advancedPayment.getMetadata());
     }
 
     @Test
-    public void advancedPaymentCreateTest() throws MPException {
+    public void advancedPaymentCreateTest() throws MPException, IOException {
+
+        httpClientMock.mock(PAYMENT_BASE_JSON, HTTP_STATUS_CREATED, ADVANCED_PAYMENT_BASE_JSON);
+
         AdvancedPayment advPayment = newAdvancedPayment(false);
         advPayment.save();
-        Assert.assertNotNull(advPayment.getLastApiResponse());
-        Assert.assertEquals(201, advPayment.getLastApiResponse().getStatusCode());
-        Assert.assertNotNull(advPayment.getId());
+        assertNotNull(advPayment.getLastApiResponse());
+        assertEquals(HTTP_STATUS_CREATED, advPayment.getLastApiResponse().getStatusCode());
+        assertNotNull(advPayment.getId());
     }
 
     @Test
-    public void advancedPaymentCancelTest() throws MPException {
+    public void advancedPaymentCancelTest() throws MPException, IOException {
+
+        httpClientMock.mock(PAYMENT_BASE_JSON, HTTP_STATUS_CREATED, ADVANCED_PAYMENT_BASE_JSON);
+
         AdvancedPayment advPayment = newAdvancedPayment(false);
         advPayment.save();
-        Assert.assertNotNull(advPayment.getId());
+        assertNotNull(advPayment.getId());
 
-        sleep(1000);
+        httpClientMock.mock(PAYMENT_CANCELLED_JSON, HTTP_STATUS_OK, STATUS_CANCELLED_JSON);
 
         boolean result = AdvancedPayment.cancel(advPayment.getId());
-        Assert.assertTrue(result);
+        assertTrue(result);
     }
 
     @Test
-    public void advancedPaymentDoCaptureTest() throws MPException {
+    public void advancedPaymentDoCaptureTest() throws MPException, IOException {
+
+        httpClientMock.mock(PAYMENT_BASE_JSON, HTTP_STATUS_CREATED, ADVANCED_PAYMENT_BASE_JSON);
+
         AdvancedPayment advPayment = newAdvancedPayment(false);
         advPayment.save();
-        Assert.assertNotNull(advPayment.getId());
+        assertNotNull(advPayment.getId());
 
-        sleep(7000);
+        httpClientMock.mock(PAYMENT_CAPTURED_JSON, HTTP_STATUS_OK, CAPTURED_JSON);
 
         boolean result = AdvancedPayment.capture(advPayment.getId());
-        Assert.assertTrue(result);
+        assertTrue(result);
     }
 
     @Test
-    public void advancedPaymentUpdateReleaseDateTest() throws MPException {
+    public void advancedPaymentUpdateReleaseDateTest() throws MPException, IOException {
+
+        httpClientMock.mock(PAYMENT_BASE_JSON, HTTP_STATUS_CREATED, ADVANCED_PAYMENT_BASE_JSON);
+
         AdvancedPayment advPayment = newAdvancedPayment(false);
         advPayment.save();
-        Assert.assertNotNull(advPayment.getId());
+        assertNotNull(advPayment.getId());
 
-        sleep(1000);
+        httpClientMock.mock(PAYMENT_UPDATED_JSON, HTTP_STATUS_OK, MONEY_RELEASE_DATE_JSON);
 
-        boolean result = AdvancedPayment.updateReleaseDate(advPayment.getId(), DateUtils.addDays(new Date(), 1));
-        Assert.assertTrue(result);
+        boolean result = AdvancedPayment.updateReleaseDate(
+            advPayment.getId(),
+            DateUtils.addDays(new Date(2021, Calendar.FEBRUARY, 10, 10, 10, 10), 1));
+        assertTrue(result);
     }
 
     @Test
-    public void advancedPaymentRefundAllTest() throws MPException {
+    public void advancedPaymentRefundAllTest() throws MPException, IOException {
+
+        httpClientMock.mock(PAYMENT_CAPTURED_JSON, HTTP_STATUS_CREATED, PAYMENT_CAPTURED_JSON);
+
         AdvancedPayment advPayment = newAdvancedPayment(true);
         advPayment.save();
-        Assert.assertNotNull(advPayment.getId());
+        assertNotNull(advPayment.getId());
 
-        sleep(1000);
+        httpClientMock.mock(REFUND_JSON, HTTP_STATUS_OK, null);
 
         MPResourceArray disbursementsRefunded = AdvancedPayment.refundAll(advPayment.getId());
-        Assert.assertNotNull(disbursementsRefunded);
-        Assert.assertNotNull(disbursementsRefunded.resources());
-        Assert.assertTrue(disbursementsRefunded.resources().size() > 0);
+        assertNotNull(disbursementsRefunded);
+        assertNotNull(disbursementsRefunded.resources());
+        assertTrue(disbursementsRefunded.resources().size() > 0);
     }
 
     @Test
-    public void advancedPaymentFindTest() throws MPException {
+    public void advancedPaymentFindTest() throws MPException, IOException {
+
+        httpClientMock.mock(PAYMENT_BASE_JSON, HTTP_STATUS_CREATED, ADVANCED_PAYMENT_BASE_JSON);
+
         AdvancedPayment advPayment = newAdvancedPayment(false);
         advPayment.save();
-        Assert.assertNotNull(advPayment.getId());
+        assertNotNull(advPayment.getId());
 
-        sleep(1000);
+        httpClientMock.mock(PAYMENT_BASE_JSON, HTTP_STATUS_OK, null);
 
         AdvancedPayment advPaymentFind = AdvancedPayment.findById(advPayment.getId().toString());
-        Assert.assertNotNull(advPaymentFind.getLastApiResponse());
-        Assert.assertEquals(200, advPaymentFind.getLastApiResponse().getStatusCode());
-        Assert.assertNotNull(advPaymentFind.getId());
+        assertNotNull(advPaymentFind.getLastApiResponse());
+        assertEquals(200, advPaymentFind.getLastApiResponse().getStatusCode());
+        assertNotNull(advPaymentFind.getId());
     }
 
-    public static AdvancedPayment newAdvancedPayment(boolean capture) throws MPException {
-        final User user = User.find();
-        final JsonObject identification = IdentificationHelper.getIdentification(user.getSiteId());
-        final String token = CardHelper.createCardToken("approved", user.getSiteId());
+    public static AdvancedPayment newAdvancedPayment(boolean capture) {
+
+        final JsonObject identification = IdentificationHelper.getIdentification("MLB");
 
         return new AdvancedPayment()
                 .setApplicationId("59441713004005")
                 .addPayment(new Payment()
                         .setPaymentMethodId("master")
                         .setPaymentTypeId("credit_card")
-                        .setToken(token)
-                        .setDateOfExpiration(dateAsString(DateUtils.addYears(new Date(), 5)))
+                        .setToken(CARD_TOKEN)
+                        .setDateOfExpiration(
+                            dateAsString(
+                                DateUtils.addYears(
+                                    new Date(2021, Calendar.FEBRUARY,10,10,10,10),
+                                    5)))
                         .setTransactionAmount(100f)
                         .setInstallments(1)
                         .setProcessingMode("aggregator")
                         .setDescription("description")
-                        .setExternalReference(UUID.randomUUID().toString())
+                        .setExternalReference("cc7c6175-8db4-4ed8-b359-b24ca8c60996")
                         .setStatementDescriptor("ADVPAY"))
                 .addDisbursement(new Disbursement()
                         .setAmount(40f)
-                        .setExternalReference("Seller1" + UUID.randomUUID().toString())
+                        .setExternalReference("Seller12fa3e5ac-7edf-405c-878b-978e2a686cd0")
                         .setCollectorId("539673000")
                         .setApplicationFee(1f))
                 .addDisbursement(new Disbursement()
                         .setAmount(60f)
-                        .setExternalReference("Seller2" + UUID.randomUUID().toString())
+                        .setExternalReference("Seller28b56ba5e-7075-419a-8d35-817ff00f7593")
                         .setCollectorId("488656838")
                         .setApplicationFee(.5f))
                 .setPayer(new Payer()
@@ -170,7 +217,7 @@ public class AdvancedPaymentsTest extends BaseResourceTest {
                         .setIdentification(new Identification()
                                 .setType(identification.get("type").getAsString())
                                 .setNumber(identification.get("number").getAsString())))
-                .setExternalReference("Adv" + UUID.randomUUID().toString())
+                .setExternalReference("Adv53ebe8d0-33b7-49fe-9624-44522c88b9a6")
                 .setDescription("description")
                 .setBinaryMode(false)
                 .setCapture(capture)
@@ -179,7 +226,9 @@ public class AdvancedPaymentsTest extends BaseResourceTest {
                         .setPayer(new AdditionalInfoPayer()
                                 .setFirstName("Test")
                                 .setLastName("User")
-                                .setRegistrationDate(DateUtils.addDays(new Date(), -10)))
+                                .setRegistrationDate(DateUtils.addYears(
+                                    new Date(2021, Calendar.FEBRUARY,10,10,10,10),
+                                    5)))
                         .addItem(new Item()
                                 .setId("123")
                                 .setTitle("title")

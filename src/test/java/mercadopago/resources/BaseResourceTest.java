@@ -1,34 +1,26 @@
 package mercadopago.resources;
 
 import com.mercadopago.MercadoPago;
-import com.mercadopago.core.MPBase;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
-import org.apache.http.client.HttpClient;
+import mercadopago.mock.HttpClientMock;
 import org.junit.Before;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 
 public abstract class BaseResourceTest extends Mockito {
-    protected String accessToken;
-    protected String publicKey;
+    protected String accessToken = "token";
 
-    @Mock
-    public static HttpClient httpClient;
+    public static HttpClientMock httpClientMock = new HttpClientMock();
 
     @Before
     public void setUp() throws MPException {
-        accessToken = System.getenv("ACCESS_TOKEN");
-        publicKey = System.getenv("PUBLIC_KEY");
         MercadoPago.SDK.cleanConfiguration();
         MercadoPago.SDK.setAccessToken(accessToken);
-        MockitoAnnotations.initMocks(this);
-        MPBase.setRestClient(httpClient);
+        MercadoPago.SDK.setHttpClient(httpClientMock);
     }
 
     protected MPRequestOptions newRequestOptions() {

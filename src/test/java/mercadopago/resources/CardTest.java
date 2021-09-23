@@ -1,23 +1,26 @@
 package mercadopago.resources;
 
+import static mercadopago.helper.HttpStatusCode.HTTP_STATUS_CREATED;
+import static mercadopago.helper.HttpStatusCode.HTTP_STATUS_OK;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import com.mercadopago.core.MPResourceArray;
 import com.mercadopago.exceptions.MPException;
-import com.mercadopago.net.MPRestClient;
 import com.mercadopago.resources.Card;
-import com.mercadopago.resources.User;
-import mercadopago.helper.CardHelper;
-import org.junit.Assert;
-import org.junit.BeforeClass;
+import java.io.IOException;
 import org.junit.Test;
 
 public class CardTest extends BaseResourceTest {
 
-    private static MPRestClient client;
+    private static final String CARD_NEW_JSON = "card/card_new.json";
 
-    @BeforeClass
-    public static void init() {
-        client = new MPRestClient();
-    }
+    private static final String CARD_ALL_JSON = "card/card_all.json";
+
+    private static final String CARD_TOKEN = "bf9edf6ffae3ab5742033f33c557d54e";
+
+    private static final String CUSTOMER_ID = "649457098-FybpOkG6zH8QRm";
 
     @Test
     public void gettersAndSettersTest() {
@@ -26,61 +29,75 @@ public class CardTest extends BaseResourceTest {
                 .setCustomerId("123abc")
                 .setToken("token");
 
-        Assert.assertNotNull(card.getId());
-        Assert.assertNotNull(card.getCustomerId());
+        assertNotNull(card.getId());
+        assertNotNull(card.getCustomerId());
     }
 
     @Test
-    public void cardCreateTest() throws MPException {
+    public void cardCreateTest() throws MPException, IOException {
+
+        httpClientMock.mock(CARD_NEW_JSON, HTTP_STATUS_CREATED, CARD_NEW_JSON);
+
         final Card card = newCard();
         card.save();
-        Assert.assertNotNull(card.getLastApiResponse());
-        Assert.assertEquals(201, card.getLastApiResponse().getStatusCode());
-        Assert.assertNotNull(card.getId());
+        assertNotNull(card.getLastApiResponse());
+        assertEquals(HTTP_STATUS_CREATED, card.getLastApiResponse().getStatusCode());
+        assertNotNull(card.getId());
+
+        httpClientMock.mock(HTTP_STATUS_OK, null);
 
         card.delete();
-        Assert.assertNotNull(card.getLastApiResponse());
-        Assert.assertEquals(200, card.getLastApiResponse().getStatusCode());
+        assertNotNull(card.getLastApiResponse());
+        assertEquals(HTTP_STATUS_OK, card.getLastApiResponse().getStatusCode());
     }
 
     @Test
-    public void cardFindTest() throws MPException {
+    public void cardFindTest() throws MPException, IOException {
+
+        httpClientMock.mock(CARD_NEW_JSON, HTTP_STATUS_CREATED, CARD_NEW_JSON);
+
         final Card card = newCard();
         card.save();
-        Assert.assertNotNull(card.getId());
+        assertNotNull(card.getId());
+
+        httpClientMock.mock(CARD_NEW_JSON, HTTP_STATUS_OK, CARD_NEW_JSON);
 
         final Card findCard = Card.findById(card.getCustomerId(), card.getId());
-        Assert.assertNotNull(findCard);
-        Assert.assertEquals(card.getId(), findCard.getId());
+        assertNotNull(findCard);
+        assertEquals(card.getId(), findCard.getId());
+
+        httpClientMock.mock(HTTP_STATUS_OK, null);
 
         card.delete();
-        Assert.assertNotNull(card.getLastApiResponse());
-        Assert.assertEquals(200, card.getLastApiResponse().getStatusCode());
+        assertNotNull(card.getLastApiResponse());
+        assertEquals(HTTP_STATUS_OK, card.getLastApiResponse().getStatusCode());
     }
 
     @Test
-    public void allCardsTest() throws MPException {
+    public void allCardsTest() throws MPException, IOException {
+
+        httpClientMock.mock(CARD_NEW_JSON, HTTP_STATUS_CREATED, CARD_NEW_JSON);
+
         final Card card = newCard();
         card.save();
-        Assert.assertNotNull(card.getId());
+        assertNotNull(card.getId());
+
+        httpClientMock.mock(CARD_ALL_JSON, HTTP_STATUS_OK, null);
 
         MPResourceArray cards = Card.all(card.getCustomerId());
-        Assert.assertNotNull(cards);
-        Assert.assertNotNull(cards.resources());
-        Assert.assertTrue(cards.resources().size() > 0);
+        assertNotNull(cards);
+        assertNotNull(cards.resources());
+        assertTrue(cards.resources().size() > 0);
 
         card.delete();
-        Assert.assertNotNull(card.getLastApiResponse());
-        Assert.assertEquals(200, card.getLastApiResponse().getStatusCode());
+        assertNotNull(card.getLastApiResponse());
+        assertEquals(HTTP_STATUS_OK, card.getLastApiResponse().getStatusCode());
     }
 
-    private Card newCard() throws MPException {
-        final User user = User.find();
-
-        final String token = CardHelper.createCardToken("approved", user.getSiteId());
+    private Card newCard() {
 
         return new Card()
-            .setCustomerId("649457098-FybpOkG6zH8QRm")
-            .setToken(token);
+            .setCustomerId(CUSTOMER_ID)
+            .setToken(CARD_TOKEN);
     }
 }

@@ -1,21 +1,20 @@
 package mercadopago.core;
 
-import com.mercadopago.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+
+import com.mercadopago.MercadoPago;
 import com.mercadopago.core.MPBase;
 import com.mercadopago.core.MPResourceArray;
 import com.mercadopago.core.annotations.rest.DELETE;
 import com.mercadopago.core.annotations.rest.GET;
-import com.mercadopago.core.annotations.rest.POST;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.Preference;
+import java.util.HashMap;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-
-
-import java.util.HashMap;
-
-import static org.junit.Assert.*;
 
 /**
  * Mercado Pago SDK

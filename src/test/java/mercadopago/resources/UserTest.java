@@ -1,17 +1,26 @@
 package mercadopago.resources;
 
+import static mercadopago.helper.HttpStatusCode.HTTP_STATUS_OK;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.User;
-import org.junit.Assert;
+import java.io.IOException;
 import org.junit.Test;
 
 public class UserTest extends BaseResourceTest {
 
+    private static final String USER_BASE_JSON = "user/user_base.json";
+
     @Test
-    public void userFindTest() throws MPException {
+    public void userFindTest() throws MPException, IOException {
+
+        httpClientMock.mock(USER_BASE_JSON, HTTP_STATUS_OK, null);
+
         User user = User.find();
-        Assert.assertNotNull(user.getLastApiResponse());
-        Assert.assertEquals(200, user.getLastApiResponse().getStatusCode());
-        Assert.assertEquals("BR", user.getCountryId());
+        assertNotNull(user.getLastApiResponse());
+        assertEquals(HTTP_STATUS_OK, user.getLastApiResponse().getStatusCode());
+        assertEquals("BR", user.getCountryId());
     }
 }

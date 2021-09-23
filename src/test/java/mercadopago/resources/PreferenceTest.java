@@ -1,5 +1,10 @@
 package mercadopago.resources;
 
+import static mercadopago.helper.HttpStatusCode.HTTP_STATUS_CREATED;
+import static mercadopago.helper.HttpStatusCode.HTTP_STATUS_OK;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import com.google.gson.JsonObject;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPException;
@@ -16,15 +21,19 @@ import com.mercadopago.resources.datastructures.preference.Shipments;
 import com.mercadopago.resources.datastructures.preference.Tax;
 import com.mercadopago.resources.datastructures.preference.Track;
 import com.mercadopago.resources.datastructures.preference.TrackValues;
-import org.apache.commons.lang3.time.DateUtils;
-import org.junit.Assert;
-import org.junit.Test;
-
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
+import org.apache.commons.lang3.time.DateUtils;
+import org.junit.Test;
 
 public class PreferenceTest extends BaseResourceTest {
+
+    private static final String PREFERENCE_BASE_JSON = "preference/preference_base.json";
+
+    private static final String PREFERENCE_UPDATED_JSON = "preference/preference_updated.json";
 
     @Test
     public void gettersAndSettersTest() {
@@ -49,93 +58,119 @@ public class PreferenceTest extends BaseResourceTest {
                 .setSponsorId(123)
                 .setStatementDescriptor("statementDescriptor");
 
-        Assert.assertNotNull(preference.getItems());
-        Assert.assertNotNull(preference.getPayer());
-        Assert.assertNotNull(preference.getPaymentMethods());
-        Assert.assertNotNull(preference.getShipments());
-        Assert.assertNotNull(preference.getBackUrls());
-        Assert.assertNotNull(preference.getNotificationUrl());
-        Assert.assertNotNull(preference.getAdditionalInfo());
-        Assert.assertNotNull(preference.getAutoReturn());
-        Assert.assertNotNull(preference.getBinaryMode());
-        Assert.assertNotNull(preference.getExternalReference());
-        Assert.assertNotNull(preference.getExpires());
-        Assert.assertNotNull(preference.getExpirationDateFrom());
-        Assert.assertNotNull(preference.getExpirationDateTo());
-        Assert.assertNotNull(preference.getMetadata());
-        Assert.assertNotNull(preference.getNotificationUrl());
-        Assert.assertNotNull(preference.getProcessingModes());
-        Assert.assertNotNull(preference.getTracks());
-        Assert.assertNotNull(preference.getTaxes());
-        Assert.assertNotNull(preference.getSponsorId());
-        Assert.assertNotNull(preference.getStatementDescriptor());
+        assertNotNull(preference.getItems());
+        assertNotNull(preference.getPayer());
+        assertNotNull(preference.getPaymentMethods());
+        assertNotNull(preference.getShipments());
+        assertNotNull(preference.getBackUrls());
+        assertNotNull(preference.getNotificationUrl());
+        assertNotNull(preference.getAdditionalInfo());
+        assertNotNull(preference.getAutoReturn());
+        assertNotNull(preference.getBinaryMode());
+        assertNotNull(preference.getExternalReference());
+        assertNotNull(preference.getExpires());
+        assertNotNull(preference.getExpirationDateFrom());
+        assertNotNull(preference.getExpirationDateTo());
+        assertNotNull(preference.getMetadata());
+        assertNotNull(preference.getNotificationUrl());
+        assertNotNull(preference.getProcessingModes());
+        assertNotNull(preference.getTracks());
+        assertNotNull(preference.getTaxes());
+        assertNotNull(preference.getSponsorId());
+        assertNotNull(preference.getStatementDescriptor());
     }
 
     @Test
-    public void createPreferenceTest() throws MPException {
+    public void createPreferenceTest() throws MPException, IOException {
+
+        httpClientMock.mock(PREFERENCE_BASE_JSON, HTTP_STATUS_CREATED, PREFERENCE_BASE_JSON);
+
         Preference preference = newPreference();
         preference.save(null);
-        Assert.assertNotNull(preference.getLastApiResponse());
-        Assert.assertEquals(201, preference.getLastApiResponse().getStatusCode());
-        Assert.assertNotNull(preference.getId());
+        assertNotNull(preference.getLastApiResponse());
+        assertEquals(HTTP_STATUS_CREATED, preference.getLastApiResponse().getStatusCode());
+        assertNotNull(preference.getId());
     }
 
     @Test
-    public void createPreferenceRequestOptionsTest() throws MPException {
+    public void createPreferenceRequestOptionsTest() throws MPException, IOException {
+
+        httpClientMock.mock(PREFERENCE_BASE_JSON, HTTP_STATUS_CREATED, PREFERENCE_BASE_JSON);
+
         MPRequestOptions requestOptions = newRequestOptions();
         Preference preference = newPreference();
         preference.save(requestOptions);
-        Assert.assertNotNull(preference.getLastApiResponse());
-        Assert.assertEquals(201, preference.getLastApiResponse().getStatusCode());
-        Assert.assertNotNull(preference.getId());
+        assertNotNull(preference.getLastApiResponse());
+        assertEquals(HTTP_STATUS_CREATED, preference.getLastApiResponse().getStatusCode());
+        assertNotNull(preference.getId());
     }
 
     @Test
-    public void updatePreferenceTest() throws MPException {
+    public void updatePreferenceTest() throws MPException, IOException {
+
+        httpClientMock.mock(PREFERENCE_BASE_JSON, HTTP_STATUS_CREATED, PREFERENCE_BASE_JSON);
+
         Preference preference = newPreference();
         preference.save();
-        Assert.assertNotNull(preference.getId());
+        assertNotNull(preference.getId());
+
+        httpClientMock.mock(PREFERENCE_UPDATED_JSON, HTTP_STATUS_OK, PREFERENCE_UPDATED_JSON);
 
         preference.setAdditionalInfo("New info");
         preference.update();
-        Assert.assertNotNull(preference.getLastApiResponse());
-        Assert.assertEquals(200, preference.getLastApiResponse().getStatusCode());
+        assertNotNull(preference.getLastApiResponse());
+        assertEquals(HTTP_STATUS_OK, preference.getLastApiResponse().getStatusCode());
     }
 
     @Test
-    public void updatePreferenceRequestOptionsTest() throws MPException {
+    public void updatePreferenceRequestOptionsTest() throws MPException, IOException {
+
+        httpClientMock.mock(PREFERENCE_BASE_JSON, HTTP_STATUS_CREATED, PREFERENCE_BASE_JSON);
+
         Preference preference = newPreference();
         preference.save();
-        Assert.assertNotNull(preference.getId());
+        assertNotNull(preference.getId());
+
+        httpClientMock.mock(PREFERENCE_UPDATED_JSON, HTTP_STATUS_OK, PREFERENCE_UPDATED_JSON);
 
         MPRequestOptions requestOptions = newRequestOptions();
         preference.setAdditionalInfo("New info");
         preference.update(requestOptions);
-        Assert.assertNotNull(preference.getLastApiResponse());
-        Assert.assertEquals(200, preference.getLastApiResponse().getStatusCode());
+        assertNotNull(preference.getLastApiResponse());
+        assertEquals(HTTP_STATUS_OK, preference.getLastApiResponse().getStatusCode());
     }
 
     @Test
-    public void findPreferenceTest() throws MPException {
+    public void findPreferenceTest() throws MPException, IOException {
+
+        httpClientMock.mock(PREFERENCE_BASE_JSON, HTTP_STATUS_CREATED, PREFERENCE_BASE_JSON);
+
         Preference preference = newPreference();
         preference.save();
-        Assert.assertNotNull(preference.getId());
+        assertNotNull(preference.getId());
+
+        httpClientMock.mock(PREFERENCE_BASE_JSON, HTTP_STATUS_OK, null);
 
         Preference findPreference = Preference.findById(preference.getId());
-        Assert.assertNotNull(findPreference);
-        Assert.assertEquals(preference.getId(), findPreference.getId());
+        assertNotNull(findPreference);
+        assertEquals(preference.getId(), findPreference.getId());
     }
 
     @Test
-    public void findPreferenceRequestOptionsTest() throws MPException {
+    public void findPreferenceRequestOptionsTest() throws MPException, IOException {
+
+        httpClientMock.mock(PREFERENCE_BASE_JSON, HTTP_STATUS_CREATED, PREFERENCE_BASE_JSON);
+
         Preference preference = newPreference();
         preference.save();
-        Assert.assertNotNull(preference.getId());
+        assertNotNull(preference.getId());
+
+        httpClientMock.mock(PREFERENCE_BASE_JSON, HTTP_STATUS_OK, null);
 
         MPRequestOptions requestOptions = newRequestOptions();
         Preference findPreference = Preference.findById(preference.getId(), false, requestOptions);
-        Assert.assertNotNull(findPreference);
-        Assert.assertEquals(preference.getId(), findPreference.getId());
+        assertNotNull(findPreference);
+        assertEquals(preference.getId(), findPreference.getId());
     }
 
     public static Preference newPreference()
@@ -220,10 +255,14 @@ public class PreferenceTest extends BaseResourceTest {
                 .setNotificationUrl("https://seller/notification")
                 .setAdditionalInfo("Additional info")
                 .setAutoReturn(Preference.AutoReturn.all)
-                .setExternalReference(UUID.randomUUID().toString())
+                .setExternalReference("a43355ed-354c-4f73-a64b-be7793b610f4")
                 .setExpires(true)
-                .setExpirationDateFrom(new Date())
-                .setExpirationDateTo(DateUtils.addDays(new Date(), 30))
+                .setExpirationDateFrom(
+                    new Date(2021, Calendar.FEBRUARY, 10, 10, 10))
+                .setExpirationDateTo(
+                    DateUtils.addDays(
+                        new Date(2021, Calendar.FEBRUARY, 10, 10, 10),
+                        30))
                 .setBinaryMode(true)
                 .appendProcessingModes(Preference.ProcessingMode.aggregator)
                 .appendTrack(trackGoogle)

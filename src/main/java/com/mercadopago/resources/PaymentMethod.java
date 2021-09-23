@@ -11,40 +11,20 @@ import java.util.List;
 
 public class PaymentMethod extends MPBase {
 
-  private final String id;
-  private final String name;
-  private final String paymentTypeId;
-  private final String status;
-  private final String secureThumbnail;
-  private final String thumbnail;
-  private final String deferredCapture;
-  private final List<Settings> settings;
-  private final List<String> additionalInfoNeeded;
-  private final Double minAllowedAmount;
-  private final Integer maxAllowedAmount;
-  private final Integer accreditationTime;
-  private final List<FinancialInstitutions> financialInstitutions;
-  private final List<String> processingModes;
-
-  public PaymentMethod(String id, String name, String paymentTypeId, String status, String secureThumbnail, String thumbnail,
-                       String deferredCapture, List<Settings> settings, List<String> additionalInfoNeeded, Double minAllowedAmount,
-                       Integer maxAllowedAmount, Integer accreditationTime,
-                       List<FinancialInstitutions> financialInstitutions, List<String> processingModes) {
-    this.id = id;
-    this.name = name;
-    this.paymentTypeId = paymentTypeId;
-    this.status = status;
-    this.secureThumbnail = secureThumbnail;
-    this.thumbnail = thumbnail;
-    this.deferredCapture = deferredCapture;
-    this.settings = settings;
-    this.additionalInfoNeeded = additionalInfoNeeded;
-    this.minAllowedAmount = minAllowedAmount;
-    this.maxAllowedAmount = maxAllowedAmount;
-    this.accreditationTime = accreditationTime;
-    this.financialInstitutions = financialInstitutions;
-    this.processingModes = processingModes;
-  }
+  private String id = null;
+  private String name = null;
+  private String paymentTypeId = null;
+  private String status = null;
+  private String secureThumbnail = null;
+  private String thumbnail = null;
+  private String deferredCapture = null;
+  private List<Settings> settings = null;
+  private List<String> additionalInfoNeeded = null;
+  private Double minAllowedAmount = null;
+  private Integer maxAllowedAmount = null;
+  private Integer accreditationTime = null;
+  private List<FinancialInstitutions> financialInstitutions = null;
+  private List<String> processingModes = null;
 
   public String getId() {
     return id;

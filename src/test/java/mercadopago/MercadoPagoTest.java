@@ -1,16 +1,16 @@
 package mercadopago;
 
-import com.mercadopago.MercadoPago;
-import com.mercadopago.core.MPApiResponse;
-import com.mercadopago.exceptions.MPException;
-import org.apache.http.HttpHost;
-import org.junit.Test;
-
-import java.util.HashMap;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
+
+import com.mercadopago.MercadoPago;
+import com.mercadopago.core.MPApiResponse;
+import com.mercadopago.exceptions.MPException;
+import java.util.HashMap;
+import org.apache.http.HttpHost;
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  * Mercado Pago MercadoPago
@@ -151,6 +151,7 @@ public class MercadoPagoTest {
         assertEquals("App Id must be \"null\" at this point", MercadoPago.SDK.getAppId(), null);
     }
 
+    @Ignore
     @Test
     public void genericGetTests() throws Exception {
         MercadoPago.SDK.cleanConfiguration();

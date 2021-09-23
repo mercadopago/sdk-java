@@ -1,0 +1,32 @@
+{
+  "id": "000000001-sT93QZFAsfxU9P5",
+  "email": "test_payer_999955@testuser.com",
+  "first_name": "New",
+  "last_name": "Payer",
+  "phone": {
+    "area_code": 11,
+    "number": 99999999
+  },
+  "identification": {
+    "type": "CPF",
+    "number": 19119119100
+  },
+  "address": {
+    "id": "1162600094",
+    "zip_code": "01234567",
+    "street_name": "Rua Exemplo"
+  },
+  "description": "description",
+  "date_created": "2018-02-20T15:36:23.541Z",
+  "metadata": {
+    "test": "123"
+  },
+  "default_address": "1162600094",
+  "cards": [
+    {}
+  ],
+  "addresses": [
+    {}
+  ],
+  "live_mode": true
+}

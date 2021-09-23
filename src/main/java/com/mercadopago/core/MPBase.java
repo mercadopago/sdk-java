@@ -55,16 +55,14 @@ public abstract class MPBase {
 
     private transient String marketplaceAccessToken = null;
 
-    private static MPRestClient restClient = new MPRestClient();
+    private static MPRestClient restClient = null;
 
     public MPBase() {
         if (admitIdempotenceKey()) {
             this.idempotenceKey = UUID.randomUUID().toString();
         }
-    }
 
-    public static void setRestClient(HttpClient httpClient) {
-        MPBase.restClient = new MPRestClient(httpClient);
+        restClient = MercadoPago.SDK.getMpRestClient();
     }
 
     public String getIdempotenceKey() {

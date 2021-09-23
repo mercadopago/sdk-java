@@ -1,8 +1,12 @@
 package mercadopago.resources;
 
+import static mercadopago.helper.HttpStatusCode.HTTP_STATUS_BAD_REQUEST;
+import static mercadopago.helper.HttpStatusCode.HTTP_STATUS_CREATED;
+import static mercadopago.helper.HttpStatusCode.HTTP_STATUS_OK;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import com.google.gson.JsonObject;
@@ -21,35 +25,34 @@ import com.mercadopago.resources.datastructures.payment.Phone;
 import com.mercadopago.resources.datastructures.payment.Shipments;
 import com.mercadopago.resources.datastructures.payment.TransactionDetails;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 import mercadopago.helper.IdentificationHelper;
-import mercadopago.helper.MockHelper;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.protocol.HttpContext;
 import org.junit.Test;
 
 public class PaymentTest extends BaseResourceTest {
 
   private static final String TEST_CARD_TOKEN = "bf9edf6ffae3ab5742033f33c557d54e";
 
-  private static final String CREDIT_CARD_MOCK = "payment/credit_card_base.json";
+  private static final String PAYMENT_BASE_JSON = "payment/payment_base.json";
 
-  private static final String CREDIT_CARD_CAPTURED_MOCK = "payment/credit_card_captured.json";
+  private static final String PAYMENT_CAPTURED_JSON = "payment/payment_captured.json";
 
-  private static final String CREDIT_CARD_CANCELLED_MOCK = "payment/credit_card_cancelled.json";
+  private static final String PAYMENT_CANCELLED_JSON = "payment/payment_cancelled.json";
 
-  private static final String BY_EXTERNAL_REFERENCE_MOCK = "payment/by_external_reference.json";
+  private static final String BY_EXTERNAL_REFERENCE_JSON = "payment/by_external_reference.json";
 
-  private static final String REFUND_MOCK = "payment/refund.json";
+  private static final String REFUND_ALL_JSON = "refund/refund_all.json";
 
-  private static final String PARTIAL_REFUND_MOCK = "payment/partial_refund.json";
+  private static final String REFUND_PARTIAL_JSON = "refund/refund_partial.json";
 
-  private static final int HTTP_STATUS_OK = 200;
+  private static final String CAPTURED_JSON = "payment/captured.json";
 
-  private static final int HTTP_STATUS_CREATED = 201;
+  private static final String STATUS_CANCELLED_JSON = "payment/status_cancelled.json";
+
+  private static final String PAYMENT_CARD_TOKEN_ERROR_JSON = "payment/payment_card_token_error.json";
 
   @Test
   public void gettersAndSettersTest() {
@@ -102,8 +105,7 @@ public class PaymentTest extends BaseResourceTest {
   @Test
   public void paymentSaveTest() throws MPException, IOException {
 
-    HttpResponse httpResponse = MockHelper.generate(CREDIT_CARD_MOCK, HTTP_STATUS_CREATED);
-    doReturn(httpResponse).when(BaseResourceTest.httpClient).execute(any(HttpUriRequest.class), any(HttpContext.class));
+    httpClientMock.mock(PAYMENT_BASE_JSON, HTTP_STATUS_CREATED, PAYMENT_BASE_JSON);
 
     Payment payment = newPayment(false);
     payment.save();
@@ -115,8 +117,7 @@ public class PaymentTest extends BaseResourceTest {
   @Test
   public void paymentSaveRequestOptionsTest() throws MPException, IOException {
 
-    HttpResponse httpResponse = MockHelper.generate(CREDIT_CARD_MOCK, HTTP_STATUS_CREATED);
-    doReturn(httpResponse).when(BaseResourceTest.httpClient).execute(any(HttpUriRequest.class), any(HttpContext.class));
+    httpClientMock.mock(PAYMENT_BASE_JSON, HTTP_STATUS_CREATED, PAYMENT_BASE_JSON);
 
     MPRequestOptions requestOptions = newRequestOptions();
     Payment payment = newPayment(false);
@@ -129,16 +130,14 @@ public class PaymentTest extends BaseResourceTest {
   @Test
   public void capturePaymentTest() throws MPException, IOException {
 
-    HttpResponse httpResponseCreate = MockHelper.generate(CREDIT_CARD_MOCK, HTTP_STATUS_CREATED);
-    doReturn(httpResponseCreate).when(BaseResourceTest.httpClient).execute(any(HttpUriRequest.class), any(HttpContext.class));
+    httpClientMock.mock(PAYMENT_BASE_JSON, HTTP_STATUS_CREATED, PAYMENT_BASE_JSON);
 
     Payment payment = newPayment(false);
     payment.save();
     assertNotNull(payment.getId());
     assertFalse(payment.getCaptured());
 
-    HttpResponse httpResponseOk = MockHelper.generate(CREDIT_CARD_CAPTURED_MOCK, HTTP_STATUS_OK);
-    doReturn(httpResponseOk).when(BaseResourceTest.httpClient).execute(any(HttpUriRequest.class), any(HttpContext.class));
+    httpClientMock.mock(PAYMENT_CAPTURED_JSON, HTTP_STATUS_OK, CAPTURED_JSON);
 
     payment.setCapture(true);
     payment.update();
@@ -150,15 +149,13 @@ public class PaymentTest extends BaseResourceTest {
   @Test
   public void cancelPaymentTest() throws MPException, IOException {
 
-    HttpResponse httpResponseCreate = MockHelper.generate(CREDIT_CARD_MOCK, HTTP_STATUS_CREATED);
-    doReturn(httpResponseCreate).when(BaseResourceTest.httpClient).execute(any(HttpUriRequest.class), any(HttpContext.class));
+    httpClientMock.mock(PAYMENT_BASE_JSON, HTTP_STATUS_CREATED, PAYMENT_BASE_JSON);
 
     Payment payment = newPayment(false);
     payment.save();
     assertNotNull(payment.getId());
 
-    HttpResponse httpResponseCancelled = MockHelper.generate(CREDIT_CARD_CANCELLED_MOCK, HTTP_STATUS_OK);
-    doReturn(httpResponseCancelled).when(BaseResourceTest.httpClient).execute(any(HttpUriRequest.class), any(HttpContext.class));
+    httpClientMock.mock(PAYMENT_CANCELLED_JSON, HTTP_STATUS_OK, STATUS_CANCELLED_JSON);
 
     payment.setStatus(Payment.Status.cancelled);
     payment.update();
@@ -169,15 +166,13 @@ public class PaymentTest extends BaseResourceTest {
   @Test
   public void findPaymentTest() throws MPException, IOException {
 
-    HttpResponse httpResponseCreate = MockHelper.generate(CREDIT_CARD_MOCK, HTTP_STATUS_CREATED);
-    doReturn(httpResponseCreate).when(BaseResourceTest.httpClient).execute(any(HttpUriRequest.class), any(HttpContext.class));
+    httpClientMock.mock(PAYMENT_BASE_JSON, HTTP_STATUS_CREATED, PAYMENT_BASE_JSON);
 
     Payment payment = newPayment(false);
     payment.save();
     assertNotNull(payment.getId());
 
-    HttpResponse httpResponseOk = MockHelper.generate(CREDIT_CARD_MOCK, HTTP_STATUS_OK);
-    doReturn(httpResponseOk).when(BaseResourceTest.httpClient).execute(any(HttpUriRequest.class), any(HttpContext.class));
+    httpClientMock.mock(PAYMENT_BASE_JSON, HTTP_STATUS_OK, PAYMENT_BASE_JSON);
 
     Payment findPayment = Payment.findById(payment.getId());
     assertNotNull(findPayment);
@@ -187,15 +182,13 @@ public class PaymentTest extends BaseResourceTest {
   @Test
   public void findPaymentRequestOptionsTest() throws MPException, IOException {
 
-    HttpResponse httpResponseCreate = MockHelper.generate(CREDIT_CARD_MOCK, HTTP_STATUS_CREATED);
-    doReturn(httpResponseCreate).when(BaseResourceTest.httpClient).execute(any(HttpUriRequest.class), any(HttpContext.class));
+    httpClientMock.mock(PAYMENT_BASE_JSON, HTTP_STATUS_CREATED, PAYMENT_BASE_JSON);
 
     Payment payment = newPayment(false);
     payment.save();
     assertNotNull(payment.getId());
 
-    HttpResponse httpResponseOk = MockHelper.generate(CREDIT_CARD_MOCK, HTTP_STATUS_OK);
-    doReturn(httpResponseOk).when(BaseResourceTest.httpClient).execute(any(HttpUriRequest.class), any(HttpContext.class));
+    httpClientMock.mock(PAYMENT_BASE_JSON, HTTP_STATUS_OK, PAYMENT_BASE_JSON);
 
     MPRequestOptions requestOptions = newRequestOptions();
     Payment findPayment = Payment.findById(payment.getId(), false, requestOptions);
@@ -206,15 +199,13 @@ public class PaymentTest extends BaseResourceTest {
   @Test
   public void searchByReferenceTest() throws MPException, IOException {
 
-    HttpResponse httpResponseCreate = MockHelper.generate(CREDIT_CARD_MOCK, HTTP_STATUS_CREATED);
-    doReturn(httpResponseCreate).when(BaseResourceTest.httpClient).execute(any(HttpUriRequest.class), any(HttpContext.class));
+    httpClientMock.mock(PAYMENT_BASE_JSON, HTTP_STATUS_CREATED, PAYMENT_BASE_JSON);
 
     Payment payment = newPayment(false);
     payment.save();
     assertNotNull(payment.getId());
 
-    HttpResponse httpResponseOk = MockHelper.generate(BY_EXTERNAL_REFERENCE_MOCK, HTTP_STATUS_OK);
-    doReturn(httpResponseOk).when(BaseResourceTest.httpClient).execute(any(HttpUriRequest.class), any(HttpContext.class));
+    httpClientMock.mock(BY_EXTERNAL_REFERENCE_JSON, HTTP_STATUS_OK, PAYMENT_BASE_JSON);
 
     HashMap<String, String> filters = new HashMap<String, String>();
     filters.put("external_reference", payment.getExternalReference());
@@ -227,15 +218,13 @@ public class PaymentTest extends BaseResourceTest {
   @Test
   public void searchByReferenceRequestOptionsTest() throws MPException, IOException {
 
-    HttpResponse httpResponseCreate = MockHelper.generate(CREDIT_CARD_MOCK, HTTP_STATUS_CREATED);
-    doReturn(httpResponseCreate).when(BaseResourceTest.httpClient).execute(any(HttpUriRequest.class), any(HttpContext.class));
+    httpClientMock.mock(PAYMENT_BASE_JSON, HTTP_STATUS_CREATED, PAYMENT_BASE_JSON);
 
     Payment payment = newPayment(false);
     payment.save();
     assertNotNull(payment.getId());
 
-    HttpResponse httpResponseOk = MockHelper.generate(BY_EXTERNAL_REFERENCE_MOCK, HTTP_STATUS_OK);
-    doReturn(httpResponseOk).when(BaseResourceTest.httpClient).execute(any(HttpUriRequest.class), any(HttpContext.class));
+    httpClientMock.mock(BY_EXTERNAL_REFERENCE_JSON, HTTP_STATUS_OK, PAYMENT_BASE_JSON);
 
     MPRequestOptions requestOptions = newRequestOptions();
     HashMap<String, String> filters = new HashMap<String, String>();
@@ -249,15 +238,13 @@ public class PaymentTest extends BaseResourceTest {
   @Test
   public void paymentRefundTotalTest() throws MPException, IOException {
 
-    HttpResponse httpResponseCreate = MockHelper.generate(CREDIT_CARD_MOCK, HTTP_STATUS_CREATED);
-    doReturn(httpResponseCreate).when(BaseResourceTest.httpClient).execute(any(HttpUriRequest.class), any(HttpContext.class));
+    httpClientMock.mock(PAYMENT_BASE_JSON, HTTP_STATUS_CREATED, PAYMENT_CAPTURED_JSON);
 
     Payment payment = newPayment(true);
     payment.save();
     assertNotNull(payment.getId());
 
-    HttpResponse httpResponseRefund = MockHelper.generate(REFUND_MOCK, HTTP_STATUS_CREATED);
-    doReturn(httpResponseRefund).when(BaseResourceTest.httpClient).execute(any(HttpUriRequest.class), any(HttpContext.class));
+    httpClientMock.mock(REFUND_ALL_JSON, HTTP_STATUS_CREATED, PAYMENT_CAPTURED_JSON);
 
     payment.refund();
     assertNotNull(payment.getLastApiResponse());
@@ -267,19 +254,29 @@ public class PaymentTest extends BaseResourceTest {
   @Test
   public void paymentRefundPartialTest() throws MPException, IOException {
 
-    HttpResponse httpResponseCreate = MockHelper.generate(CREDIT_CARD_MOCK, HTTP_STATUS_CREATED);
-    doReturn(httpResponseCreate).when(BaseResourceTest.httpClient).execute(any(HttpUriRequest.class), any(HttpContext.class));
+    httpClientMock.mock(PAYMENT_BASE_JSON, HTTP_STATUS_CREATED, PAYMENT_CAPTURED_JSON);
 
     Payment payment = newPayment(true);
     payment.save();
     assertNotNull(payment.getId());
 
-    HttpResponse httpResponseRefund = MockHelper.generate(PARTIAL_REFUND_MOCK, HTTP_STATUS_CREATED);
-    doReturn(httpResponseRefund).when(BaseResourceTest.httpClient).execute(any(HttpUriRequest.class), any(HttpContext.class));
+    httpClientMock.mock(REFUND_PARTIAL_JSON, HTTP_STATUS_CREATED, REFUND_PARTIAL_JSON);
 
     payment.refund(1f);
     assertNotNull(payment.getLastApiResponse());
     assertEquals(HTTP_STATUS_CREATED, payment.getLastApiResponse().getStatusCode());
+  }
+
+  @Test
+  public void paymentCardTokenErrorTest() throws IOException, MPException {
+
+    httpClientMock.mock(PAYMENT_CARD_TOKEN_ERROR_JSON, HTTP_STATUS_BAD_REQUEST, PAYMENT_BASE_JSON);
+
+    Payment payment = newPayment(false);
+    payment.save();
+    assertNotNull(payment.getLastApiResponse());
+    assertEquals(HTTP_STATUS_BAD_REQUEST, payment.getLastApiResponse().getStatusCode());
+    assertNull(payment.getId());
   }
 
   public static Payment newPayment(boolean capture) {
@@ -296,7 +293,7 @@ public class PaymentTest extends BaseResourceTest {
                 .setType(identification.get("type").getAsString())
                 .setNumber(identification.get("number").getAsString())))
         .setBinaryMode(Boolean.FALSE)
-        .setExternalReference(UUID.randomUUID().toString())
+        .setExternalReference("212efa19-da7a-4b4f-a3f0-4f458136d9ca")
         .setDescription("description")
         .setMetadata(new JsonObject())
         .setTransactionAmount(100f)
@@ -326,7 +323,8 @@ public class PaymentTest extends BaseResourceTest {
                     .setZipCode("0000")
                     .setStreetName("streetName")
                     .setStreetNumber(1234))
-                .setRegistrationDate(new Date()))
+                .setRegistrationDate(
+                    new Date(2021, Calendar.JANUARY, 10, 10, 10, 10)))
             .setShipments(new Shipments()
                 .setReceiverAddress(new AddressReceiver()
                     .setZipCode("0000")

@@ -1,11 +1,5 @@
 package com.mercadopago.net;
 
-import java.io.IOException;
-import java.util.*;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLPeerUnverifiedException;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -17,9 +11,21 @@ import com.mercadopago.core.annotations.rest.PayloadType;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.exceptions.MPRestException;
 import com.mercadopago.insight.Stats;
-
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLPeerUnverifiedException;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.*;
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
@@ -41,7 +47,10 @@ import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.message.*;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.message.BasicHttpResponse;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.message.BasicStatusLine;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.ssl.SSLContexts;
 
@@ -56,7 +65,7 @@ public class MPRestClient {
     private HttpHost httpProxy = null;
 
     public MPRestClient() {
-        this.httpClient = createHttpClient();
+        this(null);
     }
 
     public MPRestClient(String proxyHostName, int proxyPort) {
@@ -65,7 +74,7 @@ public class MPRestClient {
     }
 
     public MPRestClient(HttpClient httpClient) {
-        this.httpClient = httpClient;
+        this.httpClient = (httpClient == null) ? createHttpClient() : httpClient;
     }
 
     @Deprecated
