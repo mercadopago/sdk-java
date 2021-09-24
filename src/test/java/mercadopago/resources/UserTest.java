@@ -22,5 +22,6 @@ public class UserTest extends BaseResourceTest {
         assertNotNull(user.getLastApiResponse());
         assertEquals(HTTP_STATUS_OK, user.getLastApiResponse().getStatusCode());
         assertEquals("BR", user.getCountryId());
+        assertEquals("MLB", user.getSiteId());
     }
 }

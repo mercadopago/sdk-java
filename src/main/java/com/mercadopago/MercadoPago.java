@@ -69,14 +69,6 @@ public class MercadoPago {
         }
 
         /**
-         * Get http client
-         * @return http client
-         */
-        public static HttpClient getHttpClient() {
-            return httpClient;
-        }
-
-        /**
          * Set http client
          * @param httpClient http client
          */

@@ -177,6 +177,10 @@ public class PaymentTest extends BaseResourceTest {
     Payment findPayment = Payment.findById(payment.getId());
     assertNotNull(findPayment);
     assertEquals(payment.getId(), findPayment.getId());
+    assertNotNull(findPayment.getDateCreated());
+    assertNotNull(findPayment.getDateApproved());
+    assertNotNull(findPayment.getDateLastUpdated());
+    assertEquals("BRL", findPayment.getCurrencyId().toString());
   }
 
   @Test

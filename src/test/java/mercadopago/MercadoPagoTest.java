@@ -28,6 +28,7 @@ public class MercadoPagoTest {
         MercadoPago.SDK.setClientSecret("CLIENT_SECRET");
         MercadoPago.SDK.setClientId("CLIENT_ID");
         MercadoPago.SDK.setAccessToken("ACCESS_TOKEN");
+        MercadoPago.SDK.setUserToken("USER_TOKEN");
         MercadoPago.SDK.setAppId("APP_ID");
         MercadoPago.SDK.setMaxConnections(100);
         MercadoPago.SDK.setConnectionTimeout(10000);
@@ -35,10 +36,12 @@ public class MercadoPagoTest {
         MercadoPago.SDK.setConnectionRequestTimeout(10000);
         MercadoPago.SDK.setRetries(10);
         MercadoPago.SDK.setProxy(new HttpHost("proxy", 8080));
+        MercadoPago.SDK.setMetricsScope("METRICS_SCOPE");
 
         assertEquals("Client Secret must be \"CLIENT_SECRET\" at this point", MercadoPago.SDK.getClientSecret(), "CLIENT_SECRET");
         assertEquals("Client Id must be \"CLIENT_ID\" at this point", MercadoPago.SDK.getClientId(), "CLIENT_ID");
         assertEquals("Access Token must be \"ACCESS_TOKEN\" at this point", MercadoPago.SDK.getAccessToken(), "ACCESS_TOKEN");
+        assertEquals("User Token must be \"USER_TOKEN\" at this point", MercadoPago.SDK.getUserToken(), "USER_TOKEN");
         assertEquals("App Id must be \"APP_ID\" at this point", MercadoPago.SDK.getAppId(), "APP_ID");
         assertEquals("maxConnections must be \"100\" at this point", MercadoPago.SDK.getMaxConnections(),100);
         assertEquals("connectionTimeout must be \"10000\" at this point", MercadoPago.SDK.getConnectionTimeout(),10000);
@@ -48,6 +51,7 @@ public class MercadoPagoTest {
         assertEquals("proxyHostName must be \"proxy\" at this point", MercadoPago.SDK.getProxy().getHostName(),"proxy");
         assertEquals("proxyPort must be \"8080\" at this point", MercadoPago.SDK.getProxy().getPort(),8080);
         assertEquals("MPBase url must be default \"https://api.mercadopago.com\" at this point", MercadoPago.SDK.getBaseUrl(), "https://api.mercadopago.com");
+        assertEquals("Metrics scope must be \"METRICS_SCOPE\" at this point", MercadoPago.SDK.getMetricsScope(), "METRICS_SCOPE");
 
         // Test override Url method
         MercadoPago.SDK.setBaseUrl("https://overriden.mercadopago.com");
