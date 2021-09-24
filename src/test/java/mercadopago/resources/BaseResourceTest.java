@@ -18,6 +18,7 @@ public abstract class BaseResourceTest extends Mockito {
 
     @Before
     public void setUp() throws MPException {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         MercadoPago.SDK.cleanConfiguration();
         MercadoPago.SDK.setAccessToken(accessToken);
         MercadoPago.SDK.setHttpClient(httpClientMock);

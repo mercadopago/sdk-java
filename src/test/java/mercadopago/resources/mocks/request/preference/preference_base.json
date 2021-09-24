@@ -1,1 +1,97 @@
-{"items":[{"id":"123","title":"Title","description":"Description","picture_url":"http://product.image.png","quantity":1,"currency_id":"BRL","unit_price":100.0}],"payer":{"name":"Test","surname":"User","email":"test_user_15230029@testuser.com","phone":{"area_code":"11","number":"999999999"},"identification":{"type":"CPF","number":"19119119100"},"address":{"zip_code":"06000000","street_name":"Street","street_number":123}},"payment_methods":{"excluded_payment_methods":[{"id":"visa"}],"excluded_payment_types":[{"id":"debit_card"}],"default_payment_method_id":"master","installments":6,"default_installments":1},"shipments":{"mode":"custom","local_pickup":false,"dimensions":"10x10x20,500","cost":10.0,"receiver_address":{"floor":"12","apartment":"120A","zip_code":"06000000","street_name":"Street","street_number":123}},"back_urls":{"success":"https://seller/success","pending":"https://seller/pending","failure":"https://seller/failure"},"notification_url":"https://seller/notification","additional_info":"Additional info","auto_return":"all","external_reference":"a43355ed-354c-4f73-a64b-be7793b610f4","expires":true,"expiration_date_from":"3921-02-10T10:10:00.000-0300","expiration_date_to":"3921-03-12T10:10:00.000-0300","processing_modes":["aggregator"],"binary_mode":true,"taxes":[{"type":"IVA","value":1.0}],"tracks":[{"type":"google_ad","values":{"conversion_id":"1123","conversion_label":"label"}},{"type":"facebook_ad","values":{"pixel_id":"111111"}}],"statement_descriptor":"Statement Descriptor"}
+{
+  "items": [
+    {
+      "id": "123",
+      "title": "Title",
+      "description": "Description",
+      "picture_url": "http://product.image.png",
+      "quantity": 1,
+      "currency_id": "BRL",
+      "unit_price": 100.0
+    }
+  ],
+  "payer": {
+    "name": "Test",
+    "surname": "User",
+    "email": "test_user_15230029@testuser.com",
+    "phone": {
+      "area_code": "11",
+      "number": "999999999"
+    },
+    "identification": {
+      "type": "CPF",
+      "number": "19119119100"
+    },
+    "address": {
+      "zip_code": "06000000",
+      "street_name": "Street",
+      "street_number": 123
+    }
+  },
+  "payment_methods": {
+    "excluded_payment_methods": [
+      {
+        "id": "visa"
+      }
+    ],
+    "excluded_payment_types": [
+      {
+        "id": "debit_card"
+      }
+    ],
+    "default_payment_method_id": "master",
+    "installments": 6,
+    "default_installments": 1
+  },
+  "shipments": {
+    "mode": "custom",
+    "local_pickup": false,
+    "dimensions": "10x10x20,500",
+    "cost": 10.0,
+    "receiver_address": {
+      "floor": "12",
+      "apartment": "120A",
+      "zip_code": "06000000",
+      "street_name": "Street",
+      "street_number": 123
+    }
+  },
+  "back_urls": {
+    "success": "https://seller/success",
+    "pending": "https://seller/pending",
+    "failure": "https://seller/failure"
+  },
+  "notification_url": "https://seller/notification",
+  "additional_info": "Additional info",
+  "auto_return": "all",
+  "external_reference": "a43355ed-354c-4f73-a64b-be7793b610f4",
+  "expires": true,
+  "expiration_date_from": "3921-02-10T10:10:00.000+0000",
+  "expiration_date_to": "3921-03-12T10:10:00.000+0000",
+  "processing_modes": [
+    "aggregator"
+  ],
+  "binary_mode": true,
+  "taxes": [
+    {
+      "type": "IVA",
+      "value": 1.0
+    }
+  ],
+  "tracks": [
+    {
+      "type": "google_ad",
+      "values": {
+        "conversion_id": "1123",
+        "conversion_label": "label"
+      }
+    },
+    {
+      "type": "facebook_ad",
+      "values": {
+        "pixel_id": "111111"
+      }
+    }
+  ],
+  "statement_descriptor": "Statement Descriptor"
+}

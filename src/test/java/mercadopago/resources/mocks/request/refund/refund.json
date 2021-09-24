@@ -64,7 +64,7 @@
     "payer": {
       "first_name": "Test",
       "last_name": "User",
-      "registration_date": "3926-02-10T10:10:10.000-0300"
+      "registration_date": "3926-02-10T10:10:10.000+0000"
     },
     "shipments": {
       "receiver_address": {

@@ -12,6 +12,7 @@ import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.Preference;
 import java.util.HashMap;
+import java.util.TimeZone;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -24,6 +25,7 @@ public class MPBaseMultipleParamsTest extends MPBase {
 
     @BeforeClass
     public static void beforeTest() throws MPException {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         MercadoPago.SDK.cleanConfiguration();
         MercadoPago.SDK.setConfiguration("credentials.properties");
     }
