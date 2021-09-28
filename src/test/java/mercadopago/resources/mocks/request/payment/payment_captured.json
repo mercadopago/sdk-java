@@ -1,0 +1,61 @@
+{
+  "payer": {
+    "type": "customer",
+    "email": "test_payer_9999999@testuser.com",
+    "identification": {
+      "type": "CPF",
+      "number": "37462770865"
+    },
+    "first_name": "Test",
+    "last_name": "User",
+    "entity_type": "individual"
+  },
+  "binary_mode": false,
+  "external_reference": "212efa19-da7a-4b4f-a3f0-4f458136d9ca",
+  "description": "description",
+  "metadata": {},
+  "transaction_amount": 100.0,
+  "capture": true,
+  "payment_method_id": "master",
+  "token": "bf9edf6ffae3ab5742033f33c557d54e",
+  "statement_descriptor": "statementDescriptor",
+  "installments": 1,
+  "notification_url": "https://seu-site.com.br/webhooks",
+  "additional_info": {
+    "items": [
+      {
+        "id": "id",
+        "title": "title",
+        "description": "description",
+        "picture_url": "pictureUrl",
+        "category_id": "categoryId",
+        "quantity": 1,
+        "unit_price": 100.0
+      }
+    ],
+    "payer": {
+      "first_name": "Test",
+      "last_name": "User",
+      "phone": {
+        "area_code": "000",
+        "number": "0000-0000"
+      },
+      "address": {
+        "zip_code": "0000",
+        "street_name": "streetName",
+        "street_number": "1234"
+      },
+      "registration_date": "3921-01-10T10:10:10.000+0000"
+    },
+    "shipments": {
+      "receiver_address": {
+        "floor": "floor",
+        "apartment": "apartment",
+        "zip_code": "0000",
+        "street_name": "streetName",
+        "street_number": "1234"
+      }
+    },
+    "ip_address": "127.0.0.1"
+  }
+}

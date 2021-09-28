@@ -9,12 +9,12 @@ import com.mercadopago.exceptions.MPException;
 import com.mercadopago.exceptions.MPRestException;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPRestClient;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpHost;
-
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Properties;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpHost;
+import org.apache.http.client.HttpClient;
 
 
 /**
@@ -54,6 +54,27 @@ public class MercadoPago {
         private static volatile int socketTimeout = DEFAULT_SOCKET_TIMEOUT_MS;
         private static volatile int retries = DEFAULT_RETRIES;
         private static volatile HttpHost proxy = null;
+        private static volatile HttpClient httpClient = null;
+        private static volatile MPRestClient mpRestClient = null;
+
+        /**
+         * Get MP Rest Client
+         * @return MPRestClient object
+         */
+        public synchronized static MPRestClient getMpRestClient() {
+            if (mpRestClient == null) {
+                mpRestClient = new MPRestClient(httpClient);
+            }
+            return mpRestClient;
+        }
+
+        /**
+         * Set http client
+         * @param httpClient http client
+         */
+        public static void setHttpClient(HttpClient httpClient) {
+            SDK.httpClient = httpClient;
+        }
 
         /**
          * Configure Methods
@@ -557,6 +578,7 @@ public class MercadoPago {
             connectionRequestTimeout = DEFAULT_CONNECTION_REQUEST_TIMEOUT_MS;
             retries = DEFAULT_RETRIES;
             proxy = null;
+            mpRestClient = null;
         }
 
         @Deprecated

@@ -1,18 +1,28 @@
 package mercadopago.resources;
 
+import static mercadopago.helper.HttpStatusCode.HTTP_STATUS_CREATED;
+import static mercadopago.helper.HttpStatusCode.HTTP_STATUS_OK;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.MerchantOrder;
 import com.mercadopago.resources.Preference;
 import com.mercadopago.resources.datastructures.merchantorder.Item;
 import com.mercadopago.resources.datastructures.merchantorder.Payer;
 import com.mercadopago.resources.datastructures.merchantorder.Shipment;
-import org.junit.Assert;
-import org.junit.Test;
-
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
+import org.junit.Test;
 
 public class MerchantOrderTest extends BaseResourceTest {
+
+    private static final String ORDER_BASE_JSON = "merchant/order_base.json";
+
+    private static final String ORDER_UPDATED_JSON = "merchant/order_updated.json";
+
+    private static final String PREFERENCE_BASE_JSON = "preference/preference_base.json";
 
     @Test
     public void gettersAndSettersTest() {
@@ -21,7 +31,7 @@ public class MerchantOrderTest extends BaseResourceTest {
                 .setApplicationId("59441713004005")
                 .setSiteId("MLB")
                 .setNotificationUrl("https://seller/notification")
-                .setAdditionalInfo("Aditional info")
+                .setAdditionalInfo("Additional info")
                 .setExternalReference(UUID.randomUUID().toString())
                 .setMarketplace("NONE")
                 .setPayer(new Payer())
@@ -30,55 +40,74 @@ public class MerchantOrderTest extends BaseResourceTest {
                 .setItems(new ArrayList<Item>())
                 .setCancelled(true);
 
-        Assert.assertNotNull(merchantOrder.getPreferenceId());
-        Assert.assertNotNull(merchantOrder.getApplicationId());
-        Assert.assertNotNull(merchantOrder.getSiteId());
-        Assert.assertNotNull(merchantOrder.getNotificationUrl());
-        Assert.assertNotNull(merchantOrder.getAdditionalInfo());
-        Assert.assertNotNull(merchantOrder.getExternalReference());
-        Assert.assertNotNull(merchantOrder.getMarketplace());
-        Assert.assertNotNull(merchantOrder.getPayer());
-        Assert.assertNotNull(merchantOrder.getSponsorId());
-        Assert.assertNotNull(merchantOrder.getShipments());
-        Assert.assertNotNull(merchantOrder.getItems());
-        Assert.assertNotNull(merchantOrder.getCancelled());
+        assertNotNull(merchantOrder.getPreferenceId());
+        assertNotNull(merchantOrder.getApplicationId());
+        assertNotNull(merchantOrder.getSiteId());
+        assertNotNull(merchantOrder.getNotificationUrl());
+        assertNotNull(merchantOrder.getAdditionalInfo());
+        assertNotNull(merchantOrder.getExternalReference());
+        assertNotNull(merchantOrder.getMarketplace());
+        assertNotNull(merchantOrder.getPayer());
+        assertNotNull(merchantOrder.getSponsorId());
+        assertNotNull(merchantOrder.getShipments());
+        assertNotNull(merchantOrder.getItems());
+        assertNotNull(merchantOrder.getCancelled());
     }
 
     @Test
-    public void merchantOrderCreateTest() throws MPException {
+    public void merchantOrderCreateTest() throws MPException, IOException {
+
         MerchantOrder merchantOrder = newMerchantOrder();
+
+        httpClientMock.mock(ORDER_BASE_JSON, HTTP_STATUS_CREATED, ORDER_BASE_JSON);
+
         merchantOrder.save();
-        Assert.assertNotNull(merchantOrder.getLastApiResponse());
-        Assert.assertEquals(201, merchantOrder.getLastApiResponse().getStatusCode());
-        Assert.assertNotNull(merchantOrder.getId());
+        assertNotNull(merchantOrder.getLastApiResponse());
+        assertEquals(HTTP_STATUS_CREATED, merchantOrder.getLastApiResponse().getStatusCode());
+        assertNotNull(merchantOrder.getId());
     }
 
     @Test
-    public void merchantOrderUpdateTest() throws MPException {
+    public void merchantOrderUpdateTest() throws MPException, IOException {
+
         MerchantOrder merchantOrder = newMerchantOrder();
+
+        httpClientMock.mock(ORDER_BASE_JSON, HTTP_STATUS_CREATED, ORDER_BASE_JSON);
+
         merchantOrder.save();
-        Assert.assertNotNull(merchantOrder.getId());
+        assertNotNull(merchantOrder.getId());
+
+        httpClientMock.mock(ORDER_UPDATED_JSON, HTTP_STATUS_OK, ORDER_UPDATED_JSON);
 
         merchantOrder.setAdditionalInfo("new info");
         merchantOrder.update();
-        Assert.assertNotNull(merchantOrder.getLastApiResponse());
-        Assert.assertEquals(200, merchantOrder.getLastApiResponse().getStatusCode());
-        Assert.assertNotNull(merchantOrder.getId());
+        assertNotNull(merchantOrder.getLastApiResponse());
+        assertEquals(HTTP_STATUS_OK, merchantOrder.getLastApiResponse().getStatusCode());
+        assertNotNull(merchantOrder.getId());
     }
 
     @Test
-    public void merchantOrderLoadTest() throws MPException {
+    public void merchantOrderLoadTest() throws MPException, IOException {
+
         MerchantOrder merchantOrder = newMerchantOrder();
+
+        httpClientMock.mock(ORDER_BASE_JSON, HTTP_STATUS_CREATED, ORDER_BASE_JSON);
+
         merchantOrder.save();
-        Assert.assertNotNull(merchantOrder.getId());
+        assertNotNull(merchantOrder.getId());
+
+        httpClientMock.mock(ORDER_BASE_JSON, HTTP_STATUS_OK, ORDER_BASE_JSON);
 
         MerchantOrder findMerchantOrder =  MerchantOrder.findById(merchantOrder.getId());
-        Assert.assertNotNull(findMerchantOrder.getLastApiResponse());
-        Assert.assertEquals(200, findMerchantOrder.getLastApiResponse().getStatusCode());
-        Assert.assertNotNull(findMerchantOrder.getId());
+        assertNotNull(findMerchantOrder.getLastApiResponse());
+        assertEquals(HTTP_STATUS_OK, findMerchantOrder.getLastApiResponse().getStatusCode());
+        assertNotNull(findMerchantOrder.getId());
     }
 
-    private static MerchantOrder newMerchantOrder() throws MPException {
+    private static MerchantOrder newMerchantOrder() throws MPException, IOException {
+
+        httpClientMock.mock(PREFERENCE_BASE_JSON, HTTP_STATUS_CREATED, PREFERENCE_BASE_JSON);
+
         Preference preference = PreferenceTest.newPreference();
         preference.save();
 
@@ -87,8 +116,8 @@ public class MerchantOrderTest extends BaseResourceTest {
                 .setApplicationId("59441713004005")
                 .setSiteId("MLB")
                 .setNotificationUrl("https://seller/notification")
-                .setAdditionalInfo("Aditional info")
-                .setExternalReference(UUID.randomUUID().toString())
+                .setAdditionalInfo("Additional info")
+                .setExternalReference("c754fdf1-2eff-45dc-b382-9ad0bfb948b1")
                 .setMarketplace("NONE");
 
         for (com.mercadopago.resources.datastructures.preference.Item i : preference.getItems()) {

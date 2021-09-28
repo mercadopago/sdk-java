@@ -1,11 +1,19 @@
- package mercadopago.resources;
+package mercadopago.resources;
+
+import static mercadopago.helper.HttpStatusCode.HTTP_STATUS_BAD_REQUEST;
+import static mercadopago.helper.HttpStatusCode.HTTP_STATUS_CREATED;
+import static mercadopago.helper.HttpStatusCode.HTTP_STATUS_OK;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import com.google.gson.JsonObject;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.core.MPResourceArray;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.Payment;
-import com.mercadopago.resources.User;
 import com.mercadopago.resources.datastructures.payment.AdditionalInfo;
 import com.mercadopago.resources.datastructures.payment.AdditionalInfoPayer;
 import com.mercadopago.resources.datastructures.payment.Address;
@@ -16,253 +24,318 @@ import com.mercadopago.resources.datastructures.payment.Payer;
 import com.mercadopago.resources.datastructures.payment.Phone;
 import com.mercadopago.resources.datastructures.payment.Shipments;
 import com.mercadopago.resources.datastructures.payment.TransactionDetails;
-import mercadopago.helper.CardHelper;
-import mercadopago.helper.IdentificationHelper;
-import org.junit.Assert;
-import org.junit.Test;
-
+import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
+import mercadopago.helper.IdentificationHelper;
+import org.junit.Test;
 
- public class PaymentTest extends BaseResourceTest {
+public class PaymentTest extends BaseResourceTest {
 
-     @Test
-     public void gettersAndSettersTest() {
-         Payment payment = new Payment()
-                 .setPayer(new Payer())
-                 .setBinaryMode(Boolean.FALSE)
-                 .setExternalReference(UUID.randomUUID().toString())
-                 .setDescription("description")
-                 .setMetadata(new JsonObject())
-                 .setTransactionAmount(100f)
-                 .setCapture(true)
-                 .setPaymentMethodId("master")
-                 .setToken("cardToken")
-                 .setStatementDescriptor("statementDescriptor")
-                 .setInstallments(1)
-                 .setNotificationUrl("https://seu-site.com.br/webhooks")
-                 .setAdditionalInfo(new AdditionalInfo())
-                 .setTransactionDetails(new TransactionDetails())
-                 .setDifferentialPricingId(123)
-                 .setIssuerId("123")
-                 .setCallbackUrl("https://callback.url")
-                 .setSponsorId(123)
-                 .setProcessingMode("aggregator")
-                 .setPaymentMode("credit")
-                 .setPaymentMethodOptionId("x")
-                 .setCouponAmount(2f)
-                 .setMerchantAccountId("y");
+  private static final String TEST_CARD_TOKEN = "bf9edf6ffae3ab5742033f33c557d54e";
 
-         Assert.assertNotNull(payment.getPayer());
-         Assert.assertNotNull(payment.getBinaryMode());
-         Assert.assertNotNull(payment.getExternalReference());
-         Assert.assertNotNull(payment.getDescription());
-         Assert.assertNotNull(payment.getMetadata());
-         Assert.assertNotNull(payment.getTransactionAmount());
-         Assert.assertNotNull(payment.getPaymentMethodId());
-         Assert.assertNotNull(payment.getStatementDescriptor());
-         Assert.assertNotNull(payment.getInstallments());
-         Assert.assertNotNull(payment.getNotificationUrl());
-         Assert.assertNotNull(payment.getTransactionDetails());
-         Assert.assertNotNull(payment.getDifferentialPricingId());
-         Assert.assertNotNull(payment.getIssuerId());
-         Assert.assertNotNull(payment.getCallbackUrl());
-         Assert.assertNotNull(payment.getSponsorId());
-         Assert.assertNotNull(payment.getProcessingMode());
-         Assert.assertNotNull(payment.getPaymentMethodOptionId());
-         Assert.assertNotNull(payment.getCouponAmount());
-         Assert.assertNotNull(payment.getMerchantAccountid());
-     }
+  private static final String PAYMENT_BASE_JSON = "payment/payment_base.json";
 
-     @Test
-     public void paymentSaveTest() throws MPException {
-         Payment payment = newPayment(false);
-         payment.save();
-         Assert.assertNotNull(payment.getLastApiResponse());
-         Assert.assertEquals(201, payment.getLastApiResponse().getStatusCode());
-         Assert.assertNotNull(payment.getId());
-     }
+  private static final String PAYMENT_CAPTURED_JSON = "payment/payment_captured.json";
 
-     @Test
-     public void paymentSaveRequestOptionsTest() throws MPException {
-         MPRequestOptions requestOptions = newRequestOptions();
-         Payment payment = newPayment(false);
-         payment.save(requestOptions);
-         Assert.assertNotNull(payment.getLastApiResponse());
-         Assert.assertEquals(201, payment.getLastApiResponse().getStatusCode());
-         Assert.assertNotNull(payment.getId());
-     }
+  private static final String PAYMENT_CANCELLED_JSON = "payment/payment_cancelled.json";
 
-     @Test
-     public void capturePaymentTest() throws MPException {
-         Payment payment = newPayment(false);
-         payment.save();
-         Assert.assertNotNull(payment.getId());
+  private static final String BY_EXTERNAL_REFERENCE_JSON = "payment/by_external_reference.json";
 
-         sleep(5000);
+  private static final String REFUND_ALL_JSON = "refund/refund_all.json";
 
-         payment.setCapture(true);
-         payment.update();
-         Assert.assertNotNull(payment.getLastApiResponse());
-         Assert.assertEquals(200, payment.getLastApiResponse().getStatusCode());
-         Assert.assertTrue(payment.getCaptured());
-     }
+  private static final String REFUND_PARTIAL_JSON = "refund/refund_partial.json";
 
-     @Test
-     public void cancelPaymentTest() throws MPException {
-         Payment payment = newPayment(false);
-         payment.save();
-         Assert.assertNotNull(payment.getId());
+  private static final String CAPTURED_JSON = "payment/captured.json";
 
-         sleep(7000);
+  private static final String STATUS_CANCELLED_JSON = "payment/status_cancelled.json";
 
-         payment.setStatus(Payment.Status.cancelled);
-         payment.update();
-         Assert.assertNotNull(payment.getLastApiResponse());
-         Assert.assertEquals(200, payment.getLastApiResponse().getStatusCode());
-     }
+  private static final String PAYMENT_CARD_TOKEN_ERROR_JSON = "payment/payment_card_token_error.json";
 
-     @Test
-     public void findPaymentTest() throws MPException {
-         Payment payment = newPayment(false);
-         payment.save();
-         Assert.assertNotNull(payment.getId());
+  @Test
+  public void gettersAndSettersTest() {
+    Payment payment = new Payment()
+        .setPayer(new Payer())
+        .setBinaryMode(Boolean.FALSE)
+        .setExternalReference(UUID.randomUUID().toString())
+        .setDescription("description")
+        .setMetadata(new JsonObject())
+        .setTransactionAmount(100f)
+        .setCapture(true)
+        .setPaymentMethodId("master")
+        .setToken("cardToken")
+        .setStatementDescriptor("statementDescriptor")
+        .setInstallments(1)
+        .setNotificationUrl("https://seu-site.com.br/webhooks")
+        .setAdditionalInfo(new AdditionalInfo())
+        .setTransactionDetails(new TransactionDetails())
+        .setDifferentialPricingId(123)
+        .setIssuerId("123")
+        .setCallbackUrl("https://callback.url")
+        .setSponsorId(123)
+        .setProcessingMode("aggregator")
+        .setPaymentMode("credit")
+        .setPaymentMethodOptionId("x")
+        .setCouponAmount(2f)
+        .setMerchantAccountId("y");
 
-         sleep(5000);
+    assertNotNull(payment.getPayer());
+    assertNotNull(payment.getBinaryMode());
+    assertNotNull(payment.getExternalReference());
+    assertNotNull(payment.getDescription());
+    assertNotNull(payment.getMetadata());
+    assertNotNull(payment.getTransactionAmount());
+    assertNotNull(payment.getPaymentMethodId());
+    assertNotNull(payment.getStatementDescriptor());
+    assertNotNull(payment.getInstallments());
+    assertNotNull(payment.getNotificationUrl());
+    assertNotNull(payment.getTransactionDetails());
+    assertNotNull(payment.getDifferentialPricingId());
+    assertNotNull(payment.getIssuerId());
+    assertNotNull(payment.getCallbackUrl());
+    assertNotNull(payment.getSponsorId());
+    assertNotNull(payment.getProcessingMode());
+    assertNotNull(payment.getPaymentMethodOptionId());
+    assertNotNull(payment.getCouponAmount());
+    assertNotNull(payment.getMerchantAccountid());
+  }
 
-         Payment findPayment = Payment.findById(payment.getId());
-         Assert.assertNotNull(findPayment);
-         Assert.assertEquals(payment.getId(), findPayment.getId());
-     }
+  @Test
+  public void paymentSaveTest() throws MPException, IOException {
 
-     @Test
-     public void findPaymentRequestOptionsTest() throws MPException {
-         Payment payment = newPayment(false);
-         payment.save();
-         Assert.assertNotNull(payment.getId());
+    httpClientMock.mock(PAYMENT_BASE_JSON, HTTP_STATUS_CREATED, PAYMENT_BASE_JSON);
 
-         sleep(3000);
+    Payment payment = newPayment(false);
+    payment.save();
+    assertNotNull(payment.getLastApiResponse());
+    assertEquals(HTTP_STATUS_CREATED, payment.getLastApiResponse().getStatusCode());
+    assertNotNull(payment.getId());
+  }
 
-         MPRequestOptions requestOptions = newRequestOptions();
-         Payment findPayment = Payment.findById(payment.getId(), false, requestOptions);
-         Assert.assertNotNull(findPayment);
-         Assert.assertEquals(payment.getId(), findPayment.getId());
-     }
+  @Test
+  public void paymentSaveRequestOptionsTest() throws MPException, IOException {
 
-     @Test
-     public void searchByReferenceTest() throws MPException {
-         Payment payment = newPayment(false);
-         payment.save();
-         Assert.assertNotNull(payment.getId());
+    httpClientMock.mock(PAYMENT_BASE_JSON, HTTP_STATUS_CREATED, PAYMENT_BASE_JSON);
 
-         sleep(5000);
+    MPRequestOptions requestOptions = newRequestOptions();
+    Payment payment = newPayment(false);
+    payment.save(requestOptions);
+    assertNotNull(payment.getLastApiResponse());
+    assertEquals(HTTP_STATUS_CREATED, payment.getLastApiResponse().getStatusCode());
+    assertNotNull(payment.getId());
+  }
 
-         HashMap<String, String> filters = new HashMap<String, String>();
-         filters.put("external_reference", payment.getExternalReference());
-         MPResourceArray result = Payment.search(filters, false);
-         Assert.assertNotNull(result);
-         Assert.assertNotNull(result.resources());
-         Assert.assertTrue(result.resources().size() > 0);
-     }
+  @Test
+  public void capturePaymentTest() throws MPException, IOException {
 
-     @Test
-     public void searchByReferenceRequestOptionsTest() throws MPException {
-         Payment payment = newPayment(false);
-         payment.save();
-         Assert.assertNotNull(payment.getId());
+    httpClientMock.mock(PAYMENT_BASE_JSON, HTTP_STATUS_CREATED, PAYMENT_BASE_JSON);
 
-         sleep(5000);
+    Payment payment = newPayment(false);
+    payment.save();
+    assertNotNull(payment.getId());
+    assertFalse(payment.getCaptured());
 
-         MPRequestOptions requestOptions = newRequestOptions();
-         HashMap<String, String> filters = new HashMap<String, String>();
-         filters.put("external_reference", payment.getExternalReference());
-         MPResourceArray result = Payment.search(filters, false, requestOptions);
-         Assert.assertNotNull(result);
-         Assert.assertNotNull(result.resources());
-         Assert.assertTrue(result.resources().size() > 0);
-     }
+    httpClientMock.mock(PAYMENT_CAPTURED_JSON, HTTP_STATUS_OK, CAPTURED_JSON);
 
-     @Test
-     public void paymentRefundTotalTest() throws MPException {
-         Payment payment = newPayment(true);
-         payment.save();
-         Assert.assertNotNull(payment.getId());
+    payment.setCapture(true);
+    payment.update();
+    assertNotNull(payment.getLastApiResponse());
+    assertEquals(HTTP_STATUS_OK, payment.getLastApiResponse().getStatusCode());
+    assertTrue(payment.getCaptured());
+  }
 
-         sleep(7000);
+  @Test
+  public void cancelPaymentTest() throws MPException, IOException {
 
-         payment.refund();
-         Assert.assertNotNull(payment.getLastApiResponse());
-         Assert.assertEquals(201, payment.getLastApiResponse().getStatusCode());
-     }
+    httpClientMock.mock(PAYMENT_BASE_JSON, HTTP_STATUS_CREATED, PAYMENT_BASE_JSON);
 
-     @Test
-     public void paymentRefundPartialTest() throws MPException {
-         Payment payment = newPayment(true);
-         payment.save();
-         Assert.assertNotNull(payment.getId());
+    Payment payment = newPayment(false);
+    payment.save();
+    assertNotNull(payment.getId());
 
-         sleep(7000);
+    httpClientMock.mock(PAYMENT_CANCELLED_JSON, HTTP_STATUS_OK, STATUS_CANCELLED_JSON);
 
-         payment.refund(1f);
-         Assert.assertNotNull(payment.getLastApiResponse());
-         Assert.assertEquals(201, payment.getLastApiResponse().getStatusCode());
-     }
+    payment.setStatus(Payment.Status.cancelled);
+    payment.update();
+    assertNotNull(payment.getLastApiResponse());
+    assertEquals(HTTP_STATUS_OK, payment.getLastApiResponse().getStatusCode());
+  }
 
-     public static Payment newPayment(boolean capture) throws MPException {
-         final User user = User.find();
-         final JsonObject identification = IdentificationHelper.getIdentification(user.getSiteId());
-         final String token = CardHelper.createCardToken("approved", user.getSiteId());
+  @Test
+  public void findPaymentTest() throws MPException, IOException {
 
-         return new Payment()
-                 .setPayer(new Payer()
-                         .setType(Payer.type.customer)
-                         .setEmail("test_payer_9999988@testuser.com")
-                         .setEntityType(Payer.EntityType.individual)
-                         .setFirstName("Test")
-                         .setLastName("User")
-                         .setIdentification(new Identification()
-                                 .setType(identification.get("type").getAsString())
-                                 .setNumber(identification.get("number").getAsString())))
-                 .setBinaryMode(Boolean.FALSE)
-                 .setExternalReference(UUID.randomUUID().toString())
-                 .setDescription("description")
-                 .setMetadata(new JsonObject())
-                 .setTransactionAmount(100f)
-                 .setCapture(capture)
-                 .setPaymentMethodId("master")
-                 .setToken(token)
-                 .setStatementDescriptor("statementDescriptor")
-                 .setInstallments(1)
-                 .setNotificationUrl("https://seu-site.com.br/webhooks")
-                 .setAdditionalInfo(new AdditionalInfo()
-                         .setIpAddres("127.0.0.1")
-                         .appendItem(new Item()
-                                 .setId("id")
-                                 .setTitle("title")
-                                 .setDescription("description")
-                                 .setPictureUrl("pictureUrl")
-                                 .setCategoryId("categoryId")
-                                 .setQuantity(1)
-                                 .setUnitPrice(100f))
-                         .setPayer(new AdditionalInfoPayer()
-                                 .setFirstName("Test")
-                                 .setLastName("User")
-                                 .setPhone(new Phone()
-                                         .setAreaCode("000")
-                                         .setNumber("0000-0000"))
-                                 .setAddress(new Address()
-                                         .setZipCode("0000")
-                                         .setStreetName("streetName")
-                                         .setStreetNumber(1234))
-                                 .setRegistrationDate(new Date()))
-                         .setShipments(new Shipments()
-                                 .setReceiverAddress(new AddressReceiver()
-                                         .setZipCode("0000")
-                                         .setStreetName("streetName")
-                                         .setStreetNumberString("1234")
-                                         .setFloor("floor")
-                                         .setApartment("apartment"))));
-     }
- }
+    httpClientMock.mock(PAYMENT_BASE_JSON, HTTP_STATUS_CREATED, PAYMENT_BASE_JSON);
+
+    Payment payment = newPayment(false);
+    payment.save();
+    assertNotNull(payment.getId());
+
+    httpClientMock.mock(PAYMENT_BASE_JSON, HTTP_STATUS_OK, PAYMENT_BASE_JSON);
+
+    Payment findPayment = Payment.findById(payment.getId());
+    assertNotNull(findPayment);
+    assertEquals(payment.getId(), findPayment.getId());
+    assertNotNull(findPayment.getDateCreated());
+    assertNotNull(findPayment.getDateApproved());
+    assertNotNull(findPayment.getDateLastUpdated());
+    assertEquals("BRL", findPayment.getCurrencyId().toString());
+  }
+
+  @Test
+  public void findPaymentRequestOptionsTest() throws MPException, IOException {
+
+    httpClientMock.mock(PAYMENT_BASE_JSON, HTTP_STATUS_CREATED, PAYMENT_BASE_JSON);
+
+    Payment payment = newPayment(false);
+    payment.save();
+    assertNotNull(payment.getId());
+
+    httpClientMock.mock(PAYMENT_BASE_JSON, HTTP_STATUS_OK, PAYMENT_BASE_JSON);
+
+    MPRequestOptions requestOptions = newRequestOptions();
+    Payment findPayment = Payment.findById(payment.getId(), false, requestOptions);
+    assertNotNull(findPayment);
+    assertEquals(payment.getId(), findPayment.getId());
+  }
+
+  @Test
+  public void searchByReferenceTest() throws MPException, IOException {
+
+    httpClientMock.mock(PAYMENT_BASE_JSON, HTTP_STATUS_CREATED, PAYMENT_BASE_JSON);
+
+    Payment payment = newPayment(false);
+    payment.save();
+    assertNotNull(payment.getId());
+
+    httpClientMock.mock(BY_EXTERNAL_REFERENCE_JSON, HTTP_STATUS_OK, PAYMENT_BASE_JSON);
+
+    HashMap<String, String> filters = new HashMap<String, String>();
+    filters.put("external_reference", payment.getExternalReference());
+    MPResourceArray result = Payment.search(filters, false);
+    assertNotNull(result);
+    assertNotNull(result.resources());
+    assertTrue(result.resources().size() > 0);
+  }
+
+  @Test
+  public void searchByReferenceRequestOptionsTest() throws MPException, IOException {
+
+    httpClientMock.mock(PAYMENT_BASE_JSON, HTTP_STATUS_CREATED, PAYMENT_BASE_JSON);
+
+    Payment payment = newPayment(false);
+    payment.save();
+    assertNotNull(payment.getId());
+
+    httpClientMock.mock(BY_EXTERNAL_REFERENCE_JSON, HTTP_STATUS_OK, PAYMENT_BASE_JSON);
+
+    MPRequestOptions requestOptions = newRequestOptions();
+    HashMap<String, String> filters = new HashMap<String, String>();
+    filters.put("external_reference", payment.getExternalReference());
+    MPResourceArray result = Payment.search(filters, false, requestOptions);
+    assertNotNull(result);
+    assertNotNull(result.resources());
+    assertTrue(result.resources().size() > 0);
+  }
+
+  @Test
+  public void paymentRefundTotalTest() throws MPException, IOException {
+
+    httpClientMock.mock(PAYMENT_BASE_JSON, HTTP_STATUS_CREATED, PAYMENT_CAPTURED_JSON);
+
+    Payment payment = newPayment(true);
+    payment.save();
+    assertNotNull(payment.getId());
+
+    httpClientMock.mock(REFUND_ALL_JSON, HTTP_STATUS_CREATED, PAYMENT_CAPTURED_JSON);
+
+    payment.refund();
+    assertNotNull(payment.getLastApiResponse());
+    assertEquals(HTTP_STATUS_CREATED, payment.getLastApiResponse().getStatusCode());
+  }
+
+  @Test
+  public void paymentRefundPartialTest() throws MPException, IOException {
+
+    httpClientMock.mock(PAYMENT_BASE_JSON, HTTP_STATUS_CREATED, PAYMENT_CAPTURED_JSON);
+
+    Payment payment = newPayment(true);
+    payment.save();
+    assertNotNull(payment.getId());
+
+    httpClientMock.mock(REFUND_PARTIAL_JSON, HTTP_STATUS_CREATED, REFUND_PARTIAL_JSON);
+
+    payment.refund(1f);
+    assertNotNull(payment.getLastApiResponse());
+    assertEquals(HTTP_STATUS_CREATED, payment.getLastApiResponse().getStatusCode());
+  }
+
+  @Test
+  public void paymentCardTokenErrorTest() throws IOException, MPException {
+
+    httpClientMock.mock(PAYMENT_CARD_TOKEN_ERROR_JSON, HTTP_STATUS_BAD_REQUEST, PAYMENT_BASE_JSON);
+
+    Payment payment = newPayment(false);
+    payment.save();
+    assertNotNull(payment.getLastApiResponse());
+    assertEquals(HTTP_STATUS_BAD_REQUEST, payment.getLastApiResponse().getStatusCode());
+    assertNull(payment.getId());
+  }
+
+  public static Payment newPayment(boolean capture) {
+    final JsonObject identification = IdentificationHelper.getIdentification("MLB");
+
+    return new Payment()
+        .setPayer(new Payer()
+            .setType(Payer.type.customer)
+            .setEmail("test_payer_9999999@testuser.com")
+            .setEntityType(Payer.EntityType.individual)
+            .setFirstName("Test")
+            .setLastName("User")
+            .setIdentification(new Identification()
+                .setType(identification.get("type").getAsString())
+                .setNumber(identification.get("number").getAsString())))
+        .setBinaryMode(Boolean.FALSE)
+        .setExternalReference("212efa19-da7a-4b4f-a3f0-4f458136d9ca")
+        .setDescription("description")
+        .setMetadata(new JsonObject())
+        .setTransactionAmount(100f)
+        .setCapture(capture)
+        .setPaymentMethodId("master")
+        .setToken(TEST_CARD_TOKEN)
+        .setStatementDescriptor("statementDescriptor")
+        .setInstallments(1)
+        .setNotificationUrl("https://seu-site.com.br/webhooks")
+        .setAdditionalInfo(new AdditionalInfo()
+            .setIpAddres("127.0.0.1")
+            .appendItem(new Item()
+                .setId("id")
+                .setTitle("title")
+                .setDescription("description")
+                .setPictureUrl("pictureUrl")
+                .setCategoryId("categoryId")
+                .setQuantity(1)
+                .setUnitPrice(100f))
+            .setPayer(new AdditionalInfoPayer()
+                .setFirstName("Test")
+                .setLastName("User")
+                .setPhone(new Phone()
+                    .setAreaCode("000")
+                    .setNumber("0000-0000"))
+                .setAddress(new Address()
+                    .setZipCode("0000")
+                    .setStreetName("streetName")
+                    .setStreetNumber(1234))
+                .setRegistrationDate(
+                    new Date(2021, Calendar.JANUARY, 10, 10, 10, 10)))
+            .setShipments(new Shipments()
+                .setReceiverAddress(new AddressReceiver()
+                    .setZipCode("0000")
+                    .setStreetName("streetName")
+                    .setStreetNumberString("1234")
+                    .setFloor("floor")
+                    .setApartment("apartment"))));
+  }
+}
 

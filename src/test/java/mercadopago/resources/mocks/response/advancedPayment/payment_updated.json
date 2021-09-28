@@ -1,0 +1,120 @@
+{
+  "id": 413378989,
+  "status": "authorized",
+  "marketplace": "MP-MKT-59441713004005",
+  "sponsor_id": null,
+  "payments": [
+    {
+      "id": 17070722077,
+      "status": "authorized",
+      "status_detail": "pending_capture",
+      "payment_type_id": "credit_card",
+      "payment_method_id": "master",
+      "token": "35eb6cf0955f4e574be6430d01b0f5d4",
+      "transaction_amount": 100.0,
+      "installments": 1,
+      "processing_mode": "aggregator",
+      "issuer_id": null,
+      "coupon_amount": null,
+      "campaign_id": null,
+      "coupon_code": null,
+      "description": "description",
+      "external_reference": "3f3686ee-bf3d-45be-8de5-8d1d5d567bd8",
+      "statement_descriptor": "ADVPAY",
+      "date_of_expiration": "2026-09-20T19:04:27.424Z",
+      "merchant_account_id": null,
+      "payment_method_option_id": null,
+      "additional_info": null,
+      "transaction_details": {
+        "external_resource_url": null,
+        "total_paid_amount": 100,
+        "financial_institution": null
+      },
+      "net_amount": null,
+      "taxes": null
+    }
+  ],
+  "disbursements": [
+    {
+      "id": null,
+      "amount": 40.0,
+      "external_reference": "Seller106650904-a63f-4b76-8791-d0a406f80803",
+      "collector_id": 539673000,
+      "application_fee": 1.0,
+      "money_release_days": 30,
+      "additional_info": null
+    },
+    {
+      "id": null,
+      "amount": 60.0,
+      "external_reference": "Seller265420e6d-e995-42ad-b415-ca1b631b83d9",
+      "collector_id": 488656838,
+      "application_fee": 0.5,
+      "money_release_days": 30,
+      "additional_info": null
+    }
+  ],
+  "payer": {
+    "id": null,
+    "email": "test_payer_9999988@testuser.com",
+    "address": {
+      "street_number": "123",
+      "zip_code": "06233200",
+      "street_name": "Street"
+    },
+    "identification": {
+      "type": "CPF",
+      "number": "37462770865"
+    },
+    "first_name": "Test",
+    "last_name": "User",
+    "phone": null,
+    "token": null,
+    "external_payer_id": null
+  },
+  "external_reference": "Adv998a355a-63b5-4d84-89fa-3282736f0fd1",
+  "description": "description",
+  "binary_mode": false,
+  "capture": false,
+  "date_created": "2021-09-20T15:04:32.424-04:00",
+  "date_last_updated": "2021-09-20T15:04:52.950-04:00",
+  "metadata": {
+    "test": "123"
+  },
+  "additional_info": {
+    "ip_address": "127.0.0.1",
+    "shipments": {
+      "receiver_address": {
+        "zip_code": "06233200",
+        "street_name": "Street",
+        "street_number": "123",
+        "floor": "1",
+        "apartment": "300A"
+      }
+    },
+    "payer": {
+      "id": null,
+      "type": null,
+      "email": null,
+      "first_name": "Test",
+      "last_name": "User",
+      "phone": null,
+      "registration_date": "2021-09-10T16:04:27.429-0300",
+      "address": null
+    },
+    "items": [
+      {
+        "id": "123",
+        "title": "title",
+        "description": "description",
+        "picture_url": "https://www.mercadopago.com/logomp3.gif",
+        "category_id": "category",
+        "quantity": 1,
+        "unit_price": 100.0
+      }
+    ]
+  },
+  "wallet_payment": null,
+  "pos_id": null,
+  "store_id": null
+}

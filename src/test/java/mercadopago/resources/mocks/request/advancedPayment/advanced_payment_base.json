@@ -1,0 +1,80 @@
+{
+  "external_reference": "Adv53ebe8d0-33b7-49fe-9624-44522c88b9a6",
+  "description": "description",
+  "payer": {
+    "email": "test_payer_9999988@testuser.com",
+    "identification": {
+      "type": "CPF",
+      "number": "37462770865"
+    },
+    "address": {
+      "zip_code": "06233200",
+      "street_name": "Street",
+      "street_number": "123"
+    },
+    "first_name": "Test",
+    "last_name": "User"
+  },
+  "payments": [
+    {
+      "payment_type_id": "credit_card",
+      "payment_method_id": "master",
+      "token": "bf9edf6ffae3ab5742033f33c557d54e",
+      "transaction_amount": 100.0,
+      "installments": 1,
+      "processing_mode": "aggregator",
+      "description": "description",
+      "external_reference": "cc7c6175-8db4-4ed8-b359-b24ca8c60996",
+      "statement_descriptor": "ADVPAY",
+      "date_of_expiration": "3926-02-10T10:10:10.000Z"
+    }
+  ],
+  "disbursements": [
+    {
+      "amount": 40.0,
+      "external_reference": "Seller12fa3e5ac-7edf-405c-878b-978e2a686cd0",
+      "collector_id": "539673000",
+      "application_fee": 1.0
+    },
+    {
+      "amount": 60.0,
+      "external_reference": "Seller28b56ba5e-7075-419a-8d35-817ff00f7593",
+      "collector_id": "488656838",
+      "application_fee": 0.5
+    }
+  ],
+  "binary_mode": false,
+  "metadata": {
+    "test": "123"
+  },
+  "application_id": "59441713004005",
+  "additional_info": {
+    "ip_address": "127.0.0.1",
+    "items": [
+      {
+        "id": "123",
+        "title": "title",
+        "description": "description",
+        "picture_url": "https://www.mercadopago.com/logomp3.gif",
+        "category_id": "category",
+        "quantity": 1,
+        "unit_price": 100.0
+      }
+    ],
+    "payer": {
+      "first_name": "Test",
+      "last_name": "User",
+      "registration_date": "3926-02-10T10:10:10.000+0000"
+    },
+    "shipments": {
+      "receiver_address": {
+        "zip_code": "06233200",
+        "street_name": "Street",
+        "street_number": "123",
+        "floor": "1",
+        "apartment": "300A"
+      }
+    }
+  },
+  "capture": false
+}

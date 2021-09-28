@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import org.apache.http.client.HttpClient;
 
 /**
  * Mercado Pago MercadoPago
@@ -54,12 +55,14 @@ public abstract class MPBase {
 
     private transient String marketplaceAccessToken = null;
 
-    private static MPRestClient restClient = new MPRestClient();
+    private static MPRestClient restClient = null;
 
     public MPBase() {
         if (admitIdempotenceKey()) {
             this.idempotenceKey = UUID.randomUUID().toString();
         }
+
+        restClient = MercadoPago.SDK.getMpRestClient();
     }
 
     public String getIdempotenceKey() {
