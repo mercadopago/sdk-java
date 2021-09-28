@@ -1,5 +1,6 @@
 settings.xml
 .idea/
+.vscode/
 out/
 *.iml
 target/
@@ -11,3 +12,4 @@ maven-central-deploy.log
 .classpath
 .settings
 .project
+classes/
