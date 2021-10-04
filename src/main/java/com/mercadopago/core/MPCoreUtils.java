@@ -16,7 +16,7 @@ import com.google.gson.JsonObject;
 import com.mercadopago.exceptions.MPException;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.apache.commons.validator.UrlValidator;
+import org.apache.commons.lang3.StringUtils;
 
 
 /**
@@ -92,7 +92,7 @@ public class MPCoreUtils {
                 }
                 value = result.toString("UTF-8");
             } catch (Exception ex) {
-                throw new com.mercadopago.exceptions.MPException(ex);
+                throw new MPException(ex);
             }
         }
         return value;
@@ -106,9 +106,13 @@ public class MPCoreUtils {
      * @return
      */
     public static boolean validateUrl(String url) {
-        String[] schemes = {"https"};
-        UrlValidator urlValidator = new UrlValidator(schemes);
-        return urlValidator.isValid(url);
+        boolean isValid = false;
+        if (StringUtils.isNotEmpty(url)){
+            String allowedScheme = "https";
+            String urlScheme = url.split(":")[0];
+            isValid = allowedScheme.compareToIgnoreCase(urlScheme) == 0;
+        }
+        return isValid;
     }
 
     /**
