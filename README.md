@@ -8,7 +8,7 @@ This library provides developers with a simple set of bindings to help you integ
 
 ## 💡 Requirements
 
-Java 1.4 or higher
+Java 1.7 or higher
 
 ## 📲 Installation 
 
