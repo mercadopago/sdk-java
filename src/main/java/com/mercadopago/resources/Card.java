@@ -38,6 +38,13 @@ public class Card extends MPBase {
     private String paymentMethodId = null;
 
     /**
+     * @return token
+     */
+    public String getToken() {
+        return token;
+    }
+
+    /**
      * @param token card token
      * @return the card
      */

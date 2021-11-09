@@ -18,10 +18,17 @@ public class AdditionalInfoPayer {
     private Boolean isFirstPurchaseOnline = null;
     private Date lastPurchase = null;
 
+    public String getFirstName() {
+        return firstName;
+    }
 
     public AdditionalInfoPayer setFirstName(String firstName) {
         this.firstName = firstName;
         return this;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     public AdditionalInfoPayer setLastName(String lastName) {
@@ -29,14 +36,26 @@ public class AdditionalInfoPayer {
         return this;
     }
 
+    public Phone getPhone() {
+        return phone;
+    }
+
     public AdditionalInfoPayer setPhone(Phone phone) {
         this.phone = phone;
         return this;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
     public AdditionalInfoPayer setAddress(Address address) {
         this.address = address;
         return this;
+    }
+
+    public Date getRegistrationDate() {
+        return registrationDate;
     }
 
     public AdditionalInfoPayer setRegistrationDate(Date registrationDate) {

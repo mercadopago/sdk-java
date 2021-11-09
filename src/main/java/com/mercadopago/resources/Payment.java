@@ -324,12 +324,26 @@ public class Payment extends MPBase {
     }
 
     /**
+     * @return campaign id
+     */
+    public Integer getCampaignId() {
+        return campaignId;
+    }
+
+    /**
      * @param campaignId campaign ID
      * @return the payment
      */
     public Payment setCampaignId(Integer campaignId) {
         this.campaignId = campaignId;
         return this;
+    }
+
+    /**
+     * @return coupon code
+     */
+    public String getCouponCode() {
+        return couponCode;
     }
 
     /**
@@ -381,6 +395,13 @@ public class Payment extends MPBase {
     }
 
     /**
+     * @return application fee
+     */
+    public Float getApplicationFee() {
+        return applicationFee;
+    }
+
+    /**
      * @param applicationFee application fee
      * @return the payment
      */
@@ -410,6 +431,13 @@ public class Payment extends MPBase {
      */
     public String getStatusDetail() {
         return statusDetail;
+    }
+
+    /**
+     * @return capture
+     */
+    public Boolean getCapture() {
+        return capture;
     }
 
     /**
@@ -472,6 +500,13 @@ public class Payment extends MPBase {
      */
     public PaymentTypeId getPaymentTypeId() {
         return paymentTypeId;
+    }
+
+    /**
+     * @return token
+     */
+    public String getToken() {
+        return token;
     }
 
     /**
@@ -543,6 +578,13 @@ public class Payment extends MPBase {
      */
     public ArrayList<Refund> getRefunds() {
         return refunds;
+    }
+
+    /**
+     * @return additional info
+     */
+    public AdditionalInfo getAdditionalInfo() {
+        return additionalInfo;
     }
 
     /**

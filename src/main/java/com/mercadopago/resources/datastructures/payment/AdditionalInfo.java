@@ -13,6 +13,9 @@ public class AdditionalInfo {
     private Shipments shipments = null;
     private String ipAddress = null;
 
+    public ArrayList<Item> getItems() {
+        return items;
+    }
 
     public AdditionalInfo setItems(ArrayList<Item> items) {
         this.items = items;
@@ -27,9 +30,17 @@ public class AdditionalInfo {
         return this;
     }
 
+    public AdditionalInfoPayer getPayer() {
+        return payer;
+    }
+
     public AdditionalInfo setPayer(AdditionalInfoPayer payer) {
         this.payer = payer;
         return this;
+    }
+
+    public Shipments getShipments() {
+        return shipments;
     }
 
     public AdditionalInfo setShipments(Shipments shipments) {
@@ -37,7 +48,7 @@ public class AdditionalInfo {
         return this;
     }
 
-    public String getIpAddres() {
+    public String getIpAddress() {
         return ipAddress;
     }
 
