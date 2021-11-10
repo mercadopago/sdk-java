@@ -31,6 +31,7 @@ public class CardTest extends BaseResourceTest {
 
         assertNotNull(card.getId());
         assertNotNull(card.getCustomerId());
+        assertNotNull(card.getToken());
     }
 
     @Test

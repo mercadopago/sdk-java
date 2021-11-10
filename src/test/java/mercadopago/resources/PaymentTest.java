@@ -63,6 +63,9 @@ public class PaymentTest extends BaseResourceTest {
         .setDescription("description")
         .setMetadata(new JsonObject())
         .setTransactionAmount(100f)
+        .setCampaignId(123)
+        .setCouponCode("123")
+        .setApplicationFee(1.23f)
         .setCapture(true)
         .setPaymentMethodId("master")
         .setToken("cardToken")
@@ -87,10 +90,16 @@ public class PaymentTest extends BaseResourceTest {
     assertNotNull(payment.getDescription());
     assertNotNull(payment.getMetadata());
     assertNotNull(payment.getTransactionAmount());
+    assertNotNull(payment.getCampaignId());
+    assertNotNull(payment.getCouponCode());
+    assertNotNull(payment.getApplicationFee());
+    assertNotNull(payment.getCapture());
     assertNotNull(payment.getPaymentMethodId());
+    assertNotNull(payment.getToken());
     assertNotNull(payment.getStatementDescriptor());
     assertNotNull(payment.getInstallments());
     assertNotNull(payment.getNotificationUrl());
+    assertNotNull(payment.getAdditionalInfo());
     assertNotNull(payment.getTransactionDetails());
     assertNotNull(payment.getDifferentialPricingId());
     assertNotNull(payment.getIssuerId());
