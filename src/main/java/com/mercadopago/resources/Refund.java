@@ -3,6 +3,7 @@ package com.mercadopago.resources;
 import com.mercadopago.core.MPBase;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.core.MPResourceArray;
+import com.mercadopago.core.annotations.idempotent.Idempotent;
 import com.mercadopago.core.annotations.rest.GET;
 import com.mercadopago.core.annotations.rest.POST;
 import com.mercadopago.exceptions.MPException;
@@ -15,6 +16,7 @@ import java.util.Date;
  * You can refund a payment within 180 days after it was approved.
  * You must have sufficient funds in your account in order to successfully refund the payment amount. Otherwise, you will get a 400 Bad Request error.
  */
+@Idempotent
 public class Refund extends MPBase {
 
     private String id = null;
