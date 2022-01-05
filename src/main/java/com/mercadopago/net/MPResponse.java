@@ -5,12 +5,14 @@ import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
 @Getter
+@AllArgsConstructor
 public class MPResponse {
-    private final int statusCode;
 
-    private final Map<String, List<String>> headers;
+  private final Integer statusCode;
 
-    private final String content;
+  private final Map<String, List<String>> headers;
+
+  private final String content;
+
 }

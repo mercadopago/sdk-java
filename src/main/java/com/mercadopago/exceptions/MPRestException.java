@@ -6,12 +6,12 @@ package com.mercadopago.exceptions;
  */
 public class MPRestException extends MPException {
 
-    public MPRestException(String message) {
-        super(message);
-    }
+  public MPRestException(String message) {
+    super(message);
+  }
 
-    public MPRestException(Throwable cause) {
-        super(cause);
-    }
+  public MPRestException(Throwable cause) {
+    super(cause);
+  }
 
 }

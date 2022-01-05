@@ -1,15 +1,10 @@
 package com.mercadopago.net;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class MPResource {
 
-    private MPResponse response;
+  private MPResponse response;
 
-    public MPResource() {
-        setResponse(null);
-    }
 }

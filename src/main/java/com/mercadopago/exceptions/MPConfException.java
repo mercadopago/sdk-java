@@ -6,11 +6,11 @@ package com.mercadopago.exceptions;
  */
 public class MPConfException extends MPException {
 
-    public MPConfException(String message) {
-        super(message);
-    }
+  public MPConfException(String message) {
+    super(message);
+  }
 
-    public MPConfException(Throwable cause) {
-        super(cause);
-    }
+  public MPConfException(Throwable cause) {
+    super(cause);
+  }
 }
