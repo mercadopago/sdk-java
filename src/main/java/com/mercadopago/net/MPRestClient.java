@@ -240,8 +240,8 @@ public class MPRestClient {
     }
 
     /**
-     * Create a HttpClient
-     * @return a HttpClient
+     * Create a IHttpClient
+     * @return a IHttpClient
      */
     private HttpClient createHttpClient() {
         SSLContext sslContext = SSLContexts.createDefault();
@@ -313,7 +313,7 @@ public class MPRestClient {
     }
 
     /**
-     * Returns the HttpRequestBase to be used by the HttpClient.
+     * Returns the HttpRequestBase to be used by the IHttpClient.
      *
      * @param httpMethod                a String with the http method to execute
      * @param uri                       a String with the uri
