@@ -29,6 +29,13 @@ public class MPRequest {
     this.headers = new HashMap<>();
   }
 
+  public MPRequest(String uri, HttpMethod method, Map<String, String> headers, JsonObject payload) {
+    this.uri = uri;
+    this.method = method;
+    this.headers = headers;
+    this.payload = payload;
+  }
+
   public void addHeader(String name, String value) {
     if (Objects.isNull(this.headers)) {
       this.headers = new HashMap<>();
