@@ -1,5 +1,9 @@
 package com.mercadopago.net;
 
+import static com.mercadopago.net.HttpStatus.BAD_REQUEST;
+import static com.mercadopago.net.HttpStatus.FORBIDDEN;
+import static com.mercadopago.net.HttpStatus.INTERNAL_SERVER_ERROR;
+
 import com.google.gson.JsonObject;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.exceptions.MPException;
@@ -48,6 +52,11 @@ public class MPDefaultHttpClient implements MPHttpClient {
 
   private static final int DEFAULT_RETRIES = 3;
 
+  private static final String UTF_8 = "UTF-8";
+
+  private static final String PAYLOAD_NOT_SUPPORTED_MESSAGE =
+      "Payload not supported for this method.";
+
   private static final Logger LOGGER = Logger.getLogger(MPDefaultHttpClient.class.getName());
 
   private final HttpClient httpClient;
@@ -68,22 +77,29 @@ public class MPDefaultHttpClient implements MPHttpClient {
 
   private HttpClient createHttpClient() {
     SSLContext sslContext = SSLContexts.createDefault();
-    SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext,
-        new String[] {"TLSv1.2"}, null, SSLConnectionSocketFactory.getDefaultHostnameVerifier());
-    Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
-        .register("https", sslConnectionSocketFactory)
-        .build();
+    SSLConnectionSocketFactory sslConnectionSocketFactory =
+        new SSLConnectionSocketFactory(
+            sslContext,
+            new String[] {"TLSv1.2"},
+            null,
+            SSLConnectionSocketFactory.getDefaultHostnameVerifier());
+    Registry<ConnectionSocketFactory> registry =
+        RegistryBuilder.<ConnectionSocketFactory>create()
+            .register("https", sslConnectionSocketFactory)
+            .build();
 
-    PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager(registry);
+    PoolingHttpClientConnectionManager connectionManager =
+        new PoolingHttpClientConnectionManager(registry);
     connectionManager.setMaxTotal(MercadoPagoConfig.getMaxConnections());
     connectionManager.setDefaultMaxPerRoute(MercadoPagoConfig.getMaxConnections());
     connectionManager.setValidateAfterInactivity(VALIDATE_INACTIVITY_INTERVAL_MS);
 
-    HttpClientBuilder httpClientBuilder = HttpClients.custom()
-        .setConnectionManager(connectionManager)
-        .setKeepAliveStrategy(new KeepAliveStrategy())
-        .disableCookieManagement()
-        .disableRedirectHandling();
+    HttpClientBuilder httpClientBuilder =
+        HttpClients.custom()
+            .setConnectionManager(connectionManager)
+            .setKeepAliveStrategy(new KeepAliveStrategy())
+            .disableCookieManagement()
+            .disableRedirectHandling();
 
     if (Objects.isNull(MercadoPagoConfig.getProxy())) {
       httpClientBuilder.setProxy(MercadoPagoConfig.getProxy());
@@ -92,7 +108,8 @@ public class MPDefaultHttpClient implements MPHttpClient {
     if (Objects.isNull(MercadoPagoConfig.getRetryHandler())) {
       httpClientBuilder.setRetryHandler(MercadoPagoConfig.getRetryHandler());
     } else {
-      DefaultHttpRequestRetryHandler retryHandler = new DefaultHttpRequestRetryHandler(DEFAULT_RETRIES, false);
+      DefaultHttpRequestRetryHandler retryHandler =
+          new DefaultHttpRequestRetryHandler(DEFAULT_RETRIES, false);
       httpClientBuilder.setRetryHandler(retryHandler);
     }
 
@@ -105,34 +122,11 @@ public class MPDefaultHttpClient implements MPHttpClient {
       HttpRequestBase completeRequest = createHttpRequest(mpRequest);
       HttpClientContext context = HttpClientContext.create();
 
-      HttpResponse response;
-      try {
-        LOGGER.fine(String.format("Request body: %s", mpRequest.getPayload().toString()));
-        LOGGER.fine("Headers:");
-        for (Map.Entry<String, String> entry : mpRequest.getHeaders().entrySet()) {
-          LOGGER.fine(String.format("%s: %s", entry.getKey(), entry.getValue()));
-        }
-        response = httpClient.execute(completeRequest, context);
-      } catch (ClientProtocolException e) {
-        LOGGER.fine(String.format("ClientProtocolException: %s", e.getMessage()));
-        response = new BasicHttpResponse(new BasicStatusLine(completeRequest.getProtocolVersion(), 400, null));
-      } catch (SSLPeerUnverifiedException e) {
-        LOGGER.fine(String.format("SSLException: %s", e.getMessage()));
-        response = new BasicHttpResponse(new BasicStatusLine(completeRequest.getProtocolVersion(), 403, null));
-      } catch (IOException e) {
-        LOGGER.fine(String.format("IOException: %s", e.getMessage()));
-        response = new BasicHttpResponse(new BasicStatusLine(completeRequest.getProtocolVersion(), 500, null));
-      }
+      HttpResponse response = executeHttpRequest(mpRequest, completeRequest, context);
 
-      Map<String, List<String>> headers = new HashMap<>();
-      for (Header header : response.getAllHeaders()) {
-        if (!headers.containsKey(header.getName())) {
-          headers.put(header.getName(), new ArrayList<>());
-        }
-        headers.get(header.getName()).add(header.getValue());
-      }
+      Map<String, List<String>> headers = getHeaders(response);
 
-      String responseBody = EntityUtils.toString(response.getEntity(), "UTF-8");
+      String responseBody = EntityUtils.toString(response.getEntity(), UTF_8);
       LOGGER.fine(String.format("Response body: %s", responseBody));
 
       return new MPResponse(response.getStatusLine().getStatusCode(), headers, responseBody);
@@ -144,7 +138,8 @@ public class MPDefaultHttpClient implements MPHttpClient {
     }
   }
 
-  private HttpRequestBase createHttpRequest(MPRequest mpRequest) throws MPMalformedRequestException {
+  private HttpRequestBase createHttpRequest(MPRequest mpRequest)
+      throws MPMalformedRequestException {
     HttpEntity entity = normalizePayload(mpRequest.getPayload());
     HttpRequestBase request = getRequestBase(mpRequest.getMethod(), mpRequest.getUri(), entity);
     Map<String, String> headers = new HashMap<>(mpRequest.getHeaders());
@@ -153,55 +148,99 @@ public class MPDefaultHttpClient implements MPHttpClient {
       request.addHeader(new BasicHeader(header.getKey(), header.getValue()));
     }
 
-    int socketTimeout = mpRequest.getSocketTimeout() != 0 ? mpRequest.getSocketTimeout() : MercadoPagoConfig.getSocketTimeout();
+    int socketTimeout =
+        mpRequest.getSocketTimeout() != 0
+            ? mpRequest.getSocketTimeout()
+            : MercadoPagoConfig.getSocketTimeout();
     int connectionTimeout =
-        mpRequest.getConnectionTimeout() != 0 ? mpRequest.getConnectionTimeout() : MercadoPagoConfig.getConnectionTimeout();
-    int connectionRequestTimeout = mpRequest.getConnectionRequestTimeout() != 0 ? mpRequest.getConnectionRequestTimeout() :
-        MercadoPagoConfig.getConnectionRequestTimeout();
-    RequestConfig.Builder requestConfigBuilder = RequestConfig.custom()
-        .setSocketTimeout(socketTimeout)
-        .setConnectTimeout(connectionTimeout)
-        .setConnectionRequestTimeout(connectionRequestTimeout);
+        mpRequest.getConnectionTimeout() != 0
+            ? mpRequest.getConnectionTimeout()
+            : MercadoPagoConfig.getConnectionTimeout();
+    int connectionRequestTimeout =
+        mpRequest.getConnectionRequestTimeout() != 0
+            ? mpRequest.getConnectionRequestTimeout()
+            : MercadoPagoConfig.getConnectionRequestTimeout();
+    RequestConfig.Builder requestConfigBuilder =
+        RequestConfig.custom()
+            .setSocketTimeout(socketTimeout)
+            .setConnectTimeout(connectionTimeout)
+            .setConnectionRequestTimeout(connectionRequestTimeout);
 
     request.setConfig(requestConfigBuilder.build());
     return request;
   }
 
-  private HttpRequestBase getRequestBase(HttpMethod method, String uri, HttpEntity entity) throws MPMalformedRequestException {
+  private HttpResponse executeHttpRequest(
+      MPRequest mpRequest, HttpRequestBase completeRequest, HttpClientContext context) {
+    try {
+      LOGGER.fine(String.format("Request body: %s", mpRequest.getPayload().toString()));
+      LOGGER.fine("Headers:");
+      for (Map.Entry<String, String> entry : mpRequest.getHeaders().entrySet()) {
+        LOGGER.fine(String.format("%s: %s", entry.getKey(), entry.getValue()));
+      }
+      return httpClient.execute(completeRequest, context);
+    } catch (ClientProtocolException e) {
+      LOGGER.fine(String.format("ClientProtocolException: %s", e.getMessage()));
+      return new BasicHttpResponse(
+          new BasicStatusLine(completeRequest.getProtocolVersion(), BAD_REQUEST, null));
+    } catch (SSLPeerUnverifiedException e) {
+      LOGGER.fine(String.format("SSLException: %s", e.getMessage()));
+      return new BasicHttpResponse(
+          new BasicStatusLine(completeRequest.getProtocolVersion(), FORBIDDEN, null));
+    } catch (IOException e) {
+      LOGGER.fine(String.format("IOException: %s", e.getMessage()));
+      return new BasicHttpResponse(
+          new BasicStatusLine(completeRequest.getProtocolVersion(), INTERNAL_SERVER_ERROR, null));
+    }
+  }
+
+  private Map<String, List<String>> getHeaders(HttpResponse response) {
+    Map<String, List<String>> headers = new HashMap<>();
+    for (Header header : response.getAllHeaders()) {
+      if (!headers.containsKey(header.getName())) {
+        headers.put(header.getName(), new ArrayList<>());
+      }
+      headers.get(header.getName()).add(header.getValue());
+    }
+    return headers;
+  }
+
+  private HttpRequestBase getRequestBase(HttpMethod method, String uri, HttpEntity entity)
+      throws MPMalformedRequestException {
     if (method == null) {
-      throw new MPMalformedRequestException("HttpMethod must be either \"GET\", \"POST\", \"PUT\" or \"DELETE\".");
+      throw new MPMalformedRequestException(
+          "HttpMethod must be either \"GET\", \"POST\", \"PUT\" or \"DELETE\".");
     }
     if (StringUtils.isEmpty(uri)) {
       throw new MPMalformedRequestException("Uri can not be an empty String.");
     }
 
-    HttpRequestBase request = null;
     if (method.equals(HttpMethod.GET)) {
       if (entity != null) {
-        throw new MPMalformedRequestException("Payload not supported for this method.");
+        throw new MPMalformedRequestException(PAYLOAD_NOT_SUPPORTED_MESSAGE);
       }
-      request = new HttpGet(uri);
+      return new HttpGet(uri);
     } else if (method.equals(HttpMethod.POST)) {
       HttpPost post = new HttpPost(uri);
       post.setEntity(entity);
-      request = post;
+      return post;
     } else if (method.equals(HttpMethod.PUT)) {
       HttpPut put = new HttpPut(uri);
       put.setEntity(entity);
-      request = put;
+      return put;
     } else if (method.equals(HttpMethod.DELETE)) {
       if (entity != null) {
-        throw new MPMalformedRequestException("Payload not supported for this method.");
+        throw new MPMalformedRequestException(PAYLOAD_NOT_SUPPORTED_MESSAGE);
       }
-      request = new HttpDelete(uri);
+      return new HttpDelete(uri);
     }
-    return request;
+    return null;
   }
 
   private HttpEntity normalizePayload(JsonObject payload) throws MPMalformedRequestException {
     if (payload != null && payload.size() != 0) {
       try {
-        return new StringEntity(payload.toString(), "UTF-8");
+        return new StringEntity(payload.toString(), UTF_8);
       } catch (Exception ex) {
         throw new MPMalformedRequestException(ex);
       }
