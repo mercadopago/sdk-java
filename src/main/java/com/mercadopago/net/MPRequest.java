@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
 public class MPRequest {
   private String uri;
 
@@ -29,8 +28,6 @@ public class MPRequest {
   public MPRequest() {
     this.method = HttpMethod.GET;
     this.headers = new HashMap<>();
-    this.payload = null;
-    this.uri = null;
   }
 
   public void addHeader(String name, String value) {
