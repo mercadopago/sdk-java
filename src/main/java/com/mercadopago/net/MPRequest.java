@@ -4,7 +4,6 @@ import com.google.gson.JsonObject;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data

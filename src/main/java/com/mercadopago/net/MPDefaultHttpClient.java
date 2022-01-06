@@ -79,7 +79,6 @@ public class MPDefaultHttpClient implements MPHttpClient {
     connectionManager.setDefaultMaxPerRoute(MercadoPagoConfig.getMaxConnections());
     connectionManager.setValidateAfterInactivity(VALIDATE_INACTIVITY_INTERVAL_MS);
 
-
     HttpClientBuilder httpClientBuilder = HttpClients.custom()
         .setConnectionManager(connectionManager)
         .setKeepAliveStrategy(new KeepAliveStrategy())
@@ -122,7 +121,7 @@ public class MPDefaultHttpClient implements MPHttpClient {
         response = new BasicHttpResponse(new BasicStatusLine(completeRequest.getProtocolVersion(), 403, null));
       } catch (IOException e) {
         LOGGER.fine(String.format("IOException: %s", e.getMessage()));
-        response = new BasicHttpResponse(new BasicStatusLine(completeRequest.getProtocolVersion(), 404, null));
+        response = new BasicHttpResponse(new BasicStatusLine(completeRequest.getProtocolVersion(), 500, null));
       }
 
       Map<String, List<String>> headers = new HashMap<>();
@@ -136,8 +135,7 @@ public class MPDefaultHttpClient implements MPHttpClient {
       String responseBody = EntityUtils.toString(response.getEntity(), "UTF-8");
       LOGGER.fine(String.format("Response body: %s", responseBody));
 
-      MPResponse mpResponse = new MPResponse(response.getStatusLine().getStatusCode(), headers, responseBody);
-      return mpResponse;
+      return new MPResponse(response.getStatusLine().getStatusCode(), headers, responseBody);
 
     } catch (MPMalformedRequestException restEx) {
       throw restEx;
@@ -150,11 +148,7 @@ public class MPDefaultHttpClient implements MPHttpClient {
     HttpEntity entity = normalizePayload(mpRequest.getPayload());
     HttpRequestBase request = getRequestBase(mpRequest.getMethod(), mpRequest.getUri(), entity);
     Map<String, String> headers = new HashMap<>(mpRequest.getHeaders());
-    for (String headerName : mpRequest.getHeaders().keySet()) {
-      if (!headers.containsKey(headerName)) {
-        headers.put(headerName, mpRequest.getHeaders().get(headerName));
-      }
-    }
+
     for (Map.Entry<String, String> header : headers.entrySet()) {
       request.addHeader(new BasicHeader(header.getKey(), header.getValue()));
     }
@@ -175,7 +169,7 @@ public class MPDefaultHttpClient implements MPHttpClient {
 
   private HttpRequestBase getRequestBase(HttpMethod method, String uri, HttpEntity entity) throws MPMalformedRequestException {
     if (method == null) {
-      throw new MPMalformedRequestException("HttpMethod must be \"GET\", \"POST\", \"PUT\" or \"DELETE\".");
+      throw new MPMalformedRequestException("HttpMethod must be either \"GET\", \"POST\", \"PUT\" or \"DELETE\".");
     }
     if (StringUtils.isEmpty(uri)) {
       throw new MPMalformedRequestException("Uri can not be an empty String.");
@@ -205,17 +199,13 @@ public class MPDefaultHttpClient implements MPHttpClient {
   }
 
   private HttpEntity normalizePayload(JsonObject payload) throws MPMalformedRequestException {
-    HttpEntity entity = null;
     if (payload != null && payload.size() != 0) {
-      StringEntity stringEntity;
       try {
-        stringEntity = new StringEntity(payload.toString(), "UTF-8");
+        return new StringEntity(payload.toString(), "UTF-8");
       } catch (Exception ex) {
         throw new MPMalformedRequestException(ex);
       }
-      entity = stringEntity;
     }
-
-    return entity;
+    return null;
   }
 }
