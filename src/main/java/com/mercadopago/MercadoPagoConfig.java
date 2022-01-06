@@ -1,6 +1,6 @@
 package com.mercadopago;
 
-import com.mercadopago.net.IHttpClient;
+import com.mercadopago.net.MPHttpClient;
 import com.mercadopago.net.MPDefaultHttpClient;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -74,7 +74,7 @@ public class MercadoPagoConfig {
   private static volatile int socketTimeout = DEFAULT_SOCKET_TIMEOUT_MS;
 
   @Setter
-  private static volatile IHttpClient httpClient = null;
+  private static volatile MPHttpClient httpClient = null;
 
   @Getter(onMethod_ = {@Synchronized})
   @Setter(onMethod_ = {@Synchronized})
@@ -84,7 +84,7 @@ public class MercadoPagoConfig {
   @Setter
   private static HttpRequestRetryHandler retryHandler;
 
-  public synchronized static IHttpClient getHttpClient() {
+  public synchronized static MPHttpClient getHttpClient() {
     if (Objects.isNull(httpClient)) {
       httpClient = new MPDefaultHttpClient();
     }

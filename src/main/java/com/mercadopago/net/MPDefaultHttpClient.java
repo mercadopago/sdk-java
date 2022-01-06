@@ -43,7 +43,7 @@ import org.apache.http.message.BasicStatusLine;
 import org.apache.http.ssl.SSLContexts;
 import org.apache.http.util.EntityUtils;
 
-public class MPDefaultHttpClient implements IHttpClient {
+public class MPDefaultHttpClient implements MPHttpClient {
   private static final int VALIDATE_INACTIVITY_INTERVAL_MS = 30000;
 
   private static final int DEFAULT_RETRIES = 3;
