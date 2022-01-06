@@ -4,6 +4,7 @@ import com.mercadopago.net.IHttpClient;
 import com.mercadopago.net.MPDefaultHttpClient;
 import java.util.Objects;
 import java.util.logging.Level;
+import java.util.logging.StreamHandler;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Synchronized;
@@ -47,6 +48,10 @@ public class MercadoPagoConfig {
   @Getter
   @Setter
   private static volatile String metricsScope = DEFAULT_METRICS_SCOPE;
+
+  @Getter
+  @Setter
+  private static volatile StreamHandler loggingHandler = null;
 
   @Getter
   @Setter

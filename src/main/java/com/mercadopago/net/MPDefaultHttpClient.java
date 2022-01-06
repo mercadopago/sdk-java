@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Logger;
+import java.util.logging.StreamHandler;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLPeerUnverifiedException;
 import org.apache.commons.lang.StringUtils;
@@ -52,10 +53,17 @@ public class MPDefaultHttpClient implements IHttpClient {
   private final HttpClient httpClient;
 
   public MPDefaultHttpClient() {
-    ConsoleHandler consoleHandler = new ConsoleHandler();
-    consoleHandler.setLevel(MercadoPagoConfig.getLoggingLevel());
-    LOGGER.addHandler(consoleHandler);
+    StreamHandler streamHandler = getStreamHandler();
+    streamHandler.setLevel(MercadoPagoConfig.getLoggingLevel());
+    LOGGER.addHandler(streamHandler);
     this.httpClient = createHttpClient();
+  }
+
+  private StreamHandler getStreamHandler() {
+    if (Objects.isNull(MercadoPagoConfig.getLoggingHandler())) {
+      return new ConsoleHandler();
+    }
+    return MercadoPagoConfig.getLoggingHandler();
   }
 
   private HttpClient createHttpClient() {
