@@ -1,5 +1,6 @@
 package com.mercadopago.net;
 
+/** Headers class. */
 public class Headers {
   public static final String AUTHORIZATION = "Authorization";
 

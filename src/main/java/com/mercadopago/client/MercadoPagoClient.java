@@ -11,21 +11,30 @@ import com.mercadopago.net.MPResponse;
 import com.mercadopago.net.UrlFormatter;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Getter;
 
+/** Mercado Pago client class. */
 public abstract class MercadoPagoClient {
-  protected final MPHttpClient httpClient;
+  private static final String ACCEPT_HEADER_VALUE = "application/json";
 
-  private final String ACCEPT_HEADER_VALUE = "application/json";
+  @Getter protected final MPHttpClient httpClient;
 
   protected Map<String, String> defaultHeaders;
 
+  /**
+   * MercadoPagoClient constructor.
+   *
+   * @param httpClient http client
+   */
   public MercadoPagoClient(MPHttpClient httpClient) {
     this.httpClient = httpClient;
     this.defaultHeaders = new HashMap<>();
     defaultHeaders.put(Headers.ACCEPT, ACCEPT_HEADER_VALUE);
     defaultHeaders.put(Headers.PRODUCT_ID, MercadoPagoConfig.PRODUCT_ID);
-    defaultHeaders.put(Headers.USER_AGENT, String.format("MercadoPago Java SDK %s", MercadoPagoConfig.CURRENT_VERSION));
-    defaultHeaders.put(Headers.CONTENT_TYPE, "application/json");
+    defaultHeaders.put(
+        Headers.USER_AGENT,
+        String.format("MercadoPago Java SDK %s", MercadoPagoConfig.CURRENT_VERSION));
+    defaultHeaders.put(Headers.CONTENT_TYPE, ACCEPT_HEADER_VALUE);
   }
 
   protected MPResponse send(MPRequest request) throws MPException {
@@ -43,7 +52,9 @@ public abstract class MercadoPagoClient {
     return this.send(mpRequest);
   }
 
-  protected MPResponse send(String path, HttpMethod method, JsonObject payload, Map<String, String> headers) throws MPException {
+  protected MPResponse send(
+      String path, HttpMethod method, JsonObject payload, Map<String, String> headers)
+      throws MPException {
     MPRequest mpRequest = new MPRequest(UrlFormatter.format(path), method, headers, payload);
     return this.send(mpRequest);
   }
@@ -51,7 +62,8 @@ public abstract class MercadoPagoClient {
   private MPRequest addIdempotencyKey(MPRequest request) {
     if (request.getMethod() == HttpMethod.POST) {
       if (request instanceof IdempotentRequest) {
-        request.addHeader(Headers.IDEMPOTENCY_KEY, ((IdempotentRequest) request).createIdempotencyKey());
+        request.addHeader(
+            Headers.IDEMPOTENCY_KEY, ((IdempotentRequest) request).createIdempotencyKey());
       }
     }
 
@@ -64,9 +76,5 @@ public abstract class MercadoPagoClient {
     }
 
     return MercadoPagoConfig.getAccessToken();
-  }
-
-  public MPHttpClient getHttpClient() {
-    return httpClient;
   }
 }

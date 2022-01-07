@@ -47,6 +47,7 @@ import org.apache.http.message.BasicStatusLine;
 import org.apache.http.ssl.SSLContexts;
 import org.apache.http.util.EntityUtils;
 
+/** Mercado Pago default Http Client class. */
 public class MPDefaultHttpClient implements MPHttpClient {
   private static final int VALIDATE_INACTIVITY_INTERVAL_MS = 30000;
 
@@ -61,6 +62,7 @@ public class MPDefaultHttpClient implements MPHttpClient {
 
   private final HttpClient httpClient;
 
+  /** MPDefaultHttpClient constructor. */
   public MPDefaultHttpClient() {
     StreamHandler streamHandler = getStreamHandler();
     streamHandler.setLevel(MercadoPagoConfig.getLoggingLevel());

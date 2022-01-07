@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Objects;
 import lombok.Data;
 
+/** MPRequest class. */
 @Data
 public class MPRequest {
   private String uri;
@@ -24,11 +25,20 @@ public class MPRequest {
 
   private int socketTimeout;
 
+  /** MPRequest constructor. */
   public MPRequest() {
     this.method = HttpMethod.GET;
     this.headers = new HashMap<>();
   }
 
+  /**
+   * MPRequest constructor.
+   *
+   * @param uri uri
+   * @param method method
+   * @param headers headers
+   * @param payload payload
+   */
   public MPRequest(String uri, HttpMethod method, Map<String, String> headers, JsonObject payload) {
     this.uri = uri;
     this.method = method;
@@ -36,6 +46,12 @@ public class MPRequest {
     this.payload = payload;
   }
 
+  /**
+   * Method responsible to add a new header to request.
+   *
+   * @param name header name
+   * @param value header value
+   */
   public void addHeader(String name, String value) {
     if (Objects.isNull(this.headers)) {
       this.headers = new HashMap<>();

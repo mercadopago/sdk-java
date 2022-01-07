@@ -1,5 +1,6 @@
 package com.mercadopago.net;
 
+/** Http status class. */
 public class HttpStatus {
 
   public static final int BAD_REQUEST = 400;

@@ -5,6 +5,7 @@ import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/** MPResponse class. */
 @Getter
 @AllArgsConstructor
 public class MPResponse {
@@ -14,5 +15,4 @@ public class MPResponse {
   private final Map<String, List<String>> headers;
 
   private final String content;
-
 }
