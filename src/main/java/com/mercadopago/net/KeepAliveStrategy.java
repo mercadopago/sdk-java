@@ -8,6 +8,7 @@ import org.apache.http.message.BasicHeaderElementIterator;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
 
+/** KeepAliveStrategy class. */
 public class KeepAliveStrategy implements ConnectionKeepAliveStrategy {
 
   private static final int DEFAULT_KEEP_ALIVE_TIMEOUT_MS = 10000;
@@ -16,7 +17,8 @@ public class KeepAliveStrategy implements ConnectionKeepAliveStrategy {
 
   @Override
   public long getKeepAliveDuration(HttpResponse response, HttpContext context) {
-    HeaderElementIterator it = new BasicHeaderElementIterator(response.headerIterator(HTTP.CONN_KEEP_ALIVE));
+    HeaderElementIterator it =
+        new BasicHeaderElementIterator(response.headerIterator(HTTP.CONN_KEEP_ALIVE));
     while (it.hasNext()) {
       HeaderElement he = it.nextElement();
       String param = he.getName();
