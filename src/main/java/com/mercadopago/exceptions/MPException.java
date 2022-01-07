@@ -1,11 +1,13 @@
 package com.mercadopago.exceptions;
 
+import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 
 /**
  * Mercado Pago MercadoPago
  * Mercado Pago MPBase Exception Class
  */
+@Getter
 public class MPException extends Exception {
 
     private String requestId;
@@ -29,14 +31,6 @@ public class MPException extends Exception {
 
     public MPException(Throwable cause) {
         super(cause);
-    }
-
-    public String getRequestId() {
-        return requestId;
-    }
-
-    public Integer getStatusCode() {
-        return statusCode;
     }
 
     @Override
