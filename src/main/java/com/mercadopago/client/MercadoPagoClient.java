@@ -44,6 +44,13 @@ public abstract class MercadoPagoClient {
     defaultHeaders.put(Headers.CONTENT_TYPE, CONTENT_TYPE_HEADER_VALUE);
   }
 
+  /**
+   * Method used directly or by other methods to make requests
+   *
+   * @param request request data
+   * @return MPResponse response object
+   * @throws MPException
+   */
   protected MPResponse send(MPRequest request) throws MPException {
     addDefaultHeaders(request);
     addDefaultTimeouts(request);
@@ -54,10 +61,31 @@ public abstract class MercadoPagoClient {
   }
 
 
-  protected MPResponse send(String path, HttpMethod method, Map<String, Object> queryParams, JsonObject payload) throws MPException {
+  /**
+   * Method used directly or by other methods to make requests
+   *
+   * @param path path of request url
+   * @param method http method used in the request
+   * @param payload request body
+   * @param queryParams query string params
+   * @return MPResponse response data
+   * @throws MPException
+   */
+  protected MPResponse send(String path, HttpMethod method, JsonObject payload, Map<String, Object> queryParams) throws MPException {
     return this.send(path, method, payload, queryParams, null);
   }
 
+  /**
+   * Method used directly or by other methods to make requests
+   *
+   * @param path path of request url
+   * @param method http method used in the request
+   * @param payload request body
+   * @param queryParams query string params
+   * @param requestOptions extra data used to override configuration passed to MercadoPagoConfig for a single request
+   * @return response data
+   * @throws MPException
+   */
   protected MPResponse send(
       String path, HttpMethod method, JsonObject payload, Map<String, Object> queryParams, MPRequestOptions requestOptions)
       throws MPException {
@@ -65,35 +93,67 @@ public abstract class MercadoPagoClient {
     return this.send(mpRequest);
   }
 
+  /**
+   * Convenience method to perform searches
+   *
+   * @param path path of request url
+   * @param request parameters for perfoming search request
+   * @return response data
+   * @throws MPException
+   */
   protected MPResponse search(String path, MPSearchRequest request) throws MPException {
     return this.search(path, request, null);
   }
 
-  protected MPResponse search(String path, MPSearchRequest request, MPRequestOptions requestOptions) throws MPException {
+  /**
+   *  Convenience method to perform searches
+   *
+   * @param path path of searchRequest url
+   * @param searchRequest parameters for performing search searchRequest
+   * @param requestOptions extra data used to override configuration passed to MercadoPagoConfig for a single searchRequest
+   * @return response data
+   * @throws MPException
+   */
+  protected MPResponse search(String path, MPSearchRequest searchRequest, MPRequestOptions requestOptions) throws MPException {
     Map<String, Object> queryParams = null;
 
-    if(Objects.nonNull(request)) {
-      queryParams = request.getParameters();
+    if(Objects.nonNull(searchRequest)) {
+      queryParams = searchRequest.getParameters();
     }
     return send(path, HttpMethod.GET, null, queryParams, requestOptions);
   }
 
+  /**
+   * Convenience method to perform requests that returns lists of results
+   *
+   * @param path path of request url
+   * @param requestOptions extra data used to override configuration passed to MercadoPagoConfig for a single request
+   * @return response data
+   * @throws MPException
+   */
   protected MPResponse list(
-      String path, MPSearchRequest searchRequest, MPRequestOptions requestOptions)
+      String path, MPRequestOptions requestOptions)
       throws MPException {
-    return this.list(path, HttpMethod.GET, null, searchRequest, null, requestOptions);
+    return this.list(path, HttpMethod.GET, null, null, requestOptions);
   }
 
+  /**
+   * Convenience method to perform requests that returns lists of results
+   *
+   * @param path  path of request url
+   * @param method http method used in the request
+   * @param payload request body
+   * @param queryParams query string params
+   * @param requestOptions extra data used to override configuration passed to MercadoPagoConfig for a single request
+   * @return response data
+   * @throws MPException
+   */
   protected MPResponse list(String path,
                             HttpMethod method,
                             JsonObject payload,
-                            MPSearchRequest searchRequest,
                             Map<String, Object> queryParams,
                             MPRequestOptions requestOptions)
       throws MPException {
-    if(Objects.nonNull(queryParams) && Objects.nonNull(searchRequest)) {
-      queryParams.putAll(searchRequest.getParameters());
-    }
     return this.send(path, method, payload, queryParams, requestOptions);
   }
 

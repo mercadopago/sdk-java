@@ -70,10 +70,9 @@ public class MercadoPagoClientTest {
         public MPResponse listRequest(String path,
                                       HttpMethod method,
                                       JsonObject payload,
-                                      MPSearchRequest searchRequest,
                                       HashMap<String, Object> queryParams,
                                       MPRequestOptions requestOptions) throws MPException {
-            return list(path, method, payload, searchRequest, queryParams, requestOptions);
+            return list(path, method, payload, queryParams, requestOptions);
         }
     }
 
@@ -246,7 +245,7 @@ public class MercadoPagoClientTest {
         JsonObject requestObject = JsonParser.parseString(request).getAsJsonObject();
         HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
         doReturn(httpResponse).when(httpClientMock).execute(any(HttpRequestBase.class), any(HttpContext.class));
-        MPResponse mpResponse = testClient.listRequest("/test", HttpMethod.POST, requestObject, null, null, null);
+        MPResponse mpResponse = testClient.listRequest("/test", HttpMethod.POST, requestObject, null, null);
 
         assertNotNull(mpResponse);
         assertEquals(200, (int) mpResponse.getStatusCode());
@@ -257,7 +256,7 @@ public class MercadoPagoClientTest {
         String responseFile = "response_generic_success.json";
         HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
         doReturn(httpResponse).when(httpClientMock).execute(any(HttpRequestBase.class), any(HttpContext.class));
-        MPResponse mpResponse = testClient.listRequest("/test", HttpMethod.GET, null, null, null, null);
+        MPResponse mpResponse = testClient.listRequest("/test", HttpMethod.GET, null, null, null);
 
         assertNotNull(mpResponse);
         assertEquals(200, (int) mpResponse.getStatusCode());
@@ -274,24 +273,15 @@ public class MercadoPagoClientTest {
         Map<String, Object> filters = new HashMap<>();
         filters.put("abc", "xyz");
 
-        MPSearchRequest searchRequest = MPSearchRequest.builder()
-            .setLimit(10)
-            .setOffset(100)
-            .setFilters(filters)
-            .build();
-
         HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
         doReturn(httpResponse).when(httpClientMock).execute(any(HttpRequestBase.class), any(HttpContext.class));
-        testClient.listRequest("/test", HttpMethod.GET, null, searchRequest, queryParams, null);
+        testClient.listRequest("/test", HttpMethod.GET, null,  queryParams, null);
 
         ArgumentCaptor<HttpRequestBase> httpBaseCaptor = ArgumentCaptor.forClass(HttpRequestBase.class);
         ArgumentCaptor<HttpClientContext> httpClientContextCaptor = ArgumentCaptor.forClass(HttpClientContext.class);
         verify(httpClientMock).execute(httpBaseCaptor.capture(), httpClientContextCaptor.capture());
         assertTrue(httpBaseCaptor.getValue().getURI().getRawQuery().contains("entry1=value%261"));
         assertTrue(httpBaseCaptor.getValue().getURI().getRawQuery().contains("entry2=value%212"));
-        assertTrue(httpBaseCaptor.getValue().getURI().getRawQuery().contains("limit=10"));
-        assertTrue(httpBaseCaptor.getValue().getURI().getRawQuery().contains("offset=100"));
-        assertTrue(httpBaseCaptor.getValue().getURI().getRawQuery().contains("abc=xyz"));
     }
 
     @Test
@@ -307,7 +297,7 @@ public class MercadoPagoClientTest {
 
         HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
         doReturn(httpResponse).when(httpClientMock).execute(any(HttpRequestBase.class), any(HttpContext.class));
-        MPResponse mpResponse = testClient.listRequest("/test", HttpMethod.GET,null,  null, null, requestOptions);
+        MPResponse mpResponse = testClient.listRequest("/test", HttpMethod.GET,null,  null, requestOptions);
 
         assertNotNull(mpResponse);
         assertEquals(200, (int) mpResponse.getStatusCode());
