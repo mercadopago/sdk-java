@@ -79,7 +79,6 @@ public class MercadoPagoClientTest {
 
     @BeforeEach
     public void init() {
-//        this.httpClientMock = new HttpClientMock();
         this.httpClientMock = mock(HttpClient.class);
         this.mpHttpClient = new MPDefaultHttpClientMock(httpClientMock);
         this.testClient = new TestClient(mpHttpClient);
@@ -89,7 +88,6 @@ public class MercadoPagoClientTest {
     public void sendWithBodySuccess() throws IOException, MPException {
         String requestFile = "request_generic.json";
         String responseFile = "response_generic_success.json";
-//        httpClientMock.mock(responseFile, 200, requestFile);
         String request = MockHelper.readRequestFile(requestFile);
         JsonObject requestObject = JsonParser.parseString(request).getAsJsonObject();
         HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
@@ -177,7 +175,7 @@ public class MercadoPagoClientTest {
         ArgumentCaptor<HttpRequestBase> httpBaseCaptor = ArgumentCaptor.forClass(HttpRequestBase.class);
         ArgumentCaptor<HttpClientContext> httpClientContextCaptor = ArgumentCaptor.forClass(HttpClientContext.class);
         verify(httpClientMock).execute(httpBaseCaptor.capture(), httpClientContextCaptor.capture());
-        
+
         assertTrue(MockHelper.areHeadersValid(httpBaseCaptor.getValue().getAllHeaders(), httpBaseCaptor.getValue().getMethod()));
     }
 
