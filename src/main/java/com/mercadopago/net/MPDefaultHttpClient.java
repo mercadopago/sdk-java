@@ -6,8 +6,10 @@ import static com.mercadopago.net.HttpStatus.INTERNAL_SERVER_ERROR;
 
 import com.google.gson.JsonObject;
 import com.mercadopago.MercadoPagoConfig;
+import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.exceptions.MPMalformedRequestException;
+import com.mercadopago.serialization.Serializer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +21,7 @@ import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLPeerUnverifiedException;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -64,10 +67,20 @@ public class MPDefaultHttpClient implements MPHttpClient {
 
   /** MPDefaultHttpClient constructor. */
   public MPDefaultHttpClient() {
+    this(null);
+  }
+
+  /** MPDefaultHttpClient constructor for testing only. */
+  protected MPDefaultHttpClient(HttpClient httpClient) {
     StreamHandler streamHandler = getStreamHandler();
     streamHandler.setLevel(MercadoPagoConfig.getLoggingLevel());
     LOGGER.addHandler(streamHandler);
-    this.httpClient = createHttpClient();
+    if(Objects.isNull(httpClient)) {
+      this.httpClient = createHttpClient();
+    }
+    else {
+      this.httpClient = httpClient;
+    }
   }
 
   private StreamHandler getStreamHandler() {
@@ -126,15 +139,24 @@ public class MPDefaultHttpClient implements MPHttpClient {
 
       HttpResponse response = executeHttpRequest(mpRequest, completeRequest, context);
 
-      Map<String, List<String>> headers = getHeaders(response);
-
       String responseBody = EntityUtils.toString(response.getEntity(), UTF_8);
-      LOGGER.fine(String.format("Response body: %s", responseBody));
+      Map<String, List<String>> headers = getHeaders(response);
+      int statusCode = response.getStatusLine().getStatusCode();
+      MPResponse mpResponse = new MPResponse(statusCode, headers, responseBody);
 
+      if(!Serializer.isJsonValid(responseBody)) {
+        throw new MPApiException("Response body has malformed json", mpResponse);
+      }
+
+      if(statusCode > 299) {
+        throw new MPApiException("Api error. Check response for details", mpResponse);
+      }
+
+      LOGGER.fine(String.format("Response body: %s", responseBody));
       return new MPResponse(response.getStatusLine().getStatusCode(), headers, responseBody);
 
-    } catch (MPMalformedRequestException restEx) {
-      throw restEx;
+    } catch (MPMalformedRequestException | MPApiException ex) {
+      throw ex;
     } catch (Exception ex) {
       throw new MPException(ex);
     }
@@ -175,7 +197,10 @@ public class MPDefaultHttpClient implements MPHttpClient {
   private HttpResponse executeHttpRequest(
       MPRequest mpRequest, HttpRequestBase completeRequest, HttpClientContext context) {
     try {
-      LOGGER.fine(String.format("Request body: %s", mpRequest.getPayload().toString()));
+      if(Objects.nonNull(mpRequest.getPayload())) {
+        LOGGER.fine(String.format("Request body: %s", mpRequest.getPayload().toString()));
+      }
+
       LOGGER.fine("Headers:");
       for (Map.Entry<String, String> entry : mpRequest.getHeaders().entrySet()) {
         LOGGER.fine(String.format("%s: %s", entry.getKey(), entry.getValue()));

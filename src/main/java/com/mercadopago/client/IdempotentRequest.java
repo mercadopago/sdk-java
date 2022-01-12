@@ -19,7 +19,20 @@ public class IdempotentRequest extends MPRequest {
    */
   public IdempotentRequest(
       String uri, HttpMethod method, Map<String, String> headers, JsonObject payload) {
-    super(uri, method, headers, payload);
+    this(uri, method, headers, payload, null);
+  }
+
+  /**
+   * IdempotentRequest constructor.
+   *
+   * @param uri uri
+   * @param method method
+   * @param headers headers
+   * @param payload payload
+   */
+  public IdempotentRequest(
+      String uri, HttpMethod method, Map<String, String> headers, JsonObject payload, Map<String, Object> queryParams) {
+    super(uri, method, headers, payload, queryParams);
   }
 
   /**

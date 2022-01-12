@@ -83,4 +83,18 @@ public class MercadoPagoConfig {
     }
     return httpClient;
   }
+
+  public static synchronized String getJavaVersion(String version) {
+    if (version == null) {
+      return null;
+    }
+
+    String major = version.replaceAll("^1\\.", "");
+    int dotIndex = major.indexOf('.');
+    if (dotIndex != -1) {
+      major = major.substring(0, dotIndex);
+    }
+
+    return major + "|" + version;
+  }
 }

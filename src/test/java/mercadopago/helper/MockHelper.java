@@ -44,37 +44,35 @@ public class MockHelper {
     put(HTTP_STATUS_BAD_REQUEST, "Bad Request");
   }};
 
-  public static HttpResponse generateHttpResponse(String mockFile, int statusCode) throws IOException {
+  public static HttpResponse generateHttpResponseFromFile(String mockFile, int statusCode) throws IOException {
 
-    String payload = generatePayload(mockFile, MOCKS_RESPONSE_PATH);
+    String payload = readResponseFile(mockFile);
 
+    return generateHttpResponseFromString(payload, statusCode);
+  }
+
+  public static HttpResponse generateHttpResponseFromFile(int statusCode) {
+
+    return new BasicHttpResponse(new BasicStatusLine(HttpVersion.HTTP_1_1, statusCode, REASON_PHRASE.get(statusCode)));
+  }
+
+  public static HttpResponse generateHttpResponseFromString(String response, int statusCode) {
     HttpResponse httpResponse =
         new BasicHttpResponse(new BasicStatusLine(HttpVersion.HTTP_1_1, statusCode, REASON_PHRASE.get(statusCode)));
 
     BasicHttpEntity entity = new BasicHttpEntity();
-    entity.setContent(new ByteArrayInputStream(payload.getBytes()));
+    entity.setContent(new ByteArrayInputStream(response.getBytes()));
     httpResponse.setEntity(entity);
 
     return httpResponse;
   }
 
-  public static HttpResponse generateHttpResponse(int statusCode) {
-
-    return new BasicHttpResponse(new BasicStatusLine(HttpVersion.HTTP_1_1, statusCode, REASON_PHRASE.get(statusCode)));
-  }
-
   public static JsonElement generateJsonElement(String mockFile) throws IOException {
 
-    String payload = generatePayload(mockFile, MOCKS_REQUEST_PATH);
+    String payload = readRequestFile(mockFile);
 
     Gson gson = new Gson();
     return gson.fromJson(payload, JsonElement.class);
-  }
-
-  public static void validateRequest(HttpUriRequest httpUriRequest, JsonElement requestPayloadMock) throws IOException, MPException {
-
-    validateHeaders(httpUriRequest);
-    validatePayload(httpUriRequest, requestPayloadMock);
   }
 
   private static void validateHeaders(HttpUriRequest httpUriRequest) throws MPException {
@@ -89,8 +87,8 @@ public class MockHelper {
     List<String> mandatoryHeaders = new ArrayList<String>();
     mandatoryHeaders.add("Authorization");
     mandatoryHeaders.add("User-Agent");
-    mandatoryHeaders.add("x-product-id");
-    mandatoryHeaders.add("x-tracking-id");
+    mandatoryHeaders.add("X-Product-Id");
+    mandatoryHeaders.add("X-Tracking-Id");
 
     if (method.equals("POST") || method.equals("PUT")) {
       mandatoryHeaders.add("Content-Type");
@@ -138,7 +136,14 @@ public class MockHelper {
     }
   }
 
-  private static String generatePayload(String mockFile, String path) throws IOException {
+  public static String readRequestFile(String mockFile) throws IOException {
+    return readFile(mockFile, MOCKS_REQUEST_PATH);
+  }
+
+  public static String readResponseFile(String mockFile) throws IOException {
+    return readFile(mockFile, MOCKS_RESPONSE_PATH);
+  }
+  public static String readFile(String mockFile, String path) throws IOException {
 
     File file = new File(StringUtils.join(path, mockFile));
 
