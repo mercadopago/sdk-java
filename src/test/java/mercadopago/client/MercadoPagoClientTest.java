@@ -19,6 +19,7 @@ import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPHttpClient;
 import com.mercadopago.net.MPRequest;
 import com.mercadopago.net.MPResponse;
+import com.mercadopago.net.MPSearchRequest;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,6 +61,10 @@ public class MercadoPagoClientTest {
                                       Map<String, Object> queryParams,
                                       MPRequestOptions requestOptions) throws MPException {
             return send(path, method, payload, queryParams, requestOptions);
+        }
+
+        public MPResponse searchRequest(String path, MPSearchRequest searchRequest) throws MPException {
+            return search(path, searchRequest);
         }
     }
 
@@ -172,5 +177,42 @@ public class MercadoPagoClientTest {
         MPRequest mpRequest = new MPRequest("https://test.com", HttpMethod.GET, new HashMap<>(), null, null);
 
         Assertions.assertThrows(MPApiException.class, () -> testClient.sendRequest(mpRequest));
+    }
+
+    @Test
+    public void searchWithParametersSuccess() throws IOException, MPException {
+        String responseFile = "response_generic_success.json";
+
+        Map<String, Object> filters = new HashMap<>();
+        filters.put("abc", "xyz");
+
+        MPSearchRequest searchRequest = MPSearchRequest.builder()
+            .setLimit(10)
+            .setOffset(100)
+            .setFilters(filters)
+            .build();
+
+        HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
+        doReturn(httpResponse).when(httpClientMock).execute(any(HttpRequestBase.class), any(HttpContext.class));
+        MPResponse mpResponse = testClient.searchRequest("/test", searchRequest);
+
+        ArgumentCaptor<HttpRequestBase> httpBaseCaptor = ArgumentCaptor.forClass(HttpRequestBase.class);
+        ArgumentCaptor<HttpClientContext> httpClientContextCaptor = ArgumentCaptor.forClass(HttpClientContext.class);
+        verify(httpClientMock).execute(httpBaseCaptor.capture(), httpClientContextCaptor.capture());
+        assertTrue(httpBaseCaptor.getValue().getURI().getRawQuery().contains("limit=10"));
+        assertTrue(httpBaseCaptor.getValue().getURI().getRawQuery().contains("offset=100"));
+        assertTrue(httpBaseCaptor.getValue().getURI().getRawQuery().contains("abc=xyz"));
+    }
+
+    @Test
+    public void searchWithoutParametersSuccess() throws IOException, MPException {
+        String responseFile = "response_generic_success.json";
+
+        HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
+        doReturn(httpResponse).when(httpClientMock).execute(any(HttpRequestBase.class), any(HttpContext.class));
+        MPResponse mpResponse = testClient.searchRequest("/test", null);
+
+        assertNotNull(mpResponse);
+        assertEquals(200, (int) mpResponse.getStatusCode());
     }
 }

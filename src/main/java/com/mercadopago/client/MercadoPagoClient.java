@@ -9,6 +9,7 @@ import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPHttpClient;
 import com.mercadopago.net.MPRequest;
 import com.mercadopago.net.MPResponse;
+import com.mercadopago.net.MPSearchRequest;
 import com.mercadopago.net.UrlFormatter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -65,6 +66,19 @@ public abstract class MercadoPagoClient {
       throws MPException {
     MPRequest mpRequest = buildRequest(path, method, payload, queryParams, requestOptions);
     return this.send(mpRequest);
+  }
+
+  protected MPResponse search(String path, MPSearchRequest request) throws MPException {
+    return this.search(path, request, null);
+  }
+
+  protected MPResponse search(String path, MPSearchRequest request, MPRequestOptions requestOptions) throws MPException {
+    Map<String, Object> queryParams = null;
+
+    if(Objects.nonNull(request)) {
+      queryParams = request.getParameters();
+    }
+    return send(path, HttpMethod.GET, null, queryParams, requestOptions);
   }
 
   private MPRequest addIdempotencyKey(MPRequest request) {
@@ -135,7 +149,7 @@ public abstract class MercadoPagoClient {
   }
 
   private MPRequest addCustomHeaders(MPRequest request, MPRequestOptions requestOptions) {
-    if(Objects.nonNull(requestOptions.getCustomHeaders())) {
+    if(Objects.nonNull(requestOptions) && Objects.nonNull(requestOptions.getCustomHeaders())) {
       for (Map.Entry<String, String> entry : requestOptions.getCustomHeaders().entrySet()) {
         request.addHeader(entry.getKey(), entry.getValue());
       }
