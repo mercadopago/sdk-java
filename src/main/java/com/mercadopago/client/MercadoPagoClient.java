@@ -22,7 +22,7 @@ import lombok.Getter;
 /** Mercado Pago client class. */
 public abstract class MercadoPagoClient {
   private static final String ACCEPT_HEADER_VALUE = "application/json";
-
+  private static final String CONTENT_TYPE_HEADER_VALUE = "application/json; charset=UTF-8";
   @Getter protected final MPHttpClient httpClient;
 
   protected Map<String, String> defaultHeaders;
@@ -39,12 +39,9 @@ public abstract class MercadoPagoClient {
     defaultHeaders.put(Headers.PRODUCT_ID, MercadoPagoConfig.PRODUCT_ID);
     defaultHeaders.put(
         Headers.USER_AGENT,
-        String.format("MercadoPago Java SDK %s", MercadoPagoConfig.CURRENT_VERSION));
-    defaultHeaders.put(Headers.TRACKING_ID,
-        String.format("platform:%s,type:SDK%s,so;",
-            MercadoPagoConfig.getJavaVersion(System.getProperty("java.runtime.version")),
-            MercadoPagoConfig.CURRENT_VERSION));
-    defaultHeaders.put(Headers.CONTENT_TYPE, ACCEPT_HEADER_VALUE);
+        String.format("MercadoPago Java SDK/%s", MercadoPagoConfig.CURRENT_VERSION));
+    defaultHeaders.put(Headers.TRACKING_ID, MercadoPagoConfig.TRACKING_ID);
+    defaultHeaders.put(Headers.CONTENT_TYPE, CONTENT_TYPE_HEADER_VALUE);
   }
 
   protected MPResponse send(MPRequest request) throws MPException {

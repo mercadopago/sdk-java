@@ -18,6 +18,10 @@ public class MercadoPagoConfig {
 
   public static final String PRODUCT_ID = "BC32A7VTRPP001U8NHJ0";
 
+  public static final String TRACKING_ID = String.format("platform:%s,type:SDK%s,so;",
+          MercadoPagoConfig.getJavaVersion(),
+          MercadoPagoConfig.CURRENT_VERSION);
+
   public static final String BASE_URL = "https://api.mercadopago.com";
 
   private static final int DEFAULT_MAX_CONNECTIONS = 10;
@@ -84,7 +88,8 @@ public class MercadoPagoConfig {
     return httpClient;
   }
 
-  public static synchronized String getJavaVersion(String version) {
+  public static synchronized String getJavaVersion() {
+    String version = System.getProperty("java.runtime.version");
     if (version == null) {
       return null;
     }

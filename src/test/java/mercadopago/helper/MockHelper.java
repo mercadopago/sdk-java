@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.mercadopago.MercadoPago;
+import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.core.MPCoreUtils;
 import com.mercadopago.exceptions.MPException;
 import java.io.ByteArrayInputStream;
@@ -18,9 +19,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
@@ -75,15 +78,11 @@ public class MockHelper {
     return gson.fromJson(payload, JsonElement.class);
   }
 
-  private static void validateHeaders(HttpUriRequest httpUriRequest) throws MPException {
-
-    validateMandatoryHeaders(httpUriRequest);
-    validateHeaderValues(httpUriRequest);
+  public static boolean areHeadersValid(Header[] headers, String method) throws MPException {
+    return hasMandatoryHeaders(headers, method) && haveMandatoryHeadersCorrectValues(headers);
   }
 
-  private static void validateMandatoryHeaders(HttpUriRequest httpUriRequest) {
-    String method = httpUriRequest.getMethod();
-
+  private static boolean hasMandatoryHeaders(Header[] headers, String method) {
     List<String> mandatoryHeaders = new ArrayList<String>();
     mandatoryHeaders.add("Authorization");
     mandatoryHeaders.add("User-Agent");
@@ -95,30 +94,41 @@ public class MockHelper {
     }
 
     for (String mandatoryHeader : mandatoryHeaders) {
-      assertTrue(httpUriRequest.containsHeader(mandatoryHeader));
+      boolean match = Arrays.stream(headers).anyMatch(header -> header.getName().equals(mandatoryHeader));
+
+      if(!match) return false;
     }
+
+    return true;
   }
 
-  private static void validateHeaderValues(HttpUriRequest httpUriRequest) throws MPException {
-    Header[] headers = httpUriRequest.getAllHeaders();
+  private static boolean haveMandatoryHeadersCorrectValues(Header[] headers) throws MPException {
+    boolean match;
 
     for (Header header : headers) {
       if (header.getName().equals("Authorization")) {
-        assertEquals(String.format("Bearer %s", MercadoPago.SDK.getAccessToken()), header.getValue());
+        match = header.getValue().startsWith("Bearer" );
+        if(!match) return false;
       }
       if (header.getName().equals("User-Agent")) {
-        assertEquals(String.format("MercadoPago Java SDK/%s", MercadoPago.SDK.getVersion()), header.getValue());
+        match = String.format("MercadoPago Java SDK/%s", MercadoPagoConfig.CURRENT_VERSION).equals(header.getValue());
+        if(!match) return false;
       }
-      if (header.getName().equals("x-product-id")) {
-        assertEquals(MercadoPago.SDK.getProductId(), header.getValue());
+      if (header.getName().equals("X-Product-Id")) {
+        match = MercadoPagoConfig.PRODUCT_ID.equals(header.getValue());
+        if(!match) return false;
       }
-      if (header.getName().equals("x-tracking-id")) {
-        assertEquals(MercadoPago.SDK.getTrackingId(), header.getValue());
+      if (header.getName().equals("X-Tracking-Id")) {
+        match = MercadoPagoConfig.TRACKING_ID.equals(header.getValue());
+        if(!match) return false;
       }
       if (header.getName().equals("Content-Type")) {
-        assertEquals("application/json; charset=UTF-8", header.getValue());
+        match = "application/json; charset=UTF-8".equals(header.getValue());
+        if(!match) return false;
       }
     }
+
+    return true;
   }
 
   private static void validatePayload(HttpUriRequest httpUriRequest, JsonElement requestPayloadMock) throws IOException {
