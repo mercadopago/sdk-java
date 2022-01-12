@@ -81,6 +81,25 @@ public abstract class MercadoPagoClient {
     return send(path, HttpMethod.GET, null, queryParams, requestOptions);
   }
 
+  protected MPResponse list(
+      String path, MPSearchRequest searchRequest, MPRequestOptions requestOptions)
+      throws MPException {
+    return this.list(path, HttpMethod.GET, null, searchRequest, null, requestOptions);
+  }
+
+  protected MPResponse list(String path,
+                            HttpMethod method,
+                            JsonObject payload,
+                            MPSearchRequest searchRequest,
+                            Map<String, Object> queryParams,
+                            MPRequestOptions requestOptions)
+      throws MPException {
+    if(Objects.nonNull(queryParams) && Objects.nonNull(searchRequest)) {
+      queryParams.putAll(searchRequest.getParameters());
+    }
+    return this.send(path, method, payload, queryParams, requestOptions);
+  }
+
   private MPRequest addIdempotencyKey(MPRequest request) {
     if (request.getMethod() == HttpMethod.POST) {
       if (request instanceof IdempotentRequest) {

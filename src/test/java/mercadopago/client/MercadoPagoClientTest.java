@@ -66,6 +66,15 @@ public class MercadoPagoClientTest {
         public MPResponse searchRequest(String path, MPSearchRequest searchRequest) throws MPException {
             return search(path, searchRequest);
         }
+
+        public MPResponse listRequest(String path,
+                                      HttpMethod method,
+                                      JsonObject payload,
+                                      MPSearchRequest searchRequest,
+                                      HashMap<String, Object> queryParams,
+                                      MPRequestOptions requestOptions) throws MPException {
+            return list(path, method, payload, searchRequest, queryParams, requestOptions);
+        }
     }
 
     @BeforeEach
@@ -211,6 +220,81 @@ public class MercadoPagoClientTest {
         HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
         doReturn(httpResponse).when(httpClientMock).execute(any(HttpRequestBase.class), any(HttpContext.class));
         MPResponse mpResponse = testClient.searchRequest("/test", null);
+
+        assertNotNull(mpResponse);
+        assertEquals(200, (int) mpResponse.getStatusCode());
+    }
+
+    @Test
+    public void listWithBodySuccess() throws IOException, MPException {
+        String requestFile = "request_generic.json";
+        String responseFile = "response_generic_success.json";
+        String request = MockHelper.readRequestFile(requestFile);
+        JsonObject requestObject = JsonParser.parseString(request).getAsJsonObject();
+        HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
+        doReturn(httpResponse).when(httpClientMock).execute(any(HttpRequestBase.class), any(HttpContext.class));
+        MPResponse mpResponse = testClient.listRequest("/test", HttpMethod.POST, requestObject, null, null, null);
+
+        assertNotNull(mpResponse);
+        assertEquals(200, (int) mpResponse.getStatusCode());
+    }
+
+    @Test
+    public void listWithoutBodySuccess() throws IOException, MPException {
+        String responseFile = "response_generic_success.json";
+        HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
+        doReturn(httpResponse).when(httpClientMock).execute(any(HttpRequestBase.class), any(HttpContext.class));
+        MPResponse mpResponse = testClient.listRequest("/test", HttpMethod.GET, null, null, null, null);
+
+        assertNotNull(mpResponse);
+        assertEquals(200, (int) mpResponse.getStatusCode());
+    }
+
+    @Test
+    public void listWithQueryStringSuccess() throws IOException, MPException {
+        String responseFile = "response_generic_success.json";
+
+        HashMap<String, Object> queryParams = new HashMap<>();
+        queryParams.put("entry1", "value&1");
+        queryParams.put("entry2", "value!2");
+
+        Map<String, Object> filters = new HashMap<>();
+        filters.put("abc", "xyz");
+
+        MPSearchRequest searchRequest = MPSearchRequest.builder()
+            .setLimit(10)
+            .setOffset(100)
+            .setFilters(filters)
+            .build();
+
+        HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
+        doReturn(httpResponse).when(httpClientMock).execute(any(HttpRequestBase.class), any(HttpContext.class));
+        testClient.listRequest("/test", HttpMethod.GET, null, searchRequest, queryParams, null);
+
+        ArgumentCaptor<HttpRequestBase> httpBaseCaptor = ArgumentCaptor.forClass(HttpRequestBase.class);
+        ArgumentCaptor<HttpClientContext> httpClientContextCaptor = ArgumentCaptor.forClass(HttpClientContext.class);
+        verify(httpClientMock).execute(httpBaseCaptor.capture(), httpClientContextCaptor.capture());
+        assertTrue(httpBaseCaptor.getValue().getURI().getRawQuery().contains("entry1=value%261"));
+        assertTrue(httpBaseCaptor.getValue().getURI().getRawQuery().contains("entry2=value%212"));
+        assertTrue(httpBaseCaptor.getValue().getURI().getRawQuery().contains("limit=10"));
+        assertTrue(httpBaseCaptor.getValue().getURI().getRawQuery().contains("offset=100"));
+        assertTrue(httpBaseCaptor.getValue().getURI().getRawQuery().contains("abc=xyz"));
+    }
+
+    @Test
+    public void listWithRequestOptionsSuccess() throws IOException, MPException {
+        String responseFile = "response_generic_success.json";
+
+        MPRequestOptions requestOptions = MPRequestOptions.builder()
+            .setAccessToken("abc")
+            .setConnectionTimeout(1000)
+            .setConnectionRequestTimeout(1000)
+            .setSocketTimeout(1000)
+            .build();
+
+        HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
+        doReturn(httpResponse).when(httpClientMock).execute(any(HttpRequestBase.class), any(HttpContext.class));
+        MPResponse mpResponse = testClient.listRequest("/test", HttpMethod.GET,null,  null, null, requestOptions);
 
         assertNotNull(mpResponse);
         assertEquals(200, (int) mpResponse.getStatusCode());
