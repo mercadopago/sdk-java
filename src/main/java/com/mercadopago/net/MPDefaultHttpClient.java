@@ -1,5 +1,6 @@
 package com.mercadopago.net;
 
+import static com.mercadopago.MercadoPagoConfig.getStreamHandler;
 import static com.mercadopago.net.HttpStatus.BAD_REQUEST;
 import static com.mercadopago.net.HttpStatus.FORBIDDEN;
 import static com.mercadopago.net.HttpStatus.INTERNAL_SERVER_ERROR;
@@ -79,13 +80,6 @@ public class MPDefaultHttpClient implements MPHttpClient {
     } else {
       this.httpClient = httpClient;
     }
-  }
-
-  private StreamHandler getStreamHandler() {
-    if (Objects.isNull(MercadoPagoConfig.getLoggingHandler())) {
-      return new ConsoleHandler();
-    }
-    return MercadoPagoConfig.getLoggingHandler();
   }
 
   private HttpClient createHttpClient() {

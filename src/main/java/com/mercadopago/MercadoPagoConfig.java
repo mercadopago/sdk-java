@@ -3,6 +3,7 @@ package com.mercadopago;
 import com.mercadopago.net.MPDefaultHttpClient;
 import com.mercadopago.net.MPHttpClient;
 import java.util.Objects;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.StreamHandler;
 import lombok.Getter;
@@ -81,7 +82,7 @@ public class MercadoPagoConfig {
   }
 
   /**
-   * Method responsible for getting Java version.
+   * Method responsible for return Java version.
    *
    * @return java version
    */
@@ -98,5 +99,17 @@ public class MercadoPagoConfig {
     }
 
     return major + "|" + version;
+  }
+
+  /**
+   * Method responsible for return StreamHandler.
+   *
+   * @return StreamHandler
+   */
+  public static StreamHandler getStreamHandler() {
+    if (Objects.isNull(loggingHandler)) {
+      return new ConsoleHandler();
+    }
+    return loggingHandler;
   }
 }
