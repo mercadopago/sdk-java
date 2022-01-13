@@ -17,6 +17,8 @@ public class MPRequest {
 
   private JsonObject payload;
 
+  private Map<String, Object> queryParams;
+
   private String accessToken;
 
   private int connectionTimeout;
@@ -40,10 +42,23 @@ public class MPRequest {
    * @param payload payload
    */
   public MPRequest(String uri, HttpMethod method, Map<String, String> headers, JsonObject payload) {
+    this(uri, method, headers, payload, null);
+  }
+
+  /**
+   * MPRequest constructor.
+   *
+   * @param uri uri
+   * @param method method
+   * @param headers headers
+   * @param payload payload
+   */
+  public MPRequest(String uri, HttpMethod method, Map<String, String> headers, JsonObject payload, Map<String, Object> queryParams) {
     this.uri = uri;
     this.method = method;
     this.headers = headers;
     this.payload = payload;
+    this.queryParams = queryParams;
   }
 
   /**

@@ -8,6 +8,7 @@ import java.util.logging.StreamHandler;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Synchronized;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.client.HttpRequestRetryHandler;
 
@@ -17,6 +18,10 @@ public class MercadoPagoConfig {
   public static final String CURRENT_VERSION = "2.0.0";
 
   public static final String PRODUCT_ID = "BC32A7VTRPP001U8NHJ0";
+
+  public static final String TRACKING_ID = String.format("platform:%s,type:SDK%s,so;",
+          MercadoPagoConfig.getJavaVersion(),
+          MercadoPagoConfig.CURRENT_VERSION);
 
   public static final String BASE_URL = "https://api.mercadopago.com";
 
@@ -82,5 +87,20 @@ public class MercadoPagoConfig {
       httpClient = new MPDefaultHttpClient();
     }
     return httpClient;
+  }
+
+  public static synchronized String getJavaVersion() {
+    String version = System.getProperty("java.runtime.version");
+    if (Objects.isNull(version)) {
+      return null;
+    }
+
+    String major = version.replaceAll("^1\\.", "");
+    int dotIndex = major.indexOf('.');
+    if (dotIndex != -1) {
+      major = major.substring(0, dotIndex);
+    }
+
+    return major + "|" + version;
   }
 }
