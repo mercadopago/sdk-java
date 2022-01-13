@@ -22,14 +22,7 @@ public class MPSearchRequest {
     }
 
     public Map<String, Object> getParameters() {
-        HashMap<String, Object> parameters;
-
-        if(Objects.nonNull(filters)) {
-            parameters = new HashMap<>(filters);
-        }
-        else {
-            parameters = new HashMap<>();
-        }
+        HashMap<String, Object> parameters = Objects.nonNull(filters) ? new HashMap<>(filters) : new HashMap<>();
 
         if(!parameters.containsKey(limitParam)) {
             parameters.put(limitParam, limit);
