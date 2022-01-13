@@ -3,23 +3,19 @@ package com.mercadopago.net;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
+@AllArgsConstructor
 public class MPSearchRequest {
     private final String limitParam = "limit";
     private final String offsetParam = "offset";
     private Integer limit;
     private Integer offset;
     private Map<String, Object> filters;
-
-    @Builder
-    private MPSearchRequest(Integer limit, Integer offset, Map<String, Object> filters) {
-        this.limit = limit;
-        this.offset = offset;
-        this.filters = filters;
-    }
 
     public Map<String, Object> getParameters() {
         HashMap<String, Object> parameters = Objects.nonNull(filters) ? new HashMap<>(filters) : new HashMap<>();
