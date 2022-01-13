@@ -16,7 +16,6 @@ import com.mercadopago.net.MPResource;
 import com.mercadopago.net.MPResourceList;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.ArrayList;
 
 /** Serializer class, responsible for objects serialization and deserialization. */
 public class Serializer {
