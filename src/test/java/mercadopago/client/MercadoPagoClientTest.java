@@ -39,6 +39,8 @@ public class MercadoPagoClientTest {
     private MPDefaultHttpClientMock mpHttpClient;
     private HttpClient httpClientMock;
     private TestClient testClient;
+    private String requestFile;
+    private String responseFile;
 
     private class TestClient extends MercadoPagoClient {
 
@@ -81,12 +83,12 @@ public class MercadoPagoClientTest {
         this.httpClientMock = mock(HttpClient.class);
         this.mpHttpClient = new MPDefaultHttpClientMock(httpClientMock);
         this.testClient = new TestClient(mpHttpClient);
+        this.requestFile = "request_generic.json";
+        this.responseFile = "response_generic_success.json";
     }
 
     @Test
     public void sendWithBodySuccess() throws IOException, MPException {
-        String requestFile = "request_generic.json";
-        String responseFile = "response_generic_success.json";
         String request = MockHelper.readRequestFile(requestFile);
         JsonObject requestObject = JsonParser.parseString(request).getAsJsonObject();
         HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
@@ -100,8 +102,6 @@ public class MercadoPagoClientTest {
 
     @Test
     public void sendIdempotentRequestWithBodySuccess() throws IOException, MPException {
-        String requestFile = "request_generic.json";
-        String responseFile = "response_generic_success.json";
         String request = MockHelper.readRequestFile(requestFile);
         JsonObject requestObject = JsonParser.parseString(request).getAsJsonObject();
         HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
@@ -115,7 +115,6 @@ public class MercadoPagoClientTest {
 
     @Test
     public void sendWithoutBodySuccess() throws IOException, MPException {
-        String responseFile = "response_generic_success.json";
         HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
         doReturn(httpResponse).when(httpClientMock).execute(any(HttpRequestBase.class), any(HttpContext.class));
         MPRequest mpRequest = new MPRequest("https://test.com", HttpMethod.GET, new HashMap<>(), null);
@@ -127,7 +126,6 @@ public class MercadoPagoClientTest {
 
     @Test
     public void sendWithQueryStringSuccess() throws IOException, MPException {
-        String responseFile = "response_generic_success.json";
         HashMap<String, Object> queryParams = new HashMap<>();
         queryParams.put("entry1", "value&1");
         queryParams.put("entry2", "value!2");
@@ -146,8 +144,6 @@ public class MercadoPagoClientTest {
 
     @Test
     public void sendWithRequestOptionsSuccess() throws IOException, MPException {
-        String responseFile = "response_generic_success.json";
-
         MPRequestOptions requestOptions = MPRequestOptions.builder()
             .setAccessToken("abc")
             .setConnectionTimeout(1000)
@@ -165,8 +161,6 @@ public class MercadoPagoClientTest {
 
     @Test
     public void sendWithRequiredHeaders() throws IOException, MPException {
-        String responseFile = "response_generic_success.json";
-
         HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
         doReturn(httpResponse).when(httpClientMock).execute(any(HttpRequestBase.class), any(HttpContext.class));
         testClient.sendRequest("/test", HttpMethod.GET,  null, null, null);
@@ -202,8 +196,6 @@ public class MercadoPagoClientTest {
 
     @Test
     public void searchWithParametersSuccess() throws IOException, MPException {
-        String responseFile = "response_generic_success.json";
-
         Map<String, Object> filters = new HashMap<>();
         filters.put("abc", "xyz");
 
@@ -227,8 +219,6 @@ public class MercadoPagoClientTest {
 
     @Test
     public void searchWithoutParametersSuccess() throws IOException, MPException {
-        String responseFile = "response_generic_success.json";
-
         HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
         doReturn(httpResponse).when(httpClientMock).execute(any(HttpRequestBase.class), any(HttpContext.class));
         MPResponse mpResponse = testClient.searchRequest("/test", null);
@@ -239,8 +229,6 @@ public class MercadoPagoClientTest {
 
     @Test
     public void listWithBodySuccess() throws IOException, MPException {
-        String requestFile = "request_generic.json";
-        String responseFile = "response_generic_success.json";
         String request = MockHelper.readRequestFile(requestFile);
         JsonObject requestObject = JsonParser.parseString(request).getAsJsonObject();
         HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
@@ -253,7 +241,6 @@ public class MercadoPagoClientTest {
 
     @Test
     public void listWithoutBodySuccess() throws IOException, MPException {
-        String responseFile = "response_generic_success.json";
         HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
         doReturn(httpResponse).when(httpClientMock).execute(any(HttpRequestBase.class), any(HttpContext.class));
         MPResponse mpResponse = testClient.listRequest("/test", HttpMethod.GET, null, null, null);
@@ -264,8 +251,6 @@ public class MercadoPagoClientTest {
 
     @Test
     public void listWithQueryStringSuccess() throws IOException, MPException {
-        String responseFile = "response_generic_success.json";
-
         HashMap<String, Object> queryParams = new HashMap<>();
         queryParams.put("entry1", "value&1");
         queryParams.put("entry2", "value!2");
@@ -286,8 +271,6 @@ public class MercadoPagoClientTest {
 
     @Test
     public void listWithRequestOptionsSuccess() throws IOException, MPException {
-        String responseFile = "response_generic_success.json";
-
         MPRequestOptions requestOptions = MPRequestOptions.builder()
             .setAccessToken("abc")
             .setConnectionTimeout(1000)
