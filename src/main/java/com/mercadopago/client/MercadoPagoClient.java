@@ -11,6 +11,7 @@ import com.mercadopago.net.MPResponse;
 import com.mercadopago.net.UrlFormatter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import lombok.Getter;
 
 /** Mercado Pago client class. */
@@ -42,7 +43,7 @@ public abstract class MercadoPagoClient {
       request.addHeader(entry.getKey(), entry.getValue());
     }
     if (!request.getUri().contains("/oauth/token")) {
-      request.addHeader("Authorization", String.format("Bearer %s", getAccessToken(request)));
+      request.addHeader(Headers.AUTHORIZATION, String.format("Bearer %s", getAccessToken(request)));
     }
     return httpClient.send(addIdempotencyKey(request));
   }

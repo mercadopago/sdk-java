@@ -4,7 +4,10 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.mercadopago.net.MPResource;
+import com.mercadopago.resources.ResultsResourcesPage;
+import java.lang.reflect.Type;
 
 /** Serializer class, responsible for objects serialization and deserialization. */
 public class Serializer {
@@ -27,6 +30,21 @@ public class Serializer {
    */
   public static <T extends MPResource> T deserializeFromJson(Class<T> clazz, String jsonObject) {
     return GSON.fromJson(jsonObject, clazz);
+  }
+
+  /**
+   * Method responsible for deserialize objects to ResultsResourcesPage.
+   *
+   * @param clazz class.
+   * @param jsonObject json object.
+   * @param <T> class type.
+   * @return object.
+   */
+  public static <T extends MPResource>
+      ResultsResourcesPage<T> deserializeFromJsonToResultsResources(
+          Class<T> clazz, String jsonObject) {
+    Type collectionType = new TypeToken<ResultsResourcesPage<T>>() {}.getType();
+    return GSON.fromJson(jsonObject, collectionType);
   }
 
   /**

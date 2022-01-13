@@ -1,0 +1,14 @@
+[
+  {
+    "id": 9842102419,
+    "payment_id": 413372911,
+    "amount": 100.0,
+    "source": {
+      "id": "810882223",
+      "name": "Test Test",
+      "type": "collector"
+    },
+    "date_created": "2021-09-17T14:50:53.198-04:00",
+    "status": "approved"
+  }
+]

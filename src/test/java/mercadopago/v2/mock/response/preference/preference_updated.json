@@ -1,0 +1,120 @@
+{
+  "additional_info": "New info",
+  "auto_return": "all",
+  "back_urls": {
+    "failure": "https://seller/failure",
+    "pending": "https://seller/pending",
+    "success": "https://seller/success"
+  },
+  "binary_mode": true,
+  "client_id": "59441713004005",
+  "collector_id": 539675046,
+  "coupon_code": null,
+  "coupon_labels": null,
+  "date_created": "2021-09-20T14:02:41.209+00:00",
+  "date_of_expiration": null,
+  "expiration_date_from": "2021-09-20T11:02:29.773-03:00",
+  "expiration_date_to": "2021-10-20T11:02:29.773-03:00",
+  "expires": true,
+  "external_reference": "0019b078-6276-4a4e-93c8-bfa5a5f77bf3",
+  "id": "539675046-7a2dff87-ab06-409a-8545-7d396899f675",
+  "init_point": "https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=539675046-7a2dff87-ab06-409a-8545-7d396899f675",
+  "internal_metadata": null,
+  "items": [
+    {
+      "id": "123",
+      "category_id": "",
+      "currency_id": "BRL",
+      "description": "Description",
+      "picture_url": "http://product.image.png",
+      "title": "Title",
+      "quantity": 1,
+      "unit_price": 100
+    }
+  ],
+  "marketplace": "MP-MKT-59441713004005",
+  "marketplace_fee": 0,
+  "metadata": {},
+  "notification_url": "https://seller/notification",
+  "operation_type": "regular_payment",
+  "payer": {
+    "phone": {
+      "area_code": "11",
+      "number": "999999999"
+    },
+    "address": {
+      "zip_code": "06000000",
+      "street_name": "Street",
+      "street_number": "123"
+    },
+    "email": "test_user_15230029@testuser.com",
+    "identification": {
+      "number": "19119119100",
+      "type": "CPF"
+    },
+    "name": "Test",
+    "surname": "User",
+    "date_created": null,
+    "last_purchase": null
+  },
+  "payment_methods": {
+    "default_card_id": null,
+    "default_payment_method_id": "master",
+    "excluded_payment_methods": [
+      {
+        "id": "visa"
+      }
+    ],
+    "excluded_payment_types": [
+      {
+        "id": "debit_card"
+      }
+    ],
+    "installments": 6,
+    "default_installments": 1
+  },
+  "processing_modes": [
+    "aggregator"
+  ],
+  "product_id": null,
+  "redirect_urls": {
+    "failure": "",
+    "pending": "",
+    "success": ""
+  },
+  "sandbox_init_point": "https://sandbox.mercadopago.com.br/checkout/v1/redirect?pref_id=539675046-7a2dff87-ab06-409a-8545-7d396899f675",
+  "site_id": "MLB",
+  "shipments": {
+    "mode": "custom",
+    "default_shipping_method": null,
+    "cost": 10,
+    "receiver_address": {
+      "zip_code": "06000000",
+      "street_name": "Street",
+      "street_number": "123",
+      "floor": "12",
+      "apartment": "120A",
+      "city_name": null,
+      "state_name": null,
+      "country_name": null
+    }
+  },
+  "statement_descriptor": "Statement Descriptor",
+  "tracks": [
+    {
+      "type": "google_ad",
+      "values": {
+        "conversion_id": "1123",
+        "conversion_label": "label"
+      }
+    },
+    {
+      "type": "facebook_ad",
+      "values": {
+        "pixel_id": "111111"
+      }
+    }
+  ],
+  "total_amount": null,
+  "last_updated": null
+}

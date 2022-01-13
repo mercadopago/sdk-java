@@ -1,0 +1,17 @@
+{
+  "id": 934723769,
+  "payment_id": 17014025134,
+  "amount": 12.34,
+  "metadata": {},
+  "source": {
+    "id": "810882223",
+    "name": "Test Test",
+    "type": "collector"
+  },
+  "date_created": "2021-09-17T14:50:53.198-04:00",
+  "unique_sequence_number": null,
+  "refund_mode": "standard",
+  "adjustment_amount": 0,
+  "status": "approved",
+  "reason": null
+}

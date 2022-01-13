@@ -3,6 +3,7 @@ package com.mercadopago;
 import com.mercadopago.net.MPDefaultHttpClient;
 import com.mercadopago.net.MPHttpClient;
 import java.util.Objects;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.StreamHandler;
 import lombok.Getter;
@@ -40,9 +41,9 @@ public class MercadoPagoConfig {
 
   @Getter @Setter private static volatile String integratorId;
 
-  @Getter @Setter private static volatile String metricsScope = DEFAULT_METRICS_SCOPE;
+  @Setter private static volatile StreamHandler loggingHandler;
 
-  @Getter @Setter private static volatile StreamHandler loggingHandler;
+  @Getter @Setter private static volatile String metricsScope = DEFAULT_METRICS_SCOPE;
 
   @Getter @Setter private static volatile Level loggingLevel = DEFAULT_LOGGING_LEVEL;
 
@@ -63,15 +64,6 @@ public class MercadoPagoConfig {
 
   @Getter @Setter private static HttpRequestRetryHandler retryHandler;
 
-  static {
-    platformId = null;
-    accessToken = null;
-    corporationId = null;
-    integratorId = null;
-    loggingHandler = null;
-    httpClient = null;
-  }
-
   /**
    * Verifies which http client use.
    *
@@ -82,5 +74,17 @@ public class MercadoPagoConfig {
       httpClient = new MPDefaultHttpClient();
     }
     return httpClient;
+  }
+
+  /**
+   * Method responsible for return StreamHandler.
+   *
+   * @return StreamHandler
+   */
+  public static StreamHandler getStreamHandler() {
+    if (Objects.isNull(loggingHandler)) {
+      return new ConsoleHandler();
+    }
+    return loggingHandler;
   }
 }

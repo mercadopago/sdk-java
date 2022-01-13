@@ -1,5 +1,6 @@
 package com.mercadopago.net;
 
+import static com.mercadopago.MercadoPagoConfig.getStreamHandler;
 import static com.mercadopago.net.HttpStatus.BAD_REQUEST;
 import static com.mercadopago.net.HttpStatus.FORBIDDEN;
 import static com.mercadopago.net.HttpStatus.INTERNAL_SERVER_ERROR;
@@ -14,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.ConsoleHandler;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 import javax.net.ssl.SSLContext;
@@ -60,21 +60,26 @@ public class MPDefaultHttpClient implements MPHttpClient {
 
   private static final Logger LOGGER = Logger.getLogger(MPDefaultHttpClient.class.getName());
 
+  static {
+    StreamHandler streamHandler = getStreamHandler();
+    streamHandler.setLevel(MercadoPagoConfig.getLoggingLevel());
+    LOGGER.addHandler(streamHandler);
+  }
+
   private final HttpClient httpClient;
 
   /** MPDefaultHttpClient constructor. */
   public MPDefaultHttpClient() {
-    StreamHandler streamHandler = getStreamHandler();
-    streamHandler.setLevel(MercadoPagoConfig.getLoggingLevel());
-    LOGGER.addHandler(streamHandler);
     this.httpClient = createHttpClient();
   }
 
-  private StreamHandler getStreamHandler() {
-    if (Objects.isNull(MercadoPagoConfig.getLoggingHandler())) {
-      return new ConsoleHandler();
-    }
-    return MercadoPagoConfig.getLoggingHandler();
+  /**
+   * MPDefaultHttpClient constructor receiving httpClient.
+   *
+   * @param httpClient httpClient
+   */
+  public MPDefaultHttpClient(HttpClient httpClient) {
+    this.httpClient = httpClient;
   }
 
   private HttpClient createHttpClient() {
@@ -175,7 +180,9 @@ public class MPDefaultHttpClient implements MPHttpClient {
   private HttpResponse executeHttpRequest(
       MPRequest mpRequest, HttpRequestBase completeRequest, HttpClientContext context) {
     try {
-      LOGGER.fine(String.format("Request body: %s", mpRequest.getPayload().toString()));
+      if (Objects.nonNull(mpRequest.getPayload())) {
+        LOGGER.fine(String.format("Request body: %s", mpRequest.getPayload().toString()));
+      }
       LOGGER.fine("Headers:");
       for (Map.Entry<String, String> entry : mpRequest.getHeaders().entrySet()) {
         LOGGER.fine(String.format("%s: %s", entry.getKey(), entry.getValue()));
