@@ -3,12 +3,12 @@ package com.mercadopago;
 import com.mercadopago.net.MPDefaultHttpClient;
 import com.mercadopago.net.MPHttpClient;
 import java.util.Objects;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.StreamHandler;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Synchronized;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.client.HttpRequestRetryHandler;
 
@@ -19,9 +19,10 @@ public class MercadoPagoConfig {
 
   public static final String PRODUCT_ID = "BC32A7VTRPP001U8NHJ0";
 
-  public static final String TRACKING_ID = String.format("platform:%s,type:SDK%s,so;",
-          MercadoPagoConfig.getJavaVersion(),
-          MercadoPagoConfig.CURRENT_VERSION);
+  public static final String TRACKING_ID =
+      String.format(
+          "platform:%s,type:SDK%s,so;",
+          MercadoPagoConfig.getJavaVersion(), MercadoPagoConfig.CURRENT_VERSION);
 
   public static final String BASE_URL = "https://api.mercadopago.com";
 
@@ -89,6 +90,11 @@ public class MercadoPagoConfig {
     return httpClient;
   }
 
+  /**
+   * Method responsible for return Java version.
+   *
+   * @return java version
+   */
   public static synchronized String getJavaVersion() {
     String version = System.getProperty("java.runtime.version");
     if (Objects.isNull(version)) {
@@ -102,5 +108,17 @@ public class MercadoPagoConfig {
     }
 
     return major + "|" + version;
+  }
+
+  /**
+   * Method responsible for return StreamHandler.
+   *
+   * @return StreamHandler
+   */
+  public static StreamHandler getStreamHandler() {
+    if (Objects.isNull(loggingHandler)) {
+      return new ConsoleHandler();
+    }
+    return loggingHandler;
   }
 }
