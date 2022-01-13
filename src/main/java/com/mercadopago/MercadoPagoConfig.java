@@ -8,6 +8,7 @@ import java.util.logging.StreamHandler;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Synchronized;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.client.HttpRequestRetryHandler;
 
@@ -90,7 +91,7 @@ public class MercadoPagoConfig {
 
   public static synchronized String getJavaVersion() {
     String version = System.getProperty("java.runtime.version");
-    if (version == null) {
+    if (Objects.isNull(version)) {
       return null;
     }
 
