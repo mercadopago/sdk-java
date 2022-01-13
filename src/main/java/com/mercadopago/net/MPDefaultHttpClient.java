@@ -1,20 +1,22 @@
 package com.mercadopago.net;
 
-import static com.mercadopago.MercadoPagoConfig.getStreamHandler;
 import static com.mercadopago.net.HttpStatus.BAD_REQUEST;
 import static com.mercadopago.net.HttpStatus.FORBIDDEN;
 import static com.mercadopago.net.HttpStatus.INTERNAL_SERVER_ERROR;
 
 import com.google.gson.JsonObject;
 import com.mercadopago.MercadoPagoConfig;
+import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.exceptions.MPMalformedRequestException;
+import com.mercadopago.serialization.Serializer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 import javax.net.ssl.SSLContext;
@@ -60,26 +62,30 @@ public class MPDefaultHttpClient implements MPHttpClient {
 
   private static final Logger LOGGER = Logger.getLogger(MPDefaultHttpClient.class.getName());
 
-  static {
-    StreamHandler streamHandler = getStreamHandler();
-    streamHandler.setLevel(MercadoPagoConfig.getLoggingLevel());
-    LOGGER.addHandler(streamHandler);
-  }
-
   private final HttpClient httpClient;
 
   /** MPDefaultHttpClient constructor. */
   public MPDefaultHttpClient() {
-    this.httpClient = createHttpClient();
+    this(null);
   }
 
-  /**
-   * MPDefaultHttpClient constructor receiving httpClient.
-   *
-   * @param httpClient httpClient
-   */
-  public MPDefaultHttpClient(HttpClient httpClient) {
-    this.httpClient = httpClient;
+  /** MPDefaultHttpClient constructor for testing only. */
+  protected MPDefaultHttpClient(HttpClient httpClient) {
+    StreamHandler streamHandler = getStreamHandler();
+    streamHandler.setLevel(MercadoPagoConfig.getLoggingLevel());
+    LOGGER.addHandler(streamHandler);
+    if (Objects.isNull(httpClient)) {
+      this.httpClient = createHttpClient();
+    } else {
+      this.httpClient = httpClient;
+    }
+  }
+
+  private StreamHandler getStreamHandler() {
+    if (Objects.isNull(MercadoPagoConfig.getLoggingHandler())) {
+      return new ConsoleHandler();
+    }
+    return MercadoPagoConfig.getLoggingHandler();
   }
 
   private HttpClient createHttpClient() {
@@ -131,15 +137,24 @@ public class MPDefaultHttpClient implements MPHttpClient {
 
       HttpResponse response = executeHttpRequest(mpRequest, completeRequest, context);
 
-      Map<String, List<String>> headers = getHeaders(response);
-
       String responseBody = EntityUtils.toString(response.getEntity(), UTF_8);
+      Map<String, List<String>> headers = getHeaders(response);
+      int statusCode = response.getStatusLine().getStatusCode();
+      MPResponse mpResponse = new MPResponse(statusCode, headers, responseBody);
+
+      if (!Serializer.isJsonValid(responseBody)) {
+        throw new MPApiException("Response body has malformed json", mpResponse);
+      }
+
+      if (statusCode > 299) {
+        throw new MPApiException("Api error. Check response for details", mpResponse);
+      }
+
       LOGGER.fine(String.format("Response body: %s", responseBody));
+      return mpResponse;
 
-      return new MPResponse(response.getStatusLine().getStatusCode(), headers, responseBody);
-
-    } catch (MPMalformedRequestException restEx) {
-      throw restEx;
+    } catch (MPMalformedRequestException | MPApiException ex) {
+      throw ex;
     } catch (Exception ex) {
       throw new MPException(ex);
     }

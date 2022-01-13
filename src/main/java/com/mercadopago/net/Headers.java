@@ -14,6 +14,8 @@ public class Headers {
 
   public static final String PRODUCT_ID = "X-Product-Id";
 
+  public static final String TRACKING_ID = "X-Tracking-Id";
+
   public static final String CORPORATION_ID = "X-Corporation-Id";
 
   public static final String INTEGRATOR_ID = "X-Integrator-Id";

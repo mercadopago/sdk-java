@@ -1,14 +1,13 @@
 package mercadopago.mock;
 
-import static mercadopago.helper.MockHelper.generateHttpResponse;
+import static mercadopago.helper.MockHelper.generateHttpResponseFromFile;
 import static mercadopago.helper.MockHelper.generateJsonElement;
-import static mercadopago.helper.MockHelper.validateRequest;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
 
 import com.google.gson.JsonElement;
-import com.mercadopago.exceptions.MPException;
 import java.io.IOException;
+import java.util.Objects;
 import mercadopago.helper.MockHelper;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
@@ -27,23 +26,26 @@ public class HttpClientMock implements HttpClient {
 
   public HttpClient httpClient;
 
-  private JsonElement requestPayloadMock;
+  public JsonElement requestPayloadMock;
 
   public HttpClientMock() {
     this.httpClient = Mockito.mock(HttpClient.class);
   }
 
-  public void mock(String mockedResponseFile, int statusCode, String requestToCompareFile) throws IOException {
+  public void mock(String mockedResponseFile, int statusCode) throws IOException {
+    this.mock(mockedResponseFile, statusCode, null);
+  }
 
-    HttpResponse httpResponse = MockHelper.generateHttpResponse(mockedResponseFile, statusCode);
-    this.requestPayloadMock = requestToCompareFile != null ? generateJsonElement(requestToCompareFile) : null;
+  public void mock(String mockedResponseFile, int statusCode, String requestToCompareFile) throws IOException {
+    HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(mockedResponseFile, statusCode);
+    this.requestPayloadMock = Objects.nonNull(requestToCompareFile) ? generateJsonElement(requestToCompareFile) : null;
 
     doReturn(httpResponse).when(httpClient).execute(any(HttpRequestBase.class), any(HttpContext.class));
   }
 
   public void mock(int statusCode, String requestToCompareFile) throws IOException {
 
-    HttpResponse httpResponse = generateHttpResponse(statusCode);
+    HttpResponse httpResponse = generateHttpResponseFromFile(statusCode);
     this.requestPayloadMock = requestToCompareFile != null ? generateJsonElement(requestToCompareFile) : null;
 
     doReturn(httpResponse).when(httpClient).execute(any(HttpRequestBase.class), any(HttpContext.class));
@@ -66,12 +68,6 @@ public class HttpClientMock implements HttpClient {
 
   @Override
   public HttpResponse execute(HttpUriRequest httpUriRequest, HttpContext httpContext) throws IOException, ClientProtocolException {
-
-    try {
-      validateRequest(httpUriRequest, this.requestPayloadMock);
-    } catch (MPException e) {
-      e.printStackTrace();
-    }
     return httpClient.execute(httpUriRequest, httpContext);
   }
 
