@@ -117,7 +117,7 @@ public abstract class MercadoPagoClient {
   protected MPResponse search(String path, MPSearchRequest searchRequest, MPRequestOptions requestOptions) throws MPException {
     Map<String, Object> queryParams = Objects.nonNull(searchRequest) ? searchRequest.getParameters() : null;
 
-    return send(path, HttpMethod.GET, null, queryParams, requestOptions);
+    return this.send(path, HttpMethod.GET, null, queryParams, requestOptions);
   }
 
   /**
