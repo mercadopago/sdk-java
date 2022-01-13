@@ -208,9 +208,9 @@ public class MercadoPagoClientTest {
         filters.put("abc", "xyz");
 
         MPSearchRequest searchRequest = MPSearchRequest.builder()
-            .setLimit(10)
-            .setOffset(100)
-            .setFilters(filters)
+            .limit(10)
+            .offset(100)
+            .filters(filters)
             .build();
 
         HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);

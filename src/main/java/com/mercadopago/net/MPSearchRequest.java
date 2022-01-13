@@ -3,6 +3,7 @@ package com.mercadopago.net;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
@@ -13,14 +14,11 @@ public class MPSearchRequest {
     private Integer offset;
     private Map<String, Object> filters;
 
+    @Builder
     private MPSearchRequest(Integer limit, Integer offset, Map<String, Object> filters) {
         this.limit = limit;
         this.offset = offset;
         this.filters = filters;
-    }
-
-    public static MPSearchRequestBuilder builder() {
-        return new MPSearchRequestBuilder();
     }
 
     public Map<String, Object> getParameters() {
@@ -42,30 +40,5 @@ public class MPSearchRequest {
         }
 
         return parameters;
-    }
-
-    public static final class MPSearchRequestBuilder {
-        private Integer limit;
-        private Integer offset;
-        private Map<String, Object> filters;
-
-        public MPSearchRequestBuilder setLimit(Integer limit) {
-            this.limit = limit;
-            return this;
-        }
-
-        public MPSearchRequestBuilder setOffset(Integer offset) {
-            this.offset = offset;
-            return this;
-        }
-
-        public MPSearchRequestBuilder setFilters(Map<String, Object> filters) {
-            this.filters = filters;
-            return this;
-        }
-
-        public MPSearchRequest build() {
-            return new MPSearchRequest(limit, offset, filters);
-        }
     }
 }
