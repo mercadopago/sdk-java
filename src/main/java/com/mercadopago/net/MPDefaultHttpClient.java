@@ -153,7 +153,7 @@ public class MPDefaultHttpClient implements MPHttpClient {
       }
 
       LOGGER.fine(String.format("Response body: %s", responseBody));
-      return new MPResponse(response.getStatusLine().getStatusCode(), headers, responseBody);
+      return mpResponse;
 
     } catch (MPMalformedRequestException | MPApiException ex) {
       throw ex;
