@@ -62,9 +62,9 @@ public class Serializer {
   }
 
   /**
-   * Method for
+   * Method for getting a json array from a json element
    *
-   * @param jsonElement       the jsonElement to be analized
+   * @param jsonElement the jsonElement to be analized
    * @return
    */
   static JsonArray getArrayFromJsonElement(JsonElement jsonElement) {
