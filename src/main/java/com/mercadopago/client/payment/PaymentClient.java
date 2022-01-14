@@ -1,19 +1,24 @@
 package com.mercadopago.client.payment;
 
 import static com.mercadopago.MercadoPagoConfig.getStreamHandler;
+import static com.mercadopago.serialization.Serializer.deserializeFromJson;
+import static com.mercadopago.serialization.Serializer.deserializeFromJsonToResultsResources;
 
+import com.google.gson.reflect.TypeToken;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.IdempotentRequest;
 import com.mercadopago.client.MercadoPagoClient;
-import com.mercadopago.client.SearchRequest;
+import com.mercadopago.client.RequestOptions;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPHttpClient;
 import com.mercadopago.net.MPResponse;
+import com.mercadopago.net.MPSearchRequest;
 import com.mercadopago.net.UrlFormatter;
 import com.mercadopago.resources.ResultsResourcesPage;
 import com.mercadopago.resources.payment.Payment;
 import com.mercadopago.serialization.Serializer;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.logging.Logger;
@@ -50,11 +55,23 @@ public class PaymentClient extends MercadoPagoClient {
    * @throws MPException exception
    */
   public Payment get(Long id) throws MPException {
+    return this.get(id, null);
+  }
+
+  /**
+   * Method responsible for getting payment.
+   *
+   * @param id paymentId
+   * @param requestOptions requestOptions
+   * @return payment
+   * @throws MPException exception
+   */
+  public Payment get(Long id, RequestOptions requestOptions) throws MPException {
     LOGGER.info("Sending get payment request");
     MPResponse response =
-        send(String.format(URL_WITH_ID, id.toString()), HttpMethod.GET, null, new HashMap<>());
+        send(String.format(URL_WITH_ID, id.toString()), HttpMethod.GET, null, null, requestOptions);
 
-    Payment result = Serializer.deserializeFromJson(Payment.class, response.getContent());
+    Payment result = deserializeFromJson(Payment.class, response.getContent());
     result.setResponse(response);
 
     return result;
@@ -68,6 +85,19 @@ public class PaymentClient extends MercadoPagoClient {
    * @throws MPException exception
    */
   public Payment create(PaymentCreateRequest request) throws MPException {
+    return this.create(request, null);
+  }
+
+  /**
+   * Method responsible for creating payment with request opetions.
+   *
+   * @param request request
+   * @param requestOptions requestOptions
+   * @return payment response
+   * @throws MPException exception
+   */
+  public Payment create(PaymentCreateRequest request, RequestOptions requestOptions)
+      throws MPException {
     LOGGER.info("Sending create payment request");
     IdempotentRequest idempotentRequest =
         new IdempotentRequest(
@@ -75,8 +105,8 @@ public class PaymentClient extends MercadoPagoClient {
             HttpMethod.POST,
             new HashMap<>(),
             Serializer.serializeToJson(request));
-    MPResponse response = send(idempotentRequest);
-    Payment result = Serializer.deserializeFromJson(Payment.class, response.getContent());
+    MPResponse response = send(idempotentRequest, requestOptions);
+    Payment result = deserializeFromJson(Payment.class, response.getContent());
     result.setResponse(response);
 
     return result;
@@ -85,11 +115,23 @@ public class PaymentClient extends MercadoPagoClient {
   /**
    * Method responsible for cancel payment.
    *
-   * @param id paymentId
-   * @return payment
+   * @param id id
+   * @return Payment payment
    * @throws MPException exception
    */
   public Payment cancel(Long id) throws MPException {
+    return this.cancel(id, null);
+  }
+
+  /**
+   * Method responsible for cancel payment with request options.
+   *
+   * @param id paymentId
+   * @param requestOptions requestOptions
+   * @return payment
+   * @throws MPException exception
+   */
+  public Payment cancel(Long id, RequestOptions requestOptions) throws MPException {
     LOGGER.info("Sending cancel payment request");
     PaymentCancelRequest payload = new PaymentCancelRequest();
     MPResponse response =
@@ -97,9 +139,10 @@ public class PaymentClient extends MercadoPagoClient {
             String.format(URL_WITH_ID, id.toString()),
             HttpMethod.PUT,
             Serializer.serializeToJson(payload),
-            new HashMap<>());
+            new HashMap<>(),
+            requestOptions);
 
-    Payment result = Serializer.deserializeFromJson(Payment.class, response.getContent());
+    Payment result = deserializeFromJson(Payment.class, response.getContent());
     result.setResponse(response);
 
     return result;
@@ -113,7 +156,31 @@ public class PaymentClient extends MercadoPagoClient {
    * @throws MPException exception
    */
   public Payment capture(Long id) throws MPException {
-    return capture(id, null);
+    return this.capture(id, null, null);
+  }
+
+  /**
+   * Method responsible for capture payment.
+   *
+   * @param id id
+   * @param requestOptions requestOptions
+   * @return payment
+   * @throws MPException exception
+   */
+  public Payment capture(Long id, RequestOptions requestOptions) throws MPException {
+    return this.capture(id, null, requestOptions);
+  }
+
+  /**
+   * Method responsible for capture payment.
+   *
+   * @param id id
+   * @param amount amount
+   * @return payment
+   * @throws MPException exception
+   */
+  public Payment capture(Long id, BigDecimal amount) throws MPException {
+    return this.capture(id, amount, null);
   }
 
   /**
@@ -121,10 +188,12 @@ public class PaymentClient extends MercadoPagoClient {
    *
    * @param id paymentId
    * @param amount amount
+   * @param requestOptions requestOptions
    * @return payment
    * @throws MPException exception
    */
-  public Payment capture(Long id, BigDecimal amount) throws MPException {
+  public Payment capture(Long id, BigDecimal amount, RequestOptions requestOptions)
+      throws MPException {
     LOGGER.info("Sending capture payment request");
     PaymentCaptureRequest payload =
         PaymentCaptureRequest.builder().transactionAmount(amount).build();
@@ -134,9 +203,10 @@ public class PaymentClient extends MercadoPagoClient {
             String.format(URL_WITH_ID, id.toString()),
             HttpMethod.PUT,
             Serializer.serializeToJson(payload),
-            new HashMap<>());
+            new HashMap<>(),
+            requestOptions);
 
-    Payment result = Serializer.deserializeFromJson(Payment.class, response.getContent());
+    Payment result = deserializeFromJson(Payment.class, response.getContent());
     result.setResponse(response);
 
     return result;
@@ -149,11 +219,26 @@ public class PaymentClient extends MercadoPagoClient {
    * @return list of results
    * @throws MPException exception
    */
-  public ResultsResourcesPage<Payment> search(SearchRequest request) throws MPException {
-    MPResponse response = send("/v1/payments/search", HttpMethod.GET, null, new HashMap<>());
+  public ResultsResourcesPage<Payment> search(MPSearchRequest request) throws MPException {
+    return this.search(request, null);
+  }
 
+  /**
+   * Method responsible for search payments.
+   *
+   * @param request request
+   * @param requestOptions requestOptions
+   * @return list of results
+   * @throws MPException exception
+   */
+  public ResultsResourcesPage<Payment> search(
+      MPSearchRequest request, RequestOptions requestOptions) throws MPException {
+    LOGGER.info("Sending search payment request");
+    MPResponse response = search("/v1/payments/search", request, requestOptions);
+
+    Type responseType = new TypeToken<ResultsResourcesPage<Payment>>() { }.getType();
     ResultsResourcesPage<Payment> result =
-        Serializer.deserializeFromJsonToResultsResources(Payment.class, response.getContent());
+        deserializeFromJsonToResultsResources(responseType, response.getContent());
     result.setResponse(response);
 
     return result;

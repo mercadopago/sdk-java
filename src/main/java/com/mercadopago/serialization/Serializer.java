@@ -9,7 +9,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.MalformedJsonException;
@@ -44,18 +43,16 @@ public class Serializer {
   }
 
   /**
-   * <<<<<<< HEAD Method responsible for deserialize objects to ResultsResourcesPage. =======  >>>>>>> release-v2
+   * Method responsible for deserialize json to ResultsResources.
    *
-   * @param clazz class.
-   * @param jsonObject json object.
-   * @param <T> class type.
-   * @return object.
+   * @param type type
+   * @param jsonObject jsonObject
+   * @param <T> generic type
+   * @return ResultsResourcesPage
    */
   public static <T extends MPResource>
-      ResultsResourcesPage<T> deserializeFromJsonToResultsResources(
-          Class<T> clazz, String jsonObject) {
-    Type collectionType = new TypeToken<ResultsResourcesPage<T>>() {}.getType();
-    return GSON.fromJson(jsonObject, collectionType);
+      ResultsResourcesPage<T> deserializeFromJsonToResultsResources(Type type, String jsonObject) {
+    return GSON.fromJson(jsonObject, type);
   }
 
   /**

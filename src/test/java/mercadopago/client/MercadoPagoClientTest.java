@@ -12,6 +12,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mercadopago.client.IdempotentRequest;
 import com.mercadopago.client.MercadoPagoClient;
+import com.mercadopago.client.RequestOptions;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
@@ -23,6 +24,7 @@ import com.mercadopago.net.MPSearchRequest;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import mercadopago.BaseResourceTest;
 import mercadopago.helper.MockHelper;
 import mercadopago.mock.MPDefaultHttpClientMock;
 import org.apache.http.HttpResponse;
@@ -35,7 +37,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
-public class MercadoPagoClientTest {
+public class MercadoPagoClientTest extends BaseResourceTest {
     private MPDefaultHttpClientMock mpHttpClient;
     private HttpClient httpClientMock;
     private TestClient testClient;
@@ -61,7 +63,7 @@ public class MercadoPagoClientTest {
                                       HttpMethod method,
                                       JsonObject payload,
                                       Map<String, Object> queryParams,
-                                      MPRequestOptions requestOptions) throws MPException {
+                                      RequestOptions requestOptions) throws MPException {
             return send(path, method, payload, queryParams, requestOptions);
         }
 
@@ -73,7 +75,7 @@ public class MercadoPagoClientTest {
                                       HttpMethod method,
                                       JsonObject payload,
                                       HashMap<String, Object> queryParams,
-                                      MPRequestOptions requestOptions) throws MPException {
+                                      RequestOptions requestOptions) throws MPException {
             return list(path, method, payload, queryParams, requestOptions);
         }
     }
@@ -144,11 +146,11 @@ public class MercadoPagoClientTest {
 
     @Test
     public void sendWithRequestOptionsSuccess() throws IOException, MPException {
-        MPRequestOptions requestOptions = MPRequestOptions.builder()
-            .setAccessToken("abc")
-            .setConnectionTimeout(1000)
-            .setConnectionRequestTimeout(1000)
-            .setSocketTimeout(1000)
+        RequestOptions requestOptions = RequestOptions.builder()
+            .accessToken("abc")
+            .connectionTimeout(1000)
+            .connectionRequestTimeout(1000)
+            .socketTimeout(1000)
             .build();
 
         HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
@@ -271,11 +273,11 @@ public class MercadoPagoClientTest {
 
     @Test
     public void listWithRequestOptionsSuccess() throws IOException, MPException {
-        MPRequestOptions requestOptions = MPRequestOptions.builder()
-            .setAccessToken("abc")
-            .setConnectionTimeout(1000)
-            .setConnectionRequestTimeout(1000)
-            .setSocketTimeout(1000)
+        RequestOptions requestOptions = RequestOptions.builder()
+            .accessToken("abc")
+            .connectionTimeout(1000)
+            .connectionRequestTimeout(1000)
+            .socketTimeout(1000)
             .build();
 
         HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);

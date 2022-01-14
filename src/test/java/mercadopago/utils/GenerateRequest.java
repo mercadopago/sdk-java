@@ -1,4 +1,4 @@
-package mercadopago.v2.utils;
+package mercadopago.utils;
 
 import com.mercadopago.client.common.AddressRequest;
 import com.mercadopago.client.common.IdentificationRequest;
@@ -15,7 +15,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.TimeZone;
 
 /** GenerateRequest class. */
 public class GenerateRequest {
