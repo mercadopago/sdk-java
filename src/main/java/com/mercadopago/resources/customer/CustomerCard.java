@@ -5,30 +5,43 @@ import java.util.Date;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/** */
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class CustomerCard extends MPResource {
-    private String id;
+  /** */
+  private String id;
 
-    private String customerId;
+  /** */
+  private String customerId;
 
-    private Integer expirationMonth;
+  /** */
+  private Integer expirationMonth;
 
-    private Integer expirationYear;
+  /** */
+  private Integer expirationYear;
 
-    private String firstSixDigits;
+  /** */
+  private String firstSixDigits;
 
-    private String lastFourDigits;
+  /** */
+  private String lastFourDigits;
 
-    private CustomerCardPaymentMethod paymentMethod;
+  /** */
+  private CustomerCardPaymentMethod paymentMethod;
 
-    private CustomerCardSecurityCode securityCode;
+  /** */
+  private CustomerCardSecurityCode securityCode;
 
-    private CustomerCardIssuer issuer;
+  /** */
+  private CustomerCardIssuer issuer;
 
-    private CustomerCardCardholder cardholder;
+  /** */
+  private CustomerCardCardholder cardholder;
 
-    private Date dateCreated;
+  /** */
+  private Date dateCreated;
 
-    private Date dateLastUpdated;
+  /** */
+  private Date dateLastUpdated;
 }

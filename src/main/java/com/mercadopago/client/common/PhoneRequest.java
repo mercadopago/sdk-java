@@ -2,6 +2,7 @@ package com.mercadopago.client.common;
 
 import lombok.Data;
 
+/** Phone data used in requests. */
 @Data
 public class PhoneRequest {
     /**
