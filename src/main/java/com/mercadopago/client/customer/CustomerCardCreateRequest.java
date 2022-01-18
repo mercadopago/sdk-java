@@ -1,12 +1,13 @@
 package com.mercadopago.client.customer;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 
 /** Attributes used for a card creation request. */
-@Data
-@AllArgsConstructor
+@Builder
 public class CustomerCardCreateRequest {
   /** Card token sent by the frontend. */
-  private String token;
+  @Getter private String token;
 }

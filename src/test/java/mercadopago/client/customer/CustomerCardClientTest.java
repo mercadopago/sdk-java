@@ -2,6 +2,7 @@ package mercadopago.client.customer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -45,7 +46,6 @@ public class CustomerCardClientTest {
   private String responseFileSingleCard;
 
   private String responseFileAllCards;
-
 
   @BeforeEach
   public void init() {
@@ -104,7 +104,7 @@ public class CustomerCardClientTest {
     doReturn(httpResponse)
         .when(httpClientMock)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
-    CustomerCardCreateRequest request = new CustomerCardCreateRequest("abc");
+    CustomerCardCreateRequest request = CustomerCardCreateRequest.builder().token("abc").build();
     CustomerCard card = cardClient.create(customerId, request);
 
     assertNotNull(card);
@@ -128,7 +128,7 @@ public class CustomerCardClientTest {
     doReturn(httpResponse)
         .when(httpClientMock)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
-    CustomerCardCreateRequest request = new CustomerCardCreateRequest("abc");
+    CustomerCardCreateRequest request = CustomerCardCreateRequest.builder().token("abc").build();
     CustomerCard card = cardClient.create(customerId, request, requestOptions);
 
     assertNotNull(card);
@@ -144,7 +144,6 @@ public class CustomerCardClientTest {
     doReturn(httpResponse)
         .when(httpClientMock)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
-    CustomerCardCreateRequest request = new CustomerCardCreateRequest("abc");
     CustomerCard card = cardClient.delete(customerId, cardId);
 
     assertNotNull(card);
@@ -168,7 +167,6 @@ public class CustomerCardClientTest {
     doReturn(httpResponse)
         .when(httpClientMock)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
-    CustomerCardCreateRequest request = new CustomerCardCreateRequest("abc");
     CustomerCard card = cardClient.delete(customerId, cardId, requestOptions);
 
     assertNotNull(card);
@@ -184,7 +182,6 @@ public class CustomerCardClientTest {
     doReturn(httpResponse)
         .when(httpClientMock)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
-    CustomerCardCreateRequest request = new CustomerCardCreateRequest("abc");
     MPResourceList<CustomerCard> cards = cardClient.listAll(customerId);
 
     assertNotNull(cards);
@@ -209,7 +206,6 @@ public class CustomerCardClientTest {
     doReturn(httpResponse)
         .when(httpClientMock)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
-    CustomerCardCreateRequest request = new CustomerCardCreateRequest("abc");
     MPResourceList<CustomerCard> cards = cardClient.listAll(customerId, requestOptions);
 
     assertNotNull(cards);
@@ -244,6 +240,8 @@ public class CustomerCardClientTest {
     assertEquals(df.parse("2019-07-03T21:15:35.000Z"), card.getDateCreated());
     assertEquals(df.parse("2019-07-03T21:19:18.000Z"), card.getDateLastUpdated());
     assertEquals("649457098-FybpOkG6zH8QRm", card.getCustomerId());
+    assertEquals("448870796", card.getUserId());
+    assertTrue(card.isLiveMode());
     assertNotNull(card.getResponse().getContent());
     assertEquals(HttpStatus.OK, card.getResponse().getStatusCode());
     assertEquals(1, card.getResponse().getHeaders().size());
