@@ -59,7 +59,9 @@ public class CustomerCardClient extends MercadoPagoClient {
             null,
             requestOptions);
 
-    return Serializer.deserializeFromJson(CustomerCard.class, response.getContent());
+    CustomerCard card = Serializer.deserializeFromJson(CustomerCard.class, response.getContent());
+    card.setResponse(response);
+    return card;
   }
 
   /**
@@ -96,7 +98,9 @@ public class CustomerCardClient extends MercadoPagoClient {
             null,
             requestOptions);
 
-    return Serializer.deserializeFromJson(CustomerCard.class, response.getContent());
+    CustomerCard card = Serializer.deserializeFromJson(CustomerCard.class, response.getContent());
+    card.setResponse(response);
+    return card;
   }
 
   /**
@@ -131,7 +135,9 @@ public class CustomerCardClient extends MercadoPagoClient {
             null,
             requestOptions);
 
-    return Serializer.deserializeFromJson(CustomerCard.class, response.getContent());
+    CustomerCard card = Serializer.deserializeFromJson(CustomerCard.class, response.getContent());
+    card.setResponse(response);
+    return card;
   }
 
   /**
@@ -163,6 +169,8 @@ public class CustomerCardClient extends MercadoPagoClient {
             null,
             requestOptions);
 
-    return Serializer.deserializeListFromJson(CustomerCard.class, response.getContent());
+    MPResourceList<CustomerCard> cards = Serializer.deserializeListFromJson(CustomerCard.class, response.getContent());
+    cards.forEach(card -> card.setResponse(response));
+    return cards;
   }
 }
