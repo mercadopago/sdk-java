@@ -5,7 +5,7 @@ import java.util.Date;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-/** */
+/** Customer card details. */
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class CustomerCard extends MPResource {

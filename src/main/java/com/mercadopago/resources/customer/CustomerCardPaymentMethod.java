@@ -2,15 +2,21 @@ package com.mercadopago.resources.customer;
 
 import lombok.Data;
 
+/** Payment method details related to a customer card. */
 @Data
 public class CustomerCardPaymentMethod {
-    private String id;
+  /** Id of the payment method. */
+  private String id;
 
-    private String name;
+  /** Name of payment method. */
+  private String name;
 
-    private String paymentTypeId;
+  /** Type of payment method. */
+  private String paymentTypeId;
 
-    private String thumbnail;
+  /** Thumbnail of payment method. */
+  private String thumbnail;
 
-    private String secureThumbnail;
+  /** Thumbnail of payment method from a secure source. */
+  private String secureThumbnail;
 }
