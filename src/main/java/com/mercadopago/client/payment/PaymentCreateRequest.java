@@ -60,8 +60,6 @@ public class PaymentCreateRequest {
 
   private final String processingMode;
 
-  private final List<PaymentTaxRequest> taxes;
-
   private final String token;
 
   private final BigDecimal transactionAmount;

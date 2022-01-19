@@ -15,4 +15,6 @@ public class PaymentAdditionalInfoRequest {
   private final PaymentAdditionalInfoPayerRequest payer;
 
   private final PaymentShipmentsRequest shipments;
+
+  private final PaymentAdditionalInfoBarcodeRequest barcode;
 }
