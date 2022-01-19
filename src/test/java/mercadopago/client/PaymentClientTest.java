@@ -1,7 +1,7 @@
 package mercadopago.client;
 
 import static com.mercadopago.net.HttpStatus.CREATED;
-import static com.mercadopago.net.HttpStatus.SUCCESS;
+import static com.mercadopago.net.HttpStatus.OK;
 import static java.math.BigInteger.ZERO;
 import static java.util.Calendar.JANUARY;
 import static mercadopago.helper.MockHelper.generateHttpResponseFromFile;
@@ -215,7 +215,7 @@ public class PaymentClientTest extends BaseClientTest {
   public void get() throws IOException, MPException {
     Payment payment = createPayment();
 
-    HttpResponse httpResponse = generateHttpResponseFromFile(PAYMENT_BASE_JSON, SUCCESS);
+    HttpResponse httpResponse = generateHttpResponseFromFile(PAYMENT_BASE_JSON, OK);
     doReturn(httpResponse)
         .when(httpClient)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
@@ -233,7 +233,7 @@ public class PaymentClientTest extends BaseClientTest {
   public void cancel() throws IOException, MPException {
     Payment payment = createPayment();
 
-    HttpResponse httpResponse = generateHttpResponseFromFile(PAYMENT_CANCELLED_JSON, SUCCESS);
+    HttpResponse httpResponse = generateHttpResponseFromFile(PAYMENT_CANCELLED_JSON, OK);
     doReturn(httpResponse)
         .when(httpClient)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
@@ -246,7 +246,7 @@ public class PaymentClientTest extends BaseClientTest {
 
     assertEquals(requestPayloadMock, requestPayload);
     assertNotNull(paymentCancelled.getResponse());
-    assertEquals(SUCCESS, paymentCancelled.getResponse().getStatusCode());
+    assertEquals(OK, paymentCancelled.getResponse().getStatusCode());
     assertEquals("cancelled", paymentCancelled.getStatus());
   }
 
@@ -255,7 +255,7 @@ public class PaymentClientTest extends BaseClientTest {
     Payment payment = createPayment();
     assertFalse(payment.isCaptured());
 
-    HttpResponse httpResponse = generateHttpResponseFromFile(PAYMENT_CAPTURED_JSON, SUCCESS);
+    HttpResponse httpResponse = generateHttpResponseFromFile(PAYMENT_CAPTURED_JSON, OK);
     doReturn(httpResponse)
         .when(httpClient)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
@@ -269,13 +269,13 @@ public class PaymentClientTest extends BaseClientTest {
     assertEquals(requestPayloadMock, requestPayload);
 
     assertNotNull(paymentCaptured.getResponse());
-    assertEquals(SUCCESS, paymentCaptured.getResponse().getStatusCode());
+    assertEquals(OK, paymentCaptured.getResponse().getStatusCode());
     assertTrue(paymentCaptured.isCaptured());
   }
 
   @Test
   public void search() throws IOException, MPException {
-    HttpResponse httpResponse = generateHttpResponseFromFile(PAYMENT_SEARCH_JSON, SUCCESS);
+    HttpResponse httpResponse = generateHttpResponseFromFile(PAYMENT_SEARCH_JSON, OK);
     doReturn(httpResponse)
         .when(httpClient)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
@@ -284,7 +284,7 @@ public class PaymentClientTest extends BaseClientTest {
     ResultsResourcesPage<Payment> result = client.search(request);
 
     assertNotNull(result.getResponse().getContent());
-    assertEquals(SUCCESS, result.getResponse().getStatusCode());
+    assertEquals(OK, result.getResponse().getStatusCode());
     assertEquals(5, result.getPaging().getLimit());
     assertEquals(0, result.getPaging().getOffset());
     assertEquals(102, result.getPaging().getTotal());

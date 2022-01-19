@@ -2,7 +2,7 @@ package com.mercadopago.net;
 
 /** Http status class. */
 public class HttpStatus {
-  public static final int SUCCESS = 200;
+  public static final int OK = 200;
 
   public static final int CREATED = 201;
 
