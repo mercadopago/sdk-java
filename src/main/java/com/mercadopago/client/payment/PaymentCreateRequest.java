@@ -12,65 +12,65 @@ import lombok.Getter;
 @Getter
 @Builder
 public class PaymentCreateRequest {
-  private final PaymentPayerRequest payer;
-
-  private final Boolean binaryMode;
-
-  private final PaymentOrderRequest order;
-
-  private final String externalReference;
-
-  private final String description;
-
-  private final Map<String, Object> metadata;
-
-  private final BigDecimal transactionAmount;
-
-  private final BigDecimal netAmount;
-
-  private final BigDecimal couponAmount;
-
-  private final Integer campaignId;
-
-  private final String couponCode;
-
-  private final Integer differentialPricingId;
+  private final PaymentAdditionalInfoRequest additionalInfo;
 
   private final BigDecimal applicationFee;
 
-  private final Boolean capture;
-
-  private final String paymentMethodId;
-
-  private final String issuerId;
-
-  private final String token;
-
-  private final String statementDescriptor;
-
-  private final Integer installments;
-
-  private final String notificationUrl;
+  private final Boolean binaryMode;
 
   private final String callbackUrl;
 
-  private final String processingMode;
+  private final Integer campaignId;
 
-  private final String merchantAccountId;
+  private final Boolean capture;
+
+  private final BigDecimal couponAmount;
+
+  private final String couponCode;
 
   private final Date dateOfExpiration;
 
-  private final Long sponsorId;
+  private final String description;
 
-  private final String paymentMethodOptionId;
+  private final Integer differentialPricingId;
 
-  private final PaymentTransactionDetailsRequest transactionDetails;
+  private final String externalReference;
 
-  private final PaymentAdditionalInfoRequest additionalInfo;
+  private final Integer installments;
 
-  private final List<PaymentTaxRequest> taxes;
+  private final String issuerId;
+
+  private final String merchantAccountId;
 
   private final PaymentMerchantServicesRequest merchantServices;
 
+  private final Map<String, Object> metadata;
+
+  private final BigDecimal netAmount;
+
+  private final String notificationUrl;
+
+  private final PaymentOrderRequest order;
+
+  private final PaymentPayerRequest payer;
+
+  private final String paymentMethodId;
+
+  private final String paymentMethodOptionId;
+
+  private final String processingMode;
+
+  private final List<PaymentTaxRequest> taxes;
+
+  private final String token;
+
+  private final BigDecimal transactionAmount;
+
+  private final PaymentTransactionDetailsRequest transactionDetails;
+
   private final MPRequestOptions requestOptions;
+
+  private final Long sponsorId;
+
+  private final String statementDescriptor;
 }
