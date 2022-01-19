@@ -1,9 +1,9 @@
 package com.mercadopago.resources.customer;
 
-import lombok.Data;
+import lombok.Getter;
 
 /** Cardholder details. */
-@Data
+@Getter
 public class CustomerCardCardholder {
   /** Name of cardholder. */
   private String name;

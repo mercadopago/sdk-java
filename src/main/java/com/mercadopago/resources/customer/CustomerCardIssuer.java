@@ -1,9 +1,9 @@
 package com.mercadopago.resources.customer;
 
-import lombok.Data;
+import lombok.Getter;
 
 /** Card issuer details. */
-@Data
+@Getter
 public class CustomerCardIssuer {
   /** Id of the issuer. */
   private Integer id;

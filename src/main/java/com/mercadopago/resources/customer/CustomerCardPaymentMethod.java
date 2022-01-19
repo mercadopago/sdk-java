@@ -1,9 +1,9 @@
 package com.mercadopago.resources.customer;
 
-import lombok.Data;
+import lombok.Getter;
 
 /** Payment method details related to a customer card. */
-@Data
+@Getter
 public class CustomerCardPaymentMethod {
   /** Id of the payment method. */
   private String id;

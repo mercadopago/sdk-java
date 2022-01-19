@@ -1,9 +1,9 @@
 package com.mercadopago.resources.customer;
 
-import lombok.Data;
+import lombok.Getter;
 
 /** Security code of the customer card. */
-@Data
+@Getter
 public class CustomerCardSecurityCode {
   /** Length of security code. */
   private Integer length;

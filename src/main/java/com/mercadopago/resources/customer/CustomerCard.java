@@ -2,11 +2,11 @@ package com.mercadopago.resources.customer;
 
 import com.mercadopago.net.MPResource;
 import java.util.Date;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 /** Customer card details. */
-@Data
+@Getter
 @EqualsAndHashCode(callSuper = true)
 public class CustomerCard extends MPResource {
   /** Id of the card. */
