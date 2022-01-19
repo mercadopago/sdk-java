@@ -11,6 +11,7 @@ import com.mercadopago.client.payment.PaymentPayerRequest;
 import com.mercadopago.client.payment.PaymentReceiverAddressRequest;
 import com.mercadopago.client.payment.PaymentShipmentsRequest;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -73,6 +74,9 @@ public class GenerateRequest {
             .unitPrice(new BigDecimal(ONE_HUNDRED))
             .build();
 
+    List<PaymentItemRequest> itemRequestList = new ArrayList<>();
+    itemRequestList.add(item);
+
     PhoneRequest phone = PhoneRequest.builder().areaCode("000").number("0000-0000").build();
 
     AddressRequest address =
@@ -105,7 +109,7 @@ public class GenerateRequest {
 
     PaymentAdditionalInfoRequest additionalInfo =
         PaymentAdditionalInfoRequest.builder()
-            .items(List.of(item))
+            .items(itemRequestList)
             .payer(additionalInfoPayer)
             .shipments(shipments)
             .ipAddress("127.0.0.1")
