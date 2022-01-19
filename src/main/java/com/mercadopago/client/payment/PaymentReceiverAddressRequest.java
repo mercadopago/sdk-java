@@ -1,23 +1,23 @@
 package com.mercadopago.client.payment;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
 /** PaymentReceiverAddressRequest class. */
-@Data
+@Getter
 @Builder
 public class PaymentReceiverAddressRequest {
-  public String stateName;
+  private final String stateName;
 
-  public String cityName;
+  private final String cityName;
 
-  public String floor;
+  private final String floor;
 
-  public String apartment;
+  private final String apartment;
 
-  public String zipCode;
+  private final String zipCode;
 
-  public String streetName;
+  private final String streetName;
 
-  public String streetNumber;
+  private final String streetNumber;
 }

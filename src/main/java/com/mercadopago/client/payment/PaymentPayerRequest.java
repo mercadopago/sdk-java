@@ -2,23 +2,23 @@ package com.mercadopago.client.payment;
 
 import com.mercadopago.client.common.IdentificationRequest;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
 /** PaymentPayerRequest class. */
-@Data
+@Getter
 @Builder
 public class PaymentPayerRequest {
-  private String type;
+  private final String type;
 
-  private String id;
+  private final String id;
 
-  private String email;
+  private final String email;
 
-  private IdentificationRequest identification;
+  private final IdentificationRequest identification;
 
-  private String firstName;
+  private final String firstName;
 
-  private String lastName;
+  private final String lastName;
 
-  private String entityType;
+  private final String entityType;
 }

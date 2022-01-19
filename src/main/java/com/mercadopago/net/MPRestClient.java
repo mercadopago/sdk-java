@@ -131,8 +131,8 @@ public class MPRestClient {
             }
         }
 
-        MPRequestOptions requestOptions = MPRequestOptions.builder().setCustomHeaders(headers)
-                .setConnectionTimeout(connectionTimeout).setSocketTimeout(socketTimeout).build();
+        MPRequestOptions requestOptions = MPRequestOptions.builder().customHeaders(headers)
+                .connectionTimeout(connectionTimeout).socketTimeout(socketTimeout).build();
 
         return executeRequest(httpMethod, uri, payloadType, payload, requestOptions);
     }

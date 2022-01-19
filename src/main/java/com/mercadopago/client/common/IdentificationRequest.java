@@ -1,24 +1,13 @@
 package com.mercadopago.client.common;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
 /** IdentificationRequest class. */
-@Data
+@Getter
 @Builder
 public class IdentificationRequest {
-  private String type;
+  private final String type;
 
-  private String number;
-
-  /**
-   * IdentificationRequest class.
-   *
-   * @param type type
-   * @param number number
-   */
-  public IdentificationRequest(String type, String number) {
-    this.type = type;
-    this.number = number;
-  }
+  private final String number;
 }

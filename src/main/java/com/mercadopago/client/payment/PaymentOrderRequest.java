@@ -1,13 +1,13 @@
 package com.mercadopago.client.payment;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
 /** PaymentOrderRequest class. */
-@Data
+@Getter
 @Builder
 public class PaymentOrderRequest {
-  public Long id;
+  private final Long id;
 
-  public String type;
+  private final String type;
 }

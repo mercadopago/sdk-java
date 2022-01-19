@@ -3,29 +3,29 @@ package com.mercadopago.client.payment;
 import java.math.BigDecimal;
 import java.util.Date;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
 /** PaymentItemRequest class. */
-@Data
+@Getter
 @Builder
 public class PaymentItemRequest {
-  private String id;
+  private final String id;
 
-  private String title;
+  private final String title;
 
-  private String description;
+  private final String description;
 
-  private String pictureUrl;
+  private final String pictureUrl;
 
-  private String categoryId;
+  private final String categoryId;
 
-  private Integer quantity;
+  private final Integer quantity;
 
-  private BigDecimal unitPrice;
+  private final BigDecimal unitPrice;
 
-  private PaymentCategoryDescriptorRequest categoryDescriptor;
+  private final PaymentCategoryDescriptorRequest categoryDescriptor;
 
-  private boolean warranty;
+  private final boolean warranty;
 
-  private Date eventDate;
+  private final Date eventDate;
 }

@@ -8,7 +8,7 @@ import com.google.gson.reflect.TypeToken;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.IdempotentRequest;
 import com.mercadopago.client.MercadoPagoClient;
-import com.mercadopago.client.RequestOptions;
+import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPHttpClient;
@@ -66,7 +66,7 @@ public class PaymentClient extends MercadoPagoClient {
    * @return payment
    * @throws MPException exception
    */
-  public Payment get(Long id, RequestOptions requestOptions) throws MPException {
+  public Payment get(Long id, MPRequestOptions requestOptions) throws MPException {
     LOGGER.info("Sending get payment request");
     MPResponse response =
         send(String.format(URL_WITH_ID, id.toString()), HttpMethod.GET, null, null, requestOptions);
@@ -96,7 +96,7 @@ public class PaymentClient extends MercadoPagoClient {
    * @return payment response
    * @throws MPException exception
    */
-  public Payment create(PaymentCreateRequest request, RequestOptions requestOptions)
+  public Payment create(PaymentCreateRequest request, MPRequestOptions requestOptions)
       throws MPException {
     LOGGER.info("Sending create payment request");
     IdempotentRequest idempotentRequest =
@@ -131,7 +131,7 @@ public class PaymentClient extends MercadoPagoClient {
    * @return payment
    * @throws MPException exception
    */
-  public Payment cancel(Long id, RequestOptions requestOptions) throws MPException {
+  public Payment cancel(Long id, MPRequestOptions requestOptions) throws MPException {
     LOGGER.info("Sending cancel payment request");
     PaymentCancelRequest payload = new PaymentCancelRequest();
     MPResponse response =
@@ -167,7 +167,7 @@ public class PaymentClient extends MercadoPagoClient {
    * @return payment
    * @throws MPException exception
    */
-  public Payment capture(Long id, RequestOptions requestOptions) throws MPException {
+  public Payment capture(Long id, MPRequestOptions requestOptions) throws MPException {
     return this.capture(id, null, requestOptions);
   }
 
@@ -192,7 +192,7 @@ public class PaymentClient extends MercadoPagoClient {
    * @return payment
    * @throws MPException exception
    */
-  public Payment capture(Long id, BigDecimal amount, RequestOptions requestOptions)
+  public Payment capture(Long id, BigDecimal amount, MPRequestOptions requestOptions)
       throws MPException {
     LOGGER.info("Sending capture payment request");
     PaymentCaptureRequest payload =
@@ -232,7 +232,7 @@ public class PaymentClient extends MercadoPagoClient {
    * @throws MPException exception
    */
   public ResultsResourcesPage<Payment> search(
-      MPSearchRequest request, RequestOptions requestOptions) throws MPException {
+      MPSearchRequest request, MPRequestOptions requestOptions) throws MPException {
     LOGGER.info("Sending search payment request");
     MPResponse response = search("/v1/payments/search", request, requestOptions);
 

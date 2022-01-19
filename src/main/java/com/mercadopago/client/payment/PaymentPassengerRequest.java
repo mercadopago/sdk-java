@@ -2,15 +2,15 @@ package com.mercadopago.client.payment;
 
 import com.mercadopago.client.common.IdentificationRequest;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
 /** PaymentPassengerRequest class. */
-@Data
+@Getter
 @Builder
 public class PaymentPassengerRequest {
-  public String firstName;
+  private final String firstName;
 
-  public String lastName;
+  private final String lastName;
 
-  public IdentificationRequest identification;
+  private final IdentificationRequest identification;
 }

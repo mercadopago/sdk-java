@@ -1,13 +1,13 @@
 package com.mercadopago.client.payment;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
 /** PaymentCategoryDescriptorRequest class. */
-@Data
+@Getter
 @Builder
 public class PaymentCategoryDescriptorRequest {
-  private PaymentPassengerRequest passenger;
+  private final PaymentPassengerRequest passenger;
 
-  private PaymentRouteRequest route;
+  private final PaymentRouteRequest route;
 }

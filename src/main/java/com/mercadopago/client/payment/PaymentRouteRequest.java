@@ -2,19 +2,19 @@ package com.mercadopago.client.payment;
 
 import java.util.Date;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
 /** PaymentRouteRequest class. */
-@Data
+@Getter
 @Builder
 public class PaymentRouteRequest {
-  private String departure;
+  private final String departure;
 
-  private String destination;
+  private final String destination;
 
-  private Date departureDateTime;
+  private final Date departureDateTime;
 
-  private Date arrivalDateTime;
+  private final Date arrivalDateTime;
 
-  private String company;
+  private final String company;
 }

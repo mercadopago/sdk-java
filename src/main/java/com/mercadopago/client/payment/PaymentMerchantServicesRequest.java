@@ -1,13 +1,13 @@
 package com.mercadopago.client.payment;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
 /** PaymentMerchantServicesRequest class. */
-@Data
+@Getter
 @Builder
 public class PaymentMerchantServicesRequest {
-  private boolean fraudScoring;
+  private final boolean fraudScoring;
 
-  private boolean fraudManualReview;
+  private final boolean fraudManualReview;
 }

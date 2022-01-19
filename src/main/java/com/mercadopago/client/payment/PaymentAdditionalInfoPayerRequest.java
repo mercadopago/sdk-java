@@ -4,27 +4,27 @@ import com.mercadopago.client.common.AddressRequest;
 import com.mercadopago.client.common.PhoneRequest;
 import java.util.Date;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
 /** PaymentAdditionalInfoPayerRequest class. */
-@Data
+@Getter
 @Builder
 public class PaymentAdditionalInfoPayerRequest {
-  private String firstName;
+  private final String firstName;
 
-  private String lastName;
+  private final String lastName;
 
-  private PhoneRequest phone;
+  private final PhoneRequest phone;
 
-  private AddressRequest address;
+  private final AddressRequest address;
 
-  private Date registrationDate;
+  private final Date registrationDate;
 
-  private String authenticationType;
+  private final String authenticationType;
 
-  private boolean isPrimeUser;
+  private final boolean isPrimeUser;
 
-  private boolean isFirstPurchaseOnline;
+  private final boolean isFirstPurchaseOnline;
 
-  private Date lastPurchase;
+  private final Date lastPurchase;
 }

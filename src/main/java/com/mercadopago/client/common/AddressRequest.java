@@ -1,15 +1,15 @@
 package com.mercadopago.client.common;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
 /** AddressRequest class. */
-@Data
+@Getter
 @Builder
 public class AddressRequest {
-  private String zipCode;
+  private final String zipCode;
 
-  private String streetName;
+  private final String streetName;
 
-  private String streetNumber;
+  private final String streetNumber;
 }

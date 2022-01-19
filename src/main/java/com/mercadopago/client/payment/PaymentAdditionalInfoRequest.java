@@ -2,17 +2,17 @@ package com.mercadopago.client.payment;
 
 import java.util.List;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
 /** PaymentAdditionalInfoRequest class. */
-@Data
+@Getter
 @Builder
 public class PaymentAdditionalInfoRequest {
-  private String ipAddress;
+  private final String ipAddress;
 
-  private List<PaymentItemRequest> items;
+  private final List<PaymentItemRequest> items;
 
-  private PaymentAdditionalInfoPayerRequest payer;
+  private final PaymentAdditionalInfoPayerRequest payer;
 
-  private PaymentShipmentsRequest shipments;
+  private final PaymentShipmentsRequest shipments;
 }

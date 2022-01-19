@@ -1,11 +1,11 @@
 package com.mercadopago.client.payment;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
 /** PaymentTransactionDetailsRequest class. */
-@Data
+@Getter
 @Builder
 public class PaymentTransactionDetailsRequest {
-  private String financialInstitution;
+  private final String financialInstitution;
 }

@@ -3,24 +3,22 @@ package com.mercadopago.net;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
 /** MPSearchRequest class. */
-@Data
+@Getter
 @Builder
-@AllArgsConstructor
 public class MPSearchRequest {
   private final String limitParam = "limit";
 
   private final String offsetParam = "offset";
 
-  private Integer limit;
+  private final Integer limit;
 
-  private Integer offset;
+  private final Integer offset;
 
-  private Map<String, Object> filters;
+  private final Map<String, Object> filters;
 
   /**
    * Method responsible for getting parameters.

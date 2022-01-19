@@ -1,13 +1,13 @@
 package com.mercadopago.client.common;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
 /** PhoneRequest class. */
-@Data
+@Getter
 @Builder
 public class PhoneRequest {
-  private String areaCode;
+  private final String areaCode;
 
-  private String number;
+  private final String number;
 }

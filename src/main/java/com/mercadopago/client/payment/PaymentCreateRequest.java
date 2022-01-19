@@ -1,76 +1,76 @@
 package com.mercadopago.client.payment;
 
-import com.mercadopago.client.RequestOptions;
+import com.mercadopago.core.MPRequestOptions;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
 /** PaymentCreateRequest class. */
-@Data
+@Getter
 @Builder
 public class PaymentCreateRequest {
-  private PaymentPayerRequest payer;
+  private final PaymentPayerRequest payer;
 
-  private Boolean binaryMode;
+  private final Boolean binaryMode;
 
-  private PaymentOrderRequest order;
+  private final PaymentOrderRequest order;
 
-  private String externalReference;
+  private final String externalReference;
 
-  private String description;
+  private final String description;
 
-  private Map<String, Object> metadata;
+  private final Map<String, Object> metadata;
 
-  private BigDecimal transactionAmount;
+  private final BigDecimal transactionAmount;
 
-  private BigDecimal netAmount;
+  private final BigDecimal netAmount;
 
-  private BigDecimal couponAmount;
+  private final BigDecimal couponAmount;
 
-  private Integer campaignId;
+  private final Integer campaignId;
 
-  private String couponCode;
+  private final String couponCode;
 
-  private Integer differentialPricingId;
+  private final Integer differentialPricingId;
 
-  private BigDecimal applicationFee;
+  private final BigDecimal applicationFee;
 
-  private Boolean capture;
+  private final Boolean capture;
 
-  private String paymentMethodId;
+  private final String paymentMethodId;
 
-  private String issuerId;
+  private final String issuerId;
 
-  private String token;
+  private final String token;
 
-  private String statementDescriptor;
+  private final String statementDescriptor;
 
-  private Integer installments;
+  private final Integer installments;
 
-  private String notificationUrl;
+  private final String notificationUrl;
 
-  private String callbackUrl;
+  private final String callbackUrl;
 
-  private String processingMode;
+  private final String processingMode;
 
-  private String merchantAccountId;
+  private final String merchantAccountId;
 
-  private Date dateOfExpiration;
+  private final Date dateOfExpiration;
 
-  private Long sponsorId;
+  private final Long sponsorId;
 
-  private String paymentMethodOptionId;
+  private final String paymentMethodOptionId;
 
-  private PaymentTransactionDetailsRequest transactionDetails;
+  private final PaymentTransactionDetailsRequest transactionDetails;
 
-  private PaymentAdditionalInfoRequest additionalInfo;
+  private final PaymentAdditionalInfoRequest additionalInfo;
 
-  private List<PaymentTaxRequest> taxes;
+  private final List<PaymentTaxRequest> taxes;
 
-  private PaymentMerchantServicesRequest merchantServices;
+  private final PaymentMerchantServicesRequest merchantServices;
 
-  private RequestOptions requestOptions;
+  private final MPRequestOptions requestOptions;
 }

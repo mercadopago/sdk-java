@@ -1,15 +1,15 @@
 package com.mercadopago.client.payment;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
 /** PaymentShipmentsRequest class. */
-@Data
+@Getter
 @Builder
 public class PaymentShipmentsRequest {
-  private PaymentReceiverAddressRequest receiverAddress;
+  private final PaymentReceiverAddressRequest receiverAddress;
 
-  private boolean localPickup;
+  private final boolean localPickup;
 
-  private boolean expressShipment;
+  private final boolean expressShipment;
 }

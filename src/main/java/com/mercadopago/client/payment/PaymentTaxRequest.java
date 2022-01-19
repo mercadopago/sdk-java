@@ -1,15 +1,13 @@
 package com.mercadopago.client.payment;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
-/**
- * PaymentTaxRequest class.
- */
-@Data
+/** PaymentTaxRequest class. */
+@Getter
 @Builder
 public class PaymentTaxRequest {
-  private String type;
+  private final String type;
 
-  private double value;
+  private final double value;
 }

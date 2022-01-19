@@ -2,6 +2,7 @@ package com.mercadopago.client;
 
 import com.google.gson.JsonObject;
 import com.mercadopago.MercadoPagoConfig;
+import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.Headers;
 import com.mercadopago.net.HttpMethod;
@@ -68,7 +69,7 @@ public abstract class MercadoPagoClient {
    * @return MPResponse response
    * @throws MPException exception
    */
-  protected MPResponse send(MPRequest request, RequestOptions requestOptions) throws MPException {
+  protected MPResponse send(MPRequest request, MPRequestOptions requestOptions) throws MPException {
     addCustomHeaders(request, requestOptions);
     addCustomTimeouts(request, requestOptions);
 
@@ -108,7 +109,7 @@ public abstract class MercadoPagoClient {
       HttpMethod method,
       JsonObject payload,
       Map<String, Object> queryParams,
-      RequestOptions requestOptions)
+      MPRequestOptions requestOptions)
       throws MPException {
     MPRequest mpRequest = buildRequest(path, method, payload, queryParams, requestOptions);
     return this.send(mpRequest);
@@ -137,7 +138,7 @@ public abstract class MercadoPagoClient {
    * @throws MPException exception
    */
   protected MPResponse search(
-      String path, MPSearchRequest searchRequest, RequestOptions requestOptions)
+      String path, MPSearchRequest searchRequest, MPRequestOptions requestOptions)
       throws MPException {
     Map<String, Object> queryParams =
         Objects.nonNull(searchRequest) ? searchRequest.getParameters() : null;
@@ -154,7 +155,7 @@ public abstract class MercadoPagoClient {
    * @return response data
    * @throws MPException exception
    */
-  protected MPResponse list(String path, RequestOptions requestOptions) throws MPException {
+  protected MPResponse list(String path, MPRequestOptions requestOptions) throws MPException {
     return this.list(path, HttpMethod.GET, null, null, requestOptions);
   }
 
@@ -175,7 +176,7 @@ public abstract class MercadoPagoClient {
       HttpMethod method,
       JsonObject payload,
       Map<String, Object> queryParams,
-      RequestOptions requestOptions)
+      MPRequestOptions requestOptions)
       throws MPException {
     return this.send(path, method, payload, queryParams, requestOptions);
   }
@@ -209,7 +210,7 @@ public abstract class MercadoPagoClient {
       HttpMethod method,
       JsonObject payload,
       Map<String, Object> queryParams,
-      RequestOptions requestOptions)
+      MPRequestOptions requestOptions)
       throws MPException {
     MPRequest request = new MPRequest();
     request.setUri(UrlFormatter.format(path));
@@ -252,7 +253,7 @@ public abstract class MercadoPagoClient {
     }
   }
 
-  private void addCustomHeaders(MPRequest request, RequestOptions requestOptions) {
+  private void addCustomHeaders(MPRequest request, MPRequestOptions requestOptions) {
     if (Objects.nonNull(requestOptions) && Objects.nonNull(requestOptions.getCustomHeaders())) {
       for (Map.Entry<String, String> entry : requestOptions.getCustomHeaders().entrySet()) {
         request.addHeader(entry.getKey(), entry.getValue());
@@ -265,7 +266,7 @@ public abstract class MercadoPagoClient {
     }
   }
 
-  private void addCustomTimeouts(MPRequest request, RequestOptions requestOptions) {
+  private void addCustomTimeouts(MPRequest request, MPRequestOptions requestOptions) {
     if (Objects.nonNull(requestOptions)) {
       if (requestOptions.getConnectionTimeout() > 0) {
         request.setConnectionTimeout(requestOptions.getConnectionTimeout());
@@ -291,7 +292,7 @@ public abstract class MercadoPagoClient {
     }
   }
 
-  private String getAccessToken(RequestOptions requestOptions) {
+  private String getAccessToken(MPRequestOptions requestOptions) {
     if (Objects.nonNull(requestOptions)
         && Objects.nonNull(requestOptions.getAccessToken())
         && !requestOptions.getAccessToken().isEmpty()) {
