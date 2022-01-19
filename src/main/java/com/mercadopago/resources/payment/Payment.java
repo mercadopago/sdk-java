@@ -24,6 +24,8 @@ public class Payment extends MPResource {
 
   private Date moneyReleaseDate;
 
+  private String moneyReleaseSchema;
+
   private String operationType;
 
   private String issuerId;
@@ -70,7 +72,7 @@ public class Payment extends MPResource {
 
   private BigDecimal couponAmount;
 
-  private int differentialPricingId;
+  private String differentialPricingId;
 
   private int installments;
 
@@ -96,6 +98,8 @@ public class Payment extends MPResource {
 
   private String merchantAccountId;
 
+  private String merchantNumber;
+
   private String couponCode;
 
   private BigDecimal netAmount;
@@ -103,6 +107,18 @@ public class Payment extends MPResource {
   private String paymentMethodOptionId;
 
   private List<PaymentTax> taxes;
+
+  private BigDecimal taxesAmount;
+
+  private String counterCurrency;
+
+  private BigDecimal shippingAmount;
+
+  private String posId;
+
+  private String storeId;
+
+  private String deductionSchema;
 
   private List<PaymentRefund> refunds;
 

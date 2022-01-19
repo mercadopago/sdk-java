@@ -51,7 +51,8 @@ public class Serializer {
    * @return ResultsResourcesPage
    */
   public static <T extends MPResource>
-      ResultsResourcesPage<T> deserializeFromJsonToResultsResources(Type type, String jsonObject) {
+      ResultsResourcesPage<T> deserializeResultsResourcesPageFromJson(
+          Type type, String jsonObject) {
     return GSON.fromJson(jsonObject, type);
   }
 

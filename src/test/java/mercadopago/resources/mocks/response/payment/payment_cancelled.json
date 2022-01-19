@@ -9,7 +9,7 @@
   "issuer_id": "24",
   "payment_method_id": "master",
   "payment_type_id": "credit_card",
-  "status": "approved",
+  "status": "cancelled",
   "status_detail": "accredited",
   "currency_id": "BRL",
   "description": "PEDIDO NOVO - VIDEOGAME",

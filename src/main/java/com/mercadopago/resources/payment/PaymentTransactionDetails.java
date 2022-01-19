@@ -14,9 +14,11 @@ public class PaymentTransactionDetails {
 
   private BigDecimal installmentAmount;
 
-  private BigDecimal overPaidAmount;
+  private BigDecimal overpaidAmount;
 
   private String externalResourceUrl;
 
   private String paymentMethodReferenceId;
+
+  private String acquirerReference;
 }

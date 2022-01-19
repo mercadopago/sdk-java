@@ -23,7 +23,7 @@ import com.mercadopago.net.MPSearchRequest;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import mercadopago.BaseResourceTest;
+import mercadopago.BaseClientTest;
 import mercadopago.helper.MockHelper;
 import mercadopago.mock.MPDefaultHttpClientMock;
 import org.apache.http.HttpResponse;
@@ -36,7 +36,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
-public class MercadoPagoClientTest extends BaseResourceTest {
+public class MercadoPagoClientTest extends BaseClientTest {
   private MPDefaultHttpClientMock mpHttpClient;
   private HttpClient httpClientMock;
   private TestClient testClient;

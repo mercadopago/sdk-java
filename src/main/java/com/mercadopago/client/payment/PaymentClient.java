@@ -2,7 +2,7 @@ package com.mercadopago.client.payment;
 
 import static com.mercadopago.MercadoPagoConfig.getStreamHandler;
 import static com.mercadopago.serialization.Serializer.deserializeFromJson;
-import static com.mercadopago.serialization.Serializer.deserializeFromJsonToResultsResources;
+import static com.mercadopago.serialization.Serializer.deserializeResultsResourcesPageFromJson;
 
 import com.google.gson.reflect.TypeToken;
 import com.mercadopago.MercadoPagoConfig;
@@ -236,9 +236,9 @@ public class PaymentClient extends MercadoPagoClient {
     LOGGER.info("Sending search payment request");
     MPResponse response = search("/v1/payments/search", request, requestOptions);
 
-    Type responseType = new TypeToken<ResultsResourcesPage<Payment>>() { }.getType();
+    Type responseType = new TypeToken<ResultsResourcesPage<Payment>>() {}.getType();
     ResultsResourcesPage<Payment> result =
-        deserializeFromJsonToResultsResources(responseType, response.getContent());
+        deserializeResultsResourcesPageFromJson(responseType, response.getContent());
     result.setResponse(response);
 
     return result;
