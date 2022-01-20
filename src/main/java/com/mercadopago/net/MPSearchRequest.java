@@ -3,31 +3,40 @@ package com.mercadopago.net;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+/** MPSearchRequest class. */
+@Getter
 @Builder
-@AllArgsConstructor
 public class MPSearchRequest {
-    private final String limitParam = "limit";
-    private final String offsetParam = "offset";
-    private Integer limit;
-    private Integer offset;
-    private Map<String, Object> filters;
+  private final String limitParam = "limit";
 
-    public Map<String, Object> getParameters() {
-        HashMap<String, Object> parameters = Objects.nonNull(filters) ? new HashMap<>(filters) : new HashMap<>();
+  private final String offsetParam = "offset";
 
-        if(!parameters.containsKey(limitParam)) {
-            parameters.put(limitParam, limit);
-        }
+  private final Integer limit;
 
-        if(!parameters.containsKey(offsetParam)) {
-            parameters.put(offsetParam, offset);
-        }
+  private final Integer offset;
 
-        return parameters;
+  private final Map<String, Object> filters;
+
+  /**
+   * Method responsible for getting parameters.
+   *
+   * @return parameters
+   */
+  public Map<String, Object> getParameters() {
+    HashMap<String, Object> parameters =
+        Objects.nonNull(filters) ? new HashMap<>(filters) : new HashMap<>();
+
+    if (!parameters.containsKey(limitParam)) {
+      parameters.put(limitParam, limit);
     }
+
+    if (!parameters.containsKey(offsetParam)) {
+      parameters.put(offsetParam, offset);
+    }
+
+    return parameters;
+  }
 }

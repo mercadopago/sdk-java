@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.ConsoleHandler;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 import javax.net.ssl.SSLContext;
@@ -192,7 +191,6 @@ public class MPDefaultHttpClient implements MPHttpClient {
       if (Objects.nonNull(mpRequest.getPayload())) {
         LOGGER.fine(String.format("Request body: %s", mpRequest.getPayload().toString()));
       }
-
       LOGGER.fine("Headers:");
       for (Map.Entry<String, String> entry : mpRequest.getHeaders().entrySet()) {
         LOGGER.fine(String.format("%s: %s", entry.getKey(), entry.getValue()));

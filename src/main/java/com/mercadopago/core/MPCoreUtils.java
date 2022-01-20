@@ -122,15 +122,14 @@ public class MPCoreUtils {
      * @return
      */
     static JsonArray getArrayFromJsonElement(JsonElement jsonElement) {
-        JsonArray jsonArray = null;
         if (jsonElement.isJsonArray()) {
-            jsonArray = jsonElement.getAsJsonArray();
-        } else if (jsonElement.isJsonObject() &&
-                ((JsonObject) jsonElement).get("results") != null &&
-                ((JsonObject) jsonElement).get("results").isJsonArray()) {
-            jsonArray = ((JsonObject) jsonElement).get("results").getAsJsonArray();
+            return jsonElement.getAsJsonArray();
+        } else if (jsonElement.isJsonObject()
+            && ((JsonObject) jsonElement).get("results") != null
+            && ((JsonObject) jsonElement).get("results").isJsonArray()) {
+            return ((JsonObject) jsonElement).get("results").getAsJsonArray();
         }
-        return jsonArray;
+        return null;
     }
 
     public static String toCamelCase(String str) {
