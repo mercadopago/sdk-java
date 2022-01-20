@@ -67,8 +67,7 @@ public class Serializer {
   public static <T extends MPResource> MPResourceList<T> deserializeListFromJson(
       Class<T> clazz, String jsonObject) {
     MPResourceList<T> resourceList = new MPResourceList<>();
-    JsonObject rootObject = JsonParser.parseString(jsonObject).getAsJsonObject();
-    JsonArray jsonArray = getArrayFromJsonElement(rootObject);
+    JsonArray jsonArray = JsonParser.parseString(jsonObject).getAsJsonArray();
     for (int i = 0; i < jsonArray.size(); i++) {
       T resource = GSON.fromJson(jsonArray.get(i), clazz);
       resourceList.add(resource);

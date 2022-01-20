@@ -2,12 +2,12 @@ package com.mercadopago.resources.common;
 
 import lombok.Getter;
 
-/** Identification class. */
+/** Base type that represents identifications such as customer identification. */
 @Getter
 public class Identification {
-  /** Identification type. */
-  public String type;
+  /** Type of identification */
+  private String type;
 
-  /** Identification number. */
-  public String number;
+  /** Unique number of that identification */
+  private String number;
 }
