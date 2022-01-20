@@ -14,6 +14,7 @@ import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpStatus;
 import com.mercadopago.net.MPResourceList;
 import com.mercadopago.resources.customer.CustomerCard;
+import com.mercadopago.resources.customer.CustomerCardIssuer;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -47,11 +48,17 @@ public class CustomerCardClientTest {
 
   private String responseFileAllCards;
 
+  private CustomerCardCreateRequest customerCardCreateRequest;
+
   @BeforeEach
   public void init() {
     this.httpClientMock = mock(HttpClient.class);
     this.mpHttpClient = new MPDefaultHttpClientMock(httpClientMock);
     this.cardClient = new CustomerCardClient(mpHttpClient);
+    customerCardCreateRequest = CustomerCardCreateRequest.builder()
+        .token("abc")
+        .issuer(CustomerCardIssuer.builder().id("123").name("visa").build())
+        .build();
     this.cardId = "1562188766852";
     this.customerId = "649457098-FybpOkG6zH8QRm";
     this.responseFileSingleCard = "/card/card_single.json";
@@ -104,8 +111,7 @@ public class CustomerCardClientTest {
     doReturn(httpResponse)
         .when(httpClientMock)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
-    CustomerCardCreateRequest request = CustomerCardCreateRequest.builder().token("abc").build();
-    CustomerCard card = cardClient.create(customerId, request);
+    CustomerCard card = cardClient.create(customerId, customerCardCreateRequest);
 
     assertNotNull(card);
     assertCustomerCardFields(card);
@@ -128,8 +134,7 @@ public class CustomerCardClientTest {
     doReturn(httpResponse)
         .when(httpClientMock)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
-    CustomerCardCreateRequest request = CustomerCardCreateRequest.builder().token("abc").build();
-    CustomerCard card = cardClient.create(customerId, request, requestOptions);
+    CustomerCard card = cardClient.create(customerId, customerCardCreateRequest, requestOptions);
 
     assertNotNull(card);
     assertCustomerCardFields(card);
@@ -230,7 +235,7 @@ public class CustomerCardClientTest {
         card.getPaymentMethod().getSecureThumbnail());
     assertEquals(3, card.getSecurityCode().getLength());
     assertEquals("back", card.getSecurityCode().getCardLocation());
-    assertEquals(25, card.getIssuer().getId());
+    assertEquals("25", card.getIssuer().getId());
     assertEquals("Visa", card.getIssuer().getName());
     assertEquals("APRO", card.getCardholder().getName());
     assertEquals("19119119100", card.getCardholder().getIdentification().getNumber());
