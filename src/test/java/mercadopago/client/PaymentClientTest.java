@@ -182,7 +182,7 @@ public class PaymentClientTest extends BaseClientTest {
     assertNull(payment.getTransactionDetails().getAcquirerReference());
     assertNotNull(payment.getFeeDetails());
     assertEquals("mercadopago_fee", payment.getFeeDetails().get(0).getType());
-    assertEquals(0.62, payment.getFeeDetails().get(0).getAmount());
+    assertEquals("0.62", payment.getFeeDetails().get(0).getAmount().toString());
     assertEquals("collector", payment.getFeeDetails().get(0).getFeePayer());
     assertFalse(payment.isCaptured());
     assertFalse(payment.isBinaryMode());

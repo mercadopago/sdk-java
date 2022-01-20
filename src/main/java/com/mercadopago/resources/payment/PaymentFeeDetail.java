@@ -1,5 +1,6 @@
 package com.mercadopago.resources.payment;
 
+import java.math.BigDecimal;
 import lombok.Data;
 
 /** PaymentFeeDetail class. */
@@ -9,5 +10,5 @@ public class PaymentFeeDetail {
 
   private String feePayer;
 
-  private Double amount;
+  private BigDecimal amount;
 }
