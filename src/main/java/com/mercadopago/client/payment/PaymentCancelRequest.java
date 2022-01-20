@@ -1,6 +1,7 @@
 package com.mercadopago.client.payment;
 
-import com.mercadopago.resources.payment.PaymentStatus;
+import static com.mercadopago.resources.payment.PaymentStatus.CANCELLED;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -8,5 +9,6 @@ import lombok.Getter;
 @Getter
 @Builder
 public class PaymentCancelRequest {
-  private final String status = PaymentStatus.CANCELLED;
+  /** Status cancelled. */
+  private final String status = CANCELLED;
 }

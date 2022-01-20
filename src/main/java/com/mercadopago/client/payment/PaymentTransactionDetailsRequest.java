@@ -7,5 +7,6 @@ import lombok.Getter;
 @Getter
 @Builder
 public class PaymentTransactionDetailsRequest {
+  /** External financial institution identifier. */
   private final String financialInstitution;
 }

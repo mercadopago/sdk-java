@@ -7,11 +7,15 @@ import lombok.Getter;
 @Getter
 @Builder
 public class PaymentAdditionalInfoBarcodeRequest {
+  /** Barcode type. */
   private final String type;
 
+  /** Barcode content. */
   private final String content;
 
+  /** Barcode width. */
   private final Double width;
 
+  /** Barcode height. */
   private final Double height;
 }

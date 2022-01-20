@@ -10,21 +10,30 @@ import lombok.Getter;
 @Getter
 @Builder
 public class PaymentAdditionalInfoPayerRequest {
+  /** Payer first name. */
   private final String firstName;
 
+  /** Payer last name. */
   private final String lastName;
 
+  /** Payer phone. */
   private final PhoneRequest phone;
 
+  /** Payer address. */
   private final AddressRequest address;
 
+  /** Payer registration date. */
   private final Date registrationDate;
 
+  /** Payer authentication type. */
   private final String authenticationType;
 
+  /** If payer is prime user. */
   private final boolean isPrimeUser;
 
+  /** If is first online purchase. */
   private final boolean isFirstPurchaseOnline;
 
+  /** Date of last purchase. */
   private final Date lastPurchase;
 }

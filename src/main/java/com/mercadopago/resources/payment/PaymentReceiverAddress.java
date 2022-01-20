@@ -8,11 +8,15 @@ import lombok.Getter;
 @EqualsAndHashCode(callSuper = true)
 @Getter
 public class PaymentReceiverAddress extends Address {
+  /** State. */
   private String stateName;
 
+  /** City. */
   private String cityName;
 
+  /** Floor. */
   private String floor;
 
+  /** Apartment. */
   private String apartment;
 }

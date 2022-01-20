@@ -7,7 +7,9 @@ import lombok.Getter;
 @Getter
 @Builder
 public class PaymentCategoryDescriptorRequest {
+  /** Passenger information. */
   private final PaymentPassengerRequest passenger;
 
+  /** Flight information. */
   private final PaymentRouteRequest route;
 }

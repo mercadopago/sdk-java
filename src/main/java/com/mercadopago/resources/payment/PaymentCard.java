@@ -6,19 +6,27 @@ import lombok.Getter;
 /** PaymentCard class. */
 @Getter
 public class PaymentCard {
-  public String id;
+  /** Id of the card. */
+  private String id;
 
-  public String lastFourDigits;
+  /** Last four digits of card number. */
+  private String lastFourDigits;
 
-  public String firstSixDigits;
+  /** First six digit of card number. */
+  private String firstSixDigits;
 
-  public int expirationYear;
+  /** Card expiration year. */
+  private int expirationYear;
 
-  public int expirationMonth;
+  /** Card expiration month. */
+  private int expirationMonth;
 
-  public Date dateCreated;
+  /** Creation date of card. */
+  private Date dateCreated;
 
-  public Date dateLastUpdated;
+  /** Last update of data from the card. */
+  private Date dateLastUpdated;
 
-  public PaymentCardholder cardholder;
+  /** Card's owner data. */
+  private PaymentCardholder cardholder;
 }
