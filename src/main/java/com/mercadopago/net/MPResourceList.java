@@ -1,9 +1,15 @@
 package com.mercadopago.net;
 
 import java.util.ArrayList;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+/**
+*  List of resources returned by an API.
+*
+* @param <T> Type of resource being returned
+*/
+@Getter
 public class MPResourceList<T> extends ArrayList<T> {
-    private MPResponse response;
+  /** Api response details */
+  private MPResponse response;
 }
