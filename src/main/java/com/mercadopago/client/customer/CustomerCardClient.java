@@ -2,6 +2,7 @@ package com.mercadopago.client.customer;
 
 import com.google.gson.JsonObject;
 import com.mercadopago.MercadoPagoConfig;
+import com.mercadopago.client.IdempotentRequest;
 import com.mercadopago.client.MercadoPagoClient;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPException;
@@ -23,7 +24,8 @@ public class CustomerCardClient extends MercadoPagoClient {
   /**
    * Constructor used for providing a custom http client.
    *
-   * @param httpClient http client used for performing requests */
+   * @param httpClient http client used for performing requests
+   */
   public CustomerCardClient(MPHttpClient httpClient) {
     super(httpClient);
   }
@@ -90,13 +92,14 @@ public class CustomerCardClient extends MercadoPagoClient {
       String customerId, CustomerCardCreateRequest request, MPRequestOptions requestOptions)
       throws MPException {
     JsonObject payload = Serializer.serializeToJson(request);
-    MPResponse response =
-        send(
+    IdempotentRequest idempotentRequest =
+        IdempotentRequest.buildRequest(
             String.format("/v1/customers/%s/cards", customerId),
             HttpMethod.POST,
             payload,
             null,
             requestOptions);
+    MPResponse response = send(idempotentRequest);
 
     CustomerCard card = Serializer.deserializeFromJson(CustomerCard.class, response.getContent());
     card.setResponse(response);
@@ -169,7 +172,8 @@ public class CustomerCardClient extends MercadoPagoClient {
             null,
             requestOptions);
 
-    MPResourceList<CustomerCard> cards = Serializer.deserializeListFromJson(CustomerCard.class, response.getContent());
+    MPResourceList<CustomerCard> cards =
+        Serializer.deserializeListFromJson(CustomerCard.class, response.getContent());
     cards.forEach(card -> card.setResponse(response));
     return cards;
   }
