@@ -1,17 +1,17 @@
 package com.mercadopago.client.common;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 
-/** Phone data used in requests. */
-@Data
+/** PhoneRequest class. */
+@Getter
+@Builder
 public class PhoneRequest {
     /**
      * Area code
      */
-    private String areaCode;
+    private final String areaCode;
 
-    /**
-     * Phone number
-     */
-    private String number;
+  /** Phone number. */
+  private final String number;
 }

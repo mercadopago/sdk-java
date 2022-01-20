@@ -32,6 +32,7 @@ public class IdempotentRequest extends MPRequest {
    * @param method method
    * @param headers headers
    * @param payload payload
+   * @param queryParams queryParams
    */
   public IdempotentRequest(
       String uri,

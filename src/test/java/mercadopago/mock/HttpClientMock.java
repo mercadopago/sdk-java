@@ -8,6 +8,7 @@ import static org.mockito.Mockito.doReturn;
 import com.google.gson.JsonElement;
 import java.io.IOException;
 import java.util.Objects;
+import lombok.Getter;
 import mercadopago.helper.MockHelper;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
@@ -22,11 +23,14 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HttpContext;
 import org.mockito.Mockito;
 
+@Getter
 public class HttpClientMock implements HttpClient {
 
-  public HttpClient httpClient;
+  private final HttpClient httpClient;
 
-  public JsonElement requestPayloadMock;
+  private JsonElement requestPayloadMock;
+
+  private HttpUriRequest requestPayload;
 
   public HttpClientMock() {
     this.httpClient = Mockito.mock(HttpClient.class);
@@ -36,19 +40,27 @@ public class HttpClientMock implements HttpClient {
     this.mock(mockedResponseFile, statusCode, null);
   }
 
-  public void mock(String mockedResponseFile, int statusCode, String requestToCompareFile) throws IOException {
-    HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(mockedResponseFile, statusCode);
-    this.requestPayloadMock = Objects.nonNull(requestToCompareFile) ? generateJsonElement(requestToCompareFile) : null;
+  public void mock(String mockedResponseFile, int statusCode, String requestToCompareFile)
+      throws IOException {
+    HttpResponse httpResponse =
+        MockHelper.generateHttpResponseFromFile(mockedResponseFile, statusCode);
+    this.requestPayloadMock =
+        Objects.nonNull(requestToCompareFile) ? generateJsonElement(requestToCompareFile) : null;
 
-    doReturn(httpResponse).when(httpClient).execute(any(HttpRequestBase.class), any(HttpContext.class));
+    doReturn(httpResponse)
+        .when(httpClient)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
   }
 
   public void mock(int statusCode, String requestToCompareFile) throws IOException {
 
     HttpResponse httpResponse = generateHttpResponseFromFile(statusCode);
-    this.requestPayloadMock = requestToCompareFile != null ? generateJsonElement(requestToCompareFile) : null;
+    this.requestPayloadMock =
+        requestToCompareFile != null ? generateJsonElement(requestToCompareFile) : null;
 
-    doReturn(httpResponse).when(httpClient).execute(any(HttpRequestBase.class), any(HttpContext.class));
+    doReturn(httpResponse)
+        .when(httpClient)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
   }
 
   @Override
@@ -62,17 +74,21 @@ public class HttpClientMock implements HttpClient {
   }
 
   @Override
-  public HttpResponse execute(HttpUriRequest httpUriRequest) throws IOException, ClientProtocolException {
+  public HttpResponse execute(HttpUriRequest httpUriRequest)
+      throws IOException, ClientProtocolException {
     return null;
   }
 
   @Override
-  public HttpResponse execute(HttpUriRequest httpUriRequest, HttpContext httpContext) throws IOException, ClientProtocolException {
+  public HttpResponse execute(HttpUriRequest httpUriRequest, HttpContext httpContext)
+      throws IOException, ClientProtocolException {
+    this.requestPayload = httpUriRequest;
     return httpClient.execute(httpUriRequest, httpContext);
   }
 
   @Override
-  public HttpResponse execute(HttpHost httpHost, HttpRequest httpRequest) throws IOException, ClientProtocolException {
+  public HttpResponse execute(HttpHost httpHost, HttpRequest httpRequest)
+      throws IOException, ClientProtocolException {
     return null;
   }
 
@@ -89,19 +105,27 @@ public class HttpClientMock implements HttpClient {
   }
 
   @Override
-  public <T> T execute(HttpUriRequest httpUriRequest, ResponseHandler<? extends T> responseHandler, HttpContext httpContext)
+  public <T> T execute(
+      HttpUriRequest httpUriRequest,
+      ResponseHandler<? extends T> responseHandler,
+      HttpContext httpContext)
       throws IOException, ClientProtocolException {
     return null;
   }
 
   @Override
-  public <T> T execute(HttpHost httpHost, HttpRequest httpRequest, ResponseHandler<? extends T> responseHandler)
+  public <T> T execute(
+      HttpHost httpHost, HttpRequest httpRequest, ResponseHandler<? extends T> responseHandler)
       throws IOException, ClientProtocolException {
     return null;
   }
 
   @Override
-  public <T> T execute(HttpHost httpHost, HttpRequest httpRequest, ResponseHandler<? extends T> responseHandler, HttpContext httpContext)
+  public <T> T execute(
+      HttpHost httpHost,
+      HttpRequest httpRequest,
+      ResponseHandler<? extends T> responseHandler,
+      HttpContext httpContext)
       throws IOException, ClientProtocolException {
     return null;
   }

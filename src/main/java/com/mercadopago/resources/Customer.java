@@ -268,7 +268,7 @@ public class Customer extends MPBase {
      * @throws MPException an error if the request fails
      */
     public static MPResourceArray search(HashMap<String, String> filters, Boolean useCache) throws MPException {
-        return search(filters, useCache, MPRequestOptions.createDefault());
+    return search(filters, useCache, MPRequestOptions.builder().build());
     }
 
     /**
@@ -304,7 +304,7 @@ public class Customer extends MPBase {
      * @throws MPException an error if the request fails
      */
     public static Customer findById(String id, Boolean useCache) throws MPException {
-        return findById(id, useCache, MPRequestOptions.createDefault());
+    return findById(id, useCache, MPRequestOptions.builder().build());
     }
 
     /**
@@ -328,7 +328,7 @@ public class Customer extends MPBase {
      * @throws MPException an error if the request fails
      */
     public Customer save() throws MPException {
-        return save(MPRequestOptions.createDefault());
+    return save(MPRequestOptions.builder().build());
     }
 
     /**
@@ -350,7 +350,7 @@ public class Customer extends MPBase {
      * @throws MPException an error if the request fails
      */
     public Customer update() throws MPException {
-        return update(MPRequestOptions.createDefault());
+    return update(MPRequestOptions.builder().build());
     }
 
     /**
@@ -371,7 +371,7 @@ public class Customer extends MPBase {
      * @throws MPException an error if the request fails
      */
     public Customer delete() throws MPException {
-        return delete(MPRequestOptions.createDefault());
+    return delete(MPRequestOptions.builder().build());
     }
 
     /**

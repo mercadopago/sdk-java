@@ -36,87 +36,146 @@ public class Payment extends MPBase {
     private Integer collectorId = null;
     private String authorizationCode = null;
     private OperationType operationType = null;
-    public enum OperationType {
-        regular_payment,
-        money_transfer,
-        recurring_payment,
-        account_fund,
-        payment_addition,
-        cellphone_recharge,
-        pos_payment
-    }
+
     private Payer payer = null;
+
     private Boolean binaryMode = null;
+
     private Boolean liveMode = null;
+
     private Order order = null;
+
     private String externalReference = null;
+
     private String description = null;
+
     private JsonObject metadata = null;
+
     @Size(min=3, max=3) private CurrencyId currencyId = null;
-    public enum CurrencyId {
-        ARS,
-        BRL,
-        VEF,
-        CLP,
-        MXN,
-        COP,
-        PEN,
-        UYU,
-        USD
-    }
+
     private Float transactionAmount = null;
+
     private Float transactionAmountRefunded = null;
+
     private Float couponAmount = null;
+
     private Integer campaignId = null;
+
     private String couponCode = null;
+
     private TransactionDetails transactionDetails = null;
+
     private ArrayList<FeeDetail> feeDetails = null;
+
     private Integer differentialPricingId = null;
+
     private Float applicationFee = null;
+
     private Status status = null;
-    public enum Status {
-        pending,
-        approved,
-        authorized,
-        in_process,
-        in_mediation,
-        rejected,
-        cancelled,
-        refunded,
-        charged_back
-    }
+
     private String statusDetail = null;
+
     private Boolean capture = null;
+
     private Boolean captured = null;
+
     private String callForAuthorizeId = null;
+
     private String paymentMethodId = null;
+
     private String issuerId = null;
+
     private PaymentTypeId paymentTypeId = null;
-    public enum PaymentTypeId {
-        account_money,
-        ticket,
-        bank_transfer,
-        atm,
-        credit_card,
-        debit_card,
-        prepaid_card,
-        digital_currency,
-        digital_wallet
-    }
+
     private String token = null;
+
     private Card card = null;
+
     private String statementDescriptor = null;
+
     @Numeric(min=1, fractionDigits=0) private Integer installments = null;
+
     private String notificationUrl = null;
+
     private ArrayList<Refund> refunds = null;
+
     private AdditionalInfo additionalInfo = null;
+
     private String callbackUrl = null;
+
     private Integer sponsorId = null;
+
     private String processingMode = null;
+
     private String merchantAccountId = null;
+
     private String paymentMethodOptionId = null;
+
     private Date dateOfExpiration = null;
+
     private PointOfInteraction pointOfInteraction = null;
+
+    /**
+     * Searches the payments
+     * @see <a href="https://www.mercadopago.com/developers/en/reference/payments/_payments_search/get/">api docs</a>
+     * @param filters search filters
+     * @param useCache true if will use cache, otherwise false
+     * @return the searched payments
+     * @throws MPException an error if the request fails
+     */
+    public static MPResourceArray search(HashMap<String, String> filters, Boolean useCache) throws MPException {
+    return search(filters, useCache, MPRequestOptions.builder().build());
+    }
+
+    /**
+     * Searches the payments
+     * @see <a href="https://www.mercadopago.com/developers/en/reference/payments/_payments_search/get/">api docs</a>
+     * @param filters search filters
+     * @param useCache true if will use cache, otherwise false
+     * @param requestOptions request options
+     * @return the searched payments
+     * @throws MPException an error if the request fails
+     */
+    @GET(path="/v1/payments/search")
+    public static MPResourceArray search(HashMap<String, String> filters, Boolean useCache, MPRequestOptions requestOptions) throws MPException {
+        return processMethodBulk(Payment.class, "search", filters, useCache, requestOptions);
+    }
+
+    /**
+     * Finds the payment by your ID
+     * @param id payment ID
+     * @return the payment
+     * @throws MPException an error if the request fails
+     */
+    public static Payment findById(String id) throws MPException {
+        return findById(id, WITHOUT_CACHE);
+    }
+
+    /**
+     * Finds the payment by your ID
+     * @see <a href="https://www.mercadopago.com/developers/en/reference/payments/_payments_id/get/">api docs</a>
+     * @param id payment ID
+     * @param useCache true if will use cache, otherwise false
+     * @return the payment
+     * @throws MPException an error if the request fails
+     */
+    public static Payment findById(String id, Boolean useCache) throws MPException {
+    return findById(id, useCache, MPRequestOptions.builder().build());
+    }
+
+    /**
+     * Finds the payment by your ID
+     * @see <a href="https://www.mercadopago.com/developers/en/reference/payments/_payments_id/get/">api docs</a>
+     * @param id payment ID
+     * @param useCache true if will use cache, otherwise false
+     * @param requestOptions request options
+     * @return the payment
+     * @throws MPException an error if the request fails
+     */
+    @GET(path="/v1/payments/:id")
+    public static Payment findById(String id, Boolean useCache, MPRequestOptions requestOptions) throws MPException {
+        return processMethod(Payment.class, "findById", useCache, requestOptions, id);
+    }
 
     /**
      * @return payment ID
@@ -613,18 +672,6 @@ public class Payment extends MPBase {
     }
 
     /**
-     * Searches the payments
-     * @see <a href="https://www.mercadopago.com/developers/en/reference/payments/_payments_search/get/">api docs</a>
-     * @param filters search filters
-     * @param useCache true if will use cache, otherwise false
-     * @return the searched payments
-     * @throws MPException an error if the request fails
-     */
-    public static MPResourceArray search(HashMap<String, String> filters, Boolean useCache) throws MPException {
-        return search(filters, useCache, MPRequestOptions.createDefault());
-    }
-
-    /**
      * @return sponsor ID
      */
     public Integer getSponsorId() {
@@ -730,63 +777,13 @@ public class Payment extends MPBase {
     }
 
     /**
-     * Searches the payments
-     * @see <a href="https://www.mercadopago.com/developers/en/reference/payments/_payments_search/get/">api docs</a>
-     * @param filters search filters
-     * @param useCache true if will use cache, otherwise false
-     * @param requestOptions request options
-     * @return the searched payments
-     * @throws MPException an error if the request fails
-     */
-    @GET(path="/v1/payments/search")
-    public static MPResourceArray search(HashMap<String, String> filters, Boolean useCache, MPRequestOptions requestOptions) throws MPException {
-        return processMethodBulk(Payment.class, "search", filters, useCache, requestOptions);
-    }
-
-    /**
-     * Finds the payment by your ID
-     * @param id payment ID
-     * @return the payment
-     * @throws MPException an error if the request fails
-     */
-    public static Payment findById(String id) throws MPException {
-        return findById(id, WITHOUT_CACHE);
-    }
-
-    /**
-     * Finds the payment by your ID
-     * @see <a href="https://www.mercadopago.com/developers/en/reference/payments/_payments_id/get/">api docs</a>
-     * @param id payment ID
-     * @param useCache true if will use cache, otherwise false
-     * @return the payment
-     * @throws MPException an error if the request fails
-     */
-    public static Payment findById(String id, Boolean useCache) throws MPException {
-        return findById(id, useCache, MPRequestOptions.createDefault());
-    }
-
-    /**
-     * Finds the payment by your ID
-     * @see <a href="https://www.mercadopago.com/developers/en/reference/payments/_payments_id/get/">api docs</a>
-     * @param id payment ID
-     * @param useCache true if will use cache, otherwise false
-     * @param requestOptions request options
-     * @return the payment
-     * @throws MPException an error if the request fails
-     */
-    @GET(path="/v1/payments/:id")
-    public static Payment findById(String id, Boolean useCache, MPRequestOptions requestOptions) throws MPException {
-        return processMethod(Payment.class, "findById", useCache, requestOptions, id);
-    }
-
-    /**
      * Saves a new payment
      * @see <a href="https://www.mercadopago.com/developers/en/reference/payments/_payments/post/">api docs</a>
      * @return the saved payment
      * @throws MPException an error if the request fails
      */
     public Payment save() throws MPException {
-        return save(MPRequestOptions.createDefault());
+    return save(MPRequestOptions.builder().build());
     }
 
     /**
@@ -799,7 +796,7 @@ public class Payment extends MPBase {
     @POST(path="/v1/payments")
     public Payment save(MPRequestOptions requestOptions) throws MPException {
         if (requestOptions == null) {
-            requestOptions = MPRequestOptions.createDefault();
+      requestOptions = MPRequestOptions.builder().build();
         }
         addTrackingHeaders(requestOptions);
         return processMethod("save", WITHOUT_CACHE, requestOptions);
@@ -811,7 +808,7 @@ public class Payment extends MPBase {
      * @throws MPException an error if the request fails
      */
     public Payment update() throws MPException {
-        return update(MPRequestOptions.createDefault());
+        return update(MPRequestOptions.builder().build());
     }
 
     /**
@@ -831,7 +828,7 @@ public class Payment extends MPBase {
      * @throws MPException an error if the request fails
      */
     public Payment refund() throws MPException {
-        return refund(MPRequestOptions.createDefault());
+        return refund(MPRequestOptions.builder().build());
     }
 
     /**
@@ -851,7 +848,7 @@ public class Payment extends MPBase {
      * @throws MPException an error if the request fails
      */
     public Payment refund(Float amount) throws MPException {
-        return refund(amount, MPRequestOptions.createDefault());
+        return refund(amount, MPRequestOptions.builder().build());
     }
 
     /**
@@ -878,5 +875,51 @@ public class Payment extends MPBase {
             this.transactionAmountRefunded = payment.getTransactionAmountRefunded();
         }
         return this;
+    }
+
+    public enum OperationType {
+        regular_payment,
+        money_transfer,
+        recurring_payment,
+        account_fund,
+        payment_addition,
+        cellphone_recharge,
+        pos_payment
+    }
+
+    public enum CurrencyId {
+        ARS,
+        BRL,
+        VEF,
+        CLP,
+        MXN,
+        COP,
+        PEN,
+        UYU,
+        USD
+    }
+
+    public enum Status {
+        pending,
+        approved,
+        authorized,
+        in_process,
+        in_mediation,
+        rejected,
+        cancelled,
+        refunded,
+        charged_back
+    }
+
+    public enum PaymentTypeId {
+        account_money,
+        ticket,
+        bank_transfer,
+        atm,
+        credit_card,
+        debit_card,
+        prepaid_card,
+        digital_currency,
+        digital_wallet
     }
 }

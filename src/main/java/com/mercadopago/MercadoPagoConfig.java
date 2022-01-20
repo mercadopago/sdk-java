@@ -46,9 +46,9 @@ public class MercadoPagoConfig {
 
   @Getter @Setter private static volatile String integratorId;
 
-  @Getter @Setter private static volatile String metricsScope = DEFAULT_METRICS_SCOPE;
-
   @Getter @Setter private static volatile StreamHandler loggingHandler;
+
+  @Getter @Setter private static volatile String metricsScope = DEFAULT_METRICS_SCOPE;
 
   @Getter @Setter private static volatile Level loggingLevel = DEFAULT_LOGGING_LEVEL;
 
@@ -68,15 +68,6 @@ public class MercadoPagoConfig {
   private static HttpHost proxy;
 
   @Getter @Setter private static HttpRequestRetryHandler retryHandler;
-
-  static {
-    platformId = null;
-    accessToken = null;
-    corporationId = null;
-    integratorId = null;
-    loggingHandler = null;
-    httpClient = null;
-  }
 
   /**
    * Verifies which http client use.

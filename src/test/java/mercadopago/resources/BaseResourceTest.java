@@ -26,7 +26,7 @@ public abstract class BaseResourceTest extends Mockito {
 
     protected MPRequestOptions newRequestOptions() {
         return MPRequestOptions.builder()
-            .setAccessToken(accessToken)
+            .accessToken(accessToken)
             .build();
     }
 

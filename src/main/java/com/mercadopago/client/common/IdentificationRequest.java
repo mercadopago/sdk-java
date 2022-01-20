@@ -1,13 +1,15 @@
 package com.mercadopago.client.common;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 
-/** Customer identification data used in requests. */
-@Data
+/** IdentificationRequest class. */
+@Getter
+@Builder
 public class IdentificationRequest {
   /** Identification type */
-  private String type;
+  private final String type;
 
-  /** Identification number */
-  private String number;
+  /** Identification number. */
+  private final String number;
 }

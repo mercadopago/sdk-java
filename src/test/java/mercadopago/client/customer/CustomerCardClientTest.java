@@ -84,10 +84,10 @@ public class CustomerCardClientTest {
   public void getCardWithRequestOptionsSuccess() throws IOException, MPException, ParseException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
-            .setAccessToken("abc")
-            .setConnectionTimeout(DEFAULT_TIMEOUT)
-            .setConnectionRequestTimeout(DEFAULT_TIMEOUT)
-            .setSocketTimeout(DEFAULT_TIMEOUT)
+            .accessToken("abc")
+            .connectionTimeout(DEFAULT_TIMEOUT)
+            .connectionRequestTimeout(DEFAULT_TIMEOUT)
+            .socketTimeout(DEFAULT_TIMEOUT)
             .build();
     HttpResponse httpResponse =
         MockHelper.generateHttpResponseFromFile(responseFileSingleCard, HttpStatus.OK);
@@ -122,10 +122,10 @@ public class CustomerCardClientTest {
       throws ParseException, IOException, MPException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
-            .setAccessToken("abc")
-            .setConnectionTimeout(DEFAULT_TIMEOUT)
-            .setConnectionRequestTimeout(DEFAULT_TIMEOUT)
-            .setSocketTimeout(DEFAULT_TIMEOUT)
+            .accessToken("abc")
+            .connectionTimeout(DEFAULT_TIMEOUT)
+            .connectionRequestTimeout(DEFAULT_TIMEOUT)
+            .socketTimeout(DEFAULT_TIMEOUT)
             .build();
     HttpResponse httpResponse =
         MockHelper.generateHttpResponseFromFile(responseFileSingleCard, HttpStatus.OK);
@@ -160,10 +160,10 @@ public class CustomerCardClientTest {
       throws MPException, IOException, ParseException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
-            .setAccessToken("abc")
-            .setConnectionTimeout(DEFAULT_TIMEOUT)
-            .setConnectionRequestTimeout(DEFAULT_TIMEOUT)
-            .setSocketTimeout(DEFAULT_TIMEOUT)
+            .accessToken("abc")
+            .connectionTimeout(DEFAULT_TIMEOUT)
+            .connectionRequestTimeout(DEFAULT_TIMEOUT)
+            .socketTimeout(DEFAULT_TIMEOUT)
             .build();
     HttpResponse httpResponse =
         MockHelper.generateHttpResponseFromFile(responseFileSingleCard, HttpStatus.OK);
@@ -199,10 +199,10 @@ public class CustomerCardClientTest {
       throws IOException, MPException, ParseException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
-            .setAccessToken("abc")
-            .setConnectionTimeout(DEFAULT_TIMEOUT)
-            .setConnectionRequestTimeout(DEFAULT_TIMEOUT)
-            .setSocketTimeout(DEFAULT_TIMEOUT)
+            .accessToken("abc")
+            .connectionTimeout(DEFAULT_TIMEOUT)
+            .connectionRequestTimeout(DEFAULT_TIMEOUT)
+            .socketTimeout(DEFAULT_TIMEOUT)
             .build();
     HttpResponse httpResponse =
         MockHelper.generateHttpResponseFromFile(responseFileAllCards, HttpStatus.OK);
