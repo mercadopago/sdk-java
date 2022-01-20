@@ -1,10 +1,16 @@
 package com.mercadopago.resources;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+/** Details of a response that contains paged data. */
+@Getter
 public class ResultsPaging {
-    private int total;
-    private int limit;
-    private int offset;
+  /** Total number of items from that result */
+  private int total;
+
+  /** Limit of items in the result */
+  private int limit;
+
+  /** Current page offset */
+  private int offset;
 }
