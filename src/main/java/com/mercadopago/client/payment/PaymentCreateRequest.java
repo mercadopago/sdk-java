@@ -1,9 +1,7 @@
 package com.mercadopago.client.payment;
 
-import com.mercadopago.core.MPRequestOptions;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import lombok.Builder;
 import lombok.Getter;
@@ -65,8 +63,6 @@ public class PaymentCreateRequest {
   private final BigDecimal transactionAmount;
 
   private final PaymentTransactionDetailsRequest transactionDetails;
-
-  private final MPRequestOptions requestOptions;
 
   private final Long sponsorId;
 
