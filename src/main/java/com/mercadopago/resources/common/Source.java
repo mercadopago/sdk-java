@@ -1,9 +1,9 @@
 package com.mercadopago.resources.common;
 
-import lombok.Data;
+import lombok.Getter;
 
 /** Source class. */
-@Data
+@Getter
 public class Source {
   public String id;
 

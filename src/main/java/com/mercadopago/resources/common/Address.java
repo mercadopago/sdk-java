@@ -1,9 +1,9 @@
 package com.mercadopago.resources.common;
 
-import lombok.Data;
+import lombok.Getter;
 
 /** Address class. */
-@Data
+@Getter
 public class Address {
   public String zipCode;
 

@@ -1,9 +1,9 @@
 package com.mercadopago.resources.common;
 
-import lombok.Data;
+import lombok.Getter;
 
 /** Identification class. */
-@Data
+@Getter
 public class Identification {
   public String type;
 
