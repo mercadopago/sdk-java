@@ -14,7 +14,7 @@ import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.MalformedJsonException;
 import com.mercadopago.net.MPResource;
 import com.mercadopago.net.MPResourceList;
-import com.mercadopago.resources.ResultsResourcesPage;
+import com.mercadopago.net.MPResultsResourcesPage;
 import java.io.IOException;
 import java.io.StringReader;
 import java.lang.reflect.Type;
@@ -48,10 +48,10 @@ public class Serializer {
    * @param type type
    * @param jsonObject jsonObject
    * @param <T> generic type
-   * @return ResultsResourcesPage
+   * @return MPResultsResourcesPage
    */
   public static <T extends MPResource>
-      ResultsResourcesPage<T> deserializeResultsResourcesPageFromJson(
+      MPResultsResourcesPage<T> deserializeResultsResourcesPageFromJson(
           Type type, String jsonObject) {
     return GSON.fromJson(jsonObject, type);
   }

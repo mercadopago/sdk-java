@@ -1,10 +1,10 @@
 package com.mercadopago.resources.payment;
 
 import java.math.BigDecimal;
-import lombok.Data;
+import lombok.Getter;
 
 /** PaymentItem class. */
-@Data
+@Getter
 public class PaymentItem {
   private String id;
 

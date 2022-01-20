@@ -54,7 +54,12 @@ public class MPRequest {
    * @param payload payload
    * @param queryParams queryParams
    */
-  public MPRequest(String uri, HttpMethod method, Map<String, String> headers, JsonObject payload, Map<String, Object> queryParams) {
+  public MPRequest(
+      String uri,
+      HttpMethod method,
+      Map<String, String> headers,
+      JsonObject payload,
+      Map<String, Object> queryParams) {
     this.uri = uri;
     this.method = method;
     this.headers = headers;

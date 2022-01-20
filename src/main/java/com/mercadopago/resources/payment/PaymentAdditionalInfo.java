@@ -1,10 +1,10 @@
 package com.mercadopago.resources.payment;
 
 import java.util.List;
-import lombok.Data;
+import lombok.Getter;
 
 /** PaymentAdditionalInfo class. */
-@Data
+@Getter
 public class PaymentAdditionalInfo {
   private String ipAddress;
 

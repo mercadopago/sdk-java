@@ -1,9 +1,9 @@
 package com.mercadopago.resources.payment;
 
-import lombok.Data;
+import lombok.Getter;
 
 /** PaymentBankInfoPayer class. */
-@Data
+@Getter
 public class PaymentBankInfoPayer {
   private String email;
 

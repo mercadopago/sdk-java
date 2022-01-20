@@ -1,18 +1,18 @@
-package com.mercadopago.resources;
+package com.mercadopago.net;
 
-import com.mercadopago.net.MPResource;
+import com.mercadopago.resources.ResultsPaging;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * ResultsResourcesPage class.
+ * MPResultsResourcesPage class.
  *
  * @param <T> class type
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ResultsResourcesPage<T> extends MPResource {
+public class MPResultsResourcesPage<T> extends MPResource {
   private ResultsPaging paging;
 
   private List<T> results;

@@ -1,9 +1,9 @@
 package com.mercadopago.resources.payment;
 
-import lombok.Data;
+import lombok.Getter;
 
 /** PaymentPhone class. */
-@Data
+@Getter
 public class PaymentPhone {
   private String areaCode;
 

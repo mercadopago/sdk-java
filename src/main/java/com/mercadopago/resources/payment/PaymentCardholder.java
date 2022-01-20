@@ -1,10 +1,10 @@
 package com.mercadopago.resources.payment;
 
 import com.mercadopago.resources.common.Identification;
-import lombok.Data;
+import lombok.Getter;
 
 /** PaymentCardholder class. */
-@Data
+@Getter
 public class PaymentCardholder {
   private String name;
 

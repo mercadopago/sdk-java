@@ -2,10 +2,10 @@ package com.mercadopago.resources.payment;
 
 import com.mercadopago.resources.common.Address;
 import java.util.Date;
-import lombok.Data;
+import lombok.Getter;
 
 /** PaymentAdditionalInfoPayer class. */
-@Data
+@Getter
 public class PaymentAdditionalInfoPayer {
   private String firstName;
 

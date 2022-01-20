@@ -1,10 +1,10 @@
 package com.mercadopago.resources.payment;
 
 import java.util.Date;
-import lombok.Data;
+import lombok.Getter;
 
 /** PaymentCard class. */
-@Data
+@Getter
 public class PaymentCard {
   public String id;
 

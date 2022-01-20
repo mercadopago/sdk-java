@@ -13,9 +13,9 @@ import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPHttpClient;
 import com.mercadopago.net.MPResponse;
+import com.mercadopago.net.MPResultsResourcesPage;
 import com.mercadopago.net.MPSearchRequest;
 import com.mercadopago.net.UrlFormatter;
-import com.mercadopago.resources.ResultsResourcesPage;
 import com.mercadopago.resources.payment.Payment;
 import com.mercadopago.serialization.Serializer;
 import java.lang.reflect.Type;
@@ -219,7 +219,7 @@ public class PaymentClient extends MercadoPagoClient {
    * @return list of results
    * @throws MPException exception
    */
-  public ResultsResourcesPage<Payment> search(MPSearchRequest request) throws MPException {
+  public MPResultsResourcesPage<Payment> search(MPSearchRequest request) throws MPException {
     return this.search(request, null);
   }
 
@@ -231,13 +231,13 @@ public class PaymentClient extends MercadoPagoClient {
    * @return list of results
    * @throws MPException exception
    */
-  public ResultsResourcesPage<Payment> search(
+  public MPResultsResourcesPage<Payment> search(
       MPSearchRequest request, MPRequestOptions requestOptions) throws MPException {
     LOGGER.info("Sending search payment request");
     MPResponse response = search("/v1/payments/search", request, requestOptions);
 
-    Type responseType = new TypeToken<ResultsResourcesPage<Payment>>() {}.getType();
-    ResultsResourcesPage<Payment> result =
+    Type responseType = new TypeToken<MPResultsResourcesPage<Payment>>() {}.getType();
+    MPResultsResourcesPage<Payment> result =
         deserializeResultsResourcesPageFromJson(responseType, response.getContent());
     result.setResponse(response);
 

@@ -28,8 +28,8 @@ import com.mercadopago.client.payment.PaymentPayerRequest;
 import com.mercadopago.client.payment.PaymentReceiverAddressRequest;
 import com.mercadopago.client.payment.PaymentShipmentsRequest;
 import com.mercadopago.exceptions.MPException;
+import com.mercadopago.net.MPResultsResourcesPage;
 import com.mercadopago.net.MPSearchRequest;
-import com.mercadopago.resources.ResultsResourcesPage;
 import com.mercadopago.resources.payment.Payment;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -281,7 +281,7 @@ public class PaymentClientTest extends BaseClientTest {
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
     MPSearchRequest request = MPSearchRequest.builder().limit(5).offset(0).build();
-    ResultsResourcesPage<Payment> result = client.search(request);
+    MPResultsResourcesPage<Payment> result = client.search(request);
 
     assertNotNull(result.getResponse().getContent());
     assertEquals(OK, result.getResponse().getStatusCode());

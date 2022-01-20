@@ -1,9 +1,9 @@
 package com.mercadopago.resources.payment;
 
-import lombok.Data;
+import lombok.Getter;
 
 /** PaymentOrder class. */
-@Data
+@Getter
 public class PaymentOrder {
   private Long id;
 

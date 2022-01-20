@@ -5,11 +5,11 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 /** Payment class. */
-@Data
+@Getter
 @EqualsAndHashCode(callSuper = true)
 public class Payment extends MPResource {
   private long id;

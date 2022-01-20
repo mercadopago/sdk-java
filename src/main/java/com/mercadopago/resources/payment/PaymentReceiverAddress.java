@@ -1,12 +1,12 @@
 package com.mercadopago.resources.payment;
 
 import com.mercadopago.resources.common.Address;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 /** PaymentReceiverAddress class. */
 @EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
 public class PaymentReceiverAddress extends Address {
   private String stateName;
 

@@ -1,9 +1,9 @@
 package com.mercadopago.resources.payment;
 
-import lombok.Data;
+import lombok.Getter;
 
 /** PaymentTransactionData class. */
-@Data
+@Getter
 public class PaymentTransactionData {
   private String qrCode;
 

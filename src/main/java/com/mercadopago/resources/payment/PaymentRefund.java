@@ -3,10 +3,10 @@ package com.mercadopago.resources.payment;
 import com.mercadopago.resources.common.Source;
 import java.math.BigDecimal;
 import java.util.Date;
-import lombok.Data;
+import lombok.Getter;
 
 /** PaymentRefund class. */
-@Data
+@Getter
 public class PaymentRefund {
   private Long id;
 

@@ -30,7 +30,7 @@ public class HttpClientMock implements HttpClient {
 
   private JsonElement requestPayloadMock;
 
-  @Getter private HttpUriRequest requestPayload;
+  private HttpUriRequest requestPayload;
 
   public HttpClientMock() {
     this.httpClient = Mockito.mock(HttpClient.class);
