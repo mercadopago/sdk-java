@@ -1,9 +1,9 @@
 package com.mercadopago.resources;
 
-import lombok.Data;
+import lombok.Getter;
 
 /** ResultsPaging class. */
-@Data
+@Getter
 public class ResultsPaging {
   private int total;
 
