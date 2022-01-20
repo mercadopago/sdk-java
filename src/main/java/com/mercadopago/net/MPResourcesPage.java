@@ -6,10 +6,16 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+/** Class that holds results from an API with paging information. */
 @Data
 @AllArgsConstructor
 public class MPResourcesPage {
-    private ResultsPaging paging;
-    private List<MPResource> results;
-    private MPApiResponse response;
+  /** Paging details */
+  private ResultsPaging paging;
+
+  /** The actual results returned by the API */
+  private List<MPResource> results;
+
+  /** Http response details */
+  private MPApiResponse response;
 }
