@@ -8,50 +8,22 @@ import com.mercadopago.net.UrlFormatter;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import lombok.experimental.SuperBuilder;
 
 /** IdempotentRequest class. */
+@SuperBuilder
 public class IdempotentRequest extends MPRequest {
 
   /**
-   * IdempotentRequest constructor.
+   * Method responsible for build Idempotent request.
    *
-   * @param uri uri
+   * @param path path
    * @param method method
-   * @param headers headers
-   * @param payload payload
-   */
-  public IdempotentRequest(
-      String uri, HttpMethod method, Map<String, String> headers, JsonObject payload) {
-    this(uri, method, headers, payload, null);
-  }
-
-  /**
-   * IdempotentRequest constructor.
-   *
-   * @param uri uri
-   * @param method method
-   * @param headers headers
    * @param payload payload
    * @param queryParams queryParams
+   * @param requestOptions requestOptions
+   * @return IdempotentRequest
    */
-  public IdempotentRequest(
-      String uri,
-      HttpMethod method,
-      Map<String, String> headers,
-      JsonObject payload,
-      Map<String, Object> queryParams) {
-    super(uri, method, headers, payload, queryParams);
-  }
-
-  /**
-   * Method responsible for create a new Idempotency key.
-   *
-   * @return Idempotency key
-   */
-  public String createIdempotencyKey() {
-    return UUID.randomUUID().toString();
-  }
-
   public static IdempotentRequest buildRequest(
       String path,
       HttpMethod method,
@@ -63,16 +35,31 @@ public class IdempotentRequest extends MPRequest {
 
     if (Objects.nonNull(requestOptions)) {
       idempotentRequest =
-          new IdempotentRequest(
-              uri, method, requestOptions.getCustomHeaders(), payload, queryParams);
-      idempotentRequest.setAccessToken(requestOptions.getAccessToken());
-      idempotentRequest.setConnectionRequestTimeout(requestOptions.getConnectionRequestTimeout());
-      idempotentRequest.setConnectionTimeout(requestOptions.getConnectionTimeout());
-      idempotentRequest.setSocketTimeout(requestOptions.getSocketTimeout());
+          IdempotentRequest.builder()
+              .uri(uri)
+              .method(method)
+              .headers(requestOptions.getCustomHeaders())
+              .payload(payload)
+              .queryParams(queryParams)
+              .accessToken(requestOptions.getAccessToken())
+              .connectionRequestTimeout(requestOptions.getConnectionRequestTimeout())
+              .connectionTimeout(requestOptions.getConnectionTimeout())
+              .socketTimeout(requestOptions.getSocketTimeout())
+              .build();
     } else {
-      idempotentRequest = new IdempotentRequest(uri, method, null, payload);
+      idempotentRequest =
+          IdempotentRequest.builder().uri(uri).method(method).payload(payload).build();
     }
 
     return idempotentRequest;
+  }
+
+  /**
+   * Method responsible for create a new Idempotency key.
+   *
+   * @return Idempotency key
+   */
+  public String createIdempotencyKey() {
+    return UUID.randomUUID().toString();
   }
 }

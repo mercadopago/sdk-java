@@ -1,4 +1,4 @@
-package mercadopago.client.customer;
+package mercadopago.client;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import mercadopago.BaseClientTest;
 import mercadopago.helper.MockHelper;
 import mercadopago.mock.MPDefaultHttpClientMock;
 import org.apache.http.HttpHeaders;
@@ -29,7 +30,7 @@ import org.apache.http.protocol.HttpContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class CustomerCardClientTest {
+public class CustomerCardClientTest extends BaseClientTest {
   private static final String APPLICATION_JSON = "application/json";
 
   private static final int DEFAULT_TIMEOUT = 1000;
@@ -55,10 +56,11 @@ public class CustomerCardClientTest {
     this.httpClientMock = mock(HttpClient.class);
     this.mpHttpClient = new MPDefaultHttpClientMock(httpClientMock);
     this.cardClient = new CustomerCardClient(mpHttpClient);
-    customerCardCreateRequest = CustomerCardCreateRequest.builder()
-        .token("abc")
-        .issuer(CustomerCardIssuer.builder().id("123").name("visa").build())
-        .build();
+    customerCardCreateRequest =
+        CustomerCardCreateRequest.builder()
+            .token("abc")
+            .issuer(CustomerCardIssuer.builder().id("123").name("visa").build())
+            .build();
     this.cardId = "1562188766852";
     this.customerId = "649457098-FybpOkG6zH8QRm";
     this.responseFileSingleCard = "/card/card_single.json";

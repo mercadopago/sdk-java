@@ -99,12 +99,14 @@ public class PaymentClient extends MercadoPagoClient {
   public Payment create(PaymentCreateRequest request, MPRequestOptions requestOptions)
       throws MPException {
     LOGGER.info("Sending create payment request");
+
     IdempotentRequest idempotentRequest =
-        new IdempotentRequest(
-            UrlFormatter.format("/v1/payments"),
-            HttpMethod.POST,
-            new HashMap<>(),
-            Serializer.serializeToJson(request));
+        IdempotentRequest.builder()
+            .uri(UrlFormatter.format("/v1/payments"))
+            .method(HttpMethod.POST)
+            .payload(Serializer.serializeToJson(request))
+            .build();
+
     MPResponse response = send(idempotentRequest, requestOptions);
     Payment result = deserializeFromJson(Payment.class, response.getContent());
     result.setResponse(response);

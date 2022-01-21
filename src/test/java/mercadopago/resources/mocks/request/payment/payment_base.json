@@ -1,27 +1,4 @@
 {
-  "payer": {
-    "type": "customer",
-    "email": "test_payer_9999999@testuser.com",
-    "identification": {
-      "type": "CPF",
-      "number": "37462770865"
-    },
-    "first_name": "Test",
-    "last_name": "User",
-    "entity_type": "individual"
-  },
-  "binary_mode": false,
-  "external_reference": "212efa19-da7a-4b4f-a3f0-4f458136d9ca",
-  "description": "description",
-  "metadata": {
-  },
-  "transaction_amount": 100,
-  "capture": false,
-  "payment_method_id": "master",
-  "token": "bf9edf6ffae3ab5742033f33c557d54e",
-  "statement_descriptor": "statementDescriptor",
-  "installments": 1,
-  "notification_url": "https://seu-site.com.br/webhooks",
   "additional_info": {
     "ip_address": "127.0.0.1",
     "items": [
@@ -63,5 +40,28 @@
       "local_pickup": false,
       "express_shipment": false
     }
-  }
+  },
+  "binary_mode": false,
+  "capture": false,
+  "description": "description",
+  "external_reference": "212efa19-da7a-4b4f-a3f0-4f458136d9ca",
+  "installments": 1,
+  "metadata": {
+  },
+  "notification_url": "https://seu-site.com.br/webhooks",
+  "payer": {
+    "type": "customer",
+    "email": "test_payer_9999999@testuser.com",
+    "identification": {
+      "type": "CPF",
+      "number": "37462770865"
+    },
+    "first_name": "Test",
+    "last_name": "User",
+    "entity_type": "individual"
+  },
+  "payment_method_id": "master",
+  "token": "bf9edf6ffae3ab5742033f33c557d54e",
+  "transaction_amount": 100,
+  "statement_descriptor": "statementDescriptor"
 }
