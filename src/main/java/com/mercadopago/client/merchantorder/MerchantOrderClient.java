@@ -7,7 +7,6 @@ import static com.mercadopago.serialization.Serializer.deserializeFromJson;
 import com.google.gson.reflect.TypeToken;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.MercadoPagoClient;
-import com.mercadopago.client.payment.PaymentClient;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
@@ -24,7 +23,7 @@ import java.util.logging.StreamHandler;
 
 /** MerchantOrderClient class. */
 public class MerchantOrderClient extends MercadoPagoClient {
-  private static final Logger LOGGER = Logger.getLogger(PaymentClient.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(MerchantOrderClient.class.getName());
 
   private static final String URL_WITH_ID = "/merchant_orders/%s";
 
