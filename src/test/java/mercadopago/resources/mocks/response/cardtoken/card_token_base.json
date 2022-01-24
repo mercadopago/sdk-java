@@ -1,0 +1,23 @@
+{
+  "id": "97849c845e879427b5cb1cb941a52806",
+  "first_six_digits": "503143",
+  "expiration_month": 11,
+  "expiration_year": 2025,
+  "last_four_digits": "6351",
+  "cardholder": {
+    "identification": {
+      "number": "57096407006",
+      "type": "CPF"
+    },
+    "name": "APRO"
+  },
+  "status": "active",
+  "date_created": "2022-01-24T08:03:55.227-04:00",
+  "date_last_updated": "2022-01-24T08:03:55.227-04:00",
+  "date_due": "2022-02-01T08:03:55.227-04:00",
+  "luhn_validation": true,
+  "live_mode": true,
+  "require_esc": false,
+  "card_number_length": 16,
+  "security_code_length": 3
+}
