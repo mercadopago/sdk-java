@@ -15,7 +15,6 @@ import com.mercadopago.net.MPHttpClient;
 import com.mercadopago.net.MPResponse;
 import com.mercadopago.net.MPResultsResourcesPage;
 import com.mercadopago.net.MPSearchRequest;
-import com.mercadopago.net.UrlFormatter;
 import com.mercadopago.resources.payment.Payment;
 import com.mercadopago.serialization.Serializer;
 import java.lang.reflect.Type;
@@ -89,7 +88,7 @@ public class PaymentClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for creating payment with request opetions.
+   * Method responsible for creating payment with request options.
    *
    * @param request request
    * @param requestOptions requestOptions
@@ -102,7 +101,7 @@ public class PaymentClient extends MercadoPagoClient {
 
     IdempotentRequest idempotentRequest =
         IdempotentRequest.builder()
-            .uri(UrlFormatter.format("/v1/payments"))
+            .uri("/v1/payments")
             .method(HttpMethod.POST)
             .payload(Serializer.serializeToJson(request))
             .build();

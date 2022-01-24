@@ -213,7 +213,7 @@ public abstract class MercadoPagoClient {
       MPRequestOptions requestOptions) {
 
     return MPRequest.builder()
-        .uri(UrlFormatter.format(path))
+        .uri(path)
         .accessToken(getAccessToken(requestOptions))
         .payload(payload)
         .method(method)
