@@ -11,9 +11,6 @@ import com.mercadopago.net.MPRequest;
 import com.mercadopago.net.MPResponse;
 import com.mercadopago.net.MPSearchRequest;
 import com.mercadopago.net.UrlFormatter;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -53,7 +50,7 @@ public abstract class MercadoPagoClient {
    * @throws MPException exception
    */
   protected MPResponse send(MPRequest request) throws MPException {
-    String uri = generateUri(UrlFormatter.format(request.getUri()), request.getQueryParams());
+    String uri = UrlFormatter.format(request.getUri(), request.getQueryParams());
 
     return httpClient.send(
         MPRequest.builder()
@@ -297,20 +294,6 @@ public abstract class MercadoPagoClient {
 
   private boolean shouldAddIdempotencyKey(MPRequest request) {
     return request.getMethod() == HttpMethod.POST && request instanceof IdempotentRequest;
-  }
-
-  private String generateUri(String path, Map<String, Object> queryParams) throws MPException {
-
-    try {
-      URL url = new URL(path);
-      if (Objects.isNull(url.getQuery()) && Objects.nonNull(queryParams)) {
-        return UrlFormatter.format(path, queryParams);
-      }
-    } catch (UnsupportedEncodingException | MalformedURLException e) {
-      throw new MPException(
-          String.format("Error while trying to add query string to path: %s", e.getMessage()));
-    }
-    return path;
   }
 
   private String getAccessToken(MPRequestOptions requestOptions) {

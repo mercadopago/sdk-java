@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
 
 import com.mercadopago.client.customer.CustomerCardClient;
 import com.mercadopago.client.customer.CustomerCardCreateRequest;
@@ -21,10 +20,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import mercadopago.BaseClientTest;
 import mercadopago.helper.MockHelper;
-import mercadopago.mock.MPDefaultHttpClientMock;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.protocol.HttpContext;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,11 +32,7 @@ public class CustomerCardClientTest extends BaseClientTest {
 
   private static final int DEFAULT_TIMEOUT = 1000;
 
-  private HttpClient httpClientMock;
-
-  private MPDefaultHttpClientMock mpHttpClient;
-
-  private CustomerCardClient cardClient;
+  private CustomerCardClient cardClient = new CustomerCardClient();
 
   private String cardId;
 
@@ -53,9 +46,6 @@ public class CustomerCardClientTest extends BaseClientTest {
 
   @BeforeEach
   public void init() {
-    this.httpClientMock = mock(HttpClient.class);
-    this.mpHttpClient = new MPDefaultHttpClientMock(httpClientMock);
-    this.cardClient = new CustomerCardClient(mpHttpClient);
     customerCardCreateRequest =
         CustomerCardCreateRequest.builder()
             .token("abc")
@@ -74,7 +64,7 @@ public class CustomerCardClientTest extends BaseClientTest {
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
     doReturn(httpResponse)
-        .when(httpClientMock)
+        .when(httpClient)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     CustomerCard card = cardClient.get(customerId, cardId);
 
@@ -96,7 +86,7 @@ public class CustomerCardClientTest extends BaseClientTest {
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
     doReturn(httpResponse)
-        .when(httpClientMock)
+        .when(httpClient)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     CustomerCard card = cardClient.get(customerId, cardId, requestOptions);
 
@@ -111,7 +101,7 @@ public class CustomerCardClientTest extends BaseClientTest {
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
     doReturn(httpResponse)
-        .when(httpClientMock)
+        .when(httpClient)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     CustomerCard card = cardClient.create(customerId, customerCardCreateRequest);
 
@@ -134,7 +124,7 @@ public class CustomerCardClientTest extends BaseClientTest {
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
     doReturn(httpResponse)
-        .when(httpClientMock)
+        .when(httpClient)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     CustomerCard card = cardClient.create(customerId, customerCardCreateRequest, requestOptions);
 
@@ -149,7 +139,7 @@ public class CustomerCardClientTest extends BaseClientTest {
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
     doReturn(httpResponse)
-        .when(httpClientMock)
+        .when(httpClient)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     CustomerCard card = cardClient.delete(customerId, cardId);
 
@@ -172,7 +162,7 @@ public class CustomerCardClientTest extends BaseClientTest {
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
     doReturn(httpResponse)
-        .when(httpClientMock)
+        .when(httpClient)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     CustomerCard card = cardClient.delete(customerId, cardId, requestOptions);
 
@@ -187,7 +177,7 @@ public class CustomerCardClientTest extends BaseClientTest {
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
     doReturn(httpResponse)
-        .when(httpClientMock)
+        .when(httpClient)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     MPResourceList<CustomerCard> cards = cardClient.listAll(customerId);
 
@@ -211,7 +201,7 @@ public class CustomerCardClientTest extends BaseClientTest {
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
     doReturn(httpResponse)
-        .when(httpClientMock)
+        .when(httpClient)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     MPResourceList<CustomerCard> cards = cardClient.listAll(customerId, requestOptions);
 
