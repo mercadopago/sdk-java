@@ -2,12 +2,14 @@ package com.mercadopago.net;
 
 import com.google.gson.JsonObject;
 import java.util.Map;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.experimental.SuperBuilder;
 
 /** MPRequest class. */
 @Getter
-@SuperBuilder
+@Builder
+@AllArgsConstructor
 public class MPRequest {
   private final String uri;
 

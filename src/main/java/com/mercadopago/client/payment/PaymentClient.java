@@ -100,7 +100,7 @@ public class PaymentClient extends MercadoPagoClient {
     LOGGER.info("Sending create payment request");
 
     IdempotentRequest idempotentRequest =
-        IdempotentRequest.builder()
+        IdempotentRequest.idempotentBuilder()
             .uri("/v1/payments")
             .method(HttpMethod.POST)
             .payload(Serializer.serializeToJson(request))
