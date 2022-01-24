@@ -8,11 +8,46 @@ import com.mercadopago.net.UrlFormatter;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
-import lombok.experimental.SuperBuilder;
+import lombok.Builder;
 
 /** IdempotentRequest class. */
-@SuperBuilder
 public class IdempotentRequest extends MPRequest {
+
+  /**
+   * Idempotent request constructor.
+   *
+   * @param uri uri
+   * @param method method
+   * @param headers headers
+   * @param payload payload
+   * @param queryParams queryParams
+   * @param accessToken accessToken
+   * @param connectionTimeout connectionTimeout
+   * @param connectionRequestTimeout connectionRequestTimeout
+   * @param socketTimeout socketTimeout
+   */
+  @Builder(builderMethodName = "idempotentBuilder")
+  public IdempotentRequest(
+      String uri,
+      HttpMethod method,
+      Map<String, String> headers,
+      JsonObject payload,
+      Map<String, Object> queryParams,
+      String accessToken,
+      int connectionTimeout,
+      int connectionRequestTimeout,
+      int socketTimeout) {
+    super(
+        uri,
+        method,
+        headers,
+        payload,
+        queryParams,
+        accessToken,
+        connectionTimeout,
+        connectionRequestTimeout,
+        socketTimeout);
+  }
 
   /**
    * Method responsible for build Idempotent request.
@@ -35,7 +70,7 @@ public class IdempotentRequest extends MPRequest {
 
     if (Objects.nonNull(requestOptions)) {
       idempotentRequest =
-          IdempotentRequest.builder()
+          IdempotentRequest.idempotentBuilder()
               .uri(uri)
               .method(method)
               .headers(requestOptions.getCustomHeaders())
@@ -48,7 +83,7 @@ public class IdempotentRequest extends MPRequest {
               .build();
     } else {
       idempotentRequest =
-          IdempotentRequest.builder().uri(uri).method(method).payload(payload).build();
+          IdempotentRequest.idempotentBuilder().uri(uri).method(method).payload(payload).build();
     }
 
     return idempotentRequest;

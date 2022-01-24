@@ -61,9 +61,9 @@ public abstract class MercadoPagoClient {
             .method(request.getMethod())
             .headers(addDefaultHeaders(request))
             .payload(request.getPayload())
-            .connectionRequestTimeout(addDefaultConnectionRequestTimeout(request))
-            .connectionTimeout(addDefaultConnectionTimeout(request))
-            .socketTimeout(addDefaultSocketTimeout(request))
+            .connectionRequestTimeout(addConnectionRequestTimeout(request, null))
+            .connectionTimeout(addConnectionTimeout(request, null))
+            .socketTimeout(addSocketTimeout(request, null))
             .build());
   }
 
@@ -213,58 +213,52 @@ public abstract class MercadoPagoClient {
       MPRequestOptions requestOptions) {
 
     return MPRequest.builder()
-        .uri(UrlFormatter.format(path))
+        .uri(path)
         .accessToken(getAccessToken(requestOptions))
         .payload(payload)
         .method(method)
         .queryParams(queryParams)
         .headers(addCustomHeaders(path, requestOptions))
-        .connectionRequestTimeout(addCustomConnectionRequestTimeout(requestOptions))
-        .connectionTimeout(addCustomConnectionTimeout(requestOptions))
-        .socketTimeout(addCustomSocketTimeout(requestOptions))
+        .connectionRequestTimeout(addConnectionRequestTimeout(null, requestOptions))
+        .connectionTimeout(addConnectionTimeout(null, requestOptions))
+        .socketTimeout(addSocketTimeout(null, requestOptions))
         .build();
   }
 
-  private int addCustomSocketTimeout(MPRequestOptions requestOptions) {
+  private int addSocketTimeout(MPRequest request, MPRequestOptions requestOptions) {
     if (Objects.nonNull(requestOptions) && (requestOptions.getSocketTimeout() > 0)) {
       return requestOptions.getSocketTimeout();
     }
+
+    if (Objects.nonNull(request) && (request.getSocketTimeout() > 0)) {
+      return request.getSocketTimeout();
+    }
+
     return MercadoPagoConfig.getSocketTimeout();
   }
 
-  private int addCustomConnectionTimeout(MPRequestOptions requestOptions) {
+  private int addConnectionTimeout(MPRequest request, MPRequestOptions requestOptions) {
     if (Objects.nonNull(requestOptions) && (requestOptions.getConnectionTimeout() > 0)) {
       return requestOptions.getConnectionTimeout();
     }
+
+    if (Objects.nonNull(request) && (request.getConnectionTimeout() > 0)) {
+      return request.getConnectionTimeout();
+    }
+
     return MercadoPagoConfig.getConnectionTimeout();
   }
 
-  private int addCustomConnectionRequestTimeout(MPRequestOptions requestOptions) {
+  private int addConnectionRequestTimeout(MPRequest request, MPRequestOptions requestOptions) {
     if (Objects.nonNull(requestOptions) && (requestOptions.getConnectionRequestTimeout() > 0)) {
       return (requestOptions.getConnectionRequestTimeout());
     }
+
+    if (Objects.nonNull(request) && (request.getConnectionRequestTimeout() > 0)) {
+      return request.getConnectionRequestTimeout();
+    }
+
     return MercadoPagoConfig.getConnectionRequestTimeout();
-  }
-
-  private int addDefaultSocketTimeout(MPRequest request) {
-    if (request.getSocketTimeout() == 0) {
-      return MercadoPagoConfig.getSocketTimeout();
-    }
-    return request.getSocketTimeout();
-  }
-
-  private int addDefaultConnectionTimeout(MPRequest request) {
-    if (request.getConnectionTimeout() == 0) {
-      return MercadoPagoConfig.getConnectionTimeout();
-    }
-    return request.getConnectionTimeout();
-  }
-
-  private int addDefaultConnectionRequestTimeout(MPRequest request) {
-    if (request.getConnectionRequestTimeout() == 0) {
-      return MercadoPagoConfig.getConnectionRequestTimeout();
-    }
-    return request.getConnectionRequestTimeout();
   }
 
   private Map<String, String> addCustomHeaders(String uri, MPRequestOptions requestOptions) {

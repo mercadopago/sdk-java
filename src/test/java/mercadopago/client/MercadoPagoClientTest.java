@@ -81,7 +81,7 @@ public class MercadoPagoClientTest extends BaseClientTest {
         .when(httpClientMock)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     MPRequest mpRequest =
-        IdempotentRequest.builder()
+        IdempotentRequest.idempotentBuilder()
             .uri("https://test.com")
             .method(HttpMethod.POST)
             .payload(requestObject)
