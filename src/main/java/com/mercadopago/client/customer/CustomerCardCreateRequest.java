@@ -1,10 +1,7 @@
 package com.mercadopago.client.customer;
 
 import com.mercadopago.resources.customer.CustomerCardIssuer;
-import com.mercadopago.resources.datastructures.customer.card.Issuer;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 
 /** Attributes used for a card creation request. */

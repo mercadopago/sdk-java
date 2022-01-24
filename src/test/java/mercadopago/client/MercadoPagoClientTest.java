@@ -61,7 +61,11 @@ public class MercadoPagoClientTest extends BaseClientTest {
         .when(httpClientMock)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     MPRequest mpRequest =
-        new MPRequest("https://test.com", HttpMethod.POST, new HashMap<>(), requestObject);
+        MPRequest.builder()
+            .uri("https://test.com")
+            .method(HttpMethod.POST)
+            .payload(requestObject)
+            .build();
     MPResponse mpResponse = testClient.sendRequest(mpRequest);
 
     assertNotNull(mpResponse);
@@ -77,7 +81,11 @@ public class MercadoPagoClientTest extends BaseClientTest {
         .when(httpClientMock)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     MPRequest mpRequest =
-        new IdempotentRequest("https://test.com", HttpMethod.POST, new HashMap<>(), requestObject);
+        IdempotentRequest.idempotentBuilder()
+            .uri("https://test.com")
+            .method(HttpMethod.POST)
+            .payload(requestObject)
+            .build();
     MPResponse mpResponse = testClient.sendRequest(mpRequest);
 
     assertNotNull(mpResponse);
@@ -90,7 +98,12 @@ public class MercadoPagoClientTest extends BaseClientTest {
     doReturn(httpResponse)
         .when(httpClientMock)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
-    MPRequest mpRequest = new MPRequest("https://test.com", HttpMethod.GET, new HashMap<>(), null);
+    MPRequest mpRequest =
+        MPRequest.builder()
+            .uri("https://test.com")
+            .method(HttpMethod.GET)
+            .headers(new HashMap<>())
+            .build();
     MPResponse mpResponse = testClient.sendRequest(mpRequest);
 
     assertNotNull(mpResponse);
@@ -107,8 +120,14 @@ public class MercadoPagoClientTest extends BaseClientTest {
     doReturn(httpResponse)
         .when(httpClientMock)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
     MPRequest mpRequest =
-        new MPRequest("https://test.com", HttpMethod.GET, new HashMap<>(), null, queryParams);
+        MPRequest.builder()
+            .uri("https://test.com")
+            .method(HttpMethod.GET)
+            .headers(new HashMap<>())
+            .queryParams(queryParams)
+            .build();
     MPResponse mpResponse = testClient.sendRequest(mpRequest);
 
     ArgumentCaptor<HttpRequestBase> httpBaseCaptor = ArgumentCaptor.forClass(HttpRequestBase.class);
@@ -167,7 +186,11 @@ public class MercadoPagoClientTest extends BaseClientTest {
         .when(httpClientMock)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     MPRequest mpRequest =
-        new MPRequest("https://test.com", HttpMethod.GET, new HashMap<>(), null, null);
+        MPRequest.builder()
+            .uri("https://test.com")
+            .method(HttpMethod.GET)
+            .headers(new HashMap<>())
+            .build();
 
     Assertions.assertThrows(MPApiException.class, () -> testClient.sendRequest(mpRequest));
   }
@@ -181,7 +204,11 @@ public class MercadoPagoClientTest extends BaseClientTest {
         .when(httpClientMock)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     MPRequest mpRequest =
-        new MPRequest("https://test.com", HttpMethod.GET, new HashMap<>(), null, null);
+        MPRequest.builder()
+            .uri("https://test.com")
+            .method(HttpMethod.GET)
+            .headers(new HashMap<>())
+            .build();
 
     Assertions.assertThrows(MPApiException.class, () -> testClient.sendRequest(mpRequest));
   }

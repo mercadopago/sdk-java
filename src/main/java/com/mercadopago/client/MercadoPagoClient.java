@@ -11,9 +11,6 @@ import com.mercadopago.net.MPRequest;
 import com.mercadopago.net.MPResponse;
 import com.mercadopago.net.MPSearchRequest;
 import com.mercadopago.net.UrlFormatter;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -53,12 +50,18 @@ public abstract class MercadoPagoClient {
    * @throws MPException exception
    */
   protected MPResponse send(MPRequest request) throws MPException {
-    addDefaultHeaders(request);
-    addDefaultTimeouts(request);
-    addQueryParams(request, null);
-    addIdempotencyKey(request);
+    String uri = UrlFormatter.format(request.getUri(), request.getQueryParams());
 
-    return httpClient.send(request);
+    return httpClient.send(
+        MPRequest.builder()
+            .uri(uri)
+            .method(request.getMethod())
+            .headers(addDefaultHeaders(request))
+            .payload(request.getPayload())
+            .connectionRequestTimeout(addConnectionRequestTimeout(request, null))
+            .connectionTimeout(addConnectionTimeout(request, null))
+            .socketTimeout(addSocketTimeout(request, null))
+            .build());
   }
 
   /**
@@ -70,10 +73,13 @@ public abstract class MercadoPagoClient {
    * @throws MPException exception
    */
   protected MPResponse send(MPRequest request, MPRequestOptions requestOptions) throws MPException {
-    addCustomHeaders(request, requestOptions);
-    addCustomTimeouts(request, requestOptions);
-
-    return this.send(request);
+    return this.send(
+        this.buildRequest(
+            request.getUri(),
+            request.getMethod(),
+            request.getPayload(),
+            request.getQueryParams(),
+            requestOptions));
   }
 
   /**
@@ -181,15 +187,6 @@ public abstract class MercadoPagoClient {
     return this.send(path, method, payload, queryParams, requestOptions);
   }
 
-  private void addIdempotencyKey(MPRequest request) {
-    if (request.getMethod() == HttpMethod.POST) {
-      if (request instanceof IdempotentRequest) {
-        request.addHeader(
-            Headers.IDEMPOTENCY_KEY, ((IdempotentRequest) request).createIdempotencyKey());
-      }
-    }
-  }
-
   private MPRequest buildRequest(String path, HttpMethod method) throws MPException {
     return this.buildRequest(path, method, null, null, null);
   }
@@ -210,86 +207,93 @@ public abstract class MercadoPagoClient {
       HttpMethod method,
       JsonObject payload,
       Map<String, Object> queryParams,
-      MPRequestOptions requestOptions)
-      throws MPException {
-    MPRequest request = new MPRequest();
-    request.setUri(UrlFormatter.format(path));
-    request.setAccessToken(getAccessToken(requestOptions));
-    if (Objects.nonNull(payload)) {
-      request.setPayload(payload);
-    }
-    request.setMethod(method);
-    addQueryParams(request, queryParams);
-    addCustomHeaders(request, requestOptions);
-    addCustomTimeouts(request, requestOptions);
+      MPRequestOptions requestOptions) {
 
-    return request;
+    return MPRequest.builder()
+        .uri(path)
+        .accessToken(getAccessToken(requestOptions))
+        .payload(payload)
+        .method(method)
+        .queryParams(queryParams)
+        .headers(addCustomHeaders(path, requestOptions))
+        .connectionRequestTimeout(addConnectionRequestTimeout(null, requestOptions))
+        .connectionTimeout(addConnectionTimeout(null, requestOptions))
+        .socketTimeout(addSocketTimeout(null, requestOptions))
+        .build();
   }
 
-  private void addQueryParams(MPRequest request, Map<String, Object> queryParams)
-      throws MPException {
-
-    try {
-      URL url = new URL(request.getUri());
-      if (Objects.nonNull(request.getQueryParams()) && Objects.isNull(url.getQuery())) {
-        request.setUri(UrlFormatter.format(request.getUri(), request.getQueryParams()));
-      } else if (Objects.isNull(url.getQuery()) && Objects.nonNull(queryParams)) {
-        request.setUri(UrlFormatter.format(request.getUri(), queryParams));
-      }
-    } catch (UnsupportedEncodingException | MalformedURLException e) {
-      throw new MPException(
-          String.format("Error while trying to add query string to path: %s", e.getMessage()));
+  private int addSocketTimeout(MPRequest request, MPRequestOptions requestOptions) {
+    if (Objects.nonNull(requestOptions) && (requestOptions.getSocketTimeout() > 0)) {
+      return requestOptions.getSocketTimeout();
     }
+
+    if (Objects.nonNull(request) && (request.getSocketTimeout() > 0)) {
+      return request.getSocketTimeout();
+    }
+
+    return MercadoPagoConfig.getSocketTimeout();
   }
 
-  private void addDefaultHeaders(MPRequest request) {
-    for (Map.Entry<String, String> entry : defaultHeaders.entrySet()) {
-      request.addHeader(entry.getKey(), entry.getValue());
+  private int addConnectionTimeout(MPRequest request, MPRequestOptions requestOptions) {
+    if (Objects.nonNull(requestOptions) && (requestOptions.getConnectionTimeout() > 0)) {
+      return requestOptions.getConnectionTimeout();
     }
 
-    if (!request.getUri().contains("/oauth/token")
-        && !request.getHeaders().containsKey("Authorization")) {
-      request.addHeader("Authorization", String.format("Bearer %s", getAccessToken(null)));
+    if (Objects.nonNull(request) && (request.getConnectionTimeout() > 0)) {
+      return request.getConnectionTimeout();
     }
+
+    return MercadoPagoConfig.getConnectionTimeout();
   }
 
-  private void addCustomHeaders(MPRequest request, MPRequestOptions requestOptions) {
+  private int addConnectionRequestTimeout(MPRequest request, MPRequestOptions requestOptions) {
+    if (Objects.nonNull(requestOptions) && (requestOptions.getConnectionRequestTimeout() > 0)) {
+      return (requestOptions.getConnectionRequestTimeout());
+    }
+
+    if (Objects.nonNull(request) && (request.getConnectionRequestTimeout() > 0)) {
+      return request.getConnectionRequestTimeout();
+    }
+
+    return MercadoPagoConfig.getConnectionRequestTimeout();
+  }
+
+  private Map<String, String> addCustomHeaders(String uri, MPRequestOptions requestOptions) {
+    Map<String, String> headers = new HashMap<>();
+
     if (Objects.nonNull(requestOptions) && Objects.nonNull(requestOptions.getCustomHeaders())) {
       for (Map.Entry<String, String> entry : requestOptions.getCustomHeaders().entrySet()) {
-        request.addHeader(entry.getKey(), entry.getValue());
+        headers.put(entry.getKey(), entry.getValue());
       }
     }
 
-    if (!request.getUri().contains("/oauth/token")) {
-      request.addHeader(
-          "Authorization", String.format("Bearer %s", getAccessToken(requestOptions)));
+    if (!uri.contains("/oauth/token")) {
+      headers.put("Authorization", String.format("Bearer %s", getAccessToken(requestOptions)));
     }
+    return headers;
   }
 
-  private void addCustomTimeouts(MPRequest request, MPRequestOptions requestOptions) {
-    if (Objects.nonNull(requestOptions)) {
-      if (requestOptions.getConnectionTimeout() > 0) {
-        request.setConnectionTimeout(requestOptions.getConnectionTimeout());
-      }
-      if (requestOptions.getConnectionRequestTimeout() > 0) {
-        request.setConnectionRequestTimeout(requestOptions.getConnectionRequestTimeout());
-      }
-      if (requestOptions.getSocketTimeout() > 0) {
-        request.setSocketTimeout(requestOptions.getSocketTimeout());
-      }
+  private Map<String, String> addDefaultHeaders(MPRequest request) {
+    Map<String, String> headers =
+        Objects.nonNull(request.getHeaders()) ? request.getHeaders() : new HashMap<>();
+
+    for (Map.Entry<String, String> entry : defaultHeaders.entrySet()) {
+      headers.put(entry.getKey(), entry.getValue());
     }
+
+    if (shouldAddIdempotencyKey(request)) {
+      headers.put(Headers.IDEMPOTENCY_KEY, ((IdempotentRequest) request).createIdempotencyKey());
+    }
+
+    if (!request.getUri().contains("/oauth/token") && !headers.containsKey("Authorization")) {
+      headers.put("Authorization", String.format("Bearer %s", getAccessToken(null)));
+    }
+
+    return headers;
   }
 
-  private void addDefaultTimeouts(MPRequest request) {
-    if (request.getConnectionTimeout() == 0) {
-      request.setConnectionTimeout(MercadoPagoConfig.getConnectionTimeout());
-    }
-    if (request.getConnectionRequestTimeout() == 0) {
-      request.setConnectionRequestTimeout(MercadoPagoConfig.getConnectionRequestTimeout());
-    }
-    if (request.getSocketTimeout() == 0) {
-      request.setSocketTimeout(MercadoPagoConfig.getSocketTimeout());
-    }
+  private boolean shouldAddIdempotencyKey(MPRequest request) {
+    return request.getMethod() == HttpMethod.POST && request instanceof IdempotentRequest;
   }
 
   private String getAccessToken(MPRequestOptions requestOptions) {
