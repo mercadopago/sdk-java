@@ -31,7 +31,7 @@ public class MerchantOrder extends MPResource {
   private MerchantOrderCollector collector;
 
   /** Sponsor ID. */
-  private long sponsorId;
+  private String sponsorId;
 
   /** Payments information. */
   private List<MerchantOrderPayment> payments;

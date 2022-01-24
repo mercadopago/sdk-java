@@ -1,1 +1,6 @@
-{"additional_info":"new info"}
+{
+  "payer": {
+    "id": 0,
+    "nickname": "Test"
+  }
+}
