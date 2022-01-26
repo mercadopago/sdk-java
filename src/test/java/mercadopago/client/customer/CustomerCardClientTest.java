@@ -1,4 +1,4 @@
-package mercadopago.client;
+package mercadopago.client.customer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
