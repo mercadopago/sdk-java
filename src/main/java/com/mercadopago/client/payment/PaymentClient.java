@@ -12,10 +12,12 @@ import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPHttpClient;
+import com.mercadopago.net.MPResourceList;
 import com.mercadopago.net.MPResponse;
 import com.mercadopago.net.MPResultsResourcesPage;
 import com.mercadopago.net.MPSearchRequest;
 import com.mercadopago.resources.payment.Payment;
+import com.mercadopago.resources.payment.PaymentRefund;
 import com.mercadopago.serialization.Serializer;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
@@ -29,6 +31,8 @@ public class PaymentClient extends MercadoPagoClient {
 
   private static final String URL_WITH_ID = "/v1/payments/%s";
 
+  private final PaymentRefundClient refundClient;
+
   /** PaymentClient constructor. */
   public PaymentClient() {
     this(MercadoPagoConfig.getHttpClient());
@@ -41,6 +45,7 @@ public class PaymentClient extends MercadoPagoClient {
    */
   public PaymentClient(MPHttpClient httpClient) {
     super(httpClient);
+    refundClient = new PaymentRefundClient();
     StreamHandler streamHandler = getStreamHandler();
     streamHandler.setLevel(MercadoPagoConfig.getLoggingLevel());
     LOGGER.addHandler(streamHandler);
@@ -243,5 +248,104 @@ public class PaymentClient extends MercadoPagoClient {
     result.setResponse(response);
 
     return result;
+  }
+
+  /**
+   * Creates a total refund for payment.
+   *
+   * @param paymentId paymentId
+   * @return PaymentRefund
+   * @throws MPException exception
+   */
+  public PaymentRefund refund(Long paymentId) throws MPException {
+    return this.refund(paymentId, null, null);
+  }
+
+  /**
+   * Creates a total refund for payment.
+   *
+   * @param paymentId paymentId
+   * @param requestOptions requestOptions
+   * @return PaymentRefund
+   * @throws MPException exception
+   */
+  public PaymentRefund refund(Long paymentId, MPRequestOptions requestOptions) throws MPException {
+    return this.refund(paymentId, null, requestOptions);
+  }
+
+  /**
+   * Creates a refund for payment.
+   *
+   * @param paymentId paymentId
+   * @param amount amount
+   * @return PaymentRefund
+   * @throws MPException exception
+   */
+  public PaymentRefund refund(Long paymentId, BigDecimal amount) throws MPException {
+    return this.refund(paymentId, amount, null);
+  }
+
+  /**
+   * Creates a refund for payment.
+   *
+   * @param paymentId paymentId
+   * @param amount amount
+   * @param requestOptions requestOptions
+   * @return PaymentRefund
+   * @throws MPException exception
+   */
+  public PaymentRefund refund(Long paymentId, BigDecimal amount, MPRequestOptions requestOptions)
+      throws MPException {
+    return refundClient.refund(paymentId, amount, requestOptions);
+  }
+
+  /**
+   * Gets a refund by id from the payment.
+   *
+   * @param paymentId paymentId
+   * @param refundId refundId
+   * @return PaymentRefund
+   * @throws MPException exception
+   */
+  public PaymentRefund getRefund(Long paymentId, Long refundId) throws MPException {
+    return this.getRefund(paymentId, refundId, null);
+  }
+
+  /**
+   * Gets a refund by id from the payment.
+   *
+   * @param paymentId paymentId
+   * @param refundId refundId
+   * @param requestOptions requestOptions
+   * @return PaymentRefund
+   * @throws MPException exception
+   */
+  public PaymentRefund getRefund(Long paymentId, Long refundId, MPRequestOptions requestOptions)
+      throws MPException {
+    return refundClient.get(paymentId, refundId, requestOptions);
+  }
+
+  /**
+   * Lists the refunds of the payment.
+   *
+   * @param paymentId paymentId
+   * @return list of PaymentRefund
+   * @throws MPException exception
+   */
+  public MPResourceList<PaymentRefund> listRefunds(Long paymentId) throws MPException {
+    return this.listRefunds(paymentId, null);
+  }
+
+  /**
+   * Lists the refunds of the payment.
+   *
+   * @param paymentId paymentId
+   * @param requestOptions requestOptions
+   * @return list of PaymentRefund
+   * @throws MPException exception
+   */
+  public MPResourceList<PaymentRefund> listRefunds(Long paymentId, MPRequestOptions requestOptions)
+      throws MPException {
+    return refundClient.list(paymentId, requestOptions);
   }
 }

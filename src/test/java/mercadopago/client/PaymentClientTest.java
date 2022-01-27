@@ -28,9 +28,11 @@ import com.mercadopago.client.payment.PaymentPayerRequest;
 import com.mercadopago.client.payment.PaymentReceiverAddressRequest;
 import com.mercadopago.client.payment.PaymentShipmentsRequest;
 import com.mercadopago.exceptions.MPException;
+import com.mercadopago.net.MPResourceList;
 import com.mercadopago.net.MPResultsResourcesPage;
 import com.mercadopago.net.MPSearchRequest;
 import com.mercadopago.resources.payment.Payment;
+import com.mercadopago.resources.payment.PaymentRefund;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -47,6 +49,8 @@ import org.junit.jupiter.api.Test;
 public class PaymentClientTest extends BaseClientTest {
 
   private static final Long PAYMENT_TEST_ID = 17014025134L;
+
+  private static final Long REFUND_TEST_ID = 1245678203L;
 
   private static final Long PAYMENT_COLLECTOR_ID = 810882223L;
 
@@ -81,6 +85,12 @@ public class PaymentClientTest extends BaseClientTest {
   private static final String STATUS_CANCELLED_JSON = "payment/status_cancelled.json";
 
   private static final String PAYMENT_SEARCH_JSON = "payment/payment_search.json";
+
+  private static final String REFUND_BASE_JSON = "refund/refund_base.json";
+
+  private static final String REFUND_LIST_JSON = "refund/refund_list.json";
+
+  private static final String REFUND_PARTIAL_JSON = "refund/refund_partial.json";
 
   private static final Date DATE = new Date(YEAR, JANUARY, TEN, TEN, TEN, TEN);
 
@@ -290,6 +300,77 @@ public class PaymentClientTest extends BaseClientTest {
     assertEquals(102, result.getPaging().getTotal());
     assertEquals(5, result.getResults().size());
     assertEquals("pix", result.getResults().get(0).getPaymentMethodId());
+  }
+
+  @Test
+  public void refundPartial() throws IOException, MPException {
+    HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_BASE_JSON, OK);
+    doReturn(httpResponse)
+        .when(httpClient)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    BigDecimal amount = new BigDecimal("50");
+    PaymentRefund result = client.refund(PAYMENT_TEST_ID, amount);
+
+    JsonElement requestPayload =
+        generateJsonElementFromUriRequest(httpClientMock.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement(REFUND_PARTIAL_JSON);
+
+    assertEquals(requestPayloadMock, requestPayload);
+    assertRefundFields(result);
+  }
+
+  @Test
+  public void refundTotal() throws IOException, MPException {
+    HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_BASE_JSON, OK);
+    doReturn(httpResponse)
+        .when(httpClient)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    PaymentRefund result = client.refund(PAYMENT_TEST_ID);
+    assertRefundFields(result);
+  }
+
+  @Test
+  public void getRefund() throws IOException, MPException {
+    HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_BASE_JSON, OK);
+    doReturn(httpResponse)
+        .when(httpClient)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    PaymentRefund result = client.getRefund(PAYMENT_TEST_ID, REFUND_TEST_ID);
+    assertRefundFields(result);
+  }
+
+  @Test
+  public void listRefunds() throws IOException, MPException {
+    HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_LIST_JSON, OK);
+    doReturn(httpResponse)
+        .when(httpClient)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    MPResourceList<PaymentRefund> result = client.listRefunds(PAYMENT_TEST_ID);
+    assertEquals(OK, result.get(0).getResponse().getStatusCode());
+    assertNotNull(result.get(0).getResponse());
+    assertEquals(2, result.size());
+    assertRefundFields(result.get(0));
+  }
+
+  private void assertRefundFields(PaymentRefund refund) {
+    assertEquals(OK, refund.getResponse().getStatusCode());
+    assertNotNull(refund.getResponse());
+    assertEquals(REFUND_TEST_ID, refund.getId());
+    assertEquals(PAYMENT_TEST_ID, refund.getPaymentId());
+    assertEquals(new BigDecimal("50"), refund.getAmount());
+    assertEquals("823549964", refund.getSource().getId());
+    assertEquals("Mullins Hillary", refund.getSource().getName());
+    assertEquals("collector", refund.getSource().getType());
+    assertEquals(DATE, refund.getDateCreated());
+    assertNull(refund.getUniqueSequenceNumber());
+    assertEquals("standard", refund.getRefundMode());
+    assertEquals(BigDecimal.ZERO, refund.getAdjustmentAmount());
+    assertEquals("approved", refund.getStatus());
+    assertNull(refund.getReason());
   }
 
   private Payment createPayment() throws IOException, MPException {
