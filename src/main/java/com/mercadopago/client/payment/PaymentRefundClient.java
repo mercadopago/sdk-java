@@ -53,7 +53,7 @@ public class PaymentRefundClient extends MercadoPagoClient {
    */
   public PaymentRefund refund(Long paymentId, BigDecimal amount, MPRequestOptions requestOptions)
       throws MPException {
-
+    LOGGER.info("Sending refund payment request");
     PaymentRefundCreateRequest request =
         PaymentRefundCreateRequest.builder().amount(amount).build();
 
@@ -81,7 +81,7 @@ public class PaymentRefundClient extends MercadoPagoClient {
    */
   public PaymentRefund get(Long paymentId, Long refundId, MPRequestOptions requestOptions)
       throws MPException {
-
+    LOGGER.info("Sending get refund payment request");
     MPResponse response =
         send(
             String.format("/v1/payments/%s/refunds/%s", paymentId, refundId),
@@ -105,7 +105,7 @@ public class PaymentRefundClient extends MercadoPagoClient {
    */
   public MPResourceList<PaymentRefund> list(Long paymentId, MPRequestOptions requestOptions)
       throws MPException {
-
+    LOGGER.info("Sending list refund payment request");
     MPResponse response =
         send(
             String.format(URL_WITH_PAYMENT_ID, paymentId),
