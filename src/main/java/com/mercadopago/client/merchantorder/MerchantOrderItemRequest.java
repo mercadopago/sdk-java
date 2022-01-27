@@ -14,7 +14,7 @@ public class MerchantOrderItemRequest {
   /** Item name. */
   private final String title;
 
-  /** Long item description. */
+  /** Item description. */
   private final String description;
 
   /** Image URL. */
