@@ -1,4 +1,4 @@
-package mercadopago.client;
+package mercadopago.client.payment;
 
 import static com.mercadopago.net.HttpStatus.CREATED;
 import static com.mercadopago.net.HttpStatus.OK;
