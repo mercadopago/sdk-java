@@ -45,7 +45,7 @@ public class PaymentClient extends MercadoPagoClient {
    */
   public PaymentClient(MPHttpClient httpClient) {
     super(httpClient);
-    refundClient = new PaymentRefundClient();
+    refundClient = new PaymentRefundClient(httpClient);
     StreamHandler streamHandler = getStreamHandler();
     streamHandler.setLevel(MercadoPagoConfig.getLoggingLevel());
     LOGGER.addHandler(streamHandler);

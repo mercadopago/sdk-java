@@ -21,14 +21,9 @@ import java.util.logging.StreamHandler;
 /** Client that use the Payment Refunds APIs. */
 public class PaymentRefundClient extends MercadoPagoClient {
 
-  private static final Logger LOGGER = Logger.getLogger(PaymentClient.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(PaymentRefundClient.class.getName());
 
   private static final String URL_WITH_PAYMENT_ID = "/v1/payments/%s/refunds";
-
-  /** PaymentRefundClient constructor. */
-  public PaymentRefundClient() {
-    this(MercadoPagoConfig.getHttpClient());
-  }
 
   /**
    * PaymentRefundClient constructor.
