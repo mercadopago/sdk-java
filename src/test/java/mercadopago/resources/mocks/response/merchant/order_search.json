@@ -1,0 +1,66 @@
+{
+  "elements": [
+    {
+      "id": 4018801790,
+      "status": "opened",
+      "external_reference": null,
+      "preference_id": "798798399-13769cb5-b898-448f-8d5a-c939a8cee479",
+      "payments": [],
+      "shipments": [],
+      "payouts": [],
+      "collector": {
+        "id": 798798399,
+        "email": "",
+        "nickname": "TETE8419469"
+      },
+      "marketplace": "",
+      "notification_url": null,
+      "date_created": "3921-01-10T10:10:10.000-00:00",
+      "last_updated": "3921-01-10T10:10:10.000-00:00",
+      "sponsor_id": null,
+      "shipping_cost": 0,
+      "total_amount": 206.02,
+      "site_id": "MLM",
+      "paid_amount": 0,
+      "refunded_amount": 0,
+      "payer": null,
+      "items": [],
+      "cancelled": false,
+      "additional_info": null,
+      "application_id": null,
+      "order_status": "payment_required"
+    },
+    {
+      "id": 4005684268,
+      "status": "opened",
+      "external_reference": null,
+      "preference_id": "798798399-13769cb5-b898-448f-8d5a-c939a8cee479",
+      "payments": [],
+      "shipments": [],
+      "payouts": [],
+      "collector": {
+        "id": 798798399,
+        "email": "",
+        "nickname": "TETE8419469"
+      },
+      "marketplace": "",
+      "notification_url": null,
+      "date_created": "2022-01-21T17:52:58.563+00:00",
+      "last_updated": "2022-01-21T17:52:58.563+00:00",
+      "sponsor_id": null,
+      "shipping_cost": 0,
+      "total_amount": 206.02,
+      "site_id": "MLM",
+      "paid_amount": 0,
+      "refunded_amount": 0,
+      "payer": null,
+      "items": [],
+      "cancelled": false,
+      "additional_info": null,
+      "application_id": null,
+      "order_status": "payment_required"
+    }
+  ],
+  "next_offset": 2,
+  "total": 2
+}

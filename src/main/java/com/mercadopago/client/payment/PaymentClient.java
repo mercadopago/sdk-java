@@ -88,7 +88,7 @@ public class PaymentClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for creating payment with request opetions.
+   * Method responsible for creating payment with request options.
    *
    * @param request request
    * @param requestOptions requestOptions

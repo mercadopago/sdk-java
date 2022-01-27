@@ -1,42 +1,34 @@
 {
-  "id": 3287247143,
+  "id": 4018843653,
   "status": "opened",
-  "external_reference": "45209127-64b7-4f0b-922e-7dab62e56471",
-  "preference_id": "539675046-b849ea5e-537a-48e0-bb7d-52b604ba0daa",
+  "external_reference": null,
+  "preference_id": "798798399-13769cb5-b898-448f-8d5a-c939a8cee479",
   "payments": [],
   "shipments": [],
   "payouts": [],
   "collector": {
-    "id": 539675046,
+    "id": 798798399,
     "email": "",
-    "nickname": "TETE7689213"
+    "nickname": "TETE8419469"
   },
-  "marketplace": "NONE",
-  "notification_url": "https://seller/notification",
-  "date_created": "2021-09-20T15:20:10.773+00:00",
-  "last_updated": "2021-09-20T15:20:10.773+00:00",
+  "marketplace": "",
+  "notification_url": null,
+  "date_created": "2022-01-24T12:04:57.958+00:00",
+  "last_updated": "2022-01-24T12:04:57.958+00:00",
   "sponsor_id": null,
   "shipping_cost": 0,
-  "total_amount": 100,
-  "site_id": "MLB",
+  "total_amount": 206.02,
+  "site_id": "MLM",
   "paid_amount": 0,
   "refunded_amount": 0,
-  "payer": null,
-  "items": [
-    {
-      "id": "123",
-      "category_id": "",
-      "currency_id": "BRL",
-      "description": "Description",
-      "picture_url": "http://product.image.png",
-      "picture_id": "822007-MLB47572192495_092021",
-      "title": "Title",
-      "quantity": 1,
-      "unit_price": 100
-    }
-  ],
+  "payer": {
+    "id": 0,
+    "email": null,
+    "nickname": "Test"
+  },
+  "items": [],
   "cancelled": false,
-  "additional_info": "new info",
-  "application_id": "59441713004005",
+  "additional_info": null,
+  "application_id": null,
   "order_status": "payment_required"
 }

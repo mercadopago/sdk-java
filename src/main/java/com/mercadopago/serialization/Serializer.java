@@ -12,6 +12,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.MalformedJsonException;
+import com.mercadopago.net.MPElementsResourcesPage;
 import com.mercadopago.net.MPResource;
 import com.mercadopago.net.MPResourceList;
 import com.mercadopago.net.MPResultsResourcesPage;
@@ -52,6 +53,20 @@ public class Serializer {
    */
   public static <T extends MPResource>
       MPResultsResourcesPage<T> deserializeResultsResourcesPageFromJson(
+          Type type, String jsonObject) {
+    return GSON.fromJson(jsonObject, type);
+  }
+
+  /**
+   * Method responsible for deserialize json to ElementsResources.
+   *
+   * @param type type
+   * @param jsonObject jsonObject
+   * @param <T> generic type
+   * @return MPElementsResourcesPage
+   */
+  public static <T extends MPResource>
+      MPElementsResourcesPage<T> deserializeElementsResourcesPageFromJson(
           Type type, String jsonObject) {
     return GSON.fromJson(jsonObject, type);
   }
