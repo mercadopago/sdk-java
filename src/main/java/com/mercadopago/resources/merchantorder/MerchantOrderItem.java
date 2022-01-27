@@ -12,7 +12,7 @@ public class MerchantOrderItem {
   /** Item name. */
   private String title;
 
-  /** Long item description. */
+  /** Item description. */
   private String description;
 
   /** Image URL. */

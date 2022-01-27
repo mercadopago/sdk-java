@@ -31,7 +31,7 @@ public class MerchantOrderPayment {
   /** Operation type. */
   private String operationType;
 
-  /** Approbation date. */
+  /** Approval date. */
   private Date dateApproved;
 
   /** Date of creation. */

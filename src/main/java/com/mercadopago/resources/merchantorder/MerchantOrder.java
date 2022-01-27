@@ -48,7 +48,7 @@ public class MerchantOrder extends MPResource {
   /** Date of creation. */
   private Date dateCreated;
 
-  /** If the Order is expired true or not false. */
+  /** If the Order is expired (true) or not (false). */
   private boolean cancelled;
 
   /** Items information. */
