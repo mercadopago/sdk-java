@@ -1,0 +1,40 @@
+[
+  {
+    "id": 1245678203,
+    "payment_id": 17014025134,
+    "amount": 50,
+    "metadata": {},
+    "source": {
+      "name": "Mullins Hillary",
+      "id": "823549964",
+      "type": "collector"
+    },
+    "date_created": "3921-01-10T10:10:10.000-00:00",
+    "unique_sequence_number": null,
+    "refund_mode": "standard",
+    "adjustment_amount": 0,
+    "status": "approved",
+    "reason": null,
+    "labels": [],
+    "partition_details": []
+  },
+  {
+    "id": 1245677387,
+    "payment_id": 1245682962,
+    "amount": 50,
+    "metadata": {},
+    "source": {
+      "name": "Mullins Hillary",
+      "id": "823549964",
+      "type": "collector"
+    },
+    "date_created": "3921-01-10T10:10:10.000-00:00",
+    "unique_sequence_number": null,
+    "refund_mode": "standard",
+    "adjustment_amount": 0,
+    "status": "approved",
+    "reason": null,
+    "labels": [],
+    "partition_details": []
+  }
+]

@@ -1,5 +1,6 @@
 package com.mercadopago.resources.payment;
 
+import com.mercadopago.net.MPResource;
 import com.mercadopago.resources.common.Source;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -7,7 +8,7 @@ import lombok.Getter;
 
 /** PaymentRefund class. */
 @Getter
-public class PaymentRefund {
+public class PaymentRefund extends MPResource {
   /** Refund id. */
   private Long id;
 
@@ -17,6 +18,9 @@ public class PaymentRefund {
   /** Amount refunded. */
   private BigDecimal amount;
 
+  /** Adjustment amount. */
+  private BigDecimal adjustmentAmount;
+
   /** Refund status. */
   private String status;
 
@@ -25,6 +29,9 @@ public class PaymentRefund {
 
   /** Date of creation. */
   private Date dateCreated;
+
+  /** Refund reason. */
+  private String reason;
 
   /** Unique sequence number. */
   private String uniqueSequenceNumber;
