@@ -10,11 +10,12 @@ import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPHttpClient;
 import com.mercadopago.net.MPResponse;
 import com.mercadopago.net.UrlFormatter;
-import com.mercadopago.resources.oauth.OauthCredential;
+import com.mercadopago.resources.oauth.CreateOauthCredential;
+import com.mercadopago.resources.oauth.RefreshOauthCredential;
 import com.mercadopago.resources.user.User;
 import com.mercadopago.serialization.Serializer;
+import java.util.HashMap;
 import java.util.Objects;
-import java.util.Optional;
 
 /** Client responsible for performing oauth authorization. */
 public class OauthClient extends MercadoPagoClient {
@@ -66,10 +67,15 @@ public class OauthClient extends MercadoPagoClient {
       return null;
     }
 
+    HashMap<String, Object> queryParams = new HashMap<>();
+    queryParams.put("client_id", appId);
+    queryParams.put("response_type", "code");
+    queryParams.put("platform_id", "mp");
+    queryParams.put("redirect_uri", redirectUri);
+
     return UrlFormatter.format(
-        String.format(
-            "%s.%s/authorization?client_id=%s&response_type=code&platform_id=mp&redirect_uri=%s",
-            authHost, user.getCountryId().toLowerCase(), appId, redirectUri));
+        String.format("%s.%s/authorization", authHost, user.getCountryId().toLowerCase()),
+        queryParams);
   }
 
   /**
@@ -80,7 +86,7 @@ public class OauthClient extends MercadoPagoClient {
    * @param redirectUri the redirectUri received from calling getAuthorizationURL
    * @return the Oauth credentials
    */
-  public OauthCredential createCredential(String authorizationCode, String redirectUri)
+  public CreateOauthCredential createCredential(String authorizationCode, String redirectUri)
       throws MPException {
     return this.createCredential(authorizationCode, redirectUri, null);
   }
@@ -94,7 +100,7 @@ public class OauthClient extends MercadoPagoClient {
    * @param requestOptions metadata to customize the request
    * @return the Oauth credentials
    */
-  public OauthCredential createCredential(
+  public CreateOauthCredential createCredential(
       String authorizationCode, String redirectUri, MPRequestOptions requestOptions)
       throws MPException {
     CreateOauthCredentialRequest request =
@@ -108,8 +114,8 @@ public class OauthClient extends MercadoPagoClient {
             path, HttpMethod.POST, Serializer.serializeToJson(request), null, requestOptions);
     MPResponse response = send(idempotentRequest);
 
-    OauthCredential credential =
-        Serializer.deserializeFromJson(OauthCredential.class, response.getContent());
+    CreateOauthCredential credential =
+        Serializer.deserializeFromJson(CreateOauthCredential.class, response.getContent());
     credential.setResponse(response);
 
     return credential;
@@ -122,7 +128,7 @@ public class OauthClient extends MercadoPagoClient {
    * @return new Oauth credentials
    * @throws MPException any error retrieving Oauth credentials
    */
-  public OauthCredential refreshCredential(String refreshToken) throws MPException {
+  public RefreshOauthCredential refreshCredential(String refreshToken) throws MPException {
     return this.refreshCredential(refreshToken, null);
   }
 
@@ -134,8 +140,8 @@ public class OauthClient extends MercadoPagoClient {
    * @return new Oauth credentials
    * @throws MPException any error retrieving Oauth credentials
    */
-  public OauthCredential refreshCredential(String refreshToken, MPRequestOptions requestOptions)
-      throws MPException {
+  public RefreshOauthCredential refreshCredential(
+      String refreshToken, MPRequestOptions requestOptions) throws MPException {
     RefreshOauthCredentialRequest request =
         RefreshOauthCredentialRequest.builder()
             .clientSecret(getAccessToken(requestOptions))
@@ -146,8 +152,8 @@ public class OauthClient extends MercadoPagoClient {
         IdempotentRequest.buildRequest(
             path, HttpMethod.POST, Serializer.serializeToJson(request), null, requestOptions);
     MPResponse response = send(idempotentRequest);
-    OauthCredential credential =
-        Serializer.deserializeFromJson(OauthCredential.class, response.getContent());
+    RefreshOauthCredential credential =
+        Serializer.deserializeFromJson(RefreshOauthCredential.class, response.getContent());
     credential.setResponse(response);
 
     return credential;
