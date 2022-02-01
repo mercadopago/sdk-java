@@ -1,0 +1,7 @@
+{
+  "access_token": "APP_USR-4934588586838432-XXXXXXXX-241983636",
+  "token_type": "bearer",
+  "expires_in": 15552000,
+  "scope": "offline_access read write",
+  "refresh_token": "TG-XXXXXXXXXXXX-241983636"
+}

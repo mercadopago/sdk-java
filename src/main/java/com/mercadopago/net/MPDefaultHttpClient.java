@@ -135,10 +135,6 @@ public class MPDefaultHttpClient implements MPHttpClient {
       int statusCode = response.getStatusLine().getStatusCode();
       MPResponse mpResponse = new MPResponse(statusCode, headers, responseBody);
 
-      if (!Serializer.isJsonValid(responseBody)) {
-        throw new MPApiException("Response body has malformed json", mpResponse);
-      }
-
       if (statusCode > 299) {
         throw new MPApiException("Api error. Check response for details", mpResponse);
       }

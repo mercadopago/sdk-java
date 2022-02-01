@@ -13,6 +13,8 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.MalformedJsonException;
 import com.mercadopago.net.MPElementsResourcesPage;
+import com.mercadopago.exceptions.MPException;
+import com.mercadopago.exceptions.MPJsonParseException;
 import com.mercadopago.net.MPResource;
 import com.mercadopago.net.MPResourceList;
 import com.mercadopago.net.MPResultsResourcesPage;
@@ -38,9 +40,19 @@ public class Serializer {
    * @param jsonObject json object.
    * @param <T> class type.
    * @return object.
+   * @throws MPJsonParseException if json cannot be deserialized to an MPResource
    */
-  public static <T extends MPResource> T deserializeFromJson(Class<T> clazz, String jsonObject) {
-    return GSON.fromJson(jsonObject, clazz);
+  public static <T extends MPResource> T deserializeFromJson(Class<T> clazz, String jsonObject)
+      throws MPJsonParseException {
+    try {
+      if (isJsonValid(jsonObject)) {
+        return GSON.fromJson(jsonObject, clazz);
+      } else {
+        throw new MPJsonParseException(String.format("Could not parse json: %s", jsonObject));
+      }
+    } catch (IOException e) {
+      throw new MPJsonParseException("Could not parse json", e);
+    }
   }
 
   /**
@@ -49,12 +61,21 @@ public class Serializer {
    * @param type type
    * @param jsonObject jsonObject
    * @param <T> generic type
-   * @return MPResultsResourcesPage
+   * @throws MPJsonParseException if json cannot be parsed to ResultsResourcesPage
+   * @return MPResultsResourcesPage deserialized MPResource
    */
   public static <T extends MPResource>
       MPResultsResourcesPage<T> deserializeResultsResourcesPageFromJson(
-          Type type, String jsonObject) {
-    return GSON.fromJson(jsonObject, type);
+          Type type, String jsonObject) throws MPJsonParseException {
+    try {
+      if (isJsonValid(jsonObject)) {
+        return GSON.fromJson(jsonObject, type);
+      } else {
+        throw new MPJsonParseException(String.format("Could not parse json: %s", jsonObject));
+      }
+    } catch (IOException e) {
+      throw new MPJsonParseException("Could not parse json", e);
+    }
   }
 
   /**
@@ -63,12 +84,21 @@ public class Serializer {
    * @param type type
    * @param jsonObject jsonObject
    * @param <T> generic type
+   * @throws MPJsonParseException if json cannot be parsed to MPElementsResourcesPage
    * @return MPElementsResourcesPage
    */
   public static <T extends MPResource>
       MPElementsResourcesPage<T> deserializeElementsResourcesPageFromJson(
-          Type type, String jsonObject) {
-    return GSON.fromJson(jsonObject, type);
+          Type type, String jsonObject) throws MPJsonParseException {
+    try {
+      if (isJsonValid(jsonObject)) {
+        return GSON.fromJson(jsonObject, type);
+      } else {
+        throw new MPJsonParseException(String.format("Could not parse json: %s", jsonObject));
+      }
+    } catch (IOException | MPJsonParseException e) {
+      throw new MPJsonParseException("Could not parse json", e);
+    }
   }
 
   /**
@@ -77,18 +107,27 @@ public class Serializer {
    * @param clazz clazz
    * @param jsonObject jsonObject
    * @param <T> type
+   * @throws MPJsonParseException if json cannot be parsed to ResultsResourcesPage
    * @return MPResourceList
    */
   public static <T extends MPResource> MPResourceList<T> deserializeListFromJson(
-      Class<T> clazz, String jsonObject) {
-    MPResourceList<T> resourceList = new MPResourceList<>();
-    JsonArray jsonArray = JsonParser.parseString(jsonObject).getAsJsonArray();
-    for (int i = 0; i < jsonArray.size(); i++) {
-      T resource = GSON.fromJson(jsonArray.get(i), clazz);
-      resourceList.add(resource);
-    }
+      Class<T> clazz, String jsonObject) throws MPJsonParseException {
+    try {
+      if (isJsonValid(jsonObject)) {
+        MPResourceList<T> resourceList = new MPResourceList<>();
+        JsonArray jsonArray = JsonParser.parseString(jsonObject).getAsJsonArray();
+        for (int i = 0; i < jsonArray.size(); i++) {
+          T resource = GSON.fromJson(jsonArray.get(i), clazz);
+          resourceList.add(resource);
+        }
 
-    return resourceList;
+        return resourceList;
+      } else {
+        throw new MPJsonParseException(String.format("Could not parse json: %s", jsonObject));
+      }
+    } catch (IOException e) {
+      throw new MPJsonParseException("Could not parse json", e);
+    }
   }
 
   /**
