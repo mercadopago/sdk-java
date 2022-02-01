@@ -1,13 +1,13 @@
 package com.mercadopago.client.oauth;
 
 import com.mercadopago.MercadoPagoConfig;
-import com.mercadopago.client.IdempotentRequest;
 import com.mercadopago.client.MercadoPagoClient;
 import com.mercadopago.client.user.UserClient;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPHttpClient;
+import com.mercadopago.net.MPRequest;
 import com.mercadopago.net.MPResponse;
 import com.mercadopago.net.UrlFormatter;
 import com.mercadopago.resources.oauth.CreateOauthCredential;
@@ -109,10 +109,10 @@ public class OauthClient extends MercadoPagoClient {
             .code(authorizationCode)
             .redirectUri(redirectUri)
             .build();
-    IdempotentRequest idempotentRequest =
-        IdempotentRequest.buildRequest(
+    MPRequest mpRequest =
+        MPRequest.buildRequest(
             path, HttpMethod.POST, Serializer.serializeToJson(request), null, requestOptions);
-    MPResponse response = send(idempotentRequest);
+    MPResponse response = send(mpRequest);
 
     CreateOauthCredential credential =
         Serializer.deserializeFromJson(CreateOauthCredential.class, response.getContent());
@@ -148,10 +148,10 @@ public class OauthClient extends MercadoPagoClient {
             .refreshToken(refreshToken)
             .build();
 
-    IdempotentRequest idempotentRequest =
-        IdempotentRequest.buildRequest(
+    MPRequest mpRequest =
+        MPRequest.buildRequest(
             path, HttpMethod.POST, Serializer.serializeToJson(request), null, requestOptions);
-    MPResponse response = send(idempotentRequest);
+    MPResponse response = send(mpRequest);
     RefreshOauthCredential credential =
         Serializer.deserializeFromJson(RefreshOauthCredential.class, response.getContent());
     credential.setResponse(response);

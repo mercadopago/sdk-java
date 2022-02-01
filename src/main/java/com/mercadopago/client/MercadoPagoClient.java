@@ -282,7 +282,7 @@ public abstract class MercadoPagoClient {
     }
 
     if (shouldAddIdempotencyKey(request)) {
-      headers.put(Headers.IDEMPOTENCY_KEY, ((IdempotentRequest) request).createIdempotencyKey());
+      headers.put(Headers.IDEMPOTENCY_KEY, request.createIdempotencyKey());
     }
 
     if (!request.getUri().contains("/oauth/token") && !headers.containsKey("Authorization")) {
@@ -293,7 +293,7 @@ public abstract class MercadoPagoClient {
   }
 
   private boolean shouldAddIdempotencyKey(MPRequest request) {
-    return request.getMethod() == HttpMethod.POST && request instanceof IdempotentRequest;
+    return request.getMethod() == HttpMethod.POST;
   }
 
   private String getAccessToken(MPRequestOptions requestOptions) {
