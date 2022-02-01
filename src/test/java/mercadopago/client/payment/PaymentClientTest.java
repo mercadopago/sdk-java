@@ -260,7 +260,6 @@ public class PaymentClientTest extends BaseClientTest {
     JsonElement requestPayloadMock = generateJsonElement(CAPTURED_JSON);
 
     assertEquals(requestPayloadMock, requestPayload);
-
     assertNotNull(paymentCaptured.getResponse());
     assertEquals(OK, paymentCaptured.getResponse().getStatusCode());
     assertTrue(paymentCaptured.isCaptured());
