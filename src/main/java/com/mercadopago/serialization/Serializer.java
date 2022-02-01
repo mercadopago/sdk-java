@@ -25,7 +25,7 @@ import java.lang.reflect.Type;
 /** Serializer class, responsible for objects serialization and deserialization. */
 public class Serializer {
 
-  private static final String DATE_FORMAT_ISO8601 = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+  private static final String DATE_FORMAT_ISO8601 = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
 
   private static final Gson GSON =
       new GsonBuilder()

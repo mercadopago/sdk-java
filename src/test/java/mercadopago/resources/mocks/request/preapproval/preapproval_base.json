@@ -1,0 +1,14 @@
+{
+  "payer_email": "test_user_28355466@testuser.com",
+  "back_url": "https://www.mercadopago.com.br",
+  "reason": "reason",
+  "external_reference": "23546246234",
+  "auto_recurring": {
+    "currency_id": "BRL",
+    "transaction_amount": 10,
+    "frequency": 1,
+    "frequency_type": "months",
+    "start_date": "2022-01-10T10:10:10.000Z",
+    "end_date": "2023-01-10T10:10:10.000Z"
+  }
+}
