@@ -44,16 +44,21 @@ class PreapprovalClientTest extends BaseClientTest {
 
   private static final int DEFAULT_TIMEOUT = 1000;
 
-  private static final int YEAR = 2021;
+  private static final int START_ADDITIONAL_YEAR = 122;
+
+  private static final int END_ADDITIONAL_YEAR = 123;
 
   private static final int TEN = 10;
 
-  private static final Date DATE = new Date(YEAR, JANUARY, TEN, TEN, TEN, TEN);
+  private static final Date START_DATE =
+      new Date(START_ADDITIONAL_YEAR, JANUARY, TEN, TEN, TEN, TEN);
+
+  private static final Date END_DATE = new Date(END_ADDITIONAL_YEAR, JANUARY, TEN, TEN, TEN, TEN);
 
   PreapprovalClient client = new PreapprovalClient();
 
   @Test
-  void getSuccessSuccess() throws IOException, MPException {
+  void getSuccess() throws IOException, MPException {
     HttpResponse httpResponse = generateHttpResponseFromFile(PREAPPROVAL_BASE_JSON, OK);
     doReturn(httpResponse)
         .when(httpClient)
@@ -225,7 +230,7 @@ class PreapprovalClientTest extends BaseClientTest {
     assertEquals("pending", preapproval.getStatus());
     assertEquals(reason, preapproval.getReason());
     assertEquals("23546246234", preapproval.getExternalReference());
-    assertEquals(DATE, preapproval.getDateCreated());
+    assertEquals(START_DATE, preapproval.getDateCreated());
     assertEquals(
         "https://www.mercadopago.com.br/subscriptions/checkout?preapproval_id=2c9380847e9b451c017ea1bd70ba0219",
         preapproval.getInitPoint());
@@ -234,8 +239,8 @@ class PreapprovalClientTest extends BaseClientTest {
     assertEquals("months", preapproval.getAutoRecurring().getFrequencyType());
     assertEquals(new BigDecimal("10.00"), preapproval.getAutoRecurring().getTransactionAmount());
     assertEquals("BRL", preapproval.getAutoRecurring().getCurrencyId());
-    assertEquals(DATE, preapproval.getAutoRecurring().getStartDate());
-    assertEquals(DATE, preapproval.getAutoRecurring().getEndDate());
+    assertEquals(START_DATE, preapproval.getAutoRecurring().getStartDate());
+    assertEquals(END_DATE, preapproval.getAutoRecurring().getEndDate());
   }
 
   private PreapprovalCreateRequest generatePreapprovalRequest() {
@@ -245,8 +250,8 @@ class PreapprovalClientTest extends BaseClientTest {
             .frequency(1)
             .frequencyType("months")
             .currencyId("BRL")
-            .startDate("2020-06-02T13:07:14.260Z")
-            .endDate("2022-07-20T15:59:52.581Z")
+            .startDate(START_DATE)
+            .endDate(END_DATE)
             .build();
 
     return PreapprovalCreateRequest.builder()
