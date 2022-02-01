@@ -72,6 +72,24 @@ public class MercadoPagoClientTest extends BaseClientTest {
   }
 
   @Test
+  public void sendWithIdempotentHeader() throws IOException, MPException {
+    HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 201);
+    doReturn(httpResponse)
+        .when(httpClientMock)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+    testClient.sendRequest("/test", HttpMethod.POST, null, null, null);
+
+    ArgumentCaptor<HttpRequestBase> httpBaseCaptor = ArgumentCaptor.forClass(HttpRequestBase.class);
+    ArgumentCaptor<HttpClientContext> httpClientContextCaptor =
+        ArgumentCaptor.forClass(HttpClientContext.class);
+    verify(httpClientMock).execute(httpBaseCaptor.capture(), httpClientContextCaptor.capture());
+
+    assertTrue(
+        MockHelper.areHeadersValid(
+            httpBaseCaptor.getValue().getAllHeaders(), httpBaseCaptor.getValue().getMethod()));
+  }
+
+  @Test
   public void sendWithoutBodySuccess() throws IOException, MPException {
     HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
     doReturn(httpResponse)

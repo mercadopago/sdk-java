@@ -97,6 +97,10 @@ public class MockHelper {
       mandatoryHeaders.add("Content-Type");
     }
 
+    if (method.equals("POST")) {
+      mandatoryHeaders.add("X-Idempotency-Key");
+    }
+
     for (String mandatoryHeader : mandatoryHeaders) {
       boolean match =
           Arrays.stream(headers).anyMatch(header -> header.getName().equals(mandatoryHeader));
