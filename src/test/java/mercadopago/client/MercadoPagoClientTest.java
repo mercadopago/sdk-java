@@ -72,7 +72,7 @@ public class MercadoPagoClientTest extends BaseClientTest {
   }
 
   @Test
-  public void sendWithIdempotentHeader() throws IOException, MPException {
+  public void sendWithIdempotentHeaderIfMethodIsPost() throws IOException, MPException {
     HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 201);
     doReturn(httpResponse)
         .when(httpClientMock)
