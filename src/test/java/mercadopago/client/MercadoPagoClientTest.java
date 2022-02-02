@@ -10,7 +10,6 @@ import static org.mockito.Mockito.verify;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.mercadopago.client.IdempotentRequest;
 import com.mercadopago.client.MercadoPagoClient;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPApiException;
@@ -73,23 +72,21 @@ public class MercadoPagoClientTest extends BaseClientTest {
   }
 
   @Test
-  public void sendIdempotentRequestWithBodySuccess() throws IOException, MPException {
-    String request = MockHelper.readRequestFile(requestFile);
-    JsonObject requestObject = JsonParser.parseString(request).getAsJsonObject();
-    HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
+  public void sendWithIdempotentHeaderIfMethodIsPost() throws IOException, MPException {
+    HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 201);
     doReturn(httpResponse)
         .when(httpClientMock)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
-    MPRequest mpRequest =
-        IdempotentRequest.idempotentBuilder()
-            .uri("https://test.com")
-            .method(HttpMethod.POST)
-            .payload(requestObject)
-            .build();
-    MPResponse mpResponse = testClient.sendRequest(mpRequest);
+    testClient.sendRequest("/test", HttpMethod.POST, null, null, null);
 
-    assertNotNull(mpResponse);
-    assertEquals(200, (int) mpResponse.getStatusCode());
+    ArgumentCaptor<HttpRequestBase> httpBaseCaptor = ArgumentCaptor.forClass(HttpRequestBase.class);
+    ArgumentCaptor<HttpClientContext> httpClientContextCaptor =
+        ArgumentCaptor.forClass(HttpClientContext.class);
+    verify(httpClientMock).execute(httpBaseCaptor.capture(), httpClientContextCaptor.capture());
+
+    assertTrue(
+        MockHelper.areHeadersValid(
+            httpBaseCaptor.getValue().getAllHeaders(), httpBaseCaptor.getValue().getMethod()));
   }
 
   @Test
