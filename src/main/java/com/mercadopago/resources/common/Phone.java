@@ -6,8 +6,8 @@ import lombok.Getter;
 @Getter
 public class Phone {
   /** Area code. */
-  public String areaCode;
+  private String areaCode;
 
   /** Phone number. */
-  public String number;
+  private String number;
 }
