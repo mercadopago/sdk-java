@@ -62,7 +62,7 @@ public class IdentificationTypeClient extends MercadoPagoClient {
 
     MPResourceList<IdentificationType> identificationTypes =
         deserializeListFromJson(IdentificationType.class, response.getContent());
-    identificationTypes.forEach(paymentMethod -> paymentMethod.setResponse(response));
+    identificationTypes.forEach(identificationType -> identificationType.setResponse(response));
 
     return identificationTypes;
   }
