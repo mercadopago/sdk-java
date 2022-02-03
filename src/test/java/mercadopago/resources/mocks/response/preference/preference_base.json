@@ -1,53 +1,53 @@
 {
-  "additional_info": "Additional info",
+  "additional_info": "Discount: 12.00",
   "auto_return": "all",
   "back_urls": {
-    "failure": "https://seller/failure",
-    "pending": "https://seller/pending",
-    "success": "https://seller/success"
+    "failure": "http://test.com/failure",
+    "pending": "http://test.com/pending",
+    "success": "http://test.com/success"
   },
   "binary_mode": true,
-  "client_id": "59441713004005",
-  "collector_id": 539675046,
+  "client_id": "6245132082630004",
+  "collector_id": 823549964,
   "coupon_code": null,
   "coupon_labels": null,
-  "date_created": "2021-09-20T14:02:41.209+00:00",
-  "date_of_expiration": null,
-  "expiration_date_from": "2021-09-20T11:02:29.773-03:00",
-  "expiration_date_to": "2021-10-20T11:02:29.773-03:00",
-  "expires": true,
-  "external_reference": "0019b078-6276-4a4e-93c8-bfa5a5f77bf3",
-  "id": "539675046-7a2dff87-ab06-409a-8545-7d396899f675",
-  "init_point": "https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=539675046-7a2dff87-ab06-409a-8545-7d396899f675",
+  "date_created": "2022-01-10T10:10:10.000+00:00",
+  "date_of_expiration": "2022-02-10T10:10:10.000+00:00",
+  "expiration_date_from": "2022-01-10T10:10:10.000+00:00",
+  "expiration_date_to": "2022-02-10T10:10:10.000+00:00",
+  "expires": false,
+  "external_reference": "1643827245",
+  "id": "823549964-e8063b12-1c8b-4333-b075-3ae52a0371c8",
+  "init_point": "https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=823549964-e8063b12-1c8b-4333-b075-3ae52a0371c8",
   "internal_metadata": null,
   "items": [
     {
-      "id": "123",
-      "category_id": "",
+      "id": "1234",
+      "category_id": "games",
       "currency_id": "BRL",
-      "description": "Description",
-      "picture_url": "http://product.image.png",
-      "title": "Title",
-      "quantity": 1,
-      "unit_price": 100
+      "description": "PS5",
+      "picture_url": "http://picture.com/PS5",
+      "title": "Games",
+      "quantity": 2,
+      "unit_price": 4000
     }
   ],
-  "marketplace": "MP-MKT-59441713004005",
-  "marketplace_fee": 0,
+  "marketplace": "NONE",
+  "marketplace_fee": 5,
   "metadata": {},
-  "notification_url": "https://seller/notification",
+  "notification_url": "http://notificationurl.com",
   "operation_type": "regular_payment",
   "payer": {
     "phone": {
       "area_code": "11",
-      "number": "999999999"
+      "number": "4444-4444"
     },
     "address": {
-      "zip_code": "06000000",
+      "zip_code": "06233200",
       "street_name": "Street",
       "street_number": "123"
     },
-    "email": "test_user_15230029@testuser.com",
+    "email": "test_user_64585784@testuser.com",
     "identification": {
       "number": "19119119100",
       "type": "CPF"
@@ -62,27 +62,25 @@
     "default_payment_method_id": "master",
     "excluded_payment_methods": [
       {
-        "id": "visa"
+        "id": ""
       }
     ],
     "excluded_payment_types": [
       {
-        "id": "debit_card"
+        "id": "ticket"
       }
     ],
-    "installments": 6,
+    "installments": 5,
     "default_installments": 1
   },
-  "processing_modes": [
-    "aggregator"
-  ],
+  "processing_modes": null,
   "product_id": null,
   "redirect_urls": {
     "failure": "",
     "pending": "",
     "success": ""
   },
-  "sandbox_init_point": "https://sandbox.mercadopago.com.br/checkout/v1/redirect?pref_id=539675046-7a2dff87-ab06-409a-8545-7d396899f675",
+  "sandbox_init_point": "https://sandbox.mercadopago.com.br/checkout/v1/redirect?pref_id=823549964-e8063b12-1c8b-4333-b075-3ae52a0371c8",
   "site_id": "MLB",
   "shipments": {
     "mode": "custom",
@@ -99,22 +97,7 @@
       "country_name": null
     }
   },
-  "statement_descriptor": "Statement Descriptor",
-  "tracks": [
-    {
-      "type": "google_ad",
-      "values": {
-        "conversion_id": "1123",
-        "conversion_label": "label"
-      }
-    },
-    {
-      "type": "facebook_ad",
-      "values": {
-        "pixel_id": "111111"
-      }
-    }
-  ],
+  "statement_descriptor": "Test Store",
   "total_amount": null,
   "last_updated": null
 }
