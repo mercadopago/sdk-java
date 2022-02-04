@@ -1,7 +1,6 @@
 package com.mercadopago.exceptions;
 
 import lombok.Getter;
-import org.apache.commons.lang3.StringUtils;
 
 /** MPException Class. */
 @Getter
@@ -20,6 +19,7 @@ public class MPException extends Exception {
    * MPException constructor.
    *
    * @param message message
+   * @param cause cause
    */
   public MPException(String message, Throwable cause) {
     super(message, cause);

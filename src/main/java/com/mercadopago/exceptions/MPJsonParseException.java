@@ -1,15 +1,21 @@
 package com.mercadopago.exceptions;
 
-/** */
+/** MPJsonParseException class. */
 public class MPJsonParseException extends MPException {
-  /** @param message */
+  /**
+   * MPJsonParseException constructor.
+   *
+   * @param message message
+   */
   public MPJsonParseException(String message) {
     super(message);
   }
 
   /**
-   * @param message
-   * @param throwable
+   * MPJsonParseException constructor.
+   *
+   * @param message message
+   * @param throwable throwable
    */
   public MPJsonParseException(String message, Throwable throwable) {
     super(message, throwable);

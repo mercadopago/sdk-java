@@ -8,7 +8,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.mercadopago.MercadoPagoConfig;
-import com.mercadopago.core.MPCoreUtils;
 import com.mercadopago.exceptions.MPException;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -21,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -182,12 +182,30 @@ public class MockHelper {
 
     String requestPayload = null;
     try {
-      requestPayload = MPCoreUtils.inputStreamToString(content);
+      requestPayload = inputStreamToString(content);
     } catch (MPException e) {
       e.printStackTrace();
     }
 
     assert requestPayload != null;
     return new JsonParser().parse(requestPayload);
+  }
+
+  private static String inputStreamToString(InputStream is) throws MPException {
+    String value = "";
+    if (is != null) {
+      try {
+        ByteArrayOutputStream result = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int length;
+        while ((length = is.read(buffer)) != -1) {
+          result.write(buffer, 0, length);
+        }
+        value = result.toString("UTF-8");
+      } catch (Exception ex) {
+        throw new MPException(ex);
+      }
+    }
+    return value;
   }
 }
