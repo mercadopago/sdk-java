@@ -1,10 +1,10 @@
 {
   "id": 17014025134,
-  "date_created": "3921-01-10T10:10:10.000-00:00",
-  "date_approved": "3921-01-10T10:10:10.000-00:00",
-  "date_last_updated": "3921-01-10T10:10:10.000-00:00",
+  "date_created": "2022-01-10T10:10:10.000-00:00",
+  "date_approved": "2022-01-10T10:10:10.000-00:00",
+  "date_last_updated": "2022-01-10T10:10:10.000-00:00",
   "date_of_expiration": null,
-  "money_release_date": "3921-01-10T10:10:10.000-00:00",
+  "money_release_date": "2022-01-10T10:10:10.000-00:00",
   "operation_type": "regular_payment",
   "issuer_id": "24",
   "payment_method_id": "master",
@@ -72,7 +72,7 @@
       },
       "first_name": "Nome",
       "last_name": "Sobrenome",
-      "registration_date": "3921-01-10T10:10:10.000-00:00"
+      "registration_date": "2022-01-10T10:10:10.000-00:00"
     },
     "shipments": {
       "receiver_address": {
@@ -122,8 +122,8 @@
     "last_four_digits": "6351",
     "expiration_month": 12,
     "expiration_year": 2022,
-    "date_created": "3921-01-10T10:10:10.000-00:00",
-    "date_last_updated": "3921-01-10T10:10:10.000-00:00",
+    "date_created": "2022-01-10T10:10:10.000-00:00",
+    "date_last_updated": "2022-01-10T10:10:10.000-00:00",
     "cardholder": {
       "name": "APRO",
       "identification": {

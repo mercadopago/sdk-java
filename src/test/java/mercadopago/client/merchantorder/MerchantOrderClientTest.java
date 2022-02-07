@@ -2,7 +2,6 @@ package mercadopago.client.merchantorder;
 
 import static com.mercadopago.net.HttpStatus.CREATED;
 import static com.mercadopago.net.HttpStatus.OK;
-import static java.util.Calendar.JANUARY;
 import static mercadopago.helper.MockHelper.generateHttpResponseFromFile;
 import static mercadopago.helper.MockHelper.generateJsonElement;
 import static mercadopago.helper.MockHelper.generateJsonElementFromUriRequest;
@@ -26,7 +25,8 @@ import com.mercadopago.net.MPSearchRequest;
 import com.mercadopago.resources.merchantorder.MerchantOrder;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
 import mercadopago.BaseClientTest;
@@ -37,7 +37,9 @@ import org.junit.jupiter.api.Test;
 
 class MerchantOrderClientTest extends BaseClientTest {
 
-  private static final int YEAR = 2021;
+  private static final int YEAR = 2022;
+
+  private static final int JANUARY = 1;
 
   private static final int TEN = 10;
 
@@ -53,7 +55,8 @@ class MerchantOrderClientTest extends BaseClientTest {
 
   private static final long MERCHANT_ORDER_ID = 4018801790L;
 
-  private static final Date DATE = new Date(YEAR, JANUARY, TEN, TEN, TEN, TEN);
+  private static final OffsetDateTime DATE =
+      OffsetDateTime.of(YEAR, JANUARY, TEN, TEN, TEN, TEN, 0, ZoneOffset.UTC);
 
   MerchantOrderClient client = new MerchantOrderClient();
 
