@@ -1,7 +1,7 @@
 package com.mercadopago.resources.preapproval;
 
 import com.mercadopago.net.MPResource;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import lombok.Getter;
 
 /** Preapproval resource. */
@@ -35,10 +35,10 @@ public class Preapproval extends MPResource {
   private String externalReference;
 
   /** Creation date. */
-  private Date dateCreated;
+  private OffsetDateTime dateCreated;
 
   /** Last modified date. */
-  private Date lastModified;
+  private OffsetDateTime lastModified;
 
   /** Preapproval checkout link. */
   private String initPoint;

@@ -6,30 +6,50 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializer;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.MalformedJsonException;
-import com.mercadopago.net.MPElementsResourcesPage;
-import com.mercadopago.exceptions.MPException;
 import com.mercadopago.exceptions.MPJsonParseException;
+import com.mercadopago.net.MPElementsResourcesPage;
 import com.mercadopago.net.MPResource;
 import com.mercadopago.net.MPResourceList;
 import com.mercadopago.net.MPResultsResourcesPage;
 import java.io.IOException;
 import java.io.StringReader;
 import java.lang.reflect.Type;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /** Serializer class, responsible for objects serialization and deserialization. */
 public class Serializer {
 
-  private static final String DATE_FORMAT_ISO8601 = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
+  private static final String DESERIALIZE_DATE_FORMAT_ISO8601 =
+      "yyyy-MM-dd'T'HH:mm:ss.SSS[XXX][XX][X]";
+
+  private static final String SERIALIZE_DATE_FORMAT_ISO8601 = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
 
   private static final Gson GSON =
       new GsonBuilder()
-          .setDateFormat(DATE_FORMAT_ISO8601)
+          .registerTypeAdapter(
+              OffsetDateTime.class,
+              (JsonDeserializer<OffsetDateTime>)
+                  (json, type, context) ->
+                      OffsetDateTime.parse(
+                          json.getAsString(),
+                          DateTimeFormatter.ofPattern(DESERIALIZE_DATE_FORMAT_ISO8601)))
+          .registerTypeAdapter(
+              OffsetDateTime.class,
+              (JsonSerializer<OffsetDateTime>)
+                  (offsetDateTime, type, context) ->
+                      new JsonPrimitive(
+                          DateTimeFormatter.ofPattern(SERIALIZE_DATE_FORMAT_ISO8601)
+                              .format(offsetDateTime)))
           .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
           .create();
 

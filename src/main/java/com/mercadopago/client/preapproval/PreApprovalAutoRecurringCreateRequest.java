@@ -1,7 +1,7 @@
 package com.mercadopago.client.preapproval;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -22,8 +22,8 @@ public class PreApprovalAutoRecurringCreateRequest {
   private final String frequencyType;
 
   /** Recurring start date. */
-  private final Date startDate;
+  private final OffsetDateTime startDate;
 
   /** Recurring end date. */
-  private final Date endDate;
+  private final OffsetDateTime endDate;
 }

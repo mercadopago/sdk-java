@@ -15,9 +15,9 @@ import com.mercadopago.net.MPResourceList;
 import com.mercadopago.resources.customer.CustomerCard;
 import com.mercadopago.resources.customer.CustomerCardIssuer;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import mercadopago.BaseClientTest;
 import mercadopago.helper.MockHelper;
 import org.apache.http.HttpHeaders;
@@ -233,9 +233,10 @@ public class CustomerCardClientTest extends BaseClientTest {
     assertEquals("19119119100", card.getCardholder().getIdentification().getNumber());
     assertEquals("CPF", card.getCardholder().getIdentification().getType());
 
-    DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-    assertEquals(df.parse("2019-07-03T21:15:35.000Z"), card.getDateCreated());
-    assertEquals(df.parse("2019-07-03T21:19:18.000Z"), card.getDateLastUpdated());
+    assertEquals(
+        OffsetDateTime.of(2019, 7, 3, 21, 15, 35, 0, ZoneOffset.UTC), card.getDateCreated());
+    assertEquals(
+        OffsetDateTime.of(2019, 7, 3, 21, 19, 18, 0, ZoneOffset.UTC), card.getDateLastUpdated());
     assertEquals("649457098-FybpOkG6zH8QRm", card.getCustomerId());
     assertEquals("448870796", card.getUserId());
     assertTrue(card.isLiveMode());

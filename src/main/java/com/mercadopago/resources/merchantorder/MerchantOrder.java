@@ -2,7 +2,7 @@ package com.mercadopago.resources.merchantorder;
 
 import com.mercadopago.net.MPResource;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.Getter;
 
@@ -46,7 +46,7 @@ public class MerchantOrder extends MPResource {
   private BigDecimal shippingCost;
 
   /** Date of creation. */
-  private Date dateCreated;
+  private OffsetDateTime dateCreated;
 
   /** If the Order is expired (true) or not (false). */
   private boolean cancelled;
@@ -76,5 +76,5 @@ public class MerchantOrder extends MPResource {
   private String orderStatus;
 
   /** Last modified date. */
-  private Date lastUpdated;
+  private OffsetDateTime lastUpdated;
 }

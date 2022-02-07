@@ -1,7 +1,7 @@
 package com.mercadopago.resources.customer;
 
 import com.mercadopago.net.MPResource;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -40,10 +40,10 @@ public class CustomerCard extends MPResource {
   private CustomerCardCardholder cardholder;
 
   /** Creation date of the record. */
-  private Date dateCreated;
+  private OffsetDateTime dateCreated;
 
   /** Date the record was last updated. */
-  private Date dateLastUpdated;
+  private OffsetDateTime dateLastUpdated;
 
   /** Id of the user. */
   private String userId;

@@ -1,6 +1,6 @@
 package com.mercadopago.resources.payment;
 
-import java.util.Date;
+import java.time.OffsetDateTime;
 import lombok.Getter;
 
 /** PaymentCard class. */
@@ -22,10 +22,10 @@ public class PaymentCard {
   private int expirationMonth;
 
   /** Creation date of card. */
-  private Date dateCreated;
+  private OffsetDateTime dateCreated;
 
   /** Last update of data from the card. */
-  private Date dateLastUpdated;
+  private OffsetDateTime dateLastUpdated;
 
   /** Card's owner data. */
   private PaymentCardholder cardholder;
