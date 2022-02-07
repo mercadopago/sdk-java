@@ -41,7 +41,7 @@ public class PreferenceRequest {
   /** Date when the preference will be expired. */
   private final Date expirationDateTo;
 
-  /** (true) if a preference expire, (false) if not. */
+  /** True if a preference expires, false if not. */
   private final Boolean expires;
 
   /** Reference you can synchronize with your payment system. */

@@ -20,7 +20,7 @@ public class PreferenceSearch extends MPResource {
   /** Created date of cash payment. */
   private Date dateCreated;
 
-  /** Date since the preference will be active. */
+  /** Date when the preference will be active. */
   private Date expirationDateFrom;
 
   /** Date when the preference will be expired. */
