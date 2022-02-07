@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class PreferenceTrackRequest {
-  /** Track type google_ad or facebook_ad). */
+  /** Track type (google_ad or facebook_ad). */
   private final String type;
 
   /** Values according the track type. */

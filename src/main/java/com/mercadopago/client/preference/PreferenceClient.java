@@ -114,7 +114,7 @@ public class PreferenceClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for creating preference.
+   * Method responsible for updating preference.
    *
    * @param id preferenceId
    * @param request request
@@ -126,7 +126,7 @@ public class PreferenceClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for creating preference with request options.
+   * Method responsible for updating preference with request options.
    *
    * @param id preferenceId
    * @param request request

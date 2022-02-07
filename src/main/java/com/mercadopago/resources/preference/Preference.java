@@ -34,19 +34,19 @@ public class Preference extends MPResource {
   /** URL where you'd like to receive a payment notification. */
   private String notificationUrl;
 
-  /** How will look the payment in the card bill. */
+  /** How the payment will be specified in the card bill. */
   private String statementDescriptor;
 
   /** Reference you can synchronize with your payment system. */
   private String externalReference;
 
-  /** (true) if a preference expire, (false) if not. */
+  /** True if a preference expires, false if not. */
   private Boolean expires;
 
   /** Expiration date of cash payment. */
   private Date dateOfExpiration;
 
-  /** Date since the preference will be active. */
+  /** Date when the preference will be active. */
   private Date expirationDateFrom;
 
   /** Date when the preference will be expired. */
