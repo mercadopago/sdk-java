@@ -1,32 +1,107 @@
 {
-  "id": "000000001-sT93QZFAsfxU9P5",
-  "email": "test_payer_999955@testuser.com",
-  "first_name": "Test",
-  "last_name": "Payer",
+  "id": "1068193981-pXRewrKqlP6pnn",
+  "email": "test_payer_1629112604@testuser.com",
+  "first_name": "Jhon",
+  "last_name": "Doe",
   "phone": {
-    "area_code": 11,
-    "number": 99999999
+    "area_code": "55",
+    "number": "991234567"
   },
   "identification": {
     "type": "CPF",
-    "number": 19119119100
+    "number": "12345678900"
   },
   "address": {
-    "id": "1162600094",
-    "zip_code": "01234567",
-    "street_name": "Rua Exemplo"
+    "id": "1215179651",
+    "zip_code": "01313000",
+    "street_name": "Rua Exemplo",
+    "street_number": 123
   },
-  "description": "description",
-  "date_created": "2018-02-20T15:36:23.541Z",
+  "date_registered": "2000-01-18T00:00:00.000-04:00",
+  "description": "Description del user",
+  "date_created": "0001-01-01T00:00:00.000+00:00",
+  "date_last_updated": "2022-02-03T19:30:56.805+00:00",
   "metadata": {
-    "test": "123"
+    "source_sync": "source_k"
   },
-  "default_address": "1162600094",
+  "default_card": "1643916656196",
+  "default_address": "1215179651",
   "cards": [
-    {}
+    {
+      "cardholder": {
+        "name": "APRO",
+        "identification": {
+          "number": null,
+          "type": "CPF"
+        }
+      },
+      "customer_id": "1068193981-pXRewrKqlP6pnn",
+      "date_created": "2022-02-03T15:30:27.449-04:00",
+      "date_last_updated": "2022-02-03T15:30:27.449-04:00",
+      "expiration_month": 12,
+      "expiration_year": 2022,
+      "first_six_digits": "503143",
+      "id": "1643916656196",
+      "issuer": {
+        "id": 24,
+        "name": "Mastercard"
+      },
+      "last_four_digits": "6351",
+      "payment_method": {
+        "id": "master",
+        "name": "master",
+        "payment_type_id": "credit_card",
+        "thumbnail": "http://img.mlstatic.com/org-img/MP3/API/logos/master.gif",
+        "secure_thumbnail": "https://www.mercadopago.com/org-img/MP3/API/logos/master.gif"
+      },
+      "security_code": {
+        "length": 3,
+        "card_location": "back"
+      },
+      "user_id": "1068193981"
+    }
   ],
   "addresses": [
-    {}
+    {
+      "apartment": null,
+      "city": {
+        "id": "BR-SP-44",
+        "name": "São Paulo"
+      },
+      "comments": null,
+      "country": {
+        "id": "BR",
+        "name": "Brasil"
+      },
+      "date_created": "2022-02-03T15:30:27.449-04:00",
+      "date_last_updated": null,
+      "floor": null,
+      "id": "1215179651",
+      "municipality": {
+        "id": null,
+        "name": null
+      },
+      "name": null,
+      "neighborhood": {
+        "id": null,
+        "name": "Bela Vista"
+      },
+      "normalized": true,
+      "phone": "0000000000",
+      "state": {
+        "id": "BR-SP",
+        "name": "São Paulo"
+      },
+      "street_name": "Rua Exemplo",
+      "street_number": 123,
+      "verifications": {
+        "shipment": {
+          "errors": [],
+          "success": true
+        }
+      },
+      "zip_code": "01313000"
+    }
   ],
-  "live_mode": true
+  "live_mode": false
 }
