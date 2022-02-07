@@ -2,7 +2,7 @@ package com.mercadopago.resources.payment;
 
 import com.mercadopago.net.MPResource;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import lombok.EqualsAndHashCode;
@@ -16,19 +16,19 @@ public class Payment extends MPResource {
   private long id;
 
   /** Creation date. */
-  private Date dateCreated;
+  private OffsetDateTime dateCreated;
 
   /** Approval date. */
-  private Date dateApproved;
+  private OffsetDateTime dateApproved;
 
   /** Last modified date. */
-  private Date dateLastUpdated;
+  private OffsetDateTime dateLastUpdated;
 
   /** Date of expiration. */
-  private Date dateOfExpiration;
+  private OffsetDateTime dateOfExpiration;
 
   /** Release date. */
-  private Date moneyReleaseDate;
+  private OffsetDateTime moneyReleaseDate;
 
   /** Release schema. */
   private String moneyReleaseSchema;

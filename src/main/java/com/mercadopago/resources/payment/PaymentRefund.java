@@ -3,7 +3,7 @@ package com.mercadopago.resources.payment;
 import com.mercadopago.net.MPResource;
 import com.mercadopago.resources.common.Source;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import lombok.Getter;
 
 /** PaymentRefund class. */
@@ -28,7 +28,7 @@ public class PaymentRefund extends MPResource {
   private String refundMode;
 
   /** Date of creation. */
-  private Date dateCreated;
+  private OffsetDateTime dateCreated;
 
   /** Refund reason. */
   private String reason;

@@ -1,7 +1,7 @@
 package com.mercadopago.client.payment;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import java.util.Map;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,7 +41,7 @@ public class PaymentCreateRequest {
   private final String couponCode;
 
   /** Date of expiration. */
-  private final Date dateOfExpiration;
+  private final OffsetDateTime dateOfExpiration;
 
   /** Payment reason or item title. */
   private final String description;

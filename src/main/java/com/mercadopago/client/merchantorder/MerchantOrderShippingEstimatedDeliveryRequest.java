@@ -1,6 +1,6 @@
 package com.mercadopago.client.merchantorder;
 
-import java.util.Date;
+import java.time.OffsetDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -9,7 +9,7 @@ import lombok.Getter;
 @Builder
 public class MerchantOrderShippingEstimatedDeliveryRequest {
   /** Estimated delivery date. */
-  private final Date date;
+  private final OffsetDateTime date;
 
   /** Estimated lower delivery time. */
   private final String timeFrom;
