@@ -1,7 +1,7 @@
 package com.mercadopago.resources.preapproval;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import lombok.Getter;
 
 /** Recurring data. */
@@ -20,8 +20,8 @@ public class PreapprovalAutoRecurring {
   private String frequencyType;
 
   /** Recurring start date. */
-  private Date startDate;
+  private OffsetDateTime startDate;
 
   /** Recurring end date. */
-  private Date endDate;
+  private OffsetDateTime endDate;
 }

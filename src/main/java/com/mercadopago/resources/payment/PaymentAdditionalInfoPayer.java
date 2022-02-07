@@ -1,7 +1,7 @@
 package com.mercadopago.resources.payment;
 
 import com.mercadopago.resources.common.Address;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import lombok.Getter;
 
 /** PaymentAdditionalInfoPayer class. */
@@ -20,5 +20,5 @@ public class PaymentAdditionalInfoPayer {
   private Address address;
 
   /** Date of registration of the payer on your site. */
-  private Date registrationDate;
+  private OffsetDateTime registrationDate;
 }

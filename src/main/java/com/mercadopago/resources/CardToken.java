@@ -2,7 +2,7 @@ package com.mercadopago.resources;
 
 import com.mercadopago.net.MPResource;
 import com.mercadopago.resources.customer.CustomerCardCardholder;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -36,13 +36,13 @@ public class CardToken extends MPResource {
   private String status;
 
   /** Date token was created */
-  private Date dateCreated;
+  private OffsetDateTime dateCreated;
 
   /** Date token was last updated */
-  private Date dateLastUpdated;
+  private OffsetDateTime dateLastUpdated;
 
   /** Date token expires */
-  private Date dateDue;
+  private OffsetDateTime dateDue;
 
   /** Flag indicating if Luhn validation is used */
   private Boolean luhnValidation;
