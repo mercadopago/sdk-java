@@ -26,7 +26,7 @@ public class PreferenceSearch extends MPResource {
   /** Date when the preference will be expired. */
   private Date expirationDateTo;
 
-  /** (true) if a preference expire, (false) if not. */
+  /** True if a preference expires, false if not. */
   private Boolean expires;
 
   /** Reference you can synchronize with your payment system. */
