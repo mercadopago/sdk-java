@@ -18,13 +18,13 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import mercadopago.BaseClientTest;
 import mercadopago.helper.MockHelper;
+import mercadopago.mock.HttpRequestMatcher;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.protocol.HttpContext;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatcher;
 
 public class OauthClientTest extends BaseClientTest {
   private static final String APPLICATION_JSON = "application/json";
@@ -44,23 +44,6 @@ public class OauthClientTest extends BaseClientTest {
   private final String responseRedirectUri = "https://mercadopago-redirect-uri.mercadopago.com";
 
   private HttpResponse userHttpResponse;
-
-  private class HttpRequestMatcher extends ArgumentMatcher<HttpRequestBase> {
-    private final HttpRequestBase httpRequest;
-
-    public HttpRequestMatcher(HttpRequestBase httpRequest) {
-      this.httpRequest = httpRequest;
-    }
-
-    @Override
-    public boolean matches(Object other) {
-      if (!(other instanceof HttpRequestBase)) {
-        return false;
-      }
-
-      return httpRequest.getURI().compareTo(((HttpRequestBase) other).getURI()) == 0;
-    }
-  }
 
   @Test
   public void getAuthorizationURLSuccess() throws IOException, MPException, URISyntaxException {
