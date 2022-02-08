@@ -3,7 +3,7 @@ package com.mercadopago.resources.customer;
 import com.mercadopago.net.MPResource;
 import com.mercadopago.resources.common.Identification;
 import com.mercadopago.resources.common.Phone;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import lombok.Getter;
@@ -31,7 +31,7 @@ public class Customer extends MPResource {
   /** Customer's phone information */
   private Phone phone;
 
-  /** Customer's identification information*/
+  /** Customer's identification information */
   private Identification identification;
 
   /** Customer's default address */
@@ -41,16 +41,16 @@ public class Customer extends MPResource {
   private CustomerDefaultAddress address;
 
   /** */
-  private Date dateRegistered;
+  private OffsetDateTime dateRegistered;
 
   /** */
   private String description;
 
   /** */
-  private Date dateCreated;
+  private OffsetDateTime dateCreated;
 
   /** */
-  private Date dateLastUpdated;
+  private OffsetDateTime dateLastUpdated;
 
   /** */
   private Map<String, Object> metadata;

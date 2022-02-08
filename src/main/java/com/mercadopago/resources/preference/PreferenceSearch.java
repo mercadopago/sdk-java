@@ -1,7 +1,7 @@
 package com.mercadopago.resources.preference;
 
 import com.mercadopago.net.MPResource;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.Getter;
 
@@ -18,13 +18,13 @@ public class PreferenceSearch extends MPResource {
   private Long collectorId;
 
   /** Created date of cash payment. */
-  private Date dateCreated;
+  private OffsetDateTime dateCreated;
 
   /** Date when the preference will be active. */
-  private Date expirationDateFrom;
+  private OffsetDateTime expirationDateFrom;
 
   /** Date when the preference will be expired. */
-  private Date expirationDateTo;
+  private OffsetDateTime expirationDateTo;
 
   /** True if a preference expires, false if not. */
   private Boolean expires;
@@ -36,7 +36,7 @@ public class PreferenceSearch extends MPResource {
   private List<String> items;
 
   /** Last updated. */
-  private Date lastUpdated;
+  private OffsetDateTime lastUpdated;
 
   /** Live mode. */
   private Boolean liveMode;

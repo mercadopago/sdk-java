@@ -2,7 +2,7 @@ package com.mercadopago.resources.preference;
 
 import com.mercadopago.net.MPResource;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import lombok.Getter;
@@ -44,13 +44,13 @@ public class Preference extends MPResource {
   private Boolean expires;
 
   /** Expiration date of cash payment. */
-  private Date dateOfExpiration;
+  private OffsetDateTime dateOfExpiration;
 
   /** Date when the preference will be active. */
-  private Date expirationDateFrom;
+  private OffsetDateTime expirationDateFrom;
 
   /** Date when the preference will be expired. */
-  private Date expirationDateTo;
+  private OffsetDateTime expirationDateTo;
 
   /** Collector ID. */
   private Long collectorId;
@@ -103,5 +103,5 @@ public class Preference extends MPResource {
   private String sandboxInitPoint;
 
   /** Date of creation. */
-  private Date dateCreated;
+  private OffsetDateTime dateCreated;
 }
