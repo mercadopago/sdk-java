@@ -26,7 +26,7 @@ import java.util.logging.StreamHandler;
 
 /** Client responsible for performing customer actions. */
 public class CustomerClient extends MercadoPagoClient {
-  private static final Logger LOGGER = Logger.getLogger(PaymentClient.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(CustomerClient.class.getName());
 
   private final CustomerCardClient cardClient;
 
