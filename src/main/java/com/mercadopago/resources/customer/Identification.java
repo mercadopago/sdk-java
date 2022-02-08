@@ -1,4 +1,4 @@
-package com.mercadopago.resources.datastructures.customer;
+package com.mercadopago.resources.customer;
 
 import lombok.Getter;
 
