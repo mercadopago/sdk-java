@@ -1,11 +1,13 @@
 package com.mercadopago.client.customer;
 
+import static com.mercadopago.MercadoPagoConfig.getStreamHandler;
 import static com.mercadopago.serialization.Serializer.deserializeResultsResourcesPageFromJson;
 
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.MercadoPagoClient;
+import com.mercadopago.client.payment.PaymentClient;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
@@ -19,9 +21,12 @@ import com.mercadopago.resources.customer.Customer;
 import com.mercadopago.resources.customer.CustomerCard;
 import com.mercadopago.serialization.Serializer;
 import java.lang.reflect.Type;
+import java.util.logging.Logger;
+import java.util.logging.StreamHandler;
 
 /** Client responsible for performing customer actions. */
 public class CustomerClient extends MercadoPagoClient {
+  private static final Logger LOGGER = Logger.getLogger(PaymentClient.class.getName());
 
   private final CustomerCardClient cardClient;
 
@@ -38,6 +43,9 @@ public class CustomerClient extends MercadoPagoClient {
   public CustomerClient(MPHttpClient httpClient) {
     super(httpClient);
     cardClient = new CustomerCardClient(httpClient);
+    StreamHandler streamHandler = getStreamHandler();
+    streamHandler.setLevel(MercadoPagoConfig.getLoggingLevel());
+    LOGGER.addHandler(streamHandler);
   }
 
   /**
@@ -60,6 +68,8 @@ public class CustomerClient extends MercadoPagoClient {
    * @throws MPException any error retrieving the customer card
    */
   public Customer get(String customerId, MPRequestOptions requestOptions) throws MPException {
+    LOGGER.info("Sending get customer request");
+
     MPResponse response =
         send(
             String.format("/v1/customers/%s", customerId),
@@ -94,6 +104,8 @@ public class CustomerClient extends MercadoPagoClient {
    */
   public Customer create(CustomerRequest request, MPRequestOptions requestOptions)
       throws MPException {
+    LOGGER.info("Sending create customer request");
+
     JsonObject payload = Serializer.serializeToJson(request);
     MPRequest mpRequest =
         MPRequest.buildRequest("/v1/customers", HttpMethod.POST, payload, null, requestOptions);
@@ -128,6 +140,8 @@ public class CustomerClient extends MercadoPagoClient {
   public Customer update(
       String customerId, CustomerRequest request, MPRequestOptions requestOptions)
       throws MPException {
+    LOGGER.info("Sending update customer request");
+
     JsonObject payload = Serializer.serializeToJson(request);
     MPRequest mpRequest =
         MPRequest.buildRequest(
@@ -163,6 +177,8 @@ public class CustomerClient extends MercadoPagoClient {
    * @throws MPException any error creating the customer card
    */
   public Customer delete(String customerId, MPRequestOptions requestOptions) throws MPException {
+    LOGGER.info("Sending delete customer request");
+
     MPRequest mpRequest =
         MPRequest.buildRequest(
             String.format("/v1/customers/%s", customerId),
@@ -198,6 +214,8 @@ public class CustomerClient extends MercadoPagoClient {
    */
   public MPResultsResourcesPage<Customer> search(
       MPSearchRequest request, MPRequestOptions requestOptions) throws MPException {
+    LOGGER.info("Sending search customer request");
+
     MPResponse response = search("/v1/customers/search", request, requestOptions);
 
     Type responseType = new TypeToken<MPResultsResourcesPage<Customer>>() {}.getType();
