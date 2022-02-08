@@ -189,7 +189,7 @@ public class CustomerClient extends MercadoPagoClient {
   }
 
   /**
-   * Update customer.
+   * Search customer.
    *
    * @param request attributes used to search for customer
    * @param requestOptions metadata to customize the request
