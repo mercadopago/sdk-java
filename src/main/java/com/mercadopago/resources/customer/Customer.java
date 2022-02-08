@@ -16,37 +16,54 @@ import lombok.Getter;
 @Getter
 public class Customer extends MPResource {
 
+  /** Customer ID */
   private String id;
 
+  /** Customer's email */
   private String email;
 
+  /** Customer's first name */
   private String firstName;
 
+  /** Customer's last name */
   private String lastName;
 
+  /** Customer's phone information */
   private Phone phone;
 
+  /** Customer's identification information*/
   private Identification identification;
 
+  /** Customer's default address */
   private String defaultAddress;
 
+  /** */
   private CustomerDefaultAddress address;
 
+  /** */
   private Date dateRegistered;
 
+  /** */
   private String description;
 
+  /** */
   private Date dateCreated;
 
+  /** */
   private Date dateLastUpdated;
 
+  /** */
   private Map<String, Object> metadata;
 
+  /** */
   private String defaultCard;
 
+  /** */
   private List<CustomerCard> cards;
 
+  /** */
   private List<CustomerAddress> addresses;
 
+  /** */
   private Boolean liveMode;
 }
