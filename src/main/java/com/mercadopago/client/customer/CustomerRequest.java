@@ -32,6 +32,9 @@ public class CustomerRequest {
   /** Default address information */
   private CustomerDefaultAddressRequest address;
 
+  /** Customer's default card */
+  private String defaultCard;
+
   /** Customer's registration date */
   private Date dateRegistred;
 
