@@ -10,7 +10,7 @@ import com.mercadopago.client.common.IdentificationRequest;
 import com.mercadopago.client.common.PhoneRequest;
 import com.mercadopago.client.customer.CustomerCardCreateRequest;
 import com.mercadopago.client.customer.CustomerClient;
-import com.mercadopago.client.customer.CustomerDefaultAddressRequest;
+import com.mercadopago.client.customer.CustomerAddressRequest;
 import com.mercadopago.client.customer.CustomerRequest;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPException;
@@ -90,7 +90,7 @@ public class CustomerClientTest extends BaseClientTest {
     CustomerRequest request =
         CustomerRequest.builder()
             .address(
-                CustomerDefaultAddressRequest.builder()
+                CustomerAddressRequest.builder()
                     .streetName("abc")
                     .streetNumber(123)
                     .zipCode("xyz")
@@ -117,7 +117,7 @@ public class CustomerClientTest extends BaseClientTest {
     CustomerRequest request =
         CustomerRequest.builder()
             .address(
-                CustomerDefaultAddressRequest.builder()
+                CustomerAddressRequest.builder()
                     .streetName("abc")
                     .streetNumber(123)
                     .zipCode("xyz")
@@ -153,7 +153,7 @@ public class CustomerClientTest extends BaseClientTest {
     CustomerRequest request =
         CustomerRequest.builder()
             .address(
-                CustomerDefaultAddressRequest.builder()
+                CustomerAddressRequest.builder()
                     .streetName("abc")
                     .streetNumber(123)
                     .zipCode("xyz")
@@ -181,7 +181,7 @@ public class CustomerClientTest extends BaseClientTest {
     CustomerRequest request =
         CustomerRequest.builder()
             .address(
-                CustomerDefaultAddressRequest.builder()
+                CustomerAddressRequest.builder()
                     .streetName("abc")
                     .streetNumber(123)
                     .zipCode("xyz")

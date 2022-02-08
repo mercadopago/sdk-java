@@ -30,7 +30,7 @@ public class CustomerRequest {
   private String defaultAddress;
 
   /** Default address information */
-  private CustomerDefaultAddressRequest address;
+  private CustomerAddressRequest address;
 
   /** Customer's default card */
   private String defaultCard;

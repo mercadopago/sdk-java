@@ -6,7 +6,7 @@ import lombok.Getter;
 /** Default address's information. */
 @Getter
 @Builder
-public class CustomerDefaultAddressRequest {
+public class CustomerAddressRequest {
   /** Address ID */
   private String id;
 
