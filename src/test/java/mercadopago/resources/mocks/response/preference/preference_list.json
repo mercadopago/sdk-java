@@ -1,0 +1,64 @@
+{
+  "elements": [
+    {
+      "id": "823549964-e8063b12-1c8b-4333-b075-3ae52a0371c8",
+      "client_id": "6245132082630004",
+      "collector_id": 823549964,
+      "concept_id": null,
+      "corporation_id": "",
+      "date_created": "2022-01-10T10:10:10.000+00:00",
+      "expiration_date_from": "2022-01-10T10:10:10.000+00:00",
+      "expiration_date_to": "2022-02-10T10:10:10.000+00:00",
+      "expires": false,
+      "external_reference": "1643827245",
+      "integrator_id": "",
+      "items": [
+        "Games"
+      ],
+      "last_updated": "2022-01-10T10:10:10.000+00:00",
+      "live_mode": false,
+      "marketplace": "NONE",
+      "operation_type": "regular_payment",
+      "payer_email": "test_user_64585784@testuser.com",
+      "payer_id": null,
+      "platform_id": "",
+      "processing_modes": null,
+      "product_id": "",
+      "purpose": "",
+      "site_id": "MLB",
+      "sponsor_id": 0,
+      "shipping_mode": "custom"
+    },
+    {
+      "id": "823549964-0348bff0-e5fc-4652-b7e2-957283c6478e",
+      "client_id": "6245132082630004",
+      "collector_id": 823549964,
+      "concept_id": null,
+      "corporation_id": "",
+      "date_created": "2022-02-03T17:09:13.266+00:00",
+      "expiration_date_from": "2022-01-10T10:10:10.000-03:00",
+      "expiration_date_to": "2022-02-10T10:10:10.000-03:00",
+      "expires": false,
+      "external_reference": "1643827245",
+      "integrator_id": "",
+      "items": [
+        "Games"
+      ],
+      "last_updated": null,
+      "live_mode": false,
+      "marketplace": "NONE",
+      "operation_type": "regular_payment",
+      "payer_email": "test_user_64585784@testuser.com",
+      "payer_id": null,
+      "platform_id": "",
+      "processing_modes": null,
+      "product_id": "",
+      "purpose": "",
+      "site_id": "MLB",
+      "sponsor_id": 0,
+      "shipping_mode": "custom"
+    }
+  ],
+  "next_offset": 2,
+  "total": 19
+}
