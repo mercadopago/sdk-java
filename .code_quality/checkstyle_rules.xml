@@ -70,10 +70,6 @@
             <property name="tokens"
                       value="LITERAL_TRY, LITERAL_FINALLY, LITERAL_IF, LITERAL_ELSE, LITERAL_SWITCH"/>
         </module>
-        <module name="NeedBraces">
-            <property name="tokens"
-                      value="LITERAL_DO, LITERAL_ELSE, LITERAL_FOR, LITERAL_IF, LITERAL_WHILE"/>
-        </module>
         <module name="LeftCurly">
             <property name="tokens"
                       value="ANNOTATION_DEF, CLASS_DEF, CTOR_DEF, ENUM_CONSTANT_DEF, ENUM_DEF,
@@ -255,7 +251,6 @@
         </module>
         <module name="NoWhitespaceBeforeCaseDefaultColon"/>
         <module name="OverloadMethodsDeclarationOrder"/>
-        <module name="VariableDeclarationUsageDistance"/>
         <module name="CustomImportOrder">
             <property name="sortImportsInGroupAlphabetically" value="true"/>
             <property name="separateLineBetweenGroups" value="true"/>
@@ -320,7 +315,6 @@
             <property name="allowedAnnotations" value="Override, Test"/>
             <property name="tokens" value="METHOD_DEF, CTOR_DEF, ANNOTATION_FIELD_DEF, COMPACT_CTOR_DEF"/>
         </module>
-        <module name="MagicNumber"/>
         <module name="MissingJavadocMethod">
             <property name="scope" value="public"/>
             <property name="minLineCount" value="2"/>
