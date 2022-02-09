@@ -69,7 +69,7 @@ public class PreferenceSearch extends MPResource {
   private String siteId;
 
   /** Sponsor id. */
-  private Integer sponsorId;
+  private Long sponsorId;
 
   /** Shipping mode. */
   private String shippingMode;

@@ -10,7 +10,7 @@ import lombok.Getter;
 @Getter
 public class MerchantOrder extends MPResource {
   /** Order ID. */
-  private long id;
+  private Long id;
 
   /** Payment preference identifier associated to the merchant order. */
   private String preferenceId;

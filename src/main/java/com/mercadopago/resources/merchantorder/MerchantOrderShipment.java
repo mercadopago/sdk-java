@@ -9,7 +9,7 @@ import lombok.Getter;
 @Getter
 public class MerchantOrderShipment {
   /** Shipping ID. */
-  private long id;
+  private Long id;
 
   /** Shipping type. */
   private String shippingType;
@@ -42,10 +42,10 @@ public class MerchantOrderShipment {
   private String serviceId;
 
   /** Sender ID. */
-  private long senderId;
+  private Long senderId;
 
   /** Receiver ID. */
-  private long receiverId;
+  private Long receiverId;
 
   /** Shipping address. */
   private MerchantOrderReceiverAddress receiverAddress;

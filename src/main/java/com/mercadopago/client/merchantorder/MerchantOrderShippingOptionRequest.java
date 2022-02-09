@@ -9,7 +9,7 @@ import lombok.Getter;
 @Builder
 public class MerchantOrderShippingOptionRequest {
   /** Shipping option ID. */
-  private final long id;
+  private final Long id;
 
   /** Net cost absorbed by the receiver. */
   private final BigDecimal cost;
@@ -27,7 +27,7 @@ public class MerchantOrderShippingOptionRequest {
   private final String name;
 
   /** Shipping method ID. */
-  private final long shippingMethodId;
+  private final Long shippingMethodId;
 
   /** Shipping time information. */
   private final MerchantOrderShippingSpeedRequest speed;
