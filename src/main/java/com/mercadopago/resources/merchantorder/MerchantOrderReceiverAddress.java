@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 public class MerchantOrderReceiverAddress {
   /** Receiver address ID. */
-  private long id;
+  private Long id;
 
   /** Street name and number of receiver address. */
   private String addressLine;

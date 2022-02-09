@@ -501,7 +501,7 @@ public class PaymentClientTest extends BaseClientTest {
     assertEquals("BRL", payment.getCurrencyId());
     assertEquals("PEDIDO NOVO - VIDEOGAME", payment.getDescription());
     assertTrue(payment.isLiveMode());
-    assertEquals(0L, payment.getSponsorId());
+    assertNull(payment.getSponsorId());
     assertEquals("301299", payment.getAuthorizationCode());
     assertNull(payment.getMoneyReleaseSchema());
     assertEquals(new BigDecimal(ZERO), payment.getTaxesAmount());

@@ -8,8 +8,8 @@ import lombok.Getter;
 @Builder
 public class MerchantOrderShippingSpeedRequest {
   /** Handling time. */
-  private final long handling;
+  private final Long handling;
 
   /** Shipping time. */
-  private final long shipping;
+  private final Long shipping;
 }

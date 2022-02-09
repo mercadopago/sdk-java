@@ -8,7 +8,7 @@ import lombok.Getter;
 @Builder
 public class MerchantOrderPayerRequest {
   /** Payer ID. */
-  private final long id;
+  private final Long id;
 
   /** Payer nickname. */
   private final String nickname;

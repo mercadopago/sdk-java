@@ -8,7 +8,7 @@ import lombok.Getter;
 @Getter
 public class MerchantOrderPayment {
   /** Payment ID. */
-  private long id;
+  private Long id;
 
   /** Product cost. */
   private BigDecimal transactionAmount;

@@ -11,7 +11,7 @@ import lombok.Getter;
 @Builder
 public class MerchantOrderShipmentRequest {
   /** Shipping ID. */
-  private final long id;
+  private final Long id;
 
   /** Shipping type. */
   private final String shippingType;
@@ -44,10 +44,10 @@ public class MerchantOrderShipmentRequest {
   private final String serviceId;
 
   /** Sender ID. */
-  private final long senderId;
+  private final Long senderId;
 
   /** Receiver ID. */
-  private final long receiverId;
+  private final Long receiverId;
 
   /** Shipping address. */
   private final MerchantOrderReceiverAddressRequest receiverAddress;

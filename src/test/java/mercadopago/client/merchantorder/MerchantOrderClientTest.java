@@ -158,7 +158,7 @@ class MerchantOrderClientTest extends BaseClientTest {
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
     MerchantOrderPayerRequest payerRequest =
-        MerchantOrderPayerRequest.builder().nickname("Test").build();
+        MerchantOrderPayerRequest.builder().id(0L).nickname("Test").build();
 
     MerchantOrderUpdateRequest updateRequest =
         MerchantOrderUpdateRequest.builder().payer(payerRequest).build();
@@ -191,7 +191,7 @@ class MerchantOrderClientTest extends BaseClientTest {
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
     MerchantOrderPayerRequest payerRequest =
-        MerchantOrderPayerRequest.builder().nickname("Test").build();
+        MerchantOrderPayerRequest.builder().id(0L).nickname("Test").build();
 
     MerchantOrderUpdateRequest updateRequest =
         MerchantOrderUpdateRequest.builder().payer(payerRequest).build();
