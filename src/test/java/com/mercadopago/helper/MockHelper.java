@@ -111,12 +111,12 @@ public class MockHelper {
     return gson.fromJson(payload, JsonElement.class);
   }
 
-  public static boolean areHeadersValid(Header[] headers, String method) throws MPException {
+  public static boolean areHeadersValid(Header[] headers, String method) {
     return hasMandatoryHeaders(headers, method) && haveMandatoryHeadersCorrectValues(headers);
   }
 
   private static boolean hasMandatoryHeaders(Header[] headers, String method) {
-    List<String> mandatoryHeaders = new ArrayList<String>();
+    List<String> mandatoryHeaders = new ArrayList<>();
     mandatoryHeaders.add("Authorization");
     mandatoryHeaders.add("User-Agent");
     mandatoryHeaders.add("X-Product-Id");
@@ -140,7 +140,7 @@ public class MockHelper {
     return true;
   }
 
-  private static boolean haveMandatoryHeadersCorrectValues(Header[] headers) throws MPException {
+  private static boolean haveMandatoryHeadersCorrectValues(Header[] headers) {
     boolean match;
 
     for (Header header : headers) {
