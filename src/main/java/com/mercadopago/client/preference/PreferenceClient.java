@@ -29,13 +29,13 @@ public class PreferenceClient extends MercadoPagoClient {
 
   private static final String URL_WITH_ID = "/checkout/preferences/%s";
 
-  /** PreferenceClient constructor. */
+  /** Default constructor. Uses the default http client used by the SDK. */
   public PreferenceClient() {
     this(MercadoPagoConfig.getHttpClient());
   }
 
   /**
-   * PreferenceClient constructor.
+   * Constructor used for providing a custom http client.
    *
    * @param httpClient httpClient
    */
@@ -49,9 +49,10 @@ public class PreferenceClient extends MercadoPagoClient {
   /**
    * Method responsible for getting preference.
    *
-   * @param id preferenceId
-   * @return preference
-   * @throws MPException exception
+   * @param id preference id
+   * @return preference information
+   * @throws MPException an error if the request fails
+   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences_id/get">api docs</a>
    */
   public Preference get(String id) throws MPException {
     return this.get(id, null);
@@ -60,10 +61,11 @@ public class PreferenceClient extends MercadoPagoClient {
   /**
    * Method responsible for getting preference.
    *
-   * @param id preferenceId
-   * @param requestOptions requestOptions
-   * @return preference
-   * @throws MPException exception
+   * @param id preference id
+   * @param requestOptions metadata to customize the request
+   * @return preference information
+   * @throws MPException an error if the request fails
+   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences_id/get">api docs</a>
    */
   public Preference get(String id, MPRequestOptions requestOptions) throws MPException {
     LOGGER.info("Sending get preference request");
@@ -79,9 +81,10 @@ public class PreferenceClient extends MercadoPagoClient {
   /**
    * Method responsible for creating preference.
    *
-   * @param request request
-   * @return preference response
-   * @throws MPException exception
+   * @param request attributes used to create a preference
+   * @return preference information
+   * @throws MPException an error if the request fails
+   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences/post">api docs</a>
    */
   public Preference create(PreferenceRequest request) throws MPException {
     return this.create(request, null);
@@ -90,10 +93,11 @@ public class PreferenceClient extends MercadoPagoClient {
   /**
    * Method responsible for creating preference with request options.
    *
-   * @param request request
-   * @param requestOptions requestOptions
-   * @return preference response
-   * @throws MPException exception
+   * @param request attributes used to create a preference
+   * @param requestOptions metadata to customize the request
+   * @return preference information
+   * @throws MPException an error if the request fails
+   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences/post">api docs</a>
    */
   public Preference create(PreferenceRequest request, MPRequestOptions requestOptions)
       throws MPException {
@@ -116,10 +120,11 @@ public class PreferenceClient extends MercadoPagoClient {
   /**
    * Method responsible for updating preference.
    *
-   * @param id preferenceId
-   * @param request request
-   * @return preference response
-   * @throws MPException exception
+   * @param id preference id
+   * @param request attributes used to create a preference
+   * @return preference information
+   * @throws MPException an error if the request fails
+   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences_id/put">api docs</a>
    */
   public Preference update(String id, PreferenceRequest request) throws MPException {
     return this.update(id, request, null);
@@ -128,11 +133,12 @@ public class PreferenceClient extends MercadoPagoClient {
   /**
    * Method responsible for updating preference with request options.
    *
-   * @param id preferenceId
-   * @param request request
-   * @param requestOptions requestOptions
-   * @return preference response
-   * @throws MPException exception
+   * @param id preference id
+   * @param request attributes used to create a preference
+   * @param requestOptions metadata to customize the request
+   * @return preference information
+   * @throws MPException an error if the request fails
+   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences_id/put">api docs</a>
    */
   public Preference update(String id, PreferenceRequest request, MPRequestOptions requestOptions)
       throws MPException {
@@ -155,9 +161,10 @@ public class PreferenceClient extends MercadoPagoClient {
   /**
    * Method responsible for search preference.
    *
-   * @param request request
+   * @param request attributes used to create a preference
    * @return list of results
-   * @throws MPException exception
+   * @throws MPException an error if the request fails
+   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences_search/get">api docs</a>
    */
   public MPElementsResourcesPage<PreferenceSearch> search(MPSearchRequest request)
       throws MPException {
@@ -167,10 +174,11 @@ public class PreferenceClient extends MercadoPagoClient {
   /**
    * Method responsible for search preference.
    *
-   * @param request request
-   * @param requestOptions requestOptions
+   * @param request attributes used to create a preference
+   * @param requestOptions metadata to customize the request
    * @return list of results
-   * @throws MPException exception
+   * @throws MPException an error if the request fails
+   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences_search/get">api docs</a>
    */
   public MPElementsResourcesPage<PreferenceSearch> search(
       MPSearchRequest request, MPRequestOptions requestOptions) throws MPException {

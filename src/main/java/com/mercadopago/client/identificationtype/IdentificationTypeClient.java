@@ -19,13 +19,13 @@ import java.util.logging.StreamHandler;
 public class IdentificationTypeClient extends MercadoPagoClient {
   private static final Logger LOGGER = Logger.getLogger(IdentificationTypeClient.class.getName());
 
-  /** IdentificationTypeClient constructor. */
+  /** Default constructor. Uses the default http client used by the SDK. */
   public IdentificationTypeClient() {
     this(MercadoPagoConfig.getHttpClient());
   }
 
   /**
-   * IdentificationTypeClient constructor.
+   * Constructor used for providing a custom http client.
    *
    * @param httpClient httpClient
    */
@@ -40,7 +40,8 @@ public class IdentificationTypeClient extends MercadoPagoClient {
    * List all identification types.
    *
    * @return list of identification types
-   * @throws MPException exception
+   * @throws MPException an error if the request fails
+   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/identification_types/_identification_types/get">api docs</a>
    */
   public MPResourceList<IdentificationType> list() throws MPException {
     return this.list(null);
@@ -49,9 +50,10 @@ public class IdentificationTypeClient extends MercadoPagoClient {
   /**
    * List all identification types.
    *
-   * @param requestOptions requestOptions
+   * @param requestOptions metadata to customize the request
    * @return list of identification types
-   * @throws MPException exception
+   * @throws MPException an error if the request fails
+   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/identification_types/_identification_types/get">api docs</a>
    */
   public MPResourceList<IdentificationType> list(MPRequestOptions requestOptions)
       throws MPException {
