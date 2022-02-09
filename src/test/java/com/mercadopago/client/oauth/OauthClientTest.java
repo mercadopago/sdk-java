@@ -25,6 +25,7 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.protocol.HttpContext;
 import org.junit.jupiter.api.Test;
 
+/** OauthClientTest class. */
 public class OauthClientTest extends BaseClientTest {
   private static final String APPLICATION_JSON = "application/json";
 

@@ -45,12 +45,7 @@ public class CardTokenClient extends MercadoPagoClient {
    */
   public CardToken get(String id, MPRequestOptions requestOptions) throws MPException {
     MPResponse response =
-        send(
-            String.format("/v1/card_tokens/%s", id),
-            HttpMethod.GET,
-            null,
-            null,
-            requestOptions);
+        send(String.format("/v1/card_tokens/%s", id), HttpMethod.GET, null, null, requestOptions);
     CardToken cardToken = Serializer.deserializeFromJson(CardToken.class, response.getContent());
     cardToken.setResponse(response);
     return cardToken;
@@ -63,8 +58,7 @@ public class CardTokenClient extends MercadoPagoClient {
    * @return card token
    * @throws MPException any error creating the customer card
    */
-  public CardToken create(CardTokenRequest request)
-      throws MPException {
+  public CardToken create(CardTokenRequest request) throws MPException {
     return this.create(request, null);
   }
 

@@ -56,7 +56,7 @@ public class OauthClient extends MercadoPagoClient {
    *
    * @param appId Id of the app
    * @param redirectUri URL for redirection after authorization
-   * @param requestOptions
+   * @param requestOptions request options
    * @return URL to perform authorization
    */
   public String getAuthorizationURL(

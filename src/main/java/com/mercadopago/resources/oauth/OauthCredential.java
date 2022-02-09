@@ -6,18 +6,18 @@ import lombok.Getter;
 /** Credential information for an Oauth authorization. */
 @Getter
 public class OauthCredential extends MPResource {
-  /** Access token of the user */
+  /** Access token of the user. */
   private String accessToken;
 
-  /** Type of token */
+  /** Type of token. */
   private String tokenType;
 
-  /** Expiration date of the token */
+  /** Expiration date of the token. */
   private Long expiresIn;
 
-  /** The Oauth scope associated to the token */
+  /** The Oauth scope associated to the token. */
   private String scope;
 
-  /** Token used to renew Oauth credential */
+  /** Token used to renew Oauth credential. */
   private String refreshToken;
 }

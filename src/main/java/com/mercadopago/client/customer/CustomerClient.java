@@ -7,7 +7,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.MercadoPagoClient;
-import com.mercadopago.client.payment.PaymentClient;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
@@ -287,8 +286,7 @@ public class CustomerClient extends MercadoPagoClient {
    * @return the deleted card
    * @throws MPException any error deleting the customer card
    */
-  public CustomerCard deleteCard(String customerId, String cardId)
-      throws MPException {
+  public CustomerCard deleteCard(String customerId, String cardId) throws MPException {
     return this.deleteCard(customerId, cardId, null);
   }
 
@@ -313,8 +311,7 @@ public class CustomerClient extends MercadoPagoClient {
    * @return list of customer cards
    * @throws MPException any error listing customer cards
    */
-  public MPResourceList<CustomerCard> listCards(String customerId)
-      throws MPException {
+  public MPResourceList<CustomerCard> listCards(String customerId) throws MPException {
     return this.listCards(customerId, null);
   }
 

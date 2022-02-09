@@ -23,6 +23,7 @@ import java.lang.reflect.Type;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/** SerializerTest class. */
 public class SerializerTest {
   public final String malformedJson = "/*** malformed json */";
 

@@ -16,10 +16,12 @@ public class UserClient extends MercadoPagoClient {
   public UserClient() {
     this(MercadoPagoConfig.getHttpClient());
   }
+
   /**
    * Constructor used for providing a custom http client.
    *
-   * @param httpClient Http Client */
+   * @param httpClient Http Client
+   */
   public UserClient(MPHttpClient httpClient) {
     super(httpClient);
   }
