@@ -66,6 +66,8 @@ public class SerializerTest {
     Type responseType = new TypeToken<MPResultsResourcesPage<Payment>>() {}.getType();
     MPResultsResourcesPage<Payment> result =
         deserializeResultsResourcesPageFromJson(responseType, paymentSearchJson);
+    assertNotNull(result);
+    assertEquals(5, result.getResults().size());
   }
 
   @Test
@@ -83,6 +85,8 @@ public class SerializerTest {
     Type responseType = new TypeToken<MPElementsResourcesPage<MerchantOrder>>() {}.getType();
     MPElementsResourcesPage<MerchantOrder> result =
         Serializer.deserializeElementsResourcesPageFromJson(responseType, merchantOrderJson);
+    assertNotNull(result);
+    assertEquals(2, result.getElements().size());
   }
 
   @Test
