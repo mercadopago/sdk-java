@@ -3,7 +3,7 @@ package com.mercadopago.client.preference;
 import com.mercadopago.client.common.AddressRequest;
 import com.mercadopago.client.common.IdentificationRequest;
 import com.mercadopago.client.common.PhoneRequest;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -30,5 +30,5 @@ public class PreferencePayerRequest {
   private final AddressRequest address;
 
   /** Date of creation of the payer user. */
-  private final Date dateCreated;
+  private final OffsetDateTime dateCreated;
 }

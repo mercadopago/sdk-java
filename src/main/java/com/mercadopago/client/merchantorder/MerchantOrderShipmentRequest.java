@@ -1,6 +1,6 @@
 package com.mercadopago.client.merchantorder;
 
-import java.util.Date;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import lombok.Builder;
@@ -32,13 +32,13 @@ public class MerchantOrderShipmentRequest {
   private final List<Map<String, Object>> items;
 
   /** Date of creation. */
-  private final Date dateCreated;
+  private final OffsetDateTime dateCreated;
 
   /** Last modified date. */
-  private final Date lastModified;
+  private final OffsetDateTime lastModified;
 
   /** First printed date. */
-  private final Date dateFirstPrinted;
+  private final OffsetDateTime dateFirstPrinted;
 
   /** Shipping service ID. */
   private final String serviceId;
