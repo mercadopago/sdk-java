@@ -1,6 +1,6 @@
 package com.mercadopago.resources.preference;
 
-import java.util.Date;
+import java.time.OffsetDateTime;
 import lombok.Getter;
 
 /** Flight information. */
@@ -13,10 +13,10 @@ public class PreferenceRoute {
   private String destination;
 
   /** Departure date. */
-  private Date departureDateTime;
+  private OffsetDateTime departureDateTime;
 
   /** Arrival date. */
-  private Date arrivalDateTime;
+  private OffsetDateTime arrivalDateTime;
 
   /** Company. */
   private String company;

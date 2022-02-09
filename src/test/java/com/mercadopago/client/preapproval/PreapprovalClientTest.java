@@ -5,7 +5,6 @@ import static com.mercadopago.helper.MockHelper.generateJsonElement;
 import static com.mercadopago.helper.MockHelper.generateJsonElementFromUriRequest;
 import static com.mercadopago.net.HttpStatus.CREATED;
 import static com.mercadopago.net.HttpStatus.OK;
-import static java.util.Calendar.JANUARY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -22,7 +21,8 @@ import com.mercadopago.net.MPSearchRequest;
 import com.mercadopago.resources.preapproval.Preapproval;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.protocol.HttpContext;
@@ -40,16 +40,19 @@ class PreapprovalClientTest extends BaseClientTest {
 
   private static final int DEFAULT_TIMEOUT = 1000;
 
-  private static final int START_ADDITIONAL_YEAR = 122;
+  private static final int START_YEAR = 2022;
 
-  private static final int END_ADDITIONAL_YEAR = 123;
+  private static final int END_YEAR = 2023;
+
+  private static final int JANUARY = 1;
 
   private static final int TEN = 10;
 
-  private static final Date START_DATE =
-      new Date(START_ADDITIONAL_YEAR, JANUARY, TEN, TEN, TEN, TEN);
+  private static final OffsetDateTime START_DATE =
+      OffsetDateTime.of(START_YEAR, JANUARY, TEN, TEN, TEN, TEN, 0, ZoneOffset.UTC);
 
-  private static final Date END_DATE = new Date(END_ADDITIONAL_YEAR, JANUARY, TEN, TEN, TEN, TEN);
+  private static final OffsetDateTime END_DATE =
+      OffsetDateTime.of(END_YEAR, JANUARY, TEN, TEN, TEN, TEN, 0, ZoneOffset.UTC);
 
   PreapprovalClient client = new PreapprovalClient();
 

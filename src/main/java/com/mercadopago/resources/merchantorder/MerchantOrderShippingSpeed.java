@@ -6,8 +6,8 @@ import lombok.Getter;
 @Getter
 public class MerchantOrderShippingSpeed {
   /** Handling time. */
-  private long handling;
+  private Long handling;
 
   /** Shipping time. */
-  private long shipping;
+  private Long shipping;
 }

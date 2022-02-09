@@ -3,7 +3,7 @@ package com.mercadopago.resources.preference;
 import com.mercadopago.resources.common.Address;
 import com.mercadopago.resources.common.Identification;
 import com.mercadopago.resources.common.Phone;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import lombok.Getter;
 
 /** Payer information from preference. */
@@ -28,8 +28,8 @@ public class PreferencePayer {
   private Address address;
 
   /** Date of creation of the payer user. */
-  private Date dateCreated;
+  private OffsetDateTime dateCreated;
 
   /** Date of the last purchase. */
-  private Date lastPurchase;
+  private OffsetDateTime lastPurchase;
 }

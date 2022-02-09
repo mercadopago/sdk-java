@@ -1,14 +1,14 @@
 package com.mercadopago.resources.merchantorder;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import lombok.Getter;
 
 /** Payment information. */
 @Getter
 public class MerchantOrderPayment {
   /** Payment ID. */
-  private long id;
+  private Long id;
 
   /** Product cost. */
   private BigDecimal transactionAmount;
@@ -32,13 +32,13 @@ public class MerchantOrderPayment {
   private String operationType;
 
   /** Approval date. */
-  private Date dateApproved;
+  private OffsetDateTime dateApproved;
 
   /** Date of creation. */
-  private Date dateCreated;
+  private OffsetDateTime dateCreated;
 
   /** Last modified date. */
-  private Date lastModified;
+  private OffsetDateTime lastModified;
 
   /** Amount refunded in this payment. */
   private BigDecimal amountRefunded;

@@ -1,7 +1,7 @@
 package com.mercadopago.client.preference;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import lombok.Builder;
@@ -30,16 +30,16 @@ public class PreferenceRequest {
   private final Boolean binaryMode;
 
   /** Expiration date of cash payment. */
-  private final Date dateOfExpiration;
+  private final OffsetDateTime dateOfExpiration;
 
   /** Differential pricing configuration for this preference. */
   private final PreferenceDifferentialPricingRequest differentialPricing;
 
   /** Date since the preference will be active. */
-  private final Date expirationDateFrom;
+  private final OffsetDateTime expirationDateFrom;
 
   /** Date when the preference will be expired. */
-  private final Date expirationDateTo;
+  private final OffsetDateTime expirationDateTo;
 
   /** True if a preference expires, false if not. */
   private final Boolean expires;

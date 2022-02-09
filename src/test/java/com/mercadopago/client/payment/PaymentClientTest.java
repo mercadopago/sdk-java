@@ -6,7 +6,6 @@ import static com.mercadopago.helper.MockHelper.generateJsonElementFromUriReques
 import static com.mercadopago.net.HttpStatus.CREATED;
 import static com.mercadopago.net.HttpStatus.OK;
 import static java.math.BigInteger.ZERO;
-import static java.util.Calendar.JANUARY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -29,8 +28,9 @@ import com.mercadopago.resources.payment.Payment;
 import com.mercadopago.resources.payment.PaymentRefund;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -52,7 +52,9 @@ public class PaymentClientTest extends BaseClientTest {
 
   private static final int UNIT_PRICE = 100;
 
-  private static final int YEAR = 2021;
+  private static final int YEAR = 2022;
+
+  private static final int JANUARY = 1;
 
   private static final int TEN = 10;
 
@@ -86,7 +88,8 @@ public class PaymentClientTest extends BaseClientTest {
 
   private static final String REFUND_PARTIAL_JSON = "refund/refund_partial.json";
 
-  private static final Date DATE = new Date(YEAR, JANUARY, TEN, TEN, TEN, TEN);
+  private static final OffsetDateTime DATE =
+      OffsetDateTime.of(YEAR, JANUARY, TEN, TEN, TEN, TEN, 0, ZoneOffset.UTC);
 
   private static final int DEFAULT_TIMEOUT = 1000;
 
@@ -490,7 +493,7 @@ public class PaymentClientTest extends BaseClientTest {
     assertEquals("BRL", payment.getCurrencyId());
     assertEquals("PEDIDO NOVO - VIDEOGAME", payment.getDescription());
     assertTrue(payment.isLiveMode());
-    assertEquals(0L, payment.getSponsorId());
+    assertNull(payment.getSponsorId());
     assertEquals("301299", payment.getAuthorizationCode());
     assertNull(payment.getMoneyReleaseSchema());
     assertEquals(new BigDecimal(ZERO), payment.getTaxesAmount());

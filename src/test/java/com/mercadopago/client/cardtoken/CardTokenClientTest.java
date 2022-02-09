@@ -16,8 +16,8 @@ import com.mercadopago.mock.MPDefaultHttpClientMock;
 import com.mercadopago.net.HttpStatus;
 import com.mercadopago.resources.CardToken;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.ParseException;
@@ -149,10 +149,15 @@ public class CardTokenClientTest {
     assertEquals(16, token.getCardNumberLength());
     assertEquals(3, token.getSecurityCodeLength());
 
-    DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-    assertEquals(df.parse("2022-01-24T08:03:55.227-04:00"), token.getDateCreated());
-    assertEquals(df.parse("2022-01-24T08:03:55.227-04:00"), token.getDateLastUpdated());
-    assertEquals(df.parse("2022-02-01T08:03:55.227-04:00"), token.getDateDue());
+    assertEquals(
+        OffsetDateTime.of(2022, 1, 24, 8, 3, 55, 227000000, ZoneOffset.ofHours(-4)),
+        token.getDateCreated());
+    assertEquals(
+        OffsetDateTime.of(2022, 1, 24, 8, 3, 55, 227000000, ZoneOffset.ofHours(-4)),
+        token.getDateLastUpdated());
+    assertEquals(
+        OffsetDateTime.of(2022, 2, 1, 8, 3, 55, 227000000, ZoneOffset.ofHours(-4)),
+        token.getDateDue());
     assertNotNull(token.getResponse().getContent());
     assertEquals(HttpStatus.OK, token.getResponse().getStatusCode());
     assertEquals(1, token.getResponse().getHeaders().size());

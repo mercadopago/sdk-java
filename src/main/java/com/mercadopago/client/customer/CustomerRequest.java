@@ -2,7 +2,7 @@ package com.mercadopago.client.customer;
 
 import com.mercadopago.client.common.IdentificationRequest;
 import com.mercadopago.client.common.PhoneRequest;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import java.util.Map;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,7 +36,7 @@ public class CustomerRequest {
   private String defaultCard;
 
   /** Customer's registration date */
-  private Date dateRegistred;
+  private OffsetDateTime dateRegistred;
 
   /** Customer's description */
   private String description;

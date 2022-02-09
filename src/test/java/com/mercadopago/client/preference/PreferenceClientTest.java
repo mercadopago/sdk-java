@@ -26,9 +26,9 @@ import com.mercadopago.resources.preference.Preference;
 import com.mercadopago.resources.preference.PreferenceSearch;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
@@ -47,9 +47,11 @@ class PreferenceClientTest extends BaseClientTest {
 
   private static final String PREFERENCE_TEST_ID = "823549964-e8063b12-1c8b-4333-b075-3ae52a0371c8";
 
-  private static final Date EXPIRATION_DATE_FROM = new Date(122, Calendar.JANUARY, 10, 10, 10, 10);
+  private static final OffsetDateTime EXPIRATION_DATE_FROM =
+      OffsetDateTime.of(2022, 1, 10, 10, 10, 10, 0, ZoneOffset.UTC);
 
-  private static final Date EXPIRATION_DATE_TO = new Date(122, Calendar.FEBRUARY, 10, 10, 10, 10);
+  private static final OffsetDateTime EXPIRATION_DATE_TO =
+      OffsetDateTime.of(2022, 2, 10, 10, 10, 10, 0, ZoneOffset.UTC);
 
   private final PreferenceClient client = new PreferenceClient();
 

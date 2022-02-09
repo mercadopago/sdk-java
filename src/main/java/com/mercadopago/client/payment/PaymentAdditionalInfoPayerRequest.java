@@ -2,7 +2,7 @@ package com.mercadopago.client.payment;
 
 import com.mercadopago.client.common.AddressRequest;
 import com.mercadopago.client.common.PhoneRequest;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -23,7 +23,7 @@ public class PaymentAdditionalInfoPayerRequest {
   private final AddressRequest address;
 
   /** Payer registration date. */
-  private final Date registrationDate;
+  private final OffsetDateTime registrationDate;
 
   /** Payer authentication type. */
   private final String authenticationType;
@@ -35,5 +35,5 @@ public class PaymentAdditionalInfoPayerRequest {
   private final boolean isFirstPurchaseOnline;
 
   /** Date of last purchase. */
-  private final Date lastPurchase;
+  private final OffsetDateTime lastPurchase;
 }

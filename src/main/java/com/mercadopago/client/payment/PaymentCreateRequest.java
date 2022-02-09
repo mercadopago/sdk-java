@@ -1,7 +1,7 @@
 package com.mercadopago.client.payment;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import java.util.Map;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,7 +29,7 @@ public class PaymentCreateRequest {
   private final String callbackUrl;
 
   /** Discount campaign ID. */
-  private final Integer campaignId;
+  private final Long campaignId;
 
   /** Determines if the payment should be captured (true) or just reserved (false). */
   private final Boolean capture;
@@ -41,13 +41,13 @@ public class PaymentCreateRequest {
   private final String couponCode;
 
   /** Date of expiration. */
-  private final Date dateOfExpiration;
+  private final OffsetDateTime dateOfExpiration;
 
   /** Payment reason or item title. */
   private final String description;
 
   /** Id of the scheme for the absorption of financing fee. */
-  private final Integer differentialPricingId;
+  private final Long differentialPricingId;
 
   /** ID given by the merchant in their system. */
   private final String externalReference;

@@ -1,7 +1,7 @@
 package com.mercadopago.client.payment;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -37,5 +37,5 @@ public class PaymentItemRequest {
   private final boolean warranty;
 
   /** Event date. */
-  private final Date eventDate;
+  private final OffsetDateTime eventDate;
 }

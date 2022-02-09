@@ -1,6 +1,6 @@
 package com.mercadopago.resources.customer;
 
-import java.util.Date;
+import java.time.OffsetDateTime;
 import lombok.Getter;
 
 /** Customer's address. */
@@ -50,5 +50,5 @@ public class CustomerAddress {
   private String comments;
 
   /** Address date of creation */
-  private Date dateCreated;
+  private OffsetDateTime dateCreated;
 }

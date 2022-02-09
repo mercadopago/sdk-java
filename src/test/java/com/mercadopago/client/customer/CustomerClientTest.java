@@ -20,9 +20,9 @@ import com.mercadopago.resources.customer.Customer;
 import com.mercadopago.resources.customer.CustomerCard;
 import com.mercadopago.resources.customer.CustomerCardIssuer;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.http.HttpHeaders;
@@ -433,7 +433,6 @@ public class CustomerClientTest extends BaseClientTest {
   }
 
   private void assertCustomerFields(Customer customer) throws ParseException {
-    DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
     assertNotNull(customer);
     assertEquals("1068193981-pXRewrKqlP6pnn", customer.getId());
     assertEquals("test_payer_1629112604@testuser.com", customer.getEmail());
@@ -448,16 +447,18 @@ public class CustomerClientTest extends BaseClientTest {
     assertEquals("Rua Exemplo", customer.getAddress().getStreetName());
     assertEquals(123, customer.getAddress().getStreetNumber());
     assertEquals("Description del user", customer.getDescription());
-    assertEquals(df.parse("0001-01-01T00:00:00.000+00:00"), customer.getDateCreated());
+    assertEquals(OffsetDateTime.of(1, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), customer.getDateCreated());
     assertEquals("source_k", customer.getMetadata().get("source_sync"));
     assertEquals("1215179651", customer.getDefaultAddress());
     assertEquals("APRO", customer.getCards().get(0).getCardholder().getName());
     assertEquals("CPF", customer.getCards().get(0).getCardholder().getIdentification().getType());
     assertEquals("1068193981-pXRewrKqlP6pnn", customer.getCards().get(0).getCustomerId());
     assertEquals(
-        df.parse("2022-02-03T15:30:27.449-04:00"), customer.getCards().get(0).getDateCreated());
+        OffsetDateTime.of(2022, 2, 3, 15, 30, 27, 449000000, ZoneOffset.ofHours(-4)),
+        customer.getCards().get(0).getDateCreated());
     assertEquals(
-        df.parse("2022-02-03T15:30:27.449-04:00"), customer.getCards().get(0).getDateLastUpdated());
+        OffsetDateTime.of(2022, 2, 3, 15, 30, 27, 449000000, ZoneOffset.ofHours(-4)),
+        customer.getCards().get(0).getDateLastUpdated());
     assertEquals(12, customer.getCards().get(0).getExpirationMonth());
     assertEquals(2022, customer.getCards().get(0).getExpirationYear());
     assertEquals("503143", customer.getCards().get(0).getFirstSixDigits());
@@ -482,7 +483,8 @@ public class CustomerClientTest extends BaseClientTest {
     assertEquals("BR", customer.getAddresses().get(0).getCountry().getId());
     assertEquals("Brasil", customer.getAddresses().get(0).getCountry().getName());
     assertEquals(
-        df.parse("2022-02-03T15:30:27.449-04:00"), customer.getAddresses().get(0).getDateCreated());
+        OffsetDateTime.of(2022, 2, 3, 15, 30, 27, 449000000, ZoneOffset.ofHours(-4)),
+        customer.getAddresses().get(0).getDateCreated());
     assertEquals("1215179651", customer.getAddresses().get(0).getId());
     assertEquals("Bela Vista", customer.getAddresses().get(0).getNeighborhood().getName());
     assertEquals("0000000000", customer.getAddresses().get(0).getPhone());

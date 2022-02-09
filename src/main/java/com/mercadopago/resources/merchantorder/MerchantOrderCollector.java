@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 public class MerchantOrderCollector {
   /** Collector ID. */
-  private long id;
+  private Long id;
 
   /** Collector nickname. */
   private String nickname;

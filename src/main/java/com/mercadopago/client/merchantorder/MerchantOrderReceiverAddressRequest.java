@@ -8,7 +8,7 @@ import lombok.Getter;
 @Builder
 public class MerchantOrderReceiverAddressRequest {
   /** Receiver address ID. */
-  private final long id;
+  private final Long id;
 
   /** Street name and number of receiver address. */
   private final String addressLine;
