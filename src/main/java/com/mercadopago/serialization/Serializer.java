@@ -83,8 +83,8 @@ public class Serializer {
    * @param type type
    * @param jsonObject jsonObject
    * @param <T> generic type
-   * @throws MPJsonParseException if json cannot be parsed to ResultsResourcesPage
    * @return MPResultsResourcesPage deserialized MPResource
+   * @throws MPJsonParseException if json cannot be parsed to ResultsResourcesPage
    */
   public static <T extends MPResource>
       MPResultsResourcesPage<T> deserializeResultsResourcesPageFromJson(
@@ -106,8 +106,8 @@ public class Serializer {
    * @param type type
    * @param jsonObject jsonObject
    * @param <T> generic type
-   * @throws MPJsonParseException if json cannot be parsed to MPElementsResourcesPage
    * @return MPElementsResourcesPage
+   * @throws MPJsonParseException if json cannot be parsed to MPElementsResourcesPage
    */
   public static <T extends MPResource>
       MPElementsResourcesPage<T> deserializeElementsResourcesPageFromJson(
@@ -129,8 +129,8 @@ public class Serializer {
    * @param clazz clazz
    * @param jsonObject jsonObject
    * @param <T> type
-   * @throws MPJsonParseException if json cannot be parsed to ResultsResourcesPage
    * @return MPResourceList
+   * @throws MPJsonParseException if json cannot be parsed to ResultsResourcesPage
    */
   public static <T extends MPResource> MPResourceList<T> deserializeListFromJson(
       Class<T> clazz, String jsonObject) throws MPJsonParseException {
@@ -155,7 +155,7 @@ public class Serializer {
   }
 
   /**
-   * Method for getting a json array from a json element
+   * Method for getting a json array from a json element.
    *
    * @param jsonElement the jsonElement to be analyzed
    * @return JsonArray
@@ -182,6 +182,13 @@ public class Serializer {
     return (JsonObject) GSON.toJsonTree(resource);
   }
 
+  /**
+   * Verify if json is valid.
+   *
+   * @param json json
+   * @return boolean
+   * @throws IOException exception
+   */
   public static boolean isJsonValid(String json) throws IOException {
     try {
       JsonReader jsonReader = new JsonReader(new StringReader(json));

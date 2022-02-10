@@ -43,7 +43,7 @@ public abstract class MercadoPagoClient {
   }
 
   /**
-   * Method used directly or by other methods to make requests
+   * Method used directly or by other methods to make requests.
    *
    * @param request request data
    * @return MPResponse response object
@@ -65,7 +65,7 @@ public abstract class MercadoPagoClient {
   }
 
   /**
-   * Method used directly or by other methods to make requests with request options
+   * Method used directly or by other methods to make requests with request options.
    *
    * @param request request
    * @param requestOptions requestOptions
@@ -83,7 +83,7 @@ public abstract class MercadoPagoClient {
   }
 
   /**
-   * Method used directly or by other methods to make requests
+   * Method used directly or by other methods to make requests.
    *
    * @param path path of request url
    * @param method http method used in the request
@@ -99,7 +99,7 @@ public abstract class MercadoPagoClient {
   }
 
   /**
-   * Method used directly or by other methods to make requests
+   * Method used directly or by other methods to make requests.
    *
    * @param path path of request url
    * @param method http method used in the request
@@ -122,7 +122,7 @@ public abstract class MercadoPagoClient {
   }
 
   /**
-   * Convenience method to perform searches
+   * Convenience method to perform searches.
    *
    * @param path path of request url
    * @param request parameters for performing search request
@@ -134,7 +134,7 @@ public abstract class MercadoPagoClient {
   }
 
   /**
-   * Convenience method to perform searches
+   * Convenience method to perform searches.
    *
    * @param path path of searchRequest url
    * @param searchRequest parameters for performing search searchRequest
@@ -153,7 +153,7 @@ public abstract class MercadoPagoClient {
   }
 
   /**
-   * Convenience method to perform requests that returns lists of results
+   * Convenience method to perform requests that returns lists of results.
    *
    * @param path path of request url
    * @param requestOptions extra data used to override configuration passed to MercadoPagoConfig for
@@ -166,7 +166,7 @@ public abstract class MercadoPagoClient {
   }
 
   /**
-   * Convenience method to perform requests that returns lists of results
+   * Convenience method to perform requests that returns lists of results.
    *
    * @param path path of request url
    * @param method http method used in the request

@@ -34,6 +34,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
+/** MercadoPagoClientTest class. */
 public class MercadoPagoClientTest extends BaseClientTest {
   private MPDefaultHttpClientMock mpHttpClient;
   private HttpClient httpClientMock;
@@ -41,6 +42,7 @@ public class MercadoPagoClientTest extends BaseClientTest {
   private String requestFile;
   private String responseFile;
 
+  /** Init method. */
   @BeforeEach
   public void init() {
     this.httpClientMock = mock(HttpClient.class);

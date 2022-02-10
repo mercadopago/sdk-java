@@ -7,48 +7,48 @@ import lombok.Getter;
 @Getter
 public class CustomerAddress {
 
-  /** Address ID */
+  /** Address ID. */
   private String id;
 
-  /** Phone number */
+  /** Phone number. */
   private String phone;
 
-  /** Address name */
+  /** Address name. */
   private String name;
 
-  /** Floor */
+  /** Floor. */
   private String floor;
 
-  /** Apartment */
+  /** Apartment. */
   private String apartment;
 
-  /** Street name */
+  /** Street name. */
   private String streetName;
 
-  /** Street number */
+  /** Street number. */
   private String streetNumber;
 
-  /** Postal code */
+  /** Postal code. */
   private String zipCode;
 
-  /** City information */
+  /** City information. */
   private CustomerAddressCity city;
 
-  /** State information */
+  /** State information. */
   private CustomerAddressState state;
 
-  /** Country information */
+  /** Country information. */
   private CustomerAddressCountry country;
 
-  /** Neighborhood information */
+  /** Neighborhood information. */
   private CustomerAddressNeighborhood neighborhood;
 
-  /** Municipality information */
+  /** Municipality information. */
   private CustomerAddressMunicipality municipality;
 
-  /** Additional info */
+  /** Additional info. */
   private String comments;
 
-  /** Address date of creation */
+  /** Address date of creation. */
   private OffsetDateTime dateCreated;
 }

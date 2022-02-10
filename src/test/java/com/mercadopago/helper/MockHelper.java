@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -48,6 +49,14 @@ public class MockHelper {
     REASON_PHRASE.put(HTTP_STATUS_BAD_REQUEST, "Bad Request");
   }
 
+  /**
+   * Generates a http response from file.
+   *
+   * @param mockFile mock file
+   * @param statusCode status code
+   * @return http response
+   * @throws IOException exception
+   */
   public static HttpResponse generateHttpResponseFromFile(String mockFile, int statusCode)
       throws IOException {
 
@@ -56,12 +65,25 @@ public class MockHelper {
     return generateHttpResponseFromString(payload, statusCode);
   }
 
+  /**
+   * Generates a http response only with status code.
+   *
+   * @param statusCode status code
+   * @return http response
+   */
   public static HttpResponse generateHttpResponseFromFile(int statusCode) {
 
     return new BasicHttpResponse(
         new BasicStatusLine(HttpVersion.HTTP_1_1, statusCode, REASON_PHRASE.get(statusCode)));
   }
 
+  /**
+   * Generates a http response from string.
+   *
+   * @param response response
+   * @param statusCode statusCode
+   * @return http response
+   */
   public static HttpResponse generateHttpResponseFromString(String response, int statusCode) {
     HttpResponse httpResponse =
         new BasicHttpResponse(
@@ -74,6 +96,13 @@ public class MockHelper {
     return httpResponse;
   }
 
+  /**
+   * Generate json element.
+   *
+   * @param mockFile mockFile
+   * @return json element
+   * @throws IOException exception
+   */
   public static JsonElement generateJsonElement(String mockFile) throws IOException {
 
     String payload = readRequestFile(mockFile);
@@ -82,12 +111,12 @@ public class MockHelper {
     return gson.fromJson(payload, JsonElement.class);
   }
 
-  public static boolean areHeadersValid(Header[] headers, String method) throws MPException {
+  public static boolean areHeadersValid(Header[] headers, String method) {
     return hasMandatoryHeaders(headers, method) && haveMandatoryHeadersCorrectValues(headers);
   }
 
   private static boolean hasMandatoryHeaders(Header[] headers, String method) {
-    List<String> mandatoryHeaders = new ArrayList<String>();
+    List<String> mandatoryHeaders = new ArrayList<>();
     mandatoryHeaders.add("Authorization");
     mandatoryHeaders.add("User-Agent");
     mandatoryHeaders.add("X-Product-Id");
@@ -111,7 +140,7 @@ public class MockHelper {
     return true;
   }
 
-  private static boolean haveMandatoryHeadersCorrectValues(Header[] headers) throws MPException {
+  private static boolean haveMandatoryHeadersCorrectValues(Header[] headers) {
     boolean match;
 
     for (Header header : headers) {
@@ -142,6 +171,13 @@ public class MockHelper {
     return true;
   }
 
+  /**
+   * Generate json element from uri request.
+   *
+   * @param httpUriRequest httpUriRequest
+   * @return json element
+   * @throws IOException exception
+   */
   public static JsonElement generateJsonElementFromUriRequest(HttpUriRequest httpUriRequest)
       throws IOException {
 
@@ -166,7 +202,7 @@ public class MockHelper {
     return readFile(mockFile, MOCKS_RESPONSE_PATH);
   }
 
-  public static String readFile(String mockFile, String path) throws IOException {
+  private static String readFile(String mockFile, String path) throws IOException {
 
     File file = new File(StringUtils.join(path, mockFile));
 
@@ -175,7 +211,7 @@ public class MockHelper {
     }
 
     InputStream is = new FileInputStream(file);
-    return IOUtils.toString(is, "UTF-8");
+    return IOUtils.toString(is, StandardCharsets.UTF_8);
   }
 
   private static JsonElement parseJson(InputStream content) {

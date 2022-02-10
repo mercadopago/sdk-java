@@ -52,12 +52,6 @@ public class PaymentClientTest extends BaseClientTest {
 
   private static final int UNIT_PRICE = 100;
 
-  private static final int YEAR = 2022;
-
-  private static final int JANUARY = 1;
-
-  private static final int TEN = 10;
-
   private static final String TEST = "Test";
 
   private static final String USER = "User";
@@ -89,7 +83,7 @@ public class PaymentClientTest extends BaseClientTest {
   private static final String REFUND_PARTIAL_JSON = "refund/refund_partial.json";
 
   private static final OffsetDateTime DATE =
-      OffsetDateTime.of(YEAR, JANUARY, TEN, TEN, TEN, TEN, 0, ZoneOffset.UTC);
+      OffsetDateTime.of(2022, 1, 10, 10, 10, 10, 0, ZoneOffset.UTC);
 
   private static final int DEFAULT_TIMEOUT = 1000;
 

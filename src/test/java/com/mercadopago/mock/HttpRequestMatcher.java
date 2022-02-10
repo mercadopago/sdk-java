@@ -3,6 +3,7 @@ package com.mercadopago.mock;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.mockito.ArgumentMatcher;
 
+/** HttpRequestMatcher class. */
 public class HttpRequestMatcher extends ArgumentMatcher<HttpRequestBase> {
   private final HttpRequestBase httpRequest;
 

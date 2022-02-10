@@ -32,6 +32,7 @@ import org.apache.http.protocol.HttpContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/** CustomerClientTest class. */
 public class CustomerClientTest extends BaseClientTest {
   private final CustomerClient customerClient = new CustomerClient();
 
@@ -39,6 +40,11 @@ public class CustomerClientTest extends BaseClientTest {
 
   private HttpResponse cardClientHttpResponse;
 
+  /**
+   * Init method.
+   *
+   * @throws IOException exception
+   */
   @BeforeEach
   public void init() throws IOException {
     this.customerClientHttpResponse =

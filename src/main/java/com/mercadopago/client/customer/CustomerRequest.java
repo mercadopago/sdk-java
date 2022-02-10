@@ -11,36 +11,36 @@ import lombok.Getter;
 @Getter
 @Builder
 public class CustomerRequest {
-  /** Customer's email */
-  private String email;
+  /** Customer's email. */
+  private final String email;
 
-  /** Customer's first name */
-  private String firstName;
+  /** Customer's first name. */
+  private final String firstName;
 
-  /** Customer's last name */
-  private String lastName;
+  /** Customer's last name. */
+  private final String lastName;
 
-  /** Customer's phone */
-  private PhoneRequest phone;
+  /** Customer's phone. */
+  private final PhoneRequest phone;
 
-  /** Customer's identification */
-  private IdentificationRequest identification;
+  /** Customer's identification. */
+  private final IdentificationRequest identification;
 
-  /** Customer's default address */
-  private String defaultAddress;
+  /** Customer's default address. */
+  private final String defaultAddress;
 
-  /** Default address information */
-  private CustomerAddressRequest address;
+  /** Default address information. */
+  private final CustomerAddressRequest address;
 
-  /** Customer's default card */
-  private String defaultCard;
+  /** Customer's default card. */
+  private final String defaultCard;
 
-  /** Customer's registration date */
-  private OffsetDateTime dateRegistred;
+  /** Customer's registration date. */
+  private final OffsetDateTime dateRegistred;
 
-  /** Customer's description */
-  private String description;
+  /** Customer's description. */
+  private final String description;
 
-  /** Metadata */
-  private Map<String, Object> metadata;
+  /** Metadata. */
+  private final Map<String, Object> metadata;
 }

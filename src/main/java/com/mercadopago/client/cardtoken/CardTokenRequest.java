@@ -7,12 +7,12 @@ import lombok.Getter;
 @Builder
 @Getter
 public class CardTokenRequest {
-  /** Id of the card */
-  private String cardId;
+  /** Id of the card. */
+  private final String cardId;
 
-  /** Id of the customer */
-  private String customerId;
+  /** Id of the customer. */
+  private final String customerId;
 
-  /** Security code of the card */
-  private String securityCode;
+  /** Security code of the card. */
+  private final String securityCode;
 }

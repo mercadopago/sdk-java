@@ -88,7 +88,9 @@ public class OauthClient extends MercadoPagoClient {
    * @param redirectUri the redirectUri received from calling getAuthorizationURL
    * @return the Oauth credentials
    * @throws MPException an error if the request fails
-   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/oauth/_oauth_token/post">api docs</a>
+   * @see <a
+   *     href="https://www.mercadopago.com.br/developers/en/reference/oauth/_oauth_token/post">api
+   *     docs</a>
    */
   public CreateOauthCredential createCredential(String authorizationCode, String redirectUri)
       throws MPException {
@@ -104,7 +106,9 @@ public class OauthClient extends MercadoPagoClient {
    * @param requestOptions metadata to customize the request
    * @return the Oauth credentials
    * @throws MPException an error if the request fails
-   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/oauth/_oauth_token/post">api docs</a>
+   * @see <a
+   *     href="https://www.mercadopago.com.br/developers/en/reference/oauth/_oauth_token/post">api
+   *     docs</a>
    */
   public CreateOauthCredential createCredential(
       String authorizationCode, String redirectUri, MPRequestOptions requestOptions)
@@ -133,7 +137,9 @@ public class OauthClient extends MercadoPagoClient {
    * @param refreshToken refresh token received when you create credentials
    * @return new Oauth credentials
    * @throws MPException an error if the request fails
-   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/oauth/_oauth_token/post">api docs</a>
+   * @see <a
+   *     href="https://www.mercadopago.com.br/developers/en/reference/oauth/_oauth_token/post">api
+   *     docs</a>
    */
   public RefreshOauthCredential refreshCredential(String refreshToken) throws MPException {
     return this.refreshCredential(refreshToken, null);
@@ -146,7 +152,9 @@ public class OauthClient extends MercadoPagoClient {
    * @param requestOptions metadata to customize the request
    * @return new Oauth credentials
    * @throws MPException an error if the request fails
-   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/oauth/_oauth_token/post">api docs</a>
+   * @see <a
+   *     href="https://www.mercadopago.com.br/developers/en/reference/oauth/_oauth_token/post">api
+   *     docs</a>
    */
   public RefreshOauthCredential refreshCredential(
       String refreshToken, MPRequestOptions requestOptions) throws MPException {

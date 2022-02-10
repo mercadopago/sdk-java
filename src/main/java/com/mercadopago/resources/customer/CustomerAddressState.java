@@ -6,9 +6,9 @@ import lombok.Getter;
 @Getter
 public class CustomerAddressState {
 
-  /** State id */
+  /** State id. */
   private String id;
 
-  /** State name */
+  /** State name. */
   private String name;
 }

@@ -6,15 +6,15 @@ import lombok.Getter;
 @Getter
 public class CustomerDefaultAddress {
 
-  /** Address Id */
+  /** Address Id. */
   private String id;
 
-  /** Address zip code */
+  /** Address zip code. */
   private String zipCode;
 
-  /** Street name */
+  /** Street name. */
   private String streetName;
 
-  /** Street number */
+  /** Street number. */
   private Integer streetNumber;
 }

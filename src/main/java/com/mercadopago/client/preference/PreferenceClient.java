@@ -21,7 +21,6 @@ import com.mercadopago.serialization.Serializer;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
-;
 
 /** Client that use the Preferences APIs. */
 public class PreferenceClient extends MercadoPagoClient {
