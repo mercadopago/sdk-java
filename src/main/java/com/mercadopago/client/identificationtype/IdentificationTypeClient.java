@@ -41,7 +41,9 @@ public class IdentificationTypeClient extends MercadoPagoClient {
    *
    * @return list of identification types
    * @throws MPException an error if the request fails
-   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/identification_types/_identification_types/get">api docs</a>
+   * @see <a
+   *     href="https://www.mercadopago.com.br/developers/en/reference/identification_types/_identification_types/get">api
+   *     docs</a>
    */
   public MPResourceList<IdentificationType> list() throws MPException {
     return this.list(null);
@@ -53,7 +55,9 @@ public class IdentificationTypeClient extends MercadoPagoClient {
    * @param requestOptions metadata to customize the request
    * @return list of identification types
    * @throws MPException an error if the request fails
-   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/identification_types/_identification_types/get">api docs</a>
+   * @see <a
+   *     href="https://www.mercadopago.com.br/developers/en/reference/identification_types/_identification_types/get">api
+   *     docs</a>
    */
   public MPResourceList<IdentificationType> list(MPRequestOptions requestOptions)
       throws MPException {
