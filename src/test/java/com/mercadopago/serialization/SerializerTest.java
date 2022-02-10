@@ -98,8 +98,8 @@ public class SerializerTest {
     MPResourceList<CustomerCard> cards =
         Serializer.deserializeListFromJson(CustomerCard.class, cardListJson);
     assertNotNull(cards);
-    assertEquals(2023, cards.get(0).getExpirationYear());
-    assertEquals(6, cards.get(0).getExpirationMonth());
+    assertEquals(2023, cards.getResults().get(0).getExpirationYear());
+    assertEquals(6, cards.getResults().get(0).getExpirationMonth());
   }
 
   @Test

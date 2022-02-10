@@ -180,8 +180,11 @@ public class CustomerCardClientTest extends BaseClientTest {
     MPResourceList<CustomerCard> cards = cardClient.listAll(customerId);
 
     assertNotNull(cards);
-    assertEquals(1, cards.size());
-    assertCustomerCardFields(cards.get(0));
+    assertNotNull(cards.getResponse());
+    assertEquals(HttpStatus.OK, cards.getResponse().getStatusCode());
+    assertEquals(1, cards.getResponse().getHeaders().size());
+    assertEquals(1, cards.getResults().size());
+    assertCustomerCardFields(cards.getResults().get(0));
   }
 
   @Test
@@ -204,8 +207,11 @@ public class CustomerCardClientTest extends BaseClientTest {
     MPResourceList<CustomerCard> cards = cardClient.listAll(customerId, requestOptions);
 
     assertNotNull(cards);
-    assertEquals(1, cards.size());
-    assertCustomerCardFields(cards.get(0));
+    assertNotNull(cards.getResponse());
+    assertEquals(HttpStatus.OK, cards.getResponse().getStatusCode());
+    assertEquals(1, cards.getResponse().getHeaders().size());
+    assertEquals(1, cards.getResults().size());
+    assertCustomerCardFields(cards.getResults().get(0));
   }
 
   private void assertCustomerCardFields(CustomerCard card) throws ParseException {
@@ -238,8 +244,5 @@ public class CustomerCardClientTest extends BaseClientTest {
     assertEquals("649457098-FybpOkG6zH8QRm", card.getCustomerId());
     assertEquals("448870796", card.getUserId());
     assertTrue(card.isLiveMode());
-    assertNotNull(card.getResponse().getContent());
-    assertEquals(HttpStatus.OK, card.getResponse().getStatusCode());
-    assertEquals(1, card.getResponse().getHeaders().size());
   }
 }

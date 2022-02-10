@@ -408,7 +408,9 @@ public class CustomerClientTest extends BaseClientTest {
     MPResourceList<CustomerCard> cards = customerClient.listCards("649457098-FybpOkG6zH8QRm");
 
     assertNotNull(cards);
-    assertEquals("1562188766852", cards.get(0).getId());
+    assertNotNull(cards.getResponse());
+    assertEquals(HttpStatus.OK, cards.getResponse().getStatusCode());
+    assertEquals("1562188766852", cards.getResults().get(0).getId());
   }
 
   @Test
@@ -429,7 +431,9 @@ public class CustomerClientTest extends BaseClientTest {
     MPResourceList<CustomerCard> cards = customerClient.listCards("649457098-FybpOkG6zH8QRm");
 
     assertNotNull(cards);
-    assertEquals("1562188766852", cards.get(0).getId());
+    assertNotNull(cards.getResponse());
+    assertEquals(HttpStatus.OK, cards.getResponse().getStatusCode());
+    assertEquals("1562188766852", cards.getResults().get(0).getId());
   }
 
   private void assertCustomerFields(Customer customer) throws ParseException {

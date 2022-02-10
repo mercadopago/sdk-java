@@ -113,7 +113,7 @@ public class PaymentRefundClient extends MercadoPagoClient {
             requestOptions);
     MPResourceList<PaymentRefund> result =
         deserializeListFromJson(PaymentRefund.class, response.getContent());
-    result.forEach(paymentRefund -> paymentRefund.setResponse(response));
+    result.setResponse(response);
 
     return result;
   }

@@ -174,7 +174,7 @@ public class CustomerCardClient extends MercadoPagoClient {
 
     MPResourceList<CustomerCard> cards =
         Serializer.deserializeListFromJson(CustomerCard.class, response.getContent());
-    cards.forEach(card -> card.setResponse(response));
+    cards.setResponse(response);
     return cards;
   }
 }

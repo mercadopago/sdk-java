@@ -1,17 +1,17 @@
 package com.mercadopago.net;
 
-import java.util.ArrayList;
-import lombok.EqualsAndHashCode;
+import java.util.List;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
-*  List of resources returned by an API.
-*
-* @param <T> Type of resource being returned
-*/
+ * List of resources returned by an API.
+ *
+ * @param <T> Type of resource being returned
+ */
 @Getter
-@EqualsAndHashCode(callSuper = true)
-public class MPResourceList<T> extends ArrayList<T> {
-  /** Api response details */
-  private MPResponse response;
+@Setter
+public class MPResourceList<T> extends MPResource {
+  /** List of results. */
+  private List<T> results;
 }

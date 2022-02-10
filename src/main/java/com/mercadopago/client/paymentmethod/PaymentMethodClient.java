@@ -62,7 +62,7 @@ public class PaymentMethodClient extends MercadoPagoClient {
 
     MPResourceList<PaymentMethod> paymentMethods =
         deserializeListFromJson(PaymentMethod.class, response.getContent());
-    paymentMethods.forEach(paymentMethod -> paymentMethod.setResponse(response));
+    paymentMethods.setResponse(response);
 
     return paymentMethods;
   }
