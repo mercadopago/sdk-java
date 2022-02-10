@@ -25,12 +25,13 @@ import org.apache.http.protocol.HttpContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/** CustomerCardClientTest class. */
 public class CustomerCardClientTest extends BaseClientTest {
   private static final String APPLICATION_JSON = "application/json";
 
   private static final int DEFAULT_TIMEOUT = 1000;
 
-  private CustomerCardClient cardClient = new CustomerCardClient();
+  private final CustomerCardClient cardClient = new CustomerCardClient();
 
   private String cardId;
 
@@ -42,6 +43,7 @@ public class CustomerCardClientTest extends BaseClientTest {
 
   private CustomerCardCreateRequest customerCardCreateRequest;
 
+  /** Init method. */
   @BeforeEach
   public void init() {
     customerCardCreateRequest =

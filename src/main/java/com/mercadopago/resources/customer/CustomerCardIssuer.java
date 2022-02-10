@@ -8,8 +8,8 @@ import lombok.Getter;
 @Builder
 public class CustomerCardIssuer {
   /** Id of the issuer. */
-  private String id;
+  private final String id;
 
   /** Name of the issuer. */
-  private String name;
+  private final String name;
 }

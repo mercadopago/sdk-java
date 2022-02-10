@@ -5,9 +5,9 @@ import lombok.Getter;
 /** City information. */
 @Getter
 public class CustomerAddressCity {
-  /** City id */
+  /** City id. */
   private String id;
 
-  /** City name */
+  /** City name. */
   private String name;
 }

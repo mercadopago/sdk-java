@@ -9,9 +9,9 @@ import lombok.Getter;
 @Builder
 public class CustomerCardCreateRequest {
   /** Card token sent by the frontend. */
-  private String token;
+  private final String token;
 
-  private CustomerCardIssuer issuer;
+  private final CustomerCardIssuer issuer;
 
-  private String paymentMethodId;
+  private final String paymentMethodId;
 }
