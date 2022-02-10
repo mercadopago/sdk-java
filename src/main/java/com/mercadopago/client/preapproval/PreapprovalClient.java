@@ -26,13 +26,13 @@ public class PreapprovalClient extends MercadoPagoClient {
 
   private static final String URL_WITH_ID = "/preapproval/%s";
 
-  /** PreapprovalClient constructor. */
+  /** Default constructor. Uses the default http client used by the SDK. */
   public PreapprovalClient() {
     this(MercadoPagoConfig.getHttpClient());
   }
 
   /**
-   * PreapprovalClient constructor.
+   * Constructor used for providing a custom http client.
    *
    * @param httpClient httpClient
    */
@@ -46,9 +46,9 @@ public class PreapprovalClient extends MercadoPagoClient {
   /**
    * Get a Preapproval by your ID.
    *
-   * @param id preapprovalId.
-   * @return the preapproval
-   * @throws MPException exception
+   * @param id preapproval id.
+   * @return Preapproval pre approval information
+   * @throws MPException an error if the request fails
    */
   public Preapproval get(String id) throws MPException {
     return this.get(id, null);
@@ -58,9 +58,9 @@ public class PreapprovalClient extends MercadoPagoClient {
    * Get a Preapproval by your ID.
    *
    * @param id preapprovalId.
-   * @param requestOptions requestOptions
-   * @return Preapproval
-   * @throws MPException exception
+   * @param requestOptions metadata to customize the request
+   * @return Preapproval pre approval information
+   * @throws MPException an error if the request fails
    */
   public Preapproval get(String id, MPRequestOptions requestOptions) throws MPException {
     LOGGER.info("Sending get preapproval request");
@@ -76,9 +76,9 @@ public class PreapprovalClient extends MercadoPagoClient {
   /**
    * Creates a Preapproval.
    *
-   * @param request request
-   * @return the preapproval
-   * @throws MPException exception
+   * @param request attributes used to create a preapproval
+   * @return Preapproval pre approval information
+   * @throws MPException an error if the request fails
    */
   public Preapproval create(PreapprovalCreateRequest request) throws MPException {
     return this.create(request, null);
@@ -87,10 +87,10 @@ public class PreapprovalClient extends MercadoPagoClient {
   /**
    * Creates a Preapproval.
    *
-   * @param request request
-   * @param requestOptions requestOptions
-   * @return Preapproval
-   * @throws MPException exception
+   * @param request attributes used to create a preapproval
+   * @param requestOptions metadata to customize the request
+   * @return Preapproval pre approval information
+   * @throws MPException an error if the request fails
    */
   public Preapproval create(PreapprovalCreateRequest request, MPRequestOptions requestOptions)
       throws MPException {
@@ -108,9 +108,9 @@ public class PreapprovalClient extends MercadoPagoClient {
    * Updates a Preapproval.
    *
    * @param id preapprovalId
-   * @param request request
-   * @return Preapproval
-   * @throws MPException exception
+   * @param request attributes used for the update
+   * @return Preapproval pre approval information
+   * @throws MPException an error if the request fails
    */
   public Preapproval update(String id, PreapprovalUpdateRequest request) throws MPException {
     return this.update(id, request, null);
@@ -120,10 +120,10 @@ public class PreapprovalClient extends MercadoPagoClient {
    * Updates a Preapproval.
    *
    * @param id preapprovalId
-   * @param request request
-   * @param requestOptions requestOptions
-   * @return Preapproval
-   * @throws MPException exception
+   * @param request attributes used for the update
+   * @param requestOptions metadata to customize the request
+   * @return Preapproval pre approval information
+   * @throws MPException an error if the request fails
    */
   public Preapproval update(
       String id, PreapprovalUpdateRequest request, MPRequestOptions requestOptions)
@@ -146,9 +146,9 @@ public class PreapprovalClient extends MercadoPagoClient {
   /**
    * Method responsible for search preapprovals.
    *
-   * @param request request
+   * @param request attributes used for the search
    * @return list of results
-   * @throws MPException exception
+   * @throws MPException an error if the request fails
    */
   public MPResultsResourcesPage<Preapproval> search(MPSearchRequest request) throws MPException {
     return this.search(request, null);
@@ -157,10 +157,10 @@ public class PreapprovalClient extends MercadoPagoClient {
   /**
    * Method responsible for search preapprovals.
    *
-   * @param request request
-   * @param requestOptions requestOptions
+   * @param request attributes used for the search
+   * @param requestOptions metadata to customize the request
    * @return list of results
-   * @throws MPException exception
+   * @throws MPException an error if the request fails
    */
   public MPResultsResourcesPage<Preapproval> search(
       MPSearchRequest request, MPRequestOptions requestOptions) throws MPException {

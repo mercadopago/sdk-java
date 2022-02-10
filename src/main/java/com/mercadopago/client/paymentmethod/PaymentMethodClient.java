@@ -19,13 +19,13 @@ import java.util.logging.StreamHandler;
 public class PaymentMethodClient extends MercadoPagoClient {
   private static final Logger LOGGER = Logger.getLogger(PaymentMethodClient.class.getName());
 
-  /** PaymentMethodClient constructor. */
+  /** Default constructor. Uses the default http client used by the SDK. */
   public PaymentMethodClient() {
     this(MercadoPagoConfig.getHttpClient());
   }
 
   /**
-   * PaymentMethodClient constructor.
+   * Constructor used for providing a custom http client.
    *
    * @param httpClient httpClient
    */
@@ -40,7 +40,8 @@ public class PaymentMethodClient extends MercadoPagoClient {
    * List all payment methods.
    *
    * @return list of payment methods
-   * @throws MPException exception
+   * @throws MPException an error if the request fails
+   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/payment_methods/_payment_methods/get">api docs</a>
    */
   public MPResourceList<PaymentMethod> list() throws MPException {
     return this.list(null);
@@ -49,9 +50,10 @@ public class PaymentMethodClient extends MercadoPagoClient {
   /**
    * List all payment methods.
    *
-   * @param requestOptions requestOptions
+   * @param requestOptions metadata to customize the request
    * @return list of payment methods
-   * @throws MPException exception
+   * @throws MPException an error if the request fails
+   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/payment_methods/_payment_methods/get">api docs</a>
    */
   public MPResourceList<PaymentMethod> list(MPRequestOptions requestOptions) throws MPException {
     LOGGER.info("Sending list payment method");
