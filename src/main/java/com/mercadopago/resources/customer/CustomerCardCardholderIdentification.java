@@ -7,5 +7,4 @@ import lombok.Getter;
 /** Identification details of cardholder. */
 @Getter
 @EqualsAndHashCode(callSuper = true)
-public class CustomerCardCardholderIdentification extends Identification {
-}
+public class CustomerCardCardholderIdentification extends Identification {}

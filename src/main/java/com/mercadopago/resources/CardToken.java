@@ -8,54 +8,54 @@ import lombok.Getter;
 
 /**
  * Send customer card data to Mercado Pago server and receive a token to complete the payments
- * transactions. For testing only.
+ * transactions. For testing only. .
  */
 @Getter
 @EqualsAndHashCode(callSuper = true)
 public class CardToken extends MPResource {
 
-  /** Card token */
+  /** Card token. */
   private String id;
 
-  /** First six digits of card number */
+  /** First six digits of card number. */
   private String firstSixDigits;
 
-  /** Expiration month of the card */
+  /** Expiration month of the card. */
   private Integer expirationMonth;
 
-  /** Expiration year of the card */
+  /** Expiration year of the card. */
   private Integer expirationYear;
 
-  /** Last four digits of the card */
+  /** Last four digits of the card. */
   private String lastFourDigits;
 
-  /** Cardholder information */
+  /** Cardholder information. */
   private CustomerCardCardholder cardholder;
 
-  /** Current status of card. E.g. active */
+  /** Current status of card. E.g. active. */
   private String status;
 
-  /** Date token was created */
+  /** Date token was created. */
   private OffsetDateTime dateCreated;
 
-  /** Date token was last updated */
+  /** Date token was last updated. */
   private OffsetDateTime dateLastUpdated;
 
-  /** Date token expires */
+  /** Date token expires. */
   private OffsetDateTime dateDue;
 
-  /** Flag indicating if Luhn validation is used */
+  /** Flag indicating if Luhn validation is used. */
   private Boolean luhnValidation;
 
-  /** Flag indicating if this is a production card token */
+  /** Flag indicating if this is a production card token. */
   private Boolean liveMode;
 
-  /** Require esc */
+  /** Require esc. */
   private Boolean requireEsc;
 
-  /** Security code of the card */
+  /** Security code of the card. */
   private Integer cardNumberLength;
 
-  /** Security code of the card */
+  /** Security code of the card. */
   private Integer securityCodeLength;
 }

@@ -299,8 +299,7 @@ public class CustomerClient extends MercadoPagoClient {
    * @throws MPException an error if the request fails
    * @see <a href="https://www.mercadopago.com.br/developers/en/reference/cards/_customers_customer_id_cards_id/delete">api docs</a>
    */
-  public CustomerCard deleteCard(String customerId, String cardId)
-      throws MPException {
+  public CustomerCard deleteCard(String customerId, String cardId) throws MPException {
     return this.deleteCard(customerId, cardId, null);
   }
 
@@ -327,8 +326,7 @@ public class CustomerClient extends MercadoPagoClient {
    * @throws MPException an error if the request fails
    * @see <a href="https://www.mercadopago.com.br/developers/en/reference/cards/_customers_customer_id_cards/get">api docs</a>
    */
-  public MPResourceList<CustomerCard> listCards(String customerId)
-      throws MPException {
+  public MPResourceList<CustomerCard> listCards(String customerId) throws MPException {
     return this.listCards(customerId, null);
   }
 

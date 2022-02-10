@@ -33,7 +33,7 @@ public class PaymentItemRequest {
   /** Item information related to the category. */
   private final PaymentCategoryDescriptorRequest categoryDescriptor;
 
-  /** True if you purchase the item with warranty, false if not */
+  /** True if you purchase the item with warranty, false if not. */
   private final boolean warranty;
 
   /** Event date. */

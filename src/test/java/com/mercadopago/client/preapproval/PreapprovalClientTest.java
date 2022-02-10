@@ -40,19 +40,11 @@ class PreapprovalClientTest extends BaseClientTest {
 
   private static final int DEFAULT_TIMEOUT = 1000;
 
-  private static final int START_YEAR = 2022;
-
-  private static final int END_YEAR = 2023;
-
-  private static final int JANUARY = 1;
-
-  private static final int TEN = 10;
-
   private static final OffsetDateTime START_DATE =
-      OffsetDateTime.of(START_YEAR, JANUARY, TEN, TEN, TEN, TEN, 0, ZoneOffset.UTC);
+      OffsetDateTime.of(2022, 1, 10, 10, 10, 10, 0, ZoneOffset.UTC);
 
   private static final OffsetDateTime END_DATE =
-      OffsetDateTime.of(END_YEAR, JANUARY, TEN, TEN, TEN, TEN, 0, ZoneOffset.UTC);
+      OffsetDateTime.of(2023, 1, 10, 10, 10, 10, 0, ZoneOffset.UTC);
 
   PreapprovalClient client = new PreapprovalClient();
 

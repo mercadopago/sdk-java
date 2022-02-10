@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class PhoneRequest {
-  /** Area code */
+  /** Area code. */
   private final String areaCode;
 
   /** Phone number. */
