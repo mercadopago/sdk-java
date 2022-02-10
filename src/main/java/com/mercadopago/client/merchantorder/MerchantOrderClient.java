@@ -48,8 +48,8 @@ public class MerchantOrderClient extends MercadoPagoClient {
    * Method responsible for getting merchant order.
    *
    * @param id merchant order id
-   * @return merchant order
-   * @throws MPException exception
+   * @return merchant order information
+   * @throws MPException an error if the request fails
    * @see <a href="https://www.mercadopago.com.br/developers/en/reference/merchant_orders/_merchant_orders_id/get">api docs</a>
    */
   public MerchantOrder get(Long id) throws MPException {
