@@ -47,12 +47,11 @@ public class MPRequest {
       Map<String, Object> queryParams,
       MPRequestOptions requestOptions) {
     MPRequest mpRequest;
-    String uri = UrlFormatter.format(path);
 
     if (Objects.nonNull(requestOptions)) {
       mpRequest =
           MPRequest.builder()
-              .uri(uri)
+              .uri(path)
               .method(method)
               .headers(requestOptions.getCustomHeaders())
               .payload(payload)
@@ -63,7 +62,7 @@ public class MPRequest {
               .socketTimeout(requestOptions.getSocketTimeout())
               .build();
     } else {
-      mpRequest = MPRequest.builder().uri(uri).method(method).payload(payload).build();
+      mpRequest = MPRequest.builder().uri(path).method(method).payload(payload).build();
     }
 
     return mpRequest;
