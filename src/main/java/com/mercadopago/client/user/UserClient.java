@@ -30,7 +30,7 @@ public class UserClient extends MercadoPagoClient {
    * Get user information.
    *
    * @return user information
-   * @throws MPException any error retrieving the customer card
+   * @throws MPException an error if the request fails
    */
   public User get() throws MPException {
     return this.get(null);
@@ -41,7 +41,7 @@ public class UserClient extends MercadoPagoClient {
    *
    * @param requestOptions metadata to customize the request
    * @return user information
-   * @throws MPException any error retrieving the customer card
+   * @throws MPException an error if the request fails
    */
   public User get(MPRequestOptions requestOptions) throws MPException {
     MPResponse response = send("/users/me", HttpMethod.GET, null, null, requestOptions);

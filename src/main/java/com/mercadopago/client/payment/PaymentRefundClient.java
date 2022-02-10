@@ -26,7 +26,7 @@ public class PaymentRefundClient extends MercadoPagoClient {
   private static final String URL_WITH_PAYMENT_ID = "/v1/payments/%s/refunds";
 
   /**
-   * PaymentRefundClient constructor.
+   * Constructor used for providing a custom http client.
    *
    * @param httpClient httpClient
    */
@@ -40,11 +40,12 @@ public class PaymentRefundClient extends MercadoPagoClient {
   /**
    * Creates a refund for payment.
    *
-   * @param paymentId paymentId
-   * @param amount amount
-   * @param requestOptions requestOptions
+   * @param paymentId payment id
+   * @param amount refund amount
+   * @param requestOptions metadata to customize the request
    * @return PaymentRefund
-   * @throws MPException exception
+   * @throws MPException an error if the request fails
+   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/chargebacks/_payments_id_refunds/post">api docs</a>
    */
   public PaymentRefund refund(Long paymentId, BigDecimal amount, MPRequestOptions requestOptions)
       throws MPException {
@@ -66,13 +67,14 @@ public class PaymentRefundClient extends MercadoPagoClient {
   }
 
   /**
-   * Gets a refund by id from the payment.
+   * Gets refund information by id from the payment.
    *
-   * @param paymentId paymentId
-   * @param refundId refundId
-   * @param requestOptions requestOptions
+   * @param paymentId payment id
+   * @param refundId refund id
+   * @param requestOptions metadata to customize the request
    * @return PaymentRefund
-   * @throws MPException exception
+   * @throws MPException an error if the request fails
+   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/chargebacks/_payments_id_refunds_refund_id/get">api docs</a>
    */
   public PaymentRefund get(Long paymentId, Long refundId, MPRequestOptions requestOptions)
       throws MPException {
@@ -93,10 +95,11 @@ public class PaymentRefundClient extends MercadoPagoClient {
   /**
    * Lists the refunds of the payment.
    *
-   * @param paymentId paymentId
-   * @param requestOptions requestOptions
+   * @param paymentId payment id
+   * @param requestOptions metadata to customize the request
    * @return list of PaymentRefund
-   * @throws MPException exception
+   * @throws MPException an error if the request fails
+   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/chargebacks/_payments_id_refunds/get">api docs</a>
    */
   public MPResourceList<PaymentRefund> list(Long paymentId, MPRequestOptions requestOptions)
       throws MPException {

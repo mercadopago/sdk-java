@@ -27,13 +27,13 @@ public class MerchantOrderClient extends MercadoPagoClient {
 
   private static final String URL_WITH_ID = "/merchant_orders/%s";
 
-  /** MerchantOrderClient constructor. */
+  /** Default constructor. Uses the default http client used by the SDK. */
   public MerchantOrderClient() {
     this(MercadoPagoConfig.getHttpClient());
   }
 
   /**
-   * MerchantOrderClient constructor.
+   * Constructor used for providing a custom http client.
    *
    * @param httpClient httpClient
    */
@@ -48,8 +48,9 @@ public class MerchantOrderClient extends MercadoPagoClient {
    * Method responsible for getting merchant order.
    *
    * @param id merchant order id
-   * @return merchant order
-   * @throws MPException exception
+   * @return merchant order information
+   * @throws MPException an error if the request fails
+   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/merchant_orders/_merchant_orders_id/get">api docs</a>
    */
   public MerchantOrder get(Long id) throws MPException {
     return this.get(id, null);
@@ -59,9 +60,10 @@ public class MerchantOrderClient extends MercadoPagoClient {
    * Method responsible for getting merchant order.
    *
    * @param id merchant order id
-   * @param requestOptions requestOptions
-   * @return merchant order
-   * @throws MPException exception
+   * @param requestOptions metadata to customize the request
+   * @return merchant order information
+   * @throws MPException an error if the request fails
+   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/merchant_orders/_merchant_orders_id/get">api docs</a>
    */
   public MerchantOrder get(Long id, MPRequestOptions requestOptions) throws MPException {
     LOGGER.info("Sending get merchant order request");
@@ -82,9 +84,10 @@ public class MerchantOrderClient extends MercadoPagoClient {
   /**
    * Method responsible for creating merchant order.
    *
-   * @param request request
-   * @return merchant order
-   * @throws MPException exception
+   * @param request attributes used to create merchant order
+   * @return merchant order information
+   * @throws MPException an error if the request fails
+   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/merchant_orders/_merchant_orders/post">api docs</a>
    */
   public MerchantOrder create(MerchantOrderCreateRequest request) throws MPException {
     return this.create(request, null);
@@ -93,10 +96,11 @@ public class MerchantOrderClient extends MercadoPagoClient {
   /**
    * Method responsible for creating merchant order with request options.
    *
-   * @param request request
-   * @param requestOptions requestOptions
-   * @return merchant order response
-   * @throws MPException exception
+   * @param request attributes used to create merchant order
+   * @param requestOptions metadata to customize the request
+   * @return merchant order information
+   * @throws MPException an error if the request fails
+   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/merchant_orders/_merchant_orders/post">api docs</a>
    */
   public MerchantOrder create(MerchantOrderCreateRequest request, MPRequestOptions requestOptions)
       throws MPException {
@@ -119,10 +123,11 @@ public class MerchantOrderClient extends MercadoPagoClient {
   /**
    * Method responsible for creating merchant order.
    *
-   * @param request request
+   * @param request attributes used to update merchant order
    * @param id merchant order id
-   * @return merchant order
-   * @throws MPException exception
+   * @return merchant order information
+   * @throws MPException an error if the request fails
+   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/merchant_orders/_merchant_orders_id/put">api docs</a>
    */
   public MerchantOrder update(Long id, MerchantOrderUpdateRequest request) throws MPException {
     return this.update(id, request, null);
@@ -131,11 +136,12 @@ public class MerchantOrderClient extends MercadoPagoClient {
   /**
    * Method responsible for creating merchant order with request options.
    *
-   * @param request request
+   * @param request attributes used to update merchant order
    * @param id merchant order id
-   * @param requestOptions requestOptions
+   * @param requestOptions metadata to customize the request
    * @return merchant order response
-   * @throws MPException exception
+   * @throws MPException an error if the request fails
+   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/merchant_orders/_merchant_orders_id/put">api docs</a>
    */
   public MerchantOrder update(
       Long id, MerchantOrderUpdateRequest request, MPRequestOptions requestOptions)
@@ -159,9 +165,10 @@ public class MerchantOrderClient extends MercadoPagoClient {
   /**
    * Method responsible for search merchant order.
    *
-   * @param request request
+   * @param request attributes used to search merchant order
    * @return list of results
-   * @throws MPException exception
+   * @throws MPException an error if the request fails
+   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/merchant_orders/_merchant_orders_search/get">api docs</a>
    */
   public MPElementsResourcesPage<MerchantOrder> search(MPSearchRequest request) throws MPException {
     return this.search(request, null);
@@ -170,10 +177,11 @@ public class MerchantOrderClient extends MercadoPagoClient {
   /**
    * Method responsible for search merchant order.
    *
-   * @param request request
-   * @param requestOptions requestOptions
+   * @param request attributes used to search merchant order
+   * @param requestOptions metadata to customize the request
    * @return list of results
-   * @throws MPException exception
+   * @throws MPException an error if the request fails
+   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/merchant_orders/_merchant_orders_search/get">api docs</a>
    */
   public MPElementsResourcesPage<MerchantOrder> search(
       MPSearchRequest request, MPRequestOptions requestOptions) throws MPException {
