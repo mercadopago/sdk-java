@@ -10,7 +10,6 @@ import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.exceptions.MPMalformedRequestException;
-import com.mercadopago.serialization.Serializer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;

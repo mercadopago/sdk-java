@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class IdentificationRequest {
-  /** Identification type */
+  /** Identification type. */
   private final String type;
 
   /** Identification number. */

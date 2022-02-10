@@ -6,9 +6,9 @@ import lombok.Getter;
 @Getter
 public class Identification {
 
-  /** Type of identication */
+  /** Type of identification. */
   private String type;
 
-  /** Identification number*/
+  /** Identification number. */
   private String number;
 }

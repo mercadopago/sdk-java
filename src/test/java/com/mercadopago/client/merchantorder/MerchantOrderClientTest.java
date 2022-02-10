@@ -33,12 +33,6 @@ import org.junit.jupiter.api.Test;
 
 class MerchantOrderClientTest extends BaseClientTest {
 
-  private static final int YEAR = 2022;
-
-  private static final int JANUARY = 1;
-
-  private static final int TEN = 10;
-
   private static final int DEFAULT_TIMEOUT = 1000;
 
   private static final String ORDER_BASE_JSON = "merchant/order_base.json";
@@ -52,7 +46,7 @@ class MerchantOrderClientTest extends BaseClientTest {
   private static final long MERCHANT_ORDER_ID = 4018801790L;
 
   private static final OffsetDateTime DATE =
-      OffsetDateTime.of(YEAR, JANUARY, TEN, TEN, TEN, TEN, 0, ZoneOffset.UTC);
+      OffsetDateTime.of(2022, 1, 10, 10, 10, 10, 0, ZoneOffset.UTC);
 
   MerchantOrderClient client = new MerchantOrderClient();
 

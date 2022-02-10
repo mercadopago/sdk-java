@@ -27,6 +27,7 @@ import org.apache.http.protocol.HttpContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/** CardTokenClientTest class. */
 public class CardTokenClientTest {
   private static final String APPLICATION_JSON = "application/json";
 
@@ -40,6 +41,7 @@ public class CardTokenClientTest {
 
   private CardTokenRequest cardTokenRequest;
 
+  /** Init method. */
   @BeforeEach
   public void init() {
     this.httpClientMock = mock(HttpClient.class);

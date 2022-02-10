@@ -7,15 +7,15 @@ import lombok.Getter;
 @Getter
 @Builder
 public class CustomerAddressRequest {
-  /** Address ID */
-  private String id;
+  /** Address ID. */
+  private final String id;
 
-  /** Zip code */
-  private String zipCode;
+  /** Zip code. */
+  private final String zipCode;
 
-  /** Street name */
-  private String streetName;
+  /** Street name. */
+  private final String streetName;
 
-  /** Street number */
-  private Integer streetNumber;
+  /** Street number. */
+  private final Integer streetNumber;
 }

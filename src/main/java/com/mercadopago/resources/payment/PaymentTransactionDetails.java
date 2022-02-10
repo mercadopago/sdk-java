@@ -18,10 +18,10 @@ public class PaymentTransactionDetails {
   /** Total installments amount. */
   private BigDecimal installmentAmount;
 
-  /** Amount overpaid (only for tickets) */
+  /** Amount overpaid (only for tickets). */
   private BigDecimal overpaidAmount;
 
-  /** Identifies the resource in the payment processor */
+  /** Identifies the resource in the payment processor. */
   private String externalResourceUrl;
 
   /**
