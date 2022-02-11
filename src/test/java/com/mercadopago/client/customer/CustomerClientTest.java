@@ -10,6 +10,7 @@ import com.mercadopago.BaseClientTest;
 import com.mercadopago.client.common.IdentificationRequest;
 import com.mercadopago.client.common.PhoneRequest;
 import com.mercadopago.core.MPRequestOptions;
+import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.helper.MockHelper;
 import com.mercadopago.net.HttpStatus;
@@ -55,7 +56,9 @@ public class CustomerClientTest extends BaseClientTest {
   }
 
   @Test
-  public void getSuccess() throws MPException, ParseException, IOException {
+  public void getSuccess()
+      throws MPException, MPApiException, MPApiException, MPApiException, MPApiException,
+          ParseException, IOException {
     String customerId = "1068193981-pXRewrKqlP6pnn";
 
     doReturn(customerClientHttpResponse)
@@ -68,7 +71,9 @@ public class CustomerClientTest extends BaseClientTest {
   }
 
   @Test
-  public void getWithRequestOptionsSuccess() throws MPException, ParseException, IOException {
+  public void getWithRequestOptionsSuccess()
+      throws MPException, MPApiException, MPApiException, MPApiException, MPApiException,
+          ParseException, IOException {
     String customerId = "1068193981-pXRewrKqlP6pnn";
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
@@ -88,7 +93,9 @@ public class CustomerClientTest extends BaseClientTest {
   }
 
   @Test
-  public void createSuccess() throws MPException, ParseException, IOException {
+  public void createSuccess()
+      throws MPException, MPApiException, MPApiException, MPApiException, MPApiException,
+          ParseException, IOException {
     CustomerRequest request =
         CustomerRequest.builder()
             .address(
@@ -115,7 +122,9 @@ public class CustomerClientTest extends BaseClientTest {
   }
 
   @Test
-  public void createWithRequestOptionsSuccess() throws MPException, ParseException, IOException {
+  public void createWithRequestOptionsSuccess()
+      throws MPException, MPApiException, MPApiException, MPApiException, MPApiException,
+          ParseException, IOException {
     CustomerRequest request =
         CustomerRequest.builder()
             .address(
@@ -150,7 +159,9 @@ public class CustomerClientTest extends BaseClientTest {
   }
 
   @Test
-  public void updateSuccess() throws ParseException, MPException, IOException {
+  public void updateSuccess()
+      throws ParseException, MPException, MPApiException, MPApiException, MPApiException,
+          MPApiException, IOException {
     String customerId = "1068193981-pXRewrKqlP6pnn";
     CustomerRequest request =
         CustomerRequest.builder()
@@ -178,7 +189,9 @@ public class CustomerClientTest extends BaseClientTest {
   }
 
   @Test
-  public void updateWithRequestOptionsSuccess() throws MPException, ParseException, IOException {
+  public void updateWithRequestOptionsSuccess()
+      throws MPException, MPApiException, MPApiException, MPApiException, MPApiException,
+          ParseException, IOException {
     String customerId = "1068193981-pXRewrKqlP6pnn";
     CustomerRequest request =
         CustomerRequest.builder()
@@ -214,7 +227,9 @@ public class CustomerClientTest extends BaseClientTest {
   }
 
   @Test
-  public void deleteSuccess() throws MPException, ParseException, IOException {
+  public void deleteSuccess()
+      throws MPException, MPApiException, MPApiException, MPApiException, MPApiException,
+          ParseException, IOException {
     String customerId = "1068193981-pXRewrKqlP6pnn";
 
     doReturn(customerClientHttpResponse)
@@ -227,7 +242,9 @@ public class CustomerClientTest extends BaseClientTest {
   }
 
   @Test
-  public void deleteWithRequestOptionsSuccess() throws MPException, ParseException, IOException {
+  public void deleteWithRequestOptionsSuccess()
+      throws MPException, MPApiException, MPApiException, MPApiException, MPApiException,
+          ParseException, IOException {
     String customerId = "1068193981-pXRewrKqlP6pnn";
 
     MPRequestOptions requestOptions =
@@ -248,7 +265,7 @@ public class CustomerClientTest extends BaseClientTest {
   }
 
   @Test
-  public void searchSuccess() throws MPException, ParseException, IOException {
+  public void searchSuccess() throws MPException, MPApiException, ParseException, IOException {
     Map<String, Object> filters = new HashMap<>();
     filters.put("email", "test@user.com");
 
@@ -271,7 +288,8 @@ public class CustomerClientTest extends BaseClientTest {
   }
 
   @Test
-  public void searchWithRequestOptionsSuccess() throws MPException, ParseException, IOException {
+  public void searchWithRequestOptionsSuccess()
+      throws MPException, MPApiException, ParseException, IOException {
     Map<String, Object> filters = new HashMap<>();
     filters.put("email", "test@user.com");
     HttpResponse httpResponse =
@@ -300,7 +318,7 @@ public class CustomerClientTest extends BaseClientTest {
   }
 
   @Test
-  public void getCardSuccess() throws IOException, MPException {
+  public void getCardSuccess() throws IOException, MPException, MPApiException {
     doReturn(cardClientHttpResponse)
         .when(httpClient)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
@@ -311,7 +329,7 @@ public class CustomerClientTest extends BaseClientTest {
   }
 
   @Test
-  public void getCardWithRequestOptionsSuccess() throws IOException, MPException {
+  public void getCardWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
             .accessToken("abc")
@@ -331,7 +349,7 @@ public class CustomerClientTest extends BaseClientTest {
   }
 
   @Test
-  public void createCardSuccess() throws IOException, MPException {
+  public void createCardSuccess() throws IOException, MPException, MPApiException {
     CustomerCardCreateRequest customerCardCreateRequest =
         CustomerCardCreateRequest.builder()
             .token("abc")
@@ -349,7 +367,8 @@ public class CustomerClientTest extends BaseClientTest {
   }
 
   @Test
-  public void createCardWithRequestOptionsSuccess() throws IOException, MPException {
+  public void createCardWithRequestOptionsSuccess()
+      throws IOException, MPException, MPApiException {
     CustomerCardCreateRequest customerCardCreateRequest =
         CustomerCardCreateRequest.builder()
             .token("abc")
@@ -375,7 +394,7 @@ public class CustomerClientTest extends BaseClientTest {
   }
 
   @Test
-  public void deleteCardSuccess() throws IOException, MPException {
+  public void deleteCardSuccess() throws IOException, MPException, MPApiException {
     doReturn(cardClientHttpResponse)
         .when(httpClient)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
@@ -386,7 +405,8 @@ public class CustomerClientTest extends BaseClientTest {
   }
 
   @Test
-  public void deleteCardWithRequestOptionsSuccess() throws IOException, MPException {
+  public void deleteCardWithRequestOptionsSuccess()
+      throws IOException, MPException, MPApiException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
             .accessToken("abc")
@@ -405,7 +425,7 @@ public class CustomerClientTest extends BaseClientTest {
   }
 
   @Test
-  public void listCardsSuccess() throws IOException, MPException {
+  public void listCardsSuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse =
         MockHelper.generateHttpResponseFromFile("/card/card_all.json", HttpStatus.OK);
     doReturn(httpResponse)
@@ -420,7 +440,7 @@ public class CustomerClientTest extends BaseClientTest {
   }
 
   @Test
-  public void listCardsWithRequestOptionsSuccess() throws IOException, MPException {
+  public void listCardsWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
             .accessToken("abc")

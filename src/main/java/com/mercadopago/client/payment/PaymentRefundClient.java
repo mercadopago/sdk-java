@@ -8,6 +8,7 @@ import static com.mercadopago.serialization.Serializer.serializeToJson;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.MercadoPagoClient;
 import com.mercadopago.core.MPRequestOptions;
+import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPHttpClient;
@@ -45,10 +46,12 @@ public class PaymentRefundClient extends MercadoPagoClient {
    * @param requestOptions metadata to customize the request
    * @return PaymentRefund
    * @throws MPException an error if the request fails
-   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/chargebacks/_payments_id_refunds/post">api docs</a>
+   * @see <a
+   *     href="https://www.mercadopago.com.br/developers/en/reference/chargebacks/_payments_id_refunds/post">api
+   *     docs</a>
    */
   public PaymentRefund refund(Long paymentId, BigDecimal amount, MPRequestOptions requestOptions)
-      throws MPException {
+      throws MPException, MPApiException {
     LOGGER.info("Sending refund payment request");
     PaymentRefundCreateRequest request =
         PaymentRefundCreateRequest.builder().amount(amount).build();
@@ -74,10 +77,12 @@ public class PaymentRefundClient extends MercadoPagoClient {
    * @param requestOptions metadata to customize the request
    * @return PaymentRefund
    * @throws MPException an error if the request fails
-   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/chargebacks/_payments_id_refunds_refund_id/get">api docs</a>
+   * @see <a
+   *     href="https://www.mercadopago.com.br/developers/en/reference/chargebacks/_payments_id_refunds_refund_id/get">api
+   *     docs</a>
    */
   public PaymentRefund get(Long paymentId, Long refundId, MPRequestOptions requestOptions)
-      throws MPException {
+      throws MPException, MPApiException {
     LOGGER.info("Sending get refund payment request");
     MPResponse response =
         send(
@@ -99,10 +104,12 @@ public class PaymentRefundClient extends MercadoPagoClient {
    * @param requestOptions metadata to customize the request
    * @return list of PaymentRefund
    * @throws MPException an error if the request fails
-   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/chargebacks/_payments_id_refunds/get">api docs</a>
+   * @see <a
+   *     href="https://www.mercadopago.com.br/developers/en/reference/chargebacks/_payments_id_refunds/get">api
+   *     docs</a>
    */
   public MPResourceList<PaymentRefund> list(Long paymentId, MPRequestOptions requestOptions)
-      throws MPException {
+      throws MPException, MPApiException {
     LOGGER.info("Sending list refund payment request");
     MPResponse response =
         send(

@@ -7,6 +7,7 @@ import static org.mockito.Mockito.doReturn;
 
 import com.mercadopago.BaseClientTest;
 import com.mercadopago.core.MPRequestOptions;
+import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.helper.MockHelper;
 import com.mercadopago.net.HttpStatus;
@@ -33,7 +34,7 @@ class UserClientTest extends BaseClientTest {
   }
 
   @Test
-  void getUserSuccess() throws IOException, MPException {
+  void getUserSuccess() throws IOException, MPException, MPApiException {
     doReturn(httpResponse)
         .when(httpClient)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
@@ -44,7 +45,7 @@ class UserClientTest extends BaseClientTest {
   }
 
   @Test
-  void getUserWithOptionsSuccess() throws MPException, IOException {
+  void getUserWithOptionsSuccess() throws MPException, MPApiException, IOException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
             .accessToken("abc")

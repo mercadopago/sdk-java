@@ -8,6 +8,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
 
 import com.mercadopago.BaseClientTest;
+import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import java.io.IOException;
 import java.util.HashMap;
@@ -30,7 +31,7 @@ class MPDefaultHttpClientTest extends BaseClientTest {
   }
 
   @Test
-  void sendSuccess() throws MPException, IOException {
+  void sendSuccess() throws MPException, MPApiException, IOException {
     mpDefaultHttpClient = new MPDefaultHttpClient(httpClient);
     Map<String, String> headers = new HashMap<>();
     headers.put("x-test", "test");
@@ -52,7 +53,7 @@ class MPDefaultHttpClientTest extends BaseClientTest {
   }
 
   @Test
-  void sendWithCustomOptionsSuccess() throws MPException, IOException {
+  void sendWithCustomOptionsSuccess() throws MPException, MPApiException, IOException {
     mpDefaultHttpClient = new MPDefaultHttpClient(httpClient);
     Map<String, String> headers = new HashMap<>();
     headers.put("x-test", "test");

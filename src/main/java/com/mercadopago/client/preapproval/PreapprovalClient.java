@@ -9,6 +9,7 @@ import com.google.gson.reflect.TypeToken;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.MercadoPagoClient;
 import com.mercadopago.core.MPRequestOptions;
+import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPHttpClient;
@@ -50,7 +51,7 @@ public class PreapprovalClient extends MercadoPagoClient {
    * @return Preapproval pre approval information
    * @throws MPException an error if the request fails
    */
-  public Preapproval get(String id) throws MPException {
+  public Preapproval get(String id) throws MPException, MPApiException {
     return this.get(id, null);
   }
 
@@ -62,7 +63,8 @@ public class PreapprovalClient extends MercadoPagoClient {
    * @return Preapproval pre approval information
    * @throws MPException an error if the request fails
    */
-  public Preapproval get(String id, MPRequestOptions requestOptions) throws MPException {
+  public Preapproval get(String id, MPRequestOptions requestOptions)
+      throws MPException, MPApiException {
     LOGGER.info("Sending get preapproval request");
     MPResponse response =
         send(String.format(URL_WITH_ID, id), HttpMethod.GET, null, null, requestOptions);
@@ -80,7 +82,7 @@ public class PreapprovalClient extends MercadoPagoClient {
    * @return Preapproval pre approval information
    * @throws MPException an error if the request fails
    */
-  public Preapproval create(PreapprovalCreateRequest request) throws MPException {
+  public Preapproval create(PreapprovalCreateRequest request) throws MPException, MPApiException {
     return this.create(request, null);
   }
 
@@ -93,7 +95,7 @@ public class PreapprovalClient extends MercadoPagoClient {
    * @throws MPException an error if the request fails
    */
   public Preapproval create(PreapprovalCreateRequest request, MPRequestOptions requestOptions)
-      throws MPException {
+      throws MPException, MPApiException {
     LOGGER.info("Sending create preapproval request");
     MPResponse response =
         send("/preapproval", HttpMethod.POST, serializeToJson(request), null, requestOptions);
@@ -112,7 +114,8 @@ public class PreapprovalClient extends MercadoPagoClient {
    * @return Preapproval pre approval information
    * @throws MPException an error if the request fails
    */
-  public Preapproval update(String id, PreapprovalUpdateRequest request) throws MPException {
+  public Preapproval update(String id, PreapprovalUpdateRequest request)
+      throws MPException, MPApiException {
     return this.update(id, request, null);
   }
 
@@ -127,7 +130,7 @@ public class PreapprovalClient extends MercadoPagoClient {
    */
   public Preapproval update(
       String id, PreapprovalUpdateRequest request, MPRequestOptions requestOptions)
-      throws MPException {
+      throws MPException, MPApiException {
     LOGGER.info("Sending update preapproval request");
     MPResponse response =
         send(
@@ -150,7 +153,8 @@ public class PreapprovalClient extends MercadoPagoClient {
    * @return list of results
    * @throws MPException an error if the request fails
    */
-  public MPResultsResourcesPage<Preapproval> search(MPSearchRequest request) throws MPException {
+  public MPResultsResourcesPage<Preapproval> search(MPSearchRequest request)
+      throws MPException, MPApiException {
     return this.search(request, null);
   }
 
@@ -163,7 +167,7 @@ public class PreapprovalClient extends MercadoPagoClient {
    * @throws MPException an error if the request fails
    */
   public MPResultsResourcesPage<Preapproval> search(
-      MPSearchRequest request, MPRequestOptions requestOptions) throws MPException {
+      MPSearchRequest request, MPRequestOptions requestOptions) throws MPException, MPApiException {
     LOGGER.info("Sending search preapproval request");
     MPResponse response = search("/preapproval/search", request, requestOptions);
 

@@ -3,6 +3,7 @@ package com.mercadopago.client.user;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.MercadoPagoClient;
 import com.mercadopago.core.MPRequestOptions;
+import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPHttpClient;
@@ -32,7 +33,7 @@ public class UserClient extends MercadoPagoClient {
    * @return user information
    * @throws MPException an error if the request fails
    */
-  public User get() throws MPException {
+  public User get() throws MPException, MPApiException {
     return this.get(null);
   }
 
@@ -43,7 +44,7 @@ public class UserClient extends MercadoPagoClient {
    * @return user information
    * @throws MPException an error if the request fails
    */
-  public User get(MPRequestOptions requestOptions) throws MPException {
+  public User get(MPRequestOptions requestOptions) throws MPException, MPApiException {
     MPResponse response = send("/users/me", HttpMethod.GET, null, null, requestOptions);
     User user = Serializer.deserializeFromJson(User.class, response.getContent());
     user.setResponse(response);

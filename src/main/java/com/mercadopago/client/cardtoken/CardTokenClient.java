@@ -3,6 +3,7 @@ package com.mercadopago.client.cardtoken;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.MercadoPagoClient;
 import com.mercadopago.core.MPRequestOptions;
+import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPHttpClient;
@@ -32,7 +33,7 @@ public class CardTokenClient extends MercadoPagoClient {
    * @param id card id
    * @return card token information
    */
-  public CardToken get(String id) throws MPException {
+  public CardToken get(String id) throws MPException, MPApiException {
     return this.get(id, null);
   }
 
@@ -43,7 +44,8 @@ public class CardTokenClient extends MercadoPagoClient {
    * @param requestOptions metadata to customize the request
    * @return card token information
    */
-  public CardToken get(String id, MPRequestOptions requestOptions) throws MPException {
+  public CardToken get(String id, MPRequestOptions requestOptions)
+      throws MPException, MPApiException {
     MPResponse response =
         send(String.format("/v1/card_tokens/%s", id), HttpMethod.GET, null, null, requestOptions);
     CardToken cardToken = Serializer.deserializeFromJson(CardToken.class, response.getContent());
@@ -58,7 +60,7 @@ public class CardTokenClient extends MercadoPagoClient {
    * @return card token information
    * @throws MPException an error if the request fails
    */
-  public CardToken create(CardTokenRequest request) throws MPException {
+  public CardToken create(CardTokenRequest request) throws MPException, MPApiException {
     return this.create(request, null);
   }
 
@@ -71,7 +73,7 @@ public class CardTokenClient extends MercadoPagoClient {
    * @throws MPException an error if the request fails
    */
   public CardToken create(CardTokenRequest request, MPRequestOptions requestOptions)
-      throws MPException {
+      throws MPException, MPApiException {
     MPResponse response =
         send(
             "/v1/card_tokens",

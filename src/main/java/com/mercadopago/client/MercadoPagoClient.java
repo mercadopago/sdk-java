@@ -3,6 +3,7 @@ package com.mercadopago.client;
 import com.google.gson.JsonObject;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.core.MPRequestOptions;
+import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.Headers;
 import com.mercadopago.net.HttpMethod;
@@ -49,7 +50,7 @@ public abstract class MercadoPagoClient {
    * @return MPResponse response object
    * @throws MPException exception
    */
-  protected MPResponse send(MPRequest request) throws MPException {
+  protected MPResponse send(MPRequest request) throws MPException, MPApiException {
     String uri = UrlFormatter.format(request.getUri(), request.getQueryParams());
 
     return httpClient.send(
@@ -72,7 +73,8 @@ public abstract class MercadoPagoClient {
    * @return MPResponse response
    * @throws MPException exception
    */
-  protected MPResponse send(MPRequest request, MPRequestOptions requestOptions) throws MPException {
+  protected MPResponse send(MPRequest request, MPRequestOptions requestOptions)
+      throws MPException, MPApiException {
     return this.send(
         this.buildRequest(
             request.getUri(),
@@ -94,7 +96,7 @@ public abstract class MercadoPagoClient {
    */
   protected MPResponse send(
       String path, HttpMethod method, JsonObject payload, Map<String, Object> queryParams)
-      throws MPException {
+      throws MPException, MPApiException {
     return this.send(path, method, payload, queryParams, null);
   }
 
@@ -116,7 +118,7 @@ public abstract class MercadoPagoClient {
       JsonObject payload,
       Map<String, Object> queryParams,
       MPRequestOptions requestOptions)
-      throws MPException {
+      throws MPException, MPApiException {
     MPRequest mpRequest = buildRequest(path, method, payload, queryParams, requestOptions);
     return this.send(mpRequest);
   }
@@ -129,7 +131,8 @@ public abstract class MercadoPagoClient {
    * @return response data
    * @throws MPException exception
    */
-  protected MPResponse search(String path, MPSearchRequest request) throws MPException {
+  protected MPResponse search(String path, MPSearchRequest request)
+      throws MPException, MPApiException {
     return this.search(path, request, null);
   }
 
@@ -145,7 +148,7 @@ public abstract class MercadoPagoClient {
    */
   protected MPResponse search(
       String path, MPSearchRequest searchRequest, MPRequestOptions requestOptions)
-      throws MPException {
+      throws MPException, MPApiException {
     Map<String, Object> queryParams =
         Objects.nonNull(searchRequest) ? searchRequest.getParameters() : null;
 
@@ -161,7 +164,8 @@ public abstract class MercadoPagoClient {
    * @return response data
    * @throws MPException exception
    */
-  protected MPResponse list(String path, MPRequestOptions requestOptions) throws MPException {
+  protected MPResponse list(String path, MPRequestOptions requestOptions)
+      throws MPException, MPApiException {
     return this.list(path, HttpMethod.GET, null, null, requestOptions);
   }
 
@@ -183,7 +187,7 @@ public abstract class MercadoPagoClient {
       JsonObject payload,
       Map<String, Object> queryParams,
       MPRequestOptions requestOptions)
-      throws MPException {
+      throws MPException, MPApiException {
     return this.send(path, method, payload, queryParams, requestOptions);
   }
 

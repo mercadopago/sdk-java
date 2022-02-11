@@ -19,6 +19,7 @@ import com.mercadopago.client.common.AddressRequest;
 import com.mercadopago.client.common.IdentificationRequest;
 import com.mercadopago.client.common.PhoneRequest;
 import com.mercadopago.core.MPRequestOptions;
+import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.MPElementsResourcesPage;
 import com.mercadopago.net.MPSearchRequest;
@@ -56,7 +57,7 @@ class PreferenceClientTest extends BaseClientTest {
   private final PreferenceClient client = new PreferenceClient();
 
   @Test
-  void getSuccess() throws IOException, MPException {
+  void getSuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse = generateHttpResponseFromFile(PREFERENCE_BASE_JSON, OK);
     doReturn(httpResponse)
         .when(httpClient)
@@ -69,7 +70,7 @@ class PreferenceClientTest extends BaseClientTest {
   }
 
   @Test
-  void getWithRequestOptionsSuccess() throws IOException, MPException {
+  void getWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
     MPRequestOptions requestOptions = generateRequestOptions();
     HttpResponse httpResponse = generateHttpResponseFromFile(PREFERENCE_BASE_JSON, OK);
     doReturn(httpResponse)
@@ -83,7 +84,7 @@ class PreferenceClientTest extends BaseClientTest {
   }
 
   @Test
-  void createSuccess() throws IOException, MPException {
+  void createSuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse = generateHttpResponseFromFile(PREFERENCE_BASE_JSON, CREATED);
     doReturn(httpResponse)
         .when(httpClient)
@@ -101,7 +102,7 @@ class PreferenceClientTest extends BaseClientTest {
   }
 
   @Test
-  void createWithRequestOptionsSuccess() throws IOException, MPException {
+  void createWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
     MPRequestOptions requestOptions = generateRequestOptions();
     HttpResponse httpResponse = generateHttpResponseFromFile(PREFERENCE_BASE_JSON, CREATED);
     doReturn(httpResponse)
@@ -120,7 +121,7 @@ class PreferenceClientTest extends BaseClientTest {
   }
 
   @Test
-  void updateSuccess() throws IOException, MPException {
+  void updateSuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse = generateHttpResponseFromFile(PREFERENCE_UPDATED_JSON, OK);
     doReturn(httpResponse)
         .when(httpClient)
@@ -139,7 +140,7 @@ class PreferenceClientTest extends BaseClientTest {
   }
 
   @Test
-  void updateWithRequestOptionsSuccess() throws IOException, MPException {
+  void updateWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
     MPRequestOptions requestOptions = generateRequestOptions();
     HttpResponse httpResponse = generateHttpResponseFromFile(PREFERENCE_UPDATED_JSON, OK);
     doReturn(httpResponse)
@@ -159,7 +160,7 @@ class PreferenceClientTest extends BaseClientTest {
   }
 
   @Test
-  void searchSuccess() throws IOException, MPException {
+  void searchSuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse = generateHttpResponseFromFile(PREFERENCE_LIST_JSON, OK);
     doReturn(httpResponse)
         .when(httpClient)
@@ -173,7 +174,7 @@ class PreferenceClientTest extends BaseClientTest {
   }
 
   @Test
-  void searchWithRequestOptionsSuccess() throws IOException, MPException {
+  void searchWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
     MPRequestOptions requestOptions = generateRequestOptions();
     HttpResponse httpResponse = generateHttpResponseFromFile(PREFERENCE_LIST_JSON, OK);
     doReturn(httpResponse)
