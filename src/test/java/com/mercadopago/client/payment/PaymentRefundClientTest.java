@@ -31,8 +31,6 @@ class PaymentRefundClientTest extends BaseClientTest {
 
   private static final Long REFUND_TEST_ID = 1245678203L;
 
-  private static final String PAYMENT_SEARCH_JSON = "payment/payment_search.json";
-
   private static final String REFUND_BASE_JSON = "refund/refund_base.json";
 
   private static final String REFUND_LIST_JSON = "refund/refund_list.json";
