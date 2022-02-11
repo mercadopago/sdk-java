@@ -124,10 +124,10 @@ class PaymentRefundClientTest extends BaseClientTest {
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
     MPResourceList<PaymentRefund> result = client.list(PAYMENT_TEST_ID);
-    assertEquals(OK, result.get(0).getResponse().getStatusCode());
-    assertNotNull(result.get(0).getResponse());
-    assertEquals(2, result.size());
-    assertRefundFields(result.get(0));
+    assertEquals(OK, result.getResponse().getStatusCode());
+    assertNotNull(result.getResponse());
+    assertEquals(2, result.getResults().size());
+    assertRefundFields(result.getResults().get(0));
   }
 
   @Test
@@ -146,15 +146,13 @@ class PaymentRefundClientTest extends BaseClientTest {
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
     MPResourceList<PaymentRefund> result = client.list(PAYMENT_TEST_ID, requestOptions);
-    assertEquals(OK, result.get(0).getResponse().getStatusCode());
-    assertNotNull(result.get(0).getResponse());
-    assertEquals(2, result.size());
-    assertRefundFields(result.get(0));
+    assertEquals(OK, result.getResponse().getStatusCode());
+    assertNotNull(result.getResponse());
+    assertEquals(2, result.getResults().size());
+    assertRefundFields(result.getResults().get(0));
   }
 
   private void assertRefundFields(PaymentRefund refund) {
-    assertEquals(OK, refund.getResponse().getStatusCode());
-    assertNotNull(refund.getResponse());
     assertEquals(REFUND_TEST_ID, refund.getId());
     assertEquals(PAYMENT_TEST_ID, refund.getPaymentId());
     assertEquals(new BigDecimal("50"), refund.getAmount());
