@@ -11,6 +11,7 @@ import static org.mockito.Mockito.doReturn;
 
 import com.mercadopago.BaseClientTest;
 import com.mercadopago.core.MPRequestOptions;
+import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.MPResourceList;
 import com.mercadopago.resources.paymentmethod.PaymentMethod;
@@ -37,7 +38,7 @@ class PaymentMethodClientTest extends BaseClientTest {
   private final PaymentMethodClient client = new PaymentMethodClient();
 
   @Test
-  void listSuccess() throws MPException, IOException {
+  void listSuccess() throws MPException, MPApiException, IOException {
     HttpResponse httpResponse = generateHttpResponseFromFile(PAYMENT_METHOD_BASE_JSON, OK);
     doReturn(httpResponse)
         .when(httpClient)
@@ -50,7 +51,7 @@ class PaymentMethodClientTest extends BaseClientTest {
   }
 
   @Test
-  public void listSuccessWithRequestOptions() throws IOException, MPException {
+  public void listSuccessWithRequestOptions() throws IOException, MPException, MPApiException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
             .accessToken("abc")

@@ -20,6 +20,7 @@ import com.mercadopago.client.common.AddressRequest;
 import com.mercadopago.client.common.IdentificationRequest;
 import com.mercadopago.client.common.PhoneRequest;
 import com.mercadopago.core.MPRequestOptions;
+import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.MPResourceList;
 import com.mercadopago.net.MPResultsResourcesPage;
@@ -90,7 +91,7 @@ public class PaymentClientTest extends BaseClientTest {
   private final PaymentClient client = new PaymentClient();
 
   @Test
-  public void createSuccess() throws MPException, IOException {
+  public void createSuccess() throws MPException, IOException, MPApiException {
 
     Payment payment = createPayment();
 
@@ -105,7 +106,7 @@ public class PaymentClientTest extends BaseClientTest {
   }
 
   @Test
-  public void createWithRequestOptionsSuccess() throws MPException, IOException {
+  public void createWithRequestOptionsSuccess() throws MPException, IOException, MPApiException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
             .accessToken("abc")
@@ -127,7 +128,7 @@ public class PaymentClientTest extends BaseClientTest {
   }
 
   @Test
-  public void getSuccess() throws IOException, MPException {
+  public void getSuccess() throws IOException, MPException, MPApiException {
 
     HttpResponse httpResponse = generateHttpResponseFromFile(PAYMENT_BASE_JSON, OK);
     doReturn(httpResponse)
@@ -140,7 +141,7 @@ public class PaymentClientTest extends BaseClientTest {
   }
 
   @Test
-  public void getWithRequestOptionsSuccess() throws IOException, MPException {
+  public void getWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
             .accessToken("abc")
@@ -160,7 +161,7 @@ public class PaymentClientTest extends BaseClientTest {
   }
 
   @Test
-  public void cancelSuccess() throws IOException, MPException {
+  public void cancelSuccess() throws IOException, MPException, MPApiException {
 
     HttpResponse httpResponse = generateHttpResponseFromFile(PAYMENT_CANCELLED_JSON, OK);
     doReturn(httpResponse)
@@ -180,7 +181,7 @@ public class PaymentClientTest extends BaseClientTest {
   }
 
   @Test
-  public void cancelWithRequestOptionsSuccess() throws IOException, MPException {
+  public void cancelWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
             .accessToken("abc")
@@ -207,7 +208,7 @@ public class PaymentClientTest extends BaseClientTest {
   }
 
   @Test
-  public void captureSuccess() throws IOException, MPException {
+  public void captureSuccess() throws IOException, MPException, MPApiException {
 
     HttpResponse httpResponse = generateHttpResponseFromFile(PAYMENT_CAPTURED_JSON, OK);
     doReturn(httpResponse)
@@ -228,7 +229,7 @@ public class PaymentClientTest extends BaseClientTest {
   }
 
   @Test
-  public void captureWithRequestOptionsSuccess() throws IOException, MPException {
+  public void captureWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
             .accessToken("abc")
@@ -255,7 +256,7 @@ public class PaymentClientTest extends BaseClientTest {
   }
 
   @Test
-  public void searchSuccess() throws IOException, MPException {
+  public void searchSuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse = generateHttpResponseFromFile(PAYMENT_SEARCH_JSON, OK);
     doReturn(httpResponse)
         .when(httpClient)
@@ -274,7 +275,7 @@ public class PaymentClientTest extends BaseClientTest {
   }
 
   @Test
-  public void searchWithRequestOptionsSuccess() throws IOException, MPException {
+  public void searchWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
             .accessToken("abc")
@@ -301,7 +302,7 @@ public class PaymentClientTest extends BaseClientTest {
   }
 
   @Test
-  public void refundPartialSuccess() throws IOException, MPException {
+  public void refundPartialSuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_BASE_JSON, OK);
     doReturn(httpResponse)
         .when(httpClient)
@@ -319,7 +320,8 @@ public class PaymentClientTest extends BaseClientTest {
   }
 
   @Test
-  public void refundPartialWithRequestOptionsSuccess() throws IOException, MPException {
+  public void refundPartialWithRequestOptionsSuccess()
+      throws IOException, MPException, MPApiException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
             .accessToken("abc")
@@ -345,7 +347,7 @@ public class PaymentClientTest extends BaseClientTest {
   }
 
   @Test
-  public void refundTotalSuccess() throws IOException, MPException {
+  public void refundTotalSuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_BASE_JSON, OK);
     doReturn(httpResponse)
         .when(httpClient)
@@ -356,7 +358,8 @@ public class PaymentClientTest extends BaseClientTest {
   }
 
   @Test
-  public void refundTotalWithRequestOptionsSuccess() throws IOException, MPException {
+  public void refundTotalWithRequestOptionsSuccess()
+      throws IOException, MPException, MPApiException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
             .accessToken("abc")
@@ -375,7 +378,7 @@ public class PaymentClientTest extends BaseClientTest {
   }
 
   @Test
-  public void getRefundSuccess() throws IOException, MPException {
+  public void getRefundSuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_BASE_JSON, OK);
     doReturn(httpResponse)
         .when(httpClient)
@@ -386,7 +389,7 @@ public class PaymentClientTest extends BaseClientTest {
   }
 
   @Test
-  public void getRefundWithRequestOptionsSuccess() throws IOException, MPException {
+  public void getRefundWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
             .accessToken("abc")
@@ -405,7 +408,7 @@ public class PaymentClientTest extends BaseClientTest {
   }
 
   @Test
-  public void listRefundsSuccess() throws IOException, MPException {
+  public void listRefundsSuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_LIST_JSON, OK);
     doReturn(httpResponse)
         .when(httpClient)
@@ -419,7 +422,8 @@ public class PaymentClientTest extends BaseClientTest {
   }
 
   @Test
-  public void listRefundsWithRequestOptionsSuccess() throws IOException, MPException {
+  public void listRefundsWithRequestOptionsSuccess()
+      throws IOException, MPException, MPApiException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
             .accessToken("abc")
@@ -455,11 +459,12 @@ public class PaymentClientTest extends BaseClientTest {
     assertNull(refund.getReason());
   }
 
-  private Payment createPayment() throws IOException, MPException {
+  private Payment createPayment() throws IOException, MPException, MPApiException {
     return this.createPayment(null);
   }
 
-  private Payment createPayment(MPRequestOptions requestOptions) throws IOException, MPException {
+  private Payment createPayment(MPRequestOptions requestOptions)
+      throws IOException, MPException, MPApiException {
     HttpResponse httpResponse = generateHttpResponseFromFile(PAYMENT_BASE_JSON, CREATED);
     doReturn(httpResponse)
         .when(httpClient)

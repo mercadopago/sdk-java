@@ -5,7 +5,7 @@ import lombok.Getter;
 
 /** MPApiException class. */
 @Getter
-public class MPApiException extends MPException {
+public class MPApiException extends Exception {
   private final int statusCode;
 
   private final MPResponse apiResponse;
@@ -31,15 +31,5 @@ public class MPApiException extends MPException {
     super(message, cause);
     this.apiResponse = response;
     this.statusCode = response.getStatusCode();
-  }
-
-  /**
-   * MPApiException constructor.
-   *
-   * @param cause cause
-   * @param response response
-   */
-  public MPApiException(Throwable cause, MPResponse response) {
-    this(null, cause, response);
   }
 }

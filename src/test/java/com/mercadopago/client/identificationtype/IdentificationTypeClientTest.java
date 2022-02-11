@@ -10,6 +10,7 @@ import static org.mockito.Mockito.doReturn;
 
 import com.mercadopago.BaseClientTest;
 import com.mercadopago.core.MPRequestOptions;
+import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.MPResourceList;
 import com.mercadopago.resources.identificationtype.IdentificationType;
@@ -28,7 +29,7 @@ class IdentificationTypeClientTest extends BaseClientTest {
   IdentificationTypeClient client = new IdentificationTypeClient();
 
   @Test
-  void listSuccess() throws IOException, MPException {
+  void listSuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse = generateHttpResponseFromFile(IDENTIFICATION_TYPES_JSON, OK);
     doReturn(httpResponse)
         .when(httpClient)
@@ -41,7 +42,7 @@ class IdentificationTypeClientTest extends BaseClientTest {
   }
 
   @Test
-  void testListWithRequestOptionsSuccess() throws IOException, MPException {
+  void testListWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
             .accessToken("abc")
