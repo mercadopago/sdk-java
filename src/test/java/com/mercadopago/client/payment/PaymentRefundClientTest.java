@@ -40,8 +40,6 @@ class PaymentRefundClientTest extends BaseClientTest {
   private static final OffsetDateTime DATE =
       OffsetDateTime.of(2022, 1, 10, 10, 10, 10, 0, ZoneOffset.UTC);
 
-  private static final int DEFAULT_TIMEOUT = 1000;
-
   private final PaymentRefundClient client = new PaymentRefundClient();
 
   @Test
