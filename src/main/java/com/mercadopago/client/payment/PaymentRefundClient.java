@@ -54,7 +54,8 @@ public class PaymentRefundClient extends MercadoPagoClient {
    *     href="https://www.mercadopago.com.br/developers/en/reference/chargebacks/_payments_id_refunds/post">api
    *     docs</a>
    */
-  public PaymentRefund refund(Long paymentId, BigDecimal amount) throws MPException {
+  public PaymentRefund refund(Long paymentId, BigDecimal amount)
+      throws MPException, MPApiException {
     return this.refund(paymentId, amount, null);
   }
 
@@ -100,7 +101,7 @@ public class PaymentRefundClient extends MercadoPagoClient {
    *     href="https://www.mercadopago.com.br/developers/en/reference/chargebacks/_payments_id_refunds_refund_id/get">api
    *     docs</a>
    */
-  public PaymentRefund get(Long paymentId, Long refundId) throws MPException {
+  public PaymentRefund get(Long paymentId, Long refundId) throws MPException, MPApiException {
     return this.get(paymentId, refundId, null);
   }
 
@@ -142,7 +143,7 @@ public class PaymentRefundClient extends MercadoPagoClient {
    *     href="https://www.mercadopago.com.br/developers/en/reference/chargebacks/_payments_id_refunds/get">api
    *     docs</a>
    */
-  public MPResourceList<PaymentRefund> list(Long paymentId) throws MPException {
+  public MPResourceList<PaymentRefund> list(Long paymentId) throws MPException, MPApiException {
     return this.list(paymentId, null);
   }
 

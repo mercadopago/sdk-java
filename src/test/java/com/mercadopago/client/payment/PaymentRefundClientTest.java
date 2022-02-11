@@ -13,6 +13,7 @@ import static org.mockito.Mockito.doReturn;
 import com.google.gson.JsonElement;
 import com.mercadopago.BaseClientTest;
 import com.mercadopago.core.MPRequestOptions;
+import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.MPResourceList;
 import com.mercadopago.resources.payment.PaymentRefund;
@@ -43,7 +44,7 @@ class PaymentRefundClientTest extends BaseClientTest {
   private final PaymentRefundClient client = new PaymentRefundClient();
 
   @Test
-  void refundSuccess() throws IOException, MPException {
+  void refundSuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_BASE_JSON, OK);
     doReturn(httpResponse)
         .when(httpClient)
@@ -61,7 +62,8 @@ class PaymentRefundClientTest extends BaseClientTest {
   }
 
   @Test
-  public void refundPartialWithRequestOptionsSuccess() throws IOException, MPException {
+  public void refundPartialWithRequestOptionsSuccess()
+      throws IOException, MPException, MPApiException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
             .accessToken("abc")
@@ -87,7 +89,7 @@ class PaymentRefundClientTest extends BaseClientTest {
   }
 
   @Test
-  public void getRefundSuccess() throws IOException, MPException {
+  public void getRefundSuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_BASE_JSON, OK);
     doReturn(httpResponse)
         .when(httpClient)
@@ -98,7 +100,7 @@ class PaymentRefundClientTest extends BaseClientTest {
   }
 
   @Test
-  public void getRefundWithRequestOptionsSuccess() throws IOException, MPException {
+  public void getRefundWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
             .accessToken("abc")
@@ -117,7 +119,7 @@ class PaymentRefundClientTest extends BaseClientTest {
   }
 
   @Test
-  public void listRefundsSuccess() throws IOException, MPException {
+  public void listRefundsSuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_LIST_JSON, OK);
     doReturn(httpResponse)
         .when(httpClient)
@@ -131,7 +133,8 @@ class PaymentRefundClientTest extends BaseClientTest {
   }
 
   @Test
-  public void listRefundsWithRequestOptionsSuccess() throws IOException, MPException {
+  public void listRefundsWithRequestOptionsSuccess()
+      throws IOException, MPException, MPApiException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
             .accessToken("abc")
