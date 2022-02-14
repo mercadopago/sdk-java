@@ -25,6 +25,8 @@ import java.io.StringReader;
 import java.lang.reflect.Type;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Serializer class, responsible for objects serialization and deserialization. */
 public class Serializer {
@@ -135,11 +137,13 @@ public class Serializer {
     try {
       if (isJsonValid(jsonObject)) {
         MPResourceList<T> resourceList = new MPResourceList<>();
+        List<T> results = new ArrayList<>();
         JsonArray jsonArray = JsonParser.parseString(jsonObject).getAsJsonArray();
         for (int i = 0; i < jsonArray.size(); i++) {
           T resource = GSON.fromJson(jsonArray.get(i), clazz);
-          resourceList.add(resource);
+          results.add(resource);
         }
+        resourceList.setResults(results);
 
         return resourceList;
       } else {

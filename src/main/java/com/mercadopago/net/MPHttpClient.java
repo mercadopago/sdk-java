@@ -1,5 +1,6 @@
 package com.mercadopago.net;
 
+import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 
 /** MPHttpClient interface. */
@@ -12,5 +13,5 @@ public interface MPHttpClient {
    * @return response
    * @throws MPException exception
    */
-  MPResponse send(MPRequest request) throws MPException;
+  MPResponse send(MPRequest request) throws MPException, MPApiException;
 }

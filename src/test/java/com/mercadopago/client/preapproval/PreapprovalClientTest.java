@@ -15,6 +15,7 @@ import static org.mockito.Mockito.doReturn;
 import com.google.gson.JsonElement;
 import com.mercadopago.BaseClientTest;
 import com.mercadopago.core.MPRequestOptions;
+import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.MPResultsResourcesPage;
 import com.mercadopago.net.MPSearchRequest;
@@ -49,7 +50,7 @@ class PreapprovalClientTest extends BaseClientTest {
   PreapprovalClient client = new PreapprovalClient();
 
   @Test
-  void getSuccess() throws IOException, MPException {
+  void getSuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse = generateHttpResponseFromFile(PREAPPROVAL_BASE_JSON, OK);
     doReturn(httpResponse)
         .when(httpClient)
@@ -63,7 +64,7 @@ class PreapprovalClientTest extends BaseClientTest {
   }
 
   @Test
-  void getWithRequestOptionsSuccess() throws IOException, MPException {
+  void getWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
     MPRequestOptions requestOptions = generateRequestOptions();
 
     HttpResponse httpResponse = generateHttpResponseFromFile(PREAPPROVAL_BASE_JSON, OK);
@@ -79,7 +80,7 @@ class PreapprovalClientTest extends BaseClientTest {
   }
 
   @Test
-  void createSuccess() throws IOException, MPException {
+  void createSuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse = generateHttpResponseFromFile(PREAPPROVAL_BASE_JSON, CREATED);
     doReturn(httpResponse)
         .when(httpClient)
@@ -99,7 +100,7 @@ class PreapprovalClientTest extends BaseClientTest {
   }
 
   @Test
-  void createWithRequestOptionsSuccess() throws IOException, MPException {
+  void createWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
     MPRequestOptions requestOptions = generateRequestOptions();
 
     HttpResponse httpResponse = generateHttpResponseFromFile(PREAPPROVAL_BASE_JSON, CREATED);
@@ -121,7 +122,7 @@ class PreapprovalClientTest extends BaseClientTest {
   }
 
   @Test
-  void updateSuccess() throws MPException, IOException {
+  void updateSuccess() throws MPException, MPApiException, IOException {
     HttpResponse httpResponse = generateHttpResponseFromFile(PREAPPROVAL_UPDATE_JSON, OK);
     doReturn(httpResponse)
         .when(httpClient)
@@ -142,7 +143,7 @@ class PreapprovalClientTest extends BaseClientTest {
   }
 
   @Test
-  void updateWithRequestOptionsSuccess() throws IOException, MPException {
+  void updateWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
     MPRequestOptions requestOptions = generateRequestOptions();
 
     HttpResponse httpResponse = generateHttpResponseFromFile(PREAPPROVAL_UPDATE_JSON, OK);
@@ -165,7 +166,7 @@ class PreapprovalClientTest extends BaseClientTest {
   }
 
   @Test
-  void searchSuccess() throws IOException, MPException {
+  void searchSuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse = generateHttpResponseFromFile(PREAPPROVAL_LIST_JSON, OK);
     doReturn(httpResponse)
         .when(httpClient)
@@ -186,7 +187,7 @@ class PreapprovalClientTest extends BaseClientTest {
   }
 
   @Test
-  void searchWithRequestOptionsSuccess() throws IOException, MPException {
+  void searchWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
     MPRequestOptions requestOptions = generateRequestOptions();
 
     HttpResponse httpResponse = generateHttpResponseFromFile(PREAPPROVAL_LIST_JSON, OK);

@@ -16,6 +16,7 @@ import static org.mockito.Mockito.doReturn;
 import com.google.gson.JsonElement;
 import com.mercadopago.BaseClientTest;
 import com.mercadopago.core.MPRequestOptions;
+import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.MPElementsResourcesPage;
 import com.mercadopago.net.MPSearchRequest;
@@ -51,7 +52,7 @@ class MerchantOrderClientTest extends BaseClientTest {
   MerchantOrderClient client = new MerchantOrderClient();
 
   @Test
-  void createSuccess() throws MPException, IOException {
+  void createSuccess() throws MPException, MPApiException, IOException {
 
     HttpResponse httpResponse = generateHttpResponseFromFile(ORDER_BASE_JSON, CREATED);
     doReturn(httpResponse)
@@ -74,7 +75,7 @@ class MerchantOrderClientTest extends BaseClientTest {
   }
 
   @Test
-  void createWithRequestOptionsSuccess() throws MPException, IOException {
+  void createWithRequestOptionsSuccess() throws MPException, MPApiException, IOException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
             .accessToken("abc")
@@ -104,7 +105,7 @@ class MerchantOrderClientTest extends BaseClientTest {
   }
 
   @Test
-  void getSuccess() throws MPException, IOException {
+  void getSuccess() throws MPException, MPApiException, IOException {
 
     HttpResponse httpResponse = generateHttpResponseFromFile(ORDER_BASE_JSON, OK);
     doReturn(httpResponse)
@@ -119,7 +120,7 @@ class MerchantOrderClientTest extends BaseClientTest {
   }
 
   @Test
-  void getWithRequestOptionsSuccess() throws MPException, IOException {
+  void getWithRequestOptionsSuccess() throws MPException, MPApiException, IOException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
             .accessToken("abc")
@@ -141,7 +142,7 @@ class MerchantOrderClientTest extends BaseClientTest {
   }
 
   @Test
-  void updateSuccess() throws MPException, IOException {
+  void updateSuccess() throws MPException, MPApiException, IOException {
     HttpResponse httpResponse = generateHttpResponseFromFile(ORDER_UPDATED_JSON, OK);
     doReturn(httpResponse)
         .when(httpClient)
@@ -166,7 +167,7 @@ class MerchantOrderClientTest extends BaseClientTest {
   }
 
   @Test
-  void updateWithRequestOptionsSuccess() throws MPException, IOException {
+  void updateWithRequestOptionsSuccess() throws MPException, MPApiException, IOException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
             .accessToken("abc")
@@ -199,7 +200,7 @@ class MerchantOrderClientTest extends BaseClientTest {
   }
 
   @Test
-  void searchSuccess() throws MPException, IOException {
+  void searchSuccess() throws MPException, MPApiException, IOException {
 
     HttpResponse httpResponse = generateHttpResponseFromFile(ORDER_SEARCH_JSON, OK);
     doReturn(httpResponse)
@@ -222,7 +223,7 @@ class MerchantOrderClientTest extends BaseClientTest {
   }
 
   @Test
-  void searchWithRequestOptionsSuccess() throws MPException, IOException {
+  void searchWithRequestOptionsSuccess() throws MPException, MPApiException, IOException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
             .accessToken("abc")

@@ -10,6 +10,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
 import com.mercadopago.core.MPRequestOptions;
+import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.helper.MockHelper;
 import com.mercadopago.mock.MPDefaultHttpClientMock;
@@ -59,7 +60,7 @@ public class CardTokenClientTest {
 
   @Test
   public void getCardTokenSuccess()
-      throws IOException, MPException, ParseException, java.text.ParseException {
+      throws IOException, MPException, MPApiException, ParseException, java.text.ParseException {
     HttpResponse httpResponse =
         MockHelper.generateHttpResponseFromFile(responseFileCardToken, HttpStatus.OK);
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
@@ -75,7 +76,7 @@ public class CardTokenClientTest {
 
   @Test
   public void getCardTokenWithRequestOptionsSuccess()
-      throws IOException, MPException, ParseException, java.text.ParseException {
+      throws IOException, MPException, MPApiException, ParseException, java.text.ParseException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
             .accessToken("abc")
@@ -98,7 +99,7 @@ public class CardTokenClientTest {
 
   @Test
   public void createCardTokenSuccess()
-      throws IOException, MPException, ParseException, java.text.ParseException {
+      throws IOException, MPException, MPApiException, ParseException, java.text.ParseException {
     HttpResponse httpResponse =
         MockHelper.generateHttpResponseFromFile(responseFileCardToken, HttpStatus.OK);
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
@@ -114,7 +115,7 @@ public class CardTokenClientTest {
 
   @Test
   public void createCardTokenWithRequestOptionsSuccess()
-      throws ParseException, IOException, MPException, java.text.ParseException {
+      throws ParseException, IOException, MPException, MPApiException, java.text.ParseException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
             .accessToken("abc")

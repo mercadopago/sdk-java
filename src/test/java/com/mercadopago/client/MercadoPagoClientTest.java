@@ -53,7 +53,7 @@ public class MercadoPagoClientTest extends BaseClientTest {
   }
 
   @Test
-  public void sendWithBodySuccess() throws IOException, MPException {
+  public void sendWithBodySuccess() throws IOException, MPException, MPApiException {
     String request = MockHelper.readRequestFile(requestFile);
     JsonObject requestObject = JsonParser.parseString(request).getAsJsonObject();
     HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
@@ -73,7 +73,8 @@ public class MercadoPagoClientTest extends BaseClientTest {
   }
 
   @Test
-  public void sendWithIdempotentHeaderIfMethodIsPost() throws IOException, MPException {
+  public void sendWithIdempotentHeaderIfMethodIsPost()
+      throws IOException, MPException, MPApiException {
     HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 201);
     doReturn(httpResponse)
         .when(httpClientMock)
@@ -91,7 +92,7 @@ public class MercadoPagoClientTest extends BaseClientTest {
   }
 
   @Test
-  public void sendWithoutBodySuccess() throws IOException, MPException {
+  public void sendWithoutBodySuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
     doReturn(httpResponse)
         .when(httpClientMock)
@@ -109,7 +110,7 @@ public class MercadoPagoClientTest extends BaseClientTest {
   }
 
   @Test
-  public void sendWithQueryStringSuccess() throws IOException, MPException {
+  public void sendWithQueryStringSuccess() throws IOException, MPException, MPApiException {
     HashMap<String, Object> queryParams = new HashMap<>();
     queryParams.put("entry1", "value&1");
     queryParams.put("entry2", "value!2");
@@ -137,7 +138,7 @@ public class MercadoPagoClientTest extends BaseClientTest {
   }
 
   @Test
-  public void sendWithMPRequestOptionsSuccess() throws IOException, MPException {
+  public void sendWithMPRequestOptionsSuccess() throws IOException, MPException, MPApiException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
             .accessToken("abc")
@@ -158,7 +159,7 @@ public class MercadoPagoClientTest extends BaseClientTest {
   }
 
   @Test
-  public void sendWithRequiredHeaders() throws IOException, MPException {
+  public void sendWithRequiredHeaders() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
     doReturn(httpResponse)
         .when(httpClientMock)
@@ -212,7 +213,7 @@ public class MercadoPagoClientTest extends BaseClientTest {
   }
 
   @Test
-  public void searchWithParametersSuccess() throws IOException, MPException {
+  public void searchWithParametersSuccess() throws IOException, MPException, MPApiException {
     Map<String, Object> filters = new HashMap<>();
     filters.put("abc", "xyz");
 
@@ -235,7 +236,7 @@ public class MercadoPagoClientTest extends BaseClientTest {
   }
 
   @Test
-  public void searchWithoutParametersSuccess() throws IOException, MPException {
+  public void searchWithoutParametersSuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
     doReturn(httpResponse)
         .when(httpClientMock)
@@ -247,7 +248,7 @@ public class MercadoPagoClientTest extends BaseClientTest {
   }
 
   @Test
-  public void listWithBodySuccess() throws IOException, MPException {
+  public void listWithBodySuccess() throws IOException, MPException, MPApiException {
     String request = MockHelper.readRequestFile(requestFile);
     JsonObject requestObject = JsonParser.parseString(request).getAsJsonObject();
     HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
@@ -262,7 +263,7 @@ public class MercadoPagoClientTest extends BaseClientTest {
   }
 
   @Test
-  public void listWithoutBodySuccess() throws IOException, MPException {
+  public void listWithoutBodySuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
     doReturn(httpResponse)
         .when(httpClientMock)
@@ -274,7 +275,7 @@ public class MercadoPagoClientTest extends BaseClientTest {
   }
 
   @Test
-  public void listWithQueryStringSuccess() throws IOException, MPException {
+  public void listWithQueryStringSuccess() throws IOException, MPException, MPApiException {
     HashMap<String, Object> queryParams = new HashMap<>();
     queryParams.put("entry1", "value&1");
     queryParams.put("entry2", "value!2");
@@ -297,7 +298,7 @@ public class MercadoPagoClientTest extends BaseClientTest {
   }
 
   @Test
-  public void listWithMPRequestOptionsSuccess() throws IOException, MPException {
+  public void listWithMPRequestOptionsSuccess() throws IOException, MPException, MPApiException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
             .accessToken("abc")
@@ -328,7 +329,7 @@ public class MercadoPagoClientTest extends BaseClientTest {
       super(httpClient);
     }
 
-    public MPResponse sendRequest(MPRequest request) throws MPException {
+    public MPResponse sendRequest(MPRequest request) throws MPException, MPApiException {
       return send(request);
     }
 
@@ -338,11 +339,12 @@ public class MercadoPagoClientTest extends BaseClientTest {
         JsonObject payload,
         Map<String, Object> queryParams,
         MPRequestOptions requestOptions)
-        throws MPException {
+        throws MPException, MPApiException {
       return send(path, method, payload, queryParams, requestOptions);
     }
 
-    public MPResponse searchRequest(String path, MPSearchRequest searchRequest) throws MPException {
+    public MPResponse searchRequest(String path, MPSearchRequest searchRequest)
+        throws MPException, MPApiException {
       return search(path, searchRequest);
     }
 
@@ -352,7 +354,7 @@ public class MercadoPagoClientTest extends BaseClientTest {
         JsonObject payload,
         HashMap<String, Object> queryParams,
         MPRequestOptions requestOptions)
-        throws MPException {
+        throws MPException, MPApiException {
       return list(path, method, payload, queryParams, requestOptions);
     }
   }

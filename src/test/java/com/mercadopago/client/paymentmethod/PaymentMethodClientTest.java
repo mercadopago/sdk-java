@@ -11,6 +11,7 @@ import static org.mockito.Mockito.doReturn;
 
 import com.mercadopago.BaseClientTest;
 import com.mercadopago.core.MPRequestOptions;
+import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.MPResourceList;
 import com.mercadopago.resources.paymentmethod.PaymentMethod;
@@ -37,18 +38,20 @@ class PaymentMethodClientTest extends BaseClientTest {
   private final PaymentMethodClient client = new PaymentMethodClient();
 
   @Test
-  void listSuccess() throws MPException, IOException {
+  void listSuccess() throws MPException, MPApiException, IOException {
     HttpResponse httpResponse = generateHttpResponseFromFile(PAYMENT_METHOD_BASE_JSON, OK);
     doReturn(httpResponse)
         .when(httpClient)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
     MPResourceList<PaymentMethod> paymentMethods = client.list();
+    assertNotNull(paymentMethods.getResponse());
+    assertEquals(OK, paymentMethods.getResponse().getStatusCode());
     assertPaymentMethodFields(paymentMethods);
   }
 
   @Test
-  public void listSuccessWithRequestOptions() throws IOException, MPException {
+  public void listSuccessWithRequestOptions() throws IOException, MPException, MPApiException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
             .accessToken("abc")
@@ -62,6 +65,8 @@ class PaymentMethodClientTest extends BaseClientTest {
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
     MPResourceList<PaymentMethod> paymentMethods = client.list(requestOptions);
+    assertNotNull(paymentMethods.getResponse());
+    assertEquals(OK, paymentMethods.getResponse().getStatusCode());
     assertPaymentMethodFields(paymentMethods);
   }
 
@@ -71,33 +76,50 @@ class PaymentMethodClientTest extends BaseClientTest {
     additionalInfoNeeded.add("cardholder_identification_type");
     additionalInfoNeeded.add("cardholder_identification_number");
 
-    assertEquals(OK, paymentMethods.get(0).getResponse().getStatusCode());
-    assertNotNull(paymentMethods.get(0).getResponse());
-    assertEquals("debmaster", paymentMethods.get(0).getId());
-    assertEquals("Mastercard Débito", paymentMethods.get(0).getName());
-    assertEquals("debit_card", paymentMethods.get(0).getPaymentTypeId());
-    assertEquals("testing", paymentMethods.get(0).getStatus());
-    assertEquals(THUMBNAIL, paymentMethods.get(0).getSecureThumbnail());
-    assertEquals(THUMBNAIL, paymentMethods.get(0).getThumbnail());
-    assertEquals("unsupported", paymentMethods.get(0).getDeferredCapture());
-    assertEquals(1, paymentMethods.get(0).getSettings().size());
+    assertEquals("debmaster", paymentMethods.getResults().get(0).getId());
+    assertEquals("Mastercard Débito", paymentMethods.getResults().get(0).getName());
+    assertEquals("debit_card", paymentMethods.getResults().get(0).getPaymentTypeId());
+    assertEquals("testing", paymentMethods.getResults().get(0).getStatus());
+    assertEquals(THUMBNAIL, paymentMethods.getResults().get(0).getSecureThumbnail());
+    assertEquals(THUMBNAIL, paymentMethods.getResults().get(0).getThumbnail());
+    assertEquals("unsupported", paymentMethods.getResults().get(0).getDeferredCapture());
+    assertEquals(1, paymentMethods.getResults().get(0).getSettings().size());
     assertEquals(
-        "standard", paymentMethods.get(0).getSettings().get(0).getCardNumber().getValidation());
-    assertEquals(16, paymentMethods.get(0).getSettings().get(0).getCardNumber().getLength());
-    assertEquals("^(502121)", paymentMethods.get(0).getSettings().get(0).getBin().getPattern());
-    assertNull(paymentMethods.get(0).getSettings().get(0).getBin().getInstallmentsPattern());
-    assertNull(paymentMethods.get(0).getSettings().get(0).getBin().getExclusionPattern());
-    assertEquals(3, paymentMethods.get(0).getSettings().get(0).getSecurityCode().getLength());
+        "standard",
+        paymentMethods.getResults().get(0).getSettings().get(0).getCardNumber().getValidation());
     assertEquals(
-        "back", paymentMethods.get(0).getSettings().get(0).getSecurityCode().getCardLocation());
+        16, paymentMethods.getResults().get(0).getSettings().get(0).getCardNumber().getLength());
     assertEquals(
-        "mandatory", paymentMethods.get(0).getSettings().get(0).getSecurityCode().getMode());
-    assertEquals(3, paymentMethods.get(0).getAdditionalInfoNeeded().size());
-    assertTrue(paymentMethods.get(0).getAdditionalInfoNeeded().containsAll(additionalInfoNeeded));
-    assertEquals(new BigDecimal("0.5"), paymentMethods.get(0).getMinAllowedAmount());
-    assertEquals(new BigDecimal("60000"), paymentMethods.get(0).getMaxAllowedAmount());
-    assertEquals(ACCREDITATION_TIME, paymentMethods.get(0).getAccreditationTime());
-    assertTrue(paymentMethods.get(0).getFinancialInstitutions().isEmpty());
-    assertTrue(paymentMethods.get(0).getProcessingModes().contains("aggregator"));
+        "^(502121)", paymentMethods.getResults().get(0).getSettings().get(0).getBin().getPattern());
+    assertNull(
+        paymentMethods.getResults().get(0).getSettings().get(0).getBin().getInstallmentsPattern());
+    assertNull(
+        paymentMethods.getResults().get(0).getSettings().get(0).getBin().getExclusionPattern());
+    assertEquals(
+        3, paymentMethods.getResults().get(0).getSettings().get(0).getSecurityCode().getLength());
+    assertEquals(
+        "back",
+        paymentMethods
+            .getResults()
+            .get(0)
+            .getSettings()
+            .get(0)
+            .getSecurityCode()
+            .getCardLocation());
+    assertEquals(
+        "mandatory",
+        paymentMethods.getResults().get(0).getSettings().get(0).getSecurityCode().getMode());
+    assertEquals(3, paymentMethods.getResults().get(0).getAdditionalInfoNeeded().size());
+    assertTrue(
+        paymentMethods
+            .getResults()
+            .get(0)
+            .getAdditionalInfoNeeded()
+            .containsAll(additionalInfoNeeded));
+    assertEquals(new BigDecimal("0.5"), paymentMethods.getResults().get(0).getMinAllowedAmount());
+    assertEquals(new BigDecimal("60000"), paymentMethods.getResults().get(0).getMaxAllowedAmount());
+    assertEquals(ACCREDITATION_TIME, paymentMethods.getResults().get(0).getAccreditationTime());
+    assertTrue(paymentMethods.getResults().get(0).getFinancialInstitutions().isEmpty());
+    assertTrue(paymentMethods.getResults().get(0).getProcessingModes().contains("aggregator"));
   }
 }

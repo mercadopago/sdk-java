@@ -126,7 +126,7 @@ public class MPDefaultHttpClient implements MPHttpClient {
   }
 
   @Override
-  public MPResponse send(MPRequest mpRequest) throws MPException {
+  public MPResponse send(MPRequest mpRequest) throws MPException, MPApiException {
     try {
       HttpRequestBase completeRequest = createHttpRequest(mpRequest);
       HttpClientContext context = HttpClientContext.create();

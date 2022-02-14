@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.MercadoPagoClient;
 import com.mercadopago.core.MPRequestOptions;
+import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPElementsResourcesPage;
@@ -55,7 +56,7 @@ public class MerchantOrderClient extends MercadoPagoClient {
    *     href="https://www.mercadopago.com.br/developers/en/reference/merchant_orders/_merchant_orders_id/get">api
    *     docs</a>
    */
-  public MerchantOrder get(Long id) throws MPException {
+  public MerchantOrder get(Long id) throws MPException, MPApiException {
     return this.get(id, null);
   }
 
@@ -70,7 +71,8 @@ public class MerchantOrderClient extends MercadoPagoClient {
    *     href="https://www.mercadopago.com.br/developers/en/reference/merchant_orders/_merchant_orders_id/get">api
    *     docs</a>
    */
-  public MerchantOrder get(Long id, MPRequestOptions requestOptions) throws MPException {
+  public MerchantOrder get(Long id, MPRequestOptions requestOptions)
+      throws MPException, MPApiException {
     LOGGER.info("Sending get merchant order request");
 
     MPRequest mpRequest =
@@ -96,7 +98,8 @@ public class MerchantOrderClient extends MercadoPagoClient {
    *     href="https://www.mercadopago.com.br/developers/en/reference/merchant_orders/_merchant_orders/post">api
    *     docs</a>
    */
-  public MerchantOrder create(MerchantOrderCreateRequest request) throws MPException {
+  public MerchantOrder create(MerchantOrderCreateRequest request)
+      throws MPException, MPApiException {
     return this.create(request, null);
   }
 
@@ -112,7 +115,7 @@ public class MerchantOrderClient extends MercadoPagoClient {
    *     docs</a>
    */
   public MerchantOrder create(MerchantOrderCreateRequest request, MPRequestOptions requestOptions)
-      throws MPException {
+      throws MPException, MPApiException {
     LOGGER.info("Sending create merchant order request");
 
     MPRequest mpRequest =
@@ -140,7 +143,8 @@ public class MerchantOrderClient extends MercadoPagoClient {
    *     href="https://www.mercadopago.com.br/developers/en/reference/merchant_orders/_merchant_orders_id/put">api
    *     docs</a>
    */
-  public MerchantOrder update(Long id, MerchantOrderUpdateRequest request) throws MPException {
+  public MerchantOrder update(Long id, MerchantOrderUpdateRequest request)
+      throws MPException, MPApiException {
     return this.update(id, request, null);
   }
 
@@ -158,7 +162,7 @@ public class MerchantOrderClient extends MercadoPagoClient {
    */
   public MerchantOrder update(
       Long id, MerchantOrderUpdateRequest request, MPRequestOptions requestOptions)
-      throws MPException {
+      throws MPException, MPApiException {
     LOGGER.info("Sending update merchant order request");
 
     MPRequest mpRequest =
@@ -185,7 +189,8 @@ public class MerchantOrderClient extends MercadoPagoClient {
    *     href="https://www.mercadopago.com.br/developers/en/reference/merchant_orders/_merchant_orders_search/get">api
    *     docs</a>
    */
-  public MPElementsResourcesPage<MerchantOrder> search(MPSearchRequest request) throws MPException {
+  public MPElementsResourcesPage<MerchantOrder> search(MPSearchRequest request)
+      throws MPException, MPApiException {
     return this.search(request, null);
   }
 
@@ -201,7 +206,7 @@ public class MerchantOrderClient extends MercadoPagoClient {
    *     docs</a>
    */
   public MPElementsResourcesPage<MerchantOrder> search(
-      MPSearchRequest request, MPRequestOptions requestOptions) throws MPException {
+      MPSearchRequest request, MPRequestOptions requestOptions) throws MPException, MPApiException {
     LOGGER.info("Sending search merchant order request");
 
     MPResponse response = search("/merchant_orders/search", request, requestOptions);
