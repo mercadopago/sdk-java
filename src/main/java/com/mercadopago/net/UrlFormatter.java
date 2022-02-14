@@ -14,17 +14,6 @@ import java.util.Objects;
 public class UrlFormatter {
 
   /**
-   * Method responsible for format a url.
-   *
-   * @param path path
-   * @return url formatted
-   */
-  public static String format(String path) {
-    String formatPattern = path.startsWith("/") ? "%s%s" : "%s/%s";
-    return String.format(formatPattern, MercadoPagoConfig.BASE_URL, path);
-  }
-
-  /**
    * Method responsible for format a url and add query params.
    *
    * @param path path
@@ -34,11 +23,7 @@ public class UrlFormatter {
    */
   public static String format(String path, Map<String, Object> queryParams) throws MPException {
     StringBuilder builder = new StringBuilder();
-    if (!path.startsWith("https")) {
-      builder.append(format(path));
-    } else {
-      builder.append(path);
-    }
+    builder.append(generateFullPath(path));
 
     try {
       URL url = new URL(builder.toString());
@@ -47,19 +32,12 @@ public class UrlFormatter {
 
         ArrayList<Map.Entry<String, Object>> entries = new ArrayList<>(queryParams.entrySet());
         for (int i = 0; i < entries.size(); i++) {
-          if (i == 0) {
-            builder.append(
-                String.format(
-                    "%s=%s",
-                    URLEncoder.encode(entries.get(i).getKey(), "UTF-8"),
-                    URLEncoder.encode(entries.get(i).getValue().toString(), "UTF-8")));
-          } else {
-            builder.append(
-                String.format(
-                    "&%s=%s",
-                    URLEncoder.encode(entries.get(i).getKey(), "UTF-8"),
-                    URLEncoder.encode(entries.get(i).getValue().toString(), "UTF-8")));
-          }
+          String queryFormat = i == 0 ? "%s=%s" : "&%s=%s";
+          builder.append(
+              String.format(
+                  queryFormat,
+                  URLEncoder.encode(entries.get(i).getKey(), "UTF-8"),
+                  URLEncoder.encode(entries.get(i).getValue().toString(), "UTF-8")));
         }
       }
     } catch (UnsupportedEncodingException | MalformedURLException e) {
@@ -68,5 +46,13 @@ public class UrlFormatter {
     }
 
     return builder.toString();
+  }
+
+  private static String generateFullPath(String path) {
+    if (!path.startsWith("https")) {
+      String formatPattern = path.startsWith("/") ? "%s%s" : "%s/%s";
+      return String.format(formatPattern, MercadoPagoConfig.BASE_URL, path);
+    }
+    return path;
   }
 }
