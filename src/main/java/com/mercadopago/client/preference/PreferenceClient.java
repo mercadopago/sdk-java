@@ -43,6 +43,7 @@ public class PreferenceClient extends MercadoPagoClient {
     StreamHandler streamHandler = getStreamHandler();
     streamHandler.setLevel(MercadoPagoConfig.getLoggingLevel());
     LOGGER.addHandler(streamHandler);
+    LOGGER.setLevel(MercadoPagoConfig.getLoggingLevel());
   }
 
   /**
@@ -51,7 +52,9 @@ public class PreferenceClient extends MercadoPagoClient {
    * @param id preference id
    * @return preference information
    * @throws MPException an error if the request fails
-   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences_id/get">api docs</a>
+   * @see <a
+   *     href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences_id/get">api
+   *     docs</a>
    */
   public Preference get(String id) throws MPException {
     return this.get(id, null);
@@ -64,7 +67,9 @@ public class PreferenceClient extends MercadoPagoClient {
    * @param requestOptions metadata to customize the request
    * @return preference information
    * @throws MPException an error if the request fails
-   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences_id/get">api docs</a>
+   * @see <a
+   *     href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences_id/get">api
+   *     docs</a>
    */
   public Preference get(String id, MPRequestOptions requestOptions) throws MPException {
     LOGGER.info("Sending get preference request");
@@ -83,7 +88,9 @@ public class PreferenceClient extends MercadoPagoClient {
    * @param request attributes used to create a preference
    * @return preference information
    * @throws MPException an error if the request fails
-   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences/post">api docs</a>
+   * @see <a
+   *     href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences/post">api
+   *     docs</a>
    */
   public Preference create(PreferenceRequest request) throws MPException {
     return this.create(request, null);
@@ -96,7 +103,9 @@ public class PreferenceClient extends MercadoPagoClient {
    * @param requestOptions metadata to customize the request
    * @return preference information
    * @throws MPException an error if the request fails
-   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences/post">api docs</a>
+   * @see <a
+   *     href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences/post">api
+   *     docs</a>
    */
   public Preference create(PreferenceRequest request, MPRequestOptions requestOptions)
       throws MPException {
@@ -123,7 +132,9 @@ public class PreferenceClient extends MercadoPagoClient {
    * @param request attributes used to create a preference
    * @return preference information
    * @throws MPException an error if the request fails
-   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences_id/put">api docs</a>
+   * @see <a
+   *     href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences_id/put">api
+   *     docs</a>
    */
   public Preference update(String id, PreferenceRequest request) throws MPException {
     return this.update(id, request, null);
@@ -137,7 +148,9 @@ public class PreferenceClient extends MercadoPagoClient {
    * @param requestOptions metadata to customize the request
    * @return preference information
    * @throws MPException an error if the request fails
-   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences_id/put">api docs</a>
+   * @see <a
+   *     href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences_id/put">api
+   *     docs</a>
    */
   public Preference update(String id, PreferenceRequest request, MPRequestOptions requestOptions)
       throws MPException {
@@ -163,7 +176,9 @@ public class PreferenceClient extends MercadoPagoClient {
    * @param request attributes used to create a preference
    * @return list of results
    * @throws MPException an error if the request fails
-   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences_search/get">api docs</a>
+   * @see <a
+   *     href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences_search/get">api
+   *     docs</a>
    */
   public MPElementsResourcesPage<PreferenceSearch> search(MPSearchRequest request)
       throws MPException {
@@ -177,7 +192,9 @@ public class PreferenceClient extends MercadoPagoClient {
    * @param requestOptions metadata to customize the request
    * @return list of results
    * @throws MPException an error if the request fails
-   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences_search/get">api docs</a>
+   * @see <a
+   *     href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences_search/get">api
+   *     docs</a>
    */
   public MPElementsResourcesPage<PreferenceSearch> search(
       MPSearchRequest request, MPRequestOptions requestOptions) throws MPException {

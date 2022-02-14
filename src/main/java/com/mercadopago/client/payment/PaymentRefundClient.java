@@ -35,6 +35,7 @@ public class PaymentRefundClient extends MercadoPagoClient {
     StreamHandler streamHandler = getStreamHandler();
     streamHandler.setLevel(MercadoPagoConfig.getLoggingLevel());
     LOGGER.addHandler(streamHandler);
+    LOGGER.setLevel(MercadoPagoConfig.getLoggingLevel());
   }
 
   /**
@@ -45,7 +46,9 @@ public class PaymentRefundClient extends MercadoPagoClient {
    * @param requestOptions metadata to customize the request
    * @return PaymentRefund
    * @throws MPException an error if the request fails
-   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/chargebacks/_payments_id_refunds/post">api docs</a>
+   * @see <a
+   *     href="https://www.mercadopago.com.br/developers/en/reference/chargebacks/_payments_id_refunds/post">api
+   *     docs</a>
    */
   public PaymentRefund refund(Long paymentId, BigDecimal amount, MPRequestOptions requestOptions)
       throws MPException {
@@ -74,7 +77,9 @@ public class PaymentRefundClient extends MercadoPagoClient {
    * @param requestOptions metadata to customize the request
    * @return PaymentRefund
    * @throws MPException an error if the request fails
-   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/chargebacks/_payments_id_refunds_refund_id/get">api docs</a>
+   * @see <a
+   *     href="https://www.mercadopago.com.br/developers/en/reference/chargebacks/_payments_id_refunds_refund_id/get">api
+   *     docs</a>
    */
   public PaymentRefund get(Long paymentId, Long refundId, MPRequestOptions requestOptions)
       throws MPException {
@@ -99,7 +104,9 @@ public class PaymentRefundClient extends MercadoPagoClient {
    * @param requestOptions metadata to customize the request
    * @return list of PaymentRefund
    * @throws MPException an error if the request fails
-   * @see <a href="https://www.mercadopago.com.br/developers/en/reference/chargebacks/_payments_id_refunds/get">api docs</a>
+   * @see <a
+   *     href="https://www.mercadopago.com.br/developers/en/reference/chargebacks/_payments_id_refunds/get">api
+   *     docs</a>
    */
   public MPResourceList<PaymentRefund> list(Long paymentId, MPRequestOptions requestOptions)
       throws MPException {

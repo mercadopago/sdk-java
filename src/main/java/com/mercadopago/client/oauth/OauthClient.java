@@ -1,5 +1,7 @@
 package com.mercadopago.client.oauth;
 
+import static com.mercadopago.MercadoPagoConfig.getStreamHandler;
+
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.MercadoPagoClient;
 import com.mercadopago.client.user.UserClient;
@@ -16,9 +18,13 @@ import com.mercadopago.resources.user.User;
 import com.mercadopago.serialization.Serializer;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.logging.Logger;
+import java.util.logging.StreamHandler;
 
 /** Client responsible for performing oauth authorization. */
 public class OauthClient extends MercadoPagoClient {
+  private static final Logger LOGGER = Logger.getLogger(OauthClient.class.getName());
+
   private final UserClient userClient;
 
   private final String authHost = "https://auth.mercadopago.com";
@@ -28,6 +34,10 @@ public class OauthClient extends MercadoPagoClient {
   /** Default constructor. Uses the default http client used by the SDK. */
   public OauthClient() {
     this(MercadoPagoConfig.getHttpClient());
+    StreamHandler streamHandler = getStreamHandler();
+    streamHandler.setLevel(MercadoPagoConfig.getLoggingLevel());
+    LOGGER.addHandler(streamHandler);
+    LOGGER.setLevel(MercadoPagoConfig.getLoggingLevel());
   }
 
   /**
@@ -63,6 +73,7 @@ public class OauthClient extends MercadoPagoClient {
    */
   public String getAuthorizationURL(
       String appId, String redirectUri, MPRequestOptions requestOptions) throws MPException {
+    LOGGER.info("Sending get oauth authorization url request");
     User user = userClient.get(requestOptions);
 
     if (Objects.isNull(user) || user.getCountryId().isEmpty()) {
@@ -113,6 +124,8 @@ public class OauthClient extends MercadoPagoClient {
   public CreateOauthCredential createCredential(
       String authorizationCode, String redirectUri, MPRequestOptions requestOptions)
       throws MPException {
+    LOGGER.info("Sending create oauth credential request");
+
     CreateOauthCredentialRequest request =
         CreateOauthCredentialRequest.builder()
             .clientSecret(getAccessToken(requestOptions))
@@ -158,6 +171,8 @@ public class OauthClient extends MercadoPagoClient {
    */
   public RefreshOauthCredential refreshCredential(
       String refreshToken, MPRequestOptions requestOptions) throws MPException {
+    LOGGER.info("Sending refresh oauth credential request");
+
     RefreshOauthCredentialRequest request =
         RefreshOauthCredentialRequest.builder()
             .clientSecret(getAccessToken(requestOptions))

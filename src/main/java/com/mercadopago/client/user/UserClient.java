@@ -1,5 +1,7 @@
 package com.mercadopago.client.user;
 
+import static com.mercadopago.MercadoPagoConfig.getStreamHandler;
+
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.MercadoPagoClient;
 import com.mercadopago.core.MPRequestOptions;
@@ -9,9 +11,13 @@ import com.mercadopago.net.MPHttpClient;
 import com.mercadopago.net.MPResponse;
 import com.mercadopago.resources.user.User;
 import com.mercadopago.serialization.Serializer;
+import java.util.logging.Logger;
+import java.util.logging.StreamHandler;
 
 /** Client to get user information. */
 public class UserClient extends MercadoPagoClient {
+  private static final Logger LOGGER = Logger.getLogger(UserClient.class.getName());
+
   /** Default constructor. Uses the default http client used by the SDK */
   public UserClient() {
     this(MercadoPagoConfig.getHttpClient());
@@ -24,6 +30,10 @@ public class UserClient extends MercadoPagoClient {
    */
   public UserClient(MPHttpClient httpClient) {
     super(httpClient);
+    StreamHandler streamHandler = getStreamHandler();
+    streamHandler.setLevel(MercadoPagoConfig.getLoggingLevel());
+    LOGGER.addHandler(streamHandler);
+    LOGGER.setLevel(MercadoPagoConfig.getLoggingLevel());
   }
 
   /**
@@ -44,6 +54,8 @@ public class UserClient extends MercadoPagoClient {
    * @throws MPException an error if the request fails
    */
   public User get(MPRequestOptions requestOptions) throws MPException {
+    LOGGER.info("Sending get user request");
+
     MPResponse response = send("/users/me", HttpMethod.GET, null, null, requestOptions);
     User user = Serializer.deserializeFromJson(User.class, response.getContent());
     user.setResponse(response);
