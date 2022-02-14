@@ -1,5 +1,7 @@
 package com.mercadopago.client.customer;
 
+import static com.mercadopago.MercadoPagoConfig.getStreamHandler;
+
 import com.google.gson.JsonObject;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.MercadoPagoClient;
@@ -13,9 +15,12 @@ import com.mercadopago.net.MPResourceList;
 import com.mercadopago.net.MPResponse;
 import com.mercadopago.resources.customer.CustomerCard;
 import com.mercadopago.serialization.Serializer;
+import java.util.logging.Logger;
+import java.util.logging.StreamHandler;
 
 /** Client responsible for performing customer card actions. */
 public class CustomerCardClient extends MercadoPagoClient {
+  private static final Logger LOGGER = Logger.getLogger(CustomerCardClient.class.getName());
 
   /** Default constructor. Uses the default http client used by the SDK */
   public CustomerCardClient() {
@@ -29,6 +34,10 @@ public class CustomerCardClient extends MercadoPagoClient {
    */
   public CustomerCardClient(MPHttpClient httpClient) {
     super(httpClient);
+    StreamHandler streamHandler = getStreamHandler();
+    streamHandler.setLevel(MercadoPagoConfig.getLoggingLevel());
+    LOGGER.addHandler(streamHandler);
+    LOGGER.setLevel(MercadoPagoConfig.getLoggingLevel());
   }
 
   /**
@@ -92,6 +101,7 @@ public class CustomerCardClient extends MercadoPagoClient {
   public CustomerCard create(
       String customerId, CustomerCardCreateRequest request, MPRequestOptions requestOptions)
       throws MPException, MPApiException {
+    LOGGER.info("Sending create customer card request");
     JsonObject payload = Serializer.serializeToJson(request);
     MPRequest mpRequest =
         MPRequest.buildRequest(
@@ -130,6 +140,7 @@ public class CustomerCardClient extends MercadoPagoClient {
    */
   public CustomerCard delete(String customerId, String cardId, MPRequestOptions requestOptions)
       throws MPException, MPApiException {
+    LOGGER.info("Sending delete customer card request");
 
     MPResponse response =
         send(
@@ -166,6 +177,7 @@ public class CustomerCardClient extends MercadoPagoClient {
    */
   public MPResourceList<CustomerCard> listAll(String customerId, MPRequestOptions requestOptions)
       throws MPException, MPApiException {
+    LOGGER.info("Sending list all customer cards request");
     MPResponse response =
         list(
             String.format("/v1/customers/%s/cards", customerId),

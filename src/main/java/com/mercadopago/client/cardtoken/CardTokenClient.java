@@ -1,5 +1,7 @@
 package com.mercadopago.client.cardtoken;
 
+import static com.mercadopago.MercadoPagoConfig.getStreamHandler;
+
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.MercadoPagoClient;
 import com.mercadopago.core.MPRequestOptions;
@@ -10,9 +12,13 @@ import com.mercadopago.net.MPHttpClient;
 import com.mercadopago.net.MPResponse;
 import com.mercadopago.resources.CardToken;
 import com.mercadopago.serialization.Serializer;
+import java.util.logging.Logger;
+import java.util.logging.StreamHandler;
 
 /** Client for retrieving the token for a card. */
 public class CardTokenClient extends MercadoPagoClient {
+  private static final Logger LOGGER = Logger.getLogger(CardTokenClient.class.getName());
+
   /** Default constructor. Uses http client provided by MercadoPagoConfig. */
   public CardTokenClient() {
     this(MercadoPagoConfig.getHttpClient());
@@ -25,6 +31,10 @@ public class CardTokenClient extends MercadoPagoClient {
    */
   public CardTokenClient(MPHttpClient httpClient) {
     super(httpClient);
+    StreamHandler streamHandler = getStreamHandler();
+    streamHandler.setLevel(MercadoPagoConfig.getLoggingLevel());
+    LOGGER.addHandler(streamHandler);
+    LOGGER.setLevel(MercadoPagoConfig.getLoggingLevel());
   }
 
   /**

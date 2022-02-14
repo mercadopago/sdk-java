@@ -59,6 +59,8 @@ public class MPDefaultHttpClient implements MPHttpClient {
   private static final String PAYLOAD_NOT_SUPPORTED_MESSAGE =
       "Payload not supported for this method.";
 
+  private static final String HEADER_LOG_FORMAT = "%s: %s%s";
+
   private static final Logger LOGGER = Logger.getLogger(MPDefaultHttpClient.class.getName());
 
   private final HttpClient httpClient;
@@ -73,6 +75,8 @@ public class MPDefaultHttpClient implements MPHttpClient {
     StreamHandler streamHandler = getStreamHandler();
     streamHandler.setLevel(MercadoPagoConfig.getLoggingLevel());
     LOGGER.addHandler(streamHandler);
+    LOGGER.setLevel(MercadoPagoConfig.getLoggingLevel());
+
     if (Objects.isNull(httpClient)) {
       this.httpClient = createHttpClient();
     } else {
@@ -138,7 +142,18 @@ public class MPDefaultHttpClient implements MPHttpClient {
         throw new MPApiException("Api error. Check response for details", mpResponse);
       }
 
+      StringBuilder responseHeaders =
+          new StringBuilder(String.format("Response headers:%s", System.lineSeparator()));
+      for (Header header : response.getAllHeaders()) {
+        responseHeaders.append(
+            String.format(
+                HEADER_LOG_FORMAT, header.getName(), header.getValue(), System.lineSeparator()));
+      }
+      LOGGER.fine(responseHeaders.toString());
+      LOGGER.fine(
+          String.format("Response status code: %s", response.getStatusLine().getStatusCode()));
       LOGGER.fine(String.format("Response body: %s", responseBody));
+
       return mpResponse;
 
     } catch (MPMalformedRequestException | MPApiException ex) {
@@ -186,10 +201,16 @@ public class MPDefaultHttpClient implements MPHttpClient {
       if (Objects.nonNull(mpRequest.getPayload())) {
         LOGGER.fine(String.format("Request body: %s", mpRequest.getPayload().toString()));
       }
-      LOGGER.fine("Headers:");
+
+      StringBuilder headersMessage =
+          new StringBuilder(String.format("Request Headers:%s", System.lineSeparator()));
       for (Map.Entry<String, String> entry : mpRequest.getHeaders().entrySet()) {
-        LOGGER.fine(String.format("%s: %s", entry.getKey(), entry.getValue()));
+        headersMessage.append(
+            String.format(
+                HEADER_LOG_FORMAT, entry.getKey(), entry.getValue(), System.lineSeparator()));
       }
+      LOGGER.fine(headersMessage.toString());
+
       return httpClient.execute(completeRequest, context);
     } catch (ClientProtocolException e) {
       LOGGER.fine(String.format("ClientProtocolException: %s", e.getMessage()));

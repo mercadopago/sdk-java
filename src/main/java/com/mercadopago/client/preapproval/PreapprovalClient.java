@@ -42,6 +42,7 @@ public class PreapprovalClient extends MercadoPagoClient {
     StreamHandler streamHandler = getStreamHandler();
     streamHandler.setLevel(MercadoPagoConfig.getLoggingLevel());
     LOGGER.addHandler(streamHandler);
+    LOGGER.setLevel(MercadoPagoConfig.getLoggingLevel());
   }
 
   /**
