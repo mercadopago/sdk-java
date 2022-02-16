@@ -3,7 +3,7 @@
 [![Maven Central](https://img.shields.io/maven-central/v/com.mercadopago/sdk-java.svg)](https://search.maven.org/search?q=g:com.mercadopago%20AND%20a:sdk-java)
 ![APM](https://img.shields.io/apm/l/vim-mode)
 
-The official [Mercado Pago](https://www.mercadopago.com.br/developers/pt/guides) Java client library.
+The official [Mercado Pago](https://www.mercadopago.com/developers/en/guides) Java client library.
 
 ## 💡 Requirements
 
@@ -31,14 +31,6 @@ already.
    replace YOUR_ACCESS_TOKEN with it.
 
 That's it! Mercado Pago SDK has been successfully installed.
-
-## 📚 Documentation
-
-See our documentation for more details.
-
-- Mercado Pago reference API. [Portuguese](https://www.mercadopago.com/developers/pt/reference)
-  / [English](https://www.mercadopago.com/developers/en/reference)
-  / [Spanish](https://www.mercadopago.com/developers/es/reference)
 
 ## 🌟 Getting Started
 
@@ -143,26 +135,22 @@ public class CustomHttpClient implements MPHttpClient {
 }
 ```
 
-## Development
+## 📚 Documentation
 
-To contribute to the project you need to have installed in your machine [pre-commit tool](https://pre-commit.com/) to
-check the code style and formatting.
+See our documentation for more details.
 
-1. To check if pre-commit is installed, you must run the command below successfully:
+- Mercado Pago reference API. [Portuguese](https://www.mercadopago.com/developers/pt/reference)
+  / [English](https://www.mercadopago.com/developers/en/reference)
+  / [Spanish](https://www.mercadopago.com/developers/es/reference)
 
-```
-$ pre-commit --version
-pre-commit 2.17.0
-```
+## 🤝 Contributing
 
-2. After pre-commit is installed at your machine, inside the SDK project folder, you must run the command below to set
-   up the git hook scripts of the project:
+All contributions are welcome, ranging from people wanting to triage issues, others wanting to write documentation, to
+people wanting to contribute code.
 
-```
-$ pre-commit install
-```
-
-After that, git hooks will run automatically before every commit command.
+Please read and follow our [contribution guidelines](CONTRIBUTING.md). Contributions not following these guidelines will
+be disregarded. The guidelines are in place to make all of our lives easier and make contribution a consistent process
+for everyone.
 
 ## ❤️ Support
 
