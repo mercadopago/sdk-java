@@ -1,4 +1,4 @@
-# Mercado Pago SDK v2 for Java
+# Mercado Pago SDK for Java
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.mercadopago/sdk-java.svg)](https://search.maven.org/search?q=g:com.mercadopago%20AND%20a:sdk-java)
 ![APM](https://img.shields.io/apm/l/vim-mode)
@@ -27,8 +27,8 @@ already.
 
 2. Run `mvn install` and that's all, you have Mercado Pago SDK installed.
 
-3. Copy the access_token in the [credentials](https://www.mercadopago.com/mlb/account/credentials) section of the page
-   and replace YOUR_ACCESS_TOKEN with it.
+3. Copy the access_token in the [credentials](https://www.mercadopago.com/developers/panel) section of the page and
+   replace YOUR_ACCESS_TOKEN with it.
 
 That's it! Mercado Pago SDK has been successfully installed.
 
@@ -36,9 +36,9 @@ That's it! Mercado Pago SDK has been successfully installed.
 
 See our documentation for more details.
 
-- Mercado Pago reference API. [Portuguese](https://www.mercadopago.com.br/developers/pt/reference)
-  / [English](https://www.mercadopago.com.br/developers/en/reference)
-  / [Spanish](https://www.mercadopago.com.br/developers/es/reference)
+- Mercado Pago reference API. [Portuguese](https://www.mercadopago.com/developers/pt/reference)
+  / [English](https://www.mercadopago.com/developers/en/reference)
+  / [Spanish](https://www.mercadopago.com/developers/es/reference)
 
 ## 🌟 Getting Started
 
@@ -155,8 +155,8 @@ $ pre-commit --version
 pre-commit 2.17.0
 ```
 
-2. After pre-commit is installed at your machine, inside the SDK project folder, you must run the command below to set up the git hook scripts of the
-project:
+2. After pre-commit is installed at your machine, inside the SDK project folder, you must run the command below to set
+   up the git hook scripts of the project:
 
 ```
 $ pre-commit install
@@ -166,8 +166,10 @@ After that, git hooks will run automatically before every commit command.
 
 ## ❤️ Support
 
-If you require technical support, please contact our support team
-at [developers.mercadopago.com](https://developers.mercadopago.com)
+If you require technical support, please contact our support team at our developers
+site:  [English](https://www.mercadopago.com/developers/en/support/center/contact)
+/ [Portuguese](https://www.mercadopago.com/developers/pt/support/center/contact)
+/ [Spanish](https://www.mercadopago.com/developers/es/support/center/contact)
 
 ## 🏻 License
 
