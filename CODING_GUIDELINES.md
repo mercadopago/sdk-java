@@ -24,7 +24,7 @@ automatically.
 ## Code Guidelines
 
 To contribute to the project you need to have installed in your machine [pre-commit tool](https://pre-commit.com/) to
-check the code style and formatting.
+check the code style and formatting. To make pre-commit work you must have installed `Docker` as well.
 
 1. To check if pre-commit is installed, you must run the command below successfully:
 

@@ -67,7 +67,11 @@ public class Example {
     try {
       Payment payment = client.create(createRequest);
       System.out.println(payment);
-    } catch (MPException | MPApiException ex) {
+    } catch (MPApiException ex) {
+      System.out.printf(
+          "MercadoPago Error. Status: %s, Content: %s%n",
+          ex.getApiResponse().getStatusCode(), ex.getApiResponse().getContent());
+    } catch (MPException ex) {
       ex.printStackTrace();
     }
   }
@@ -126,7 +130,7 @@ public class Example {
 
 ### Custom Http Client
 
-You can make your own http client instead of using our `MPDefaultHttpClient` since it implements our `MPHttpClient`
+You can use a custom http client instead of using the default `MPDefaultHttpClient` by implementing the `MPHttpClient`
 interface.
 
 ```java
