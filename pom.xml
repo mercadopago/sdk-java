@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.mercadopago</groupId>
@@ -73,43 +74,36 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M5</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.maven.surefire</groupId>
-                        <artifactId>surefire-junit47</artifactId>
-                        <version>3.0.0-M5</version>
-                    </dependency>
-                </dependencies>
             </plugin>
             <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-source-plugin</artifactId>
-              <version>3.2.1</version>
-              <executions>
-                <execution>
-                  <id>attach-sources</id>
-                  <goals>
-                      <goal>jar-no-fork</goal>
-                  </goals>
-                </execution>
-              </executions>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
-          		<groupId>org.apache.maven.plugins</groupId>
-          		<artifactId>maven-javadoc-plugin</artifactId>
-          		<version>3.3.1</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.3.1</version>
                 <configuration>
                     <source>1.8</source>
                     <doclint>none</doclint>
                 </configuration>
-          		<executions>
-            	    <execution>
-              	        <id>attach-javadocs</id>
-              	        <goals>
-                	   	    <goal>jar</goal>
-              	        </goals>
-            	    </execution>
-          		</executions>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -119,20 +113,22 @@
                     <execution>
                         <id>deploy</id>
                         <phase>deploy</phase>
-                        <goals><goal>deploy</goal></goals>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
             <plugin>
-            <groupId>org.sonatype.plugins</groupId>
-            <artifactId>nexus-staging-maven-plugin</artifactId>
-            <version>1.6.7</version>
-            <extensions>true</extensions>
-            <configuration>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <extensions>true</extensions>
+                <configuration>
                     <serverId>ossrh</serverId>
                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
-            </configuration>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -143,7 +139,7 @@
                         <format>html</format>
                         <format>xml</format>
                     </formats>
-                    <check />
+                    <check/>
                 </configuration>
             </plugin>
 
@@ -151,21 +147,6 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.7</version>
-                <configuration>
-                    <excludes>
-                        <exclude>com/mercadopago/core/**/*</exclude>
-                        <exclude>com/mercadopago/exceptions/**/*</exclude>
-                        <exclude>com/mercadopago/insight/**/*</exclude>
-                        <exclude>com/mercadopago/net/**/*</exclude>
-                        <exclude>com/mercadopago/resources/CardToken.*</exclude>
-                        <exclude>com/mercadopago/resources/Disbursement.*</exclude>
-                        <exclude>com/mercadopago/resources/DisbursementRefund.*</exclude>
-                        <exclude>com/mercadopago/resources/DiscountCampaign.*</exclude>
-                        <exclude>com/mercadopago/resources/OAuth.*</exclude>
-                        <exclude>com/mercadopago/resources/datastructures/**/*</exclude>
-                        <exclude>**/*Test.*</exclude>
-                    </excludes>
-                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -185,7 +166,7 @@
     </build>
 
     <scm>
-	    <url>https://github.com/mercadopago/sdk-java.git</url>
+        <url>https://github.com/mercadopago/sdk-java.git</url>
         <connection>scm:git:git@github.com:mercadopago/sdk-java.git</connection>
         <developerConnection>scm:git:git@github.com:mercadopago/sdk-java.git</developerConnection>
         <tag>HEAD</tag>
