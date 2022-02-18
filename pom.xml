@@ -95,7 +95,7 @@
                 <configuration>
                     <source>1.8</source>
                     <doclint>none</doclint>
-                    <sourcepath>${project.basedir}/target</sourcepath>
+                    <sourcepath>${project.build.directory}/delombok</sourcepath>
                     <outputDirectory>${project.basedir}/docs</outputDirectory>
                 </configuration>
                 <executions>
@@ -171,8 +171,8 @@
                 <version>1.18.20.0</version>
                 <configuration>
                     <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
-                    <outputDirectory>${project.basedir}/target</outputDirectory>
-                    <addOutputDirectory>true</addOutputDirectory>
+                    <outputDirectory>${project.build.directory}/delombok</outputDirectory>
+                    <addOutputDirectory>false</addOutputDirectory>
                 </configuration>
                 <executions>
                     <execution>
