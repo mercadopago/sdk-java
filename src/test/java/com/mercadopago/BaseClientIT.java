@@ -7,7 +7,7 @@ public abstract class BaseClientIT {
 
   protected static final int DEFAULT_TIMEOUT = 2000;
 
-  protected static final String accessToken = System.getenv("ACCESS_TOKEN_V2");
+  protected static final String accessToken = System.getenv("ACCESS_TOKEN");
 
   @BeforeAll
   static void setup() {
