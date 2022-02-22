@@ -5,6 +5,7 @@ import static com.mercadopago.net.HttpStatus.OK;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.mercadopago.BaseClientIT;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.customer.CustomerCardCreateRequest;
 import com.mercadopago.client.customer.CustomerClient;
@@ -18,11 +19,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /** CardTokenClientTest class. */
-public class CardTokenClientIT {
-  private static final int DEFAULT_TIMEOUT = 2000;
+public class CardTokenClientIT extends BaseClientIT {
   private final String customerId = "1005259837-aQFrILCS6bbxXn";
-  private final String accessToken =
-      "APP_USR-558881221729581-091712-44fdc612e60e3e638775d8b4003edd51-471763966";
   private CustomerClient customerClient;
   private CardTokenClient tokenClient;
   private CardTokenTestClient cardTokenTestClient;
