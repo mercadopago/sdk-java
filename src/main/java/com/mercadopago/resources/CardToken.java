@@ -17,6 +17,9 @@ public class CardToken extends MPResource {
   /** Card token. */
   private String id;
 
+  /** Card id. */
+  private String cardId;
+
   /** First six digits of card number. */
   private String firstSixDigits;
 
