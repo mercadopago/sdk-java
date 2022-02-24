@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.mercadopago.BaseClientIT;
-import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.customer.CustomerCardCreateRequest;
 import com.mercadopago.client.customer.CustomerClient;
 import com.mercadopago.client.customer.CustomerRequest;
@@ -17,23 +16,13 @@ import com.mercadopago.resources.CardToken;
 import com.mercadopago.resources.customer.Customer;
 import com.mercadopago.resources.customer.CustomerCard;
 import org.apache.http.ParseException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /** CardTokenClientTest class. */
 public class CardTokenClientIT extends BaseClientIT {
-  private CustomerClient customerClient;
-  private CardTokenClient tokenClient;
-  private CardTokenTestClient cardTokenTestClient;
-
-  /** Init method. */
-  @BeforeEach
-  public void init() {
-    MercadoPagoConfig.setAccessToken(accessToken);
-    this.tokenClient = new CardTokenClient();
-    this.customerClient = new CustomerClient();
-    this.cardTokenTestClient = new CardTokenTestClient();
-  }
+  private final CustomerClient customerClient = new CustomerClient();
+  private final CardTokenClient tokenClient = new CardTokenClient();
+  private final CardTokenTestClient cardTokenTestClient = new CardTokenTestClient();
 
   @Test
   public void getCardTokenSuccess() throws MPException, MPApiException, ParseException {
@@ -49,15 +38,9 @@ public class CardTokenClientIT extends BaseClientIT {
   @Test
   public void getCardTokenWithRequestOptionsSuccess()
       throws MPException, MPApiException, ParseException {
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
 
     CardToken createdCardToken = cardTokenTestClient.createTestCardToken();
-    CardToken token = tokenClient.get(createdCardToken.getId(), requestOptions);
+    CardToken token = tokenClient.get(createdCardToken.getId(), buildRequestOptions());
 
     assertNotNull(token);
     assertEquals(OK, token.getResponse().getStatusCode());
@@ -99,14 +82,6 @@ public class CardTokenClientIT extends BaseClientIT {
     Customer customer = customerClient.create(customerRequest);
 
     try {
-      MPRequestOptions requestOptions =
-          MPRequestOptions.builder()
-              .accessToken(accessToken)
-              .connectionTimeout(DEFAULT_TIMEOUT)
-              .connectionRequestTimeout(DEFAULT_TIMEOUT)
-              .socketTimeout(DEFAULT_TIMEOUT)
-              .build();
-
       CustomerCardCreateRequest cardCreateRequest = buildCardCreateRequest();
       CustomerCard customerCard = customerClient.createCard(customer.getId(), cardCreateRequest);
 
@@ -117,7 +92,7 @@ public class CardTokenClientIT extends BaseClientIT {
               .securityCode("123")
               .build();
 
-      CardToken token = tokenClient.create(cardTokenRequest, requestOptions);
+      CardToken token = tokenClient.create(cardTokenRequest, buildRequestOptions());
       assertNotNull(token);
       assertNotNull(token.getResponse());
       assertEquals(CREATED, token.getResponse().getStatusCode());
@@ -126,6 +101,14 @@ public class CardTokenClientIT extends BaseClientIT {
     } finally {
       customerClient.delete(customer.getId());
     }
+  }
+
+  private MPRequestOptions buildRequestOptions() {
+    return MPRequestOptions.builder()
+        .connectionTimeout(DEFAULT_TIMEOUT)
+        .connectionRequestTimeout(DEFAULT_TIMEOUT)
+        .socketTimeout(DEFAULT_TIMEOUT)
+        .build();
   }
 
   private CustomerCardCreateRequest buildCardCreateRequest() throws MPException, MPApiException {
