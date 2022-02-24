@@ -138,6 +138,7 @@ public class CardTokenClientTest {
 
   private void assertCardTokenFields(CardToken token) throws java.text.ParseException {
     assertEquals("97849c845e879427b5cb1cb941a52806", token.getId());
+    assertEquals("989192037129", token.getCardId());
     assertEquals("503143", token.getFirstSixDigits());
     assertEquals(11, token.getExpirationMonth());
     assertEquals(2025, token.getExpirationYear());
