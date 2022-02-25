@@ -1,5 +1,6 @@
 package com.mercadopago;
 
+import com.mercadopago.core.MPRequestOptions;
 import org.junit.jupiter.api.BeforeAll;
 
 /** BaseClientIT class. */
@@ -13,5 +14,20 @@ public abstract class BaseClientIT {
   static void setup() {
     MercadoPagoConfig.setAccessToken(accessToken);
     MercadoPagoConfig.setHttpClient(null);
+  }
+
+  protected static MPRequestOptions buildRequestOptions() {
+    return MPRequestOptions.builder()
+        .connectionTimeout(DEFAULT_TIMEOUT)
+        .connectionRequestTimeout(DEFAULT_TIMEOUT)
+        .socketTimeout(DEFAULT_TIMEOUT)
+        .build();
+  }
+
+  protected static String generateTestEmail() {
+    int minValue = 10000000;
+    int maxValue = 99999999;
+    int complement = (int) ((Math.random() * (maxValue - minValue)) + minValue);
+    return String.format("test_user_%s@testuser.com", complement);
   }
 }
