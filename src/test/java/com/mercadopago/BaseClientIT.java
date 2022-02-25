@@ -1,5 +1,6 @@
 package com.mercadopago;
 
+import com.mercadopago.core.MPRequestOptions;
 import org.junit.jupiter.api.BeforeAll;
 
 /** BaseClientIT class. */
@@ -13,5 +14,13 @@ public abstract class BaseClientIT {
   static void setup() {
     MercadoPagoConfig.setAccessToken(accessToken);
     MercadoPagoConfig.setHttpClient(null);
+  }
+
+  protected static MPRequestOptions buildRequestOptions() {
+    return MPRequestOptions.builder()
+        .connectionTimeout(DEFAULT_TIMEOUT)
+        .connectionRequestTimeout(DEFAULT_TIMEOUT)
+        .socketTimeout(DEFAULT_TIMEOUT)
+        .build();
   }
 }
