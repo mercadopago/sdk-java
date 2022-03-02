@@ -27,8 +27,6 @@ import com.mercadopago.net.MPSearchRequest;
 import com.mercadopago.resources.merchantorder.MerchantOrder;
 import com.mercadopago.resources.preference.Preference;
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,14 +34,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class MerchantOrderClientIT extends BaseClientIT {
-
-  private static final String PREFERENCE_ID = "798798399-13769cb5-b898-448f-8d5a-c939a8cee479";
-
-  private static final long MERCHANT_ORDER_ID = 4018801790L;
-
-  private static final OffsetDateTime DATE =
-      OffsetDateTime.of(2022, 1, 10, 10, 10, 10, 0, ZoneOffset.UTC);
-
   private final PreferenceClient preferenceClient = new PreferenceClient();
   private final MerchantOrderClient merchantOrderClient = new MerchantOrderClient();
 
@@ -235,7 +225,7 @@ class MerchantOrderClientIT extends BaseClientIT {
 
       MerchantOrderCreateRequest request =
           MerchantOrderCreateRequest.builder().preferenceId(createdPreference.getId()).build();
-      MerchantOrder merchantOrder = merchantOrderClient.create(request);
+      merchantOrderClient.create(request);
 
       Map<String, Object> filters = new HashMap<>();
       filters.put("preference_id", createdPreference.getId());
