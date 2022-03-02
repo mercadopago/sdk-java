@@ -10,7 +10,6 @@ import com.mercadopago.BaseClientIT;
 import com.mercadopago.client.customer.CustomerCardCreateRequest;
 import com.mercadopago.client.customer.CustomerClient;
 import com.mercadopago.client.customer.CustomerRequest;
-import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.CardToken;
@@ -27,7 +26,7 @@ public class CardTokenClientIT extends BaseClientIT {
   @Test
   public void getCardTokenSuccess() {
     try {
-      CardToken createdCardToken = cardTokenTestClient.createTestCardToken();
+      CardToken createdCardToken = cardTokenTestClient.createTestCardToken("approved");
       CardToken token = tokenClient.get(createdCardToken.getId());
 
       assertNotNull(token);
@@ -43,7 +42,7 @@ public class CardTokenClientIT extends BaseClientIT {
   @Test
   public void getCardTokenWithRequestOptionsSuccess() {
     try {
-      CardToken createdCardToken = cardTokenTestClient.createTestCardToken();
+      CardToken createdCardToken = cardTokenTestClient.createTestCardToken("approved");
       CardToken token = tokenClient.get(createdCardToken.getId(), buildRequestOptions());
 
       assertNotNull(token);
@@ -123,28 +122,13 @@ public class CardTokenClientIT extends BaseClientIT {
     }
   }
 
-  private MPRequestOptions buildRequestOptions() {
-    return MPRequestOptions.builder()
-        .connectionTimeout(DEFAULT_TIMEOUT)
-        .connectionRequestTimeout(DEFAULT_TIMEOUT)
-        .socketTimeout(DEFAULT_TIMEOUT)
-        .build();
-  }
-
   private CustomerCardCreateRequest buildCardCreateRequest() throws MPException, MPApiException {
-    CardToken cardToken = cardTokenTestClient.createTestCardToken();
+    CardToken cardToken = cardTokenTestClient.createTestCardToken("approved");
     return CustomerCardCreateRequest.builder().token(cardToken.getId()).build();
   }
 
   private CustomerRequest buildCustomerRequest() {
     String email = generateTestEmail();
     return CustomerRequest.builder().email(email).build();
-  }
-
-  private String generateTestEmail() {
-    int minValue = 10000000;
-    int maxValue = 99999999;
-    int complement = (int) ((Math.random() * (maxValue - minValue)) + minValue);
-    return String.format("test_user_%s@testuser.com", complement);
   }
 }
