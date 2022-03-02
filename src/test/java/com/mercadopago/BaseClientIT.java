@@ -23,4 +23,11 @@ public abstract class BaseClientIT {
         .socketTimeout(DEFAULT_TIMEOUT)
         .build();
   }
+
+  protected static String generateTestEmail() {
+    int minValue = 10000000;
+    int maxValue = 99999999;
+    int complement = (int) ((Math.random() * (maxValue - minValue)) + minValue);
+    return String.format("test_user_%s@testuser.com", complement);
+  }
 }
