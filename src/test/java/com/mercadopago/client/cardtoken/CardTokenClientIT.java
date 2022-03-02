@@ -26,7 +26,7 @@ public class CardTokenClientIT extends BaseClientIT {
   @Test
   public void getCardTokenSuccess() {
     try {
-      CardToken createdCardToken = cardTokenTestClient.createTestCardToken();
+      CardToken createdCardToken = cardTokenTestClient.createTestCardToken("approved");
       CardToken token = tokenClient.get(createdCardToken.getId());
 
       assertNotNull(token);
@@ -42,7 +42,7 @@ public class CardTokenClientIT extends BaseClientIT {
   @Test
   public void getCardTokenWithRequestOptionsSuccess() {
     try {
-      CardToken createdCardToken = cardTokenTestClient.createTestCardToken();
+      CardToken createdCardToken = cardTokenTestClient.createTestCardToken("approved");
       CardToken token = tokenClient.get(createdCardToken.getId(), buildRequestOptions());
 
       assertNotNull(token);
@@ -123,7 +123,7 @@ public class CardTokenClientIT extends BaseClientIT {
   }
 
   private CustomerCardCreateRequest buildCardCreateRequest() throws MPException, MPApiException {
-    CardToken cardToken = cardTokenTestClient.createTestCardToken();
+    CardToken cardToken = cardTokenTestClient.createTestCardToken("approved");
     return CustomerCardCreateRequest.builder().token(cardToken.getId()).build();
   }
 

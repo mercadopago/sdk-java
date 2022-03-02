@@ -10,9 +10,20 @@ import com.mercadopago.net.MPHttpClient;
 import com.mercadopago.net.MPResponse;
 import com.mercadopago.resources.CardToken;
 import com.mercadopago.serialization.Serializer;
+import java.util.AbstractMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /** CardTokenTestClient class. */
 public class CardTokenTestClient extends MercadoPagoClient {
+
+  Map<String, String> status =
+      Stream.of(
+              new AbstractMap.SimpleImmutableEntry<>("approved", "APRO"),
+              new AbstractMap.SimpleImmutableEntry<>("pending", "CONT"),
+              new AbstractMap.SimpleImmutableEntry<>("rejected", "OTHE"))
+          .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
   /** Default constructor. Uses http client provided by MercadoPagoConfig. */
   public CardTokenTestClient() {
@@ -35,7 +46,7 @@ public class CardTokenTestClient extends MercadoPagoClient {
    * @throws MPException an error if the request fails
    * @throws MPApiException an error if api call fails
    */
-  public CardToken createTestCardToken() throws MPException, MPApiException {
+  public CardToken createTestCardToken(String paymentStatus) throws MPException, MPApiException {
 
     CardTokenTestCreateRequest request =
         CardTokenTestCreateRequest.builder()
@@ -47,7 +58,7 @@ public class CardTokenTestClient extends MercadoPagoClient {
                 CardTokenCardholderTestCreateRequest.builder()
                     .identification(
                         IdentificationRequest.builder().type("CPF").number("19119119100").build())
-                    .name("APRO")
+                    .name(status.get(paymentStatus))
                     .build())
             .build();
 
