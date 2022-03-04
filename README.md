@@ -156,6 +156,12 @@ Please read and follow our [contribution guidelines](CONTRIBUTING.md). Contribut
 be disregarded. The guidelines are in place to make all of our lives easier and make contribution a consistent process
 for everyone.
 
+### Patches to version 1.x.x
+
+Since the release of version 2.0.0, version 1 is deprecated and will not be receiving new
+features, only bug fixes. If you need to submit PRs for that version, please do so by using `develop-v1` as your base
+branch.
+
 ## ❤️ Support
 
 If you require technical support, please contact our support team at our developers
