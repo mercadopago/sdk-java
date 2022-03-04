@@ -3,6 +3,7 @@ package com.mercadopago.client.payment;
 import static com.mercadopago.helper.MockHelper.generateHttpResponseFromFile;
 import static com.mercadopago.helper.MockHelper.generateJsonElement;
 import static com.mercadopago.helper.MockHelper.generateJsonElementFromUriRequest;
+import static com.mercadopago.net.HttpStatus.CREATED;
 import static com.mercadopago.net.HttpStatus.OK;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -45,7 +46,39 @@ class PaymentRefundClientTest extends BaseClientTest {
 
   @Test
   void refundSuccess() throws IOException, MPException, MPApiException {
-    HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_BASE_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_BASE_JSON, CREATED);
+    doReturn(httpResponse)
+        .when(httpClient)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    PaymentRefund result = client.refund(PAYMENT_TEST_ID);
+
+    assertRefundFields(result);
+  }
+
+  @Test
+  public void refundWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
+    MPRequestOptions requestOptions =
+        MPRequestOptions.builder()
+            .accessToken("abc")
+            .connectionTimeout(DEFAULT_TIMEOUT)
+            .connectionRequestTimeout(DEFAULT_TIMEOUT)
+            .socketTimeout(DEFAULT_TIMEOUT)
+            .build();
+
+    HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_BASE_JSON, CREATED);
+    doReturn(httpResponse)
+        .when(httpClient)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    PaymentRefund result = client.refund(PAYMENT_TEST_ID, requestOptions);
+
+    assertRefundFields(result);
+  }
+
+  @Test
+  void refundPartialSuccess() throws IOException, MPException, MPApiException {
+    HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_BASE_JSON, CREATED);
     doReturn(httpResponse)
         .when(httpClient)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
@@ -72,7 +105,7 @@ class PaymentRefundClientTest extends BaseClientTest {
             .socketTimeout(DEFAULT_TIMEOUT)
             .build();
 
-    HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_BASE_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_BASE_JSON, CREATED);
     doReturn(httpResponse)
         .when(httpClient)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));

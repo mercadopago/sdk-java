@@ -48,6 +48,36 @@ public class PaymentRefundClient extends MercadoPagoClient {
    * Creates a refund for payment.
    *
    * @param paymentId payment id
+   * @return PaymentRefund
+   * @throws MPException an error if the request fails
+   * @see <a
+   *     href="https://www.mercadopago.com.br/developers/en/reference/chargebacks/_payments_id_refunds/post">api
+   *     docs</a>
+   */
+  public PaymentRefund refund(Long paymentId) throws MPException, MPApiException {
+    return this.refund(paymentId, null, null);
+  }
+
+  /**
+   * Creates a refund for payment.
+   *
+   * @param paymentId payment id
+   * @param requestOptions metadata to customize the request
+   * @return PaymentRefund
+   * @throws MPException an error if the request fails
+   * @see <a
+   *     href="https://www.mercadopago.com.br/developers/en/reference/chargebacks/_payments_id_refunds/post">api
+   *     docs</a>
+   */
+  public PaymentRefund refund(Long paymentId, MPRequestOptions requestOptions)
+      throws MPException, MPApiException {
+    return this.refund(paymentId, null, requestOptions);
+  }
+
+  /**
+   * Creates a refund for payment.
+   *
+   * @param paymentId payment id
    * @param amount refund amount
    * @return PaymentRefund
    * @throws MPException an error if the request fails
