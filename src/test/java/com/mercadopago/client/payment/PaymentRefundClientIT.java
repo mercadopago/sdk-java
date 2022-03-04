@@ -38,6 +38,43 @@ class PaymentRefundClientIT extends BaseClientIT {
       PaymentCreateRequest paymentCreateRequest = newPayment();
       Payment createdPayment = paymentClient.create(paymentCreateRequest);
 
+      PaymentRefund result = paymentRefundClient.refund(createdPayment.getId());
+
+      assertNotNull(result.getResponse());
+      assertEquals(CREATED, result.getResponse().getStatusCode());
+      assertNotNull(result.getId());
+    } catch (MPApiException mpApiException) {
+      fail(mpApiException.getApiResponse().getContent());
+    } catch (MPException mpException) {
+      fail(mpException.getMessage());
+    }
+  }
+
+  @Test
+  public void refundWithRequestOptionsSuccess() {
+    try {
+      PaymentCreateRequest paymentCreateRequest = newPayment();
+      Payment createdPayment = paymentClient.create(paymentCreateRequest);
+
+      PaymentRefund result =
+          paymentRefundClient.refund(createdPayment.getId(), buildRequestOptions());
+
+      assertNotNull(result.getResponse());
+      assertEquals(CREATED, result.getResponse().getStatusCode());
+      assertNotNull(result.getId());
+    } catch (MPApiException mpApiException) {
+      fail(mpApiException.getApiResponse().getContent());
+    } catch (MPException mpException) {
+      fail(mpException.getMessage());
+    }
+  }
+
+  @Test
+  void refundPartialSuccess() {
+    try {
+      PaymentCreateRequest paymentCreateRequest = newPayment();
+      Payment createdPayment = paymentClient.create(paymentCreateRequest);
+
       BigDecimal amount = new BigDecimal("50");
       PaymentRefund result = paymentRefundClient.refund(createdPayment.getId(), amount);
 
@@ -76,7 +113,7 @@ class PaymentRefundClientIT extends BaseClientIT {
     try {
       PaymentCreateRequest paymentCreateRequest = newPayment();
       Payment createdPayment = paymentClient.create(paymentCreateRequest);
-      PaymentRefund createdRefund = paymentRefundClient.refund(createdPayment.getId(), null);
+      PaymentRefund createdRefund = paymentRefundClient.refund(createdPayment.getId());
 
       PaymentRefund result = paymentRefundClient.get(createdPayment.getId(), createdRefund.getId());
 
@@ -95,7 +132,7 @@ class PaymentRefundClientIT extends BaseClientIT {
     try {
       PaymentCreateRequest paymentCreateRequest = newPayment();
       Payment createdPayment = paymentClient.create(paymentCreateRequest);
-      PaymentRefund createdRefund = paymentRefundClient.refund(createdPayment.getId(), null);
+      PaymentRefund createdRefund = paymentRefundClient.refund(createdPayment.getId());
 
       PaymentRefund result =
           paymentRefundClient.get(
@@ -116,7 +153,7 @@ class PaymentRefundClientIT extends BaseClientIT {
     try {
       PaymentCreateRequest paymentCreateRequest = newPayment();
       Payment createdPayment = paymentClient.create(paymentCreateRequest);
-      paymentRefundClient.refund(createdPayment.getId(), null);
+      paymentRefundClient.refund(createdPayment.getId());
 
       MPResourceList<PaymentRefund> result = paymentRefundClient.list(createdPayment.getId());
 
@@ -135,7 +172,7 @@ class PaymentRefundClientIT extends BaseClientIT {
     try {
       PaymentCreateRequest paymentCreateRequest = newPayment();
       Payment createdPayment = paymentClient.create(paymentCreateRequest);
-      paymentRefundClient.refund(createdPayment.getId(), null);
+      paymentRefundClient.refund(createdPayment.getId());
 
       MPResourceList<PaymentRefund> result =
           paymentRefundClient.list(createdPayment.getId(), buildRequestOptions());
