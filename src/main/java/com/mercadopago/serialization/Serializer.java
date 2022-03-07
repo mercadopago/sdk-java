@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
@@ -152,23 +151,6 @@ public class Serializer {
     } catch (IOException e) {
       throw new MPJsonParseException("Could not parse json", e);
     }
-  }
-
-  /**
-   * Method for getting a json array from a json element.
-   *
-   * @param jsonElement the jsonElement to be analyzed
-   * @return JsonArray
-   */
-  static JsonArray getArrayFromJsonElement(JsonElement jsonElement) {
-    if (jsonElement.isJsonArray()) {
-      return jsonElement.getAsJsonArray();
-    } else if (jsonElement.isJsonObject()
-        && ((JsonObject) jsonElement).get("results") != null
-        && ((JsonObject) jsonElement).get("results").isJsonArray()) {
-      return ((JsonObject) jsonElement).get("results").getAsJsonArray();
-    }
-    return null;
   }
 
   /**

@@ -191,21 +191,6 @@ public abstract class MercadoPagoClient {
     return this.send(path, method, payload, queryParams, requestOptions);
   }
 
-  private MPRequest buildRequest(String path, HttpMethod method) throws MPException {
-    return this.buildRequest(path, method, null, null, null);
-  }
-
-  private MPRequest buildRequest(String path, HttpMethod method, JsonObject payload)
-      throws MPException {
-    return this.buildRequest(path, method, payload, null, null);
-  }
-
-  private MPRequest buildRequest(
-      String path, HttpMethod method, JsonObject payload, Map<String, Object> queryParams)
-      throws MPException {
-    return this.buildRequest(path, method, payload, queryParams, null);
-  }
-
   private MPRequest buildRequest(
       String path,
       HttpMethod method,
@@ -227,11 +212,11 @@ public abstract class MercadoPagoClient {
   }
 
   private int addSocketTimeout(MPRequest request, MPRequestOptions requestOptions) {
-    if (Objects.nonNull(requestOptions) && (requestOptions.getSocketTimeout() > 0)) {
+    if (Objects.nonNull(requestOptions) && requestOptions.getSocketTimeout() > 0) {
       return requestOptions.getSocketTimeout();
     }
 
-    if (Objects.nonNull(request) && (request.getSocketTimeout() > 0)) {
+    if (Objects.nonNull(request) && request.getSocketTimeout() > 0) {
       return request.getSocketTimeout();
     }
 
@@ -239,11 +224,11 @@ public abstract class MercadoPagoClient {
   }
 
   private int addConnectionTimeout(MPRequest request, MPRequestOptions requestOptions) {
-    if (Objects.nonNull(requestOptions) && (requestOptions.getConnectionTimeout() > 0)) {
+    if (Objects.nonNull(requestOptions) && requestOptions.getConnectionTimeout() > 0) {
       return requestOptions.getConnectionTimeout();
     }
 
-    if (Objects.nonNull(request) && (request.getConnectionTimeout() > 0)) {
+    if (Objects.nonNull(request) && request.getConnectionTimeout() > 0) {
       return request.getConnectionTimeout();
     }
 
@@ -251,11 +236,11 @@ public abstract class MercadoPagoClient {
   }
 
   private int addConnectionRequestTimeout(MPRequest request, MPRequestOptions requestOptions) {
-    if (Objects.nonNull(requestOptions) && (requestOptions.getConnectionRequestTimeout() > 0)) {
-      return (requestOptions.getConnectionRequestTimeout());
+    if (Objects.nonNull(requestOptions) && requestOptions.getConnectionRequestTimeout() > 0) {
+      return requestOptions.getConnectionRequestTimeout();
     }
 
-    if (Objects.nonNull(request) && (request.getConnectionRequestTimeout() > 0)) {
+    if (Objects.nonNull(request) && request.getConnectionRequestTimeout() > 0) {
       return request.getConnectionRequestTimeout();
     }
 
@@ -301,12 +286,10 @@ public abstract class MercadoPagoClient {
   }
 
   private String getAccessToken(MPRequestOptions requestOptions) {
-    if (Objects.nonNull(requestOptions)
-        && Objects.nonNull(requestOptions.getAccessToken())
-        && !requestOptions.getAccessToken().isEmpty()) {
-      return requestOptions.getAccessToken();
-    }
-
-    return MercadoPagoConfig.getAccessToken();
+    return Objects.nonNull(requestOptions)
+            && Objects.nonNull(requestOptions.getAccessToken())
+            && !requestOptions.getAccessToken().isEmpty()
+        ? requestOptions.getAccessToken()
+        : MercadoPagoConfig.getAccessToken();
   }
 }

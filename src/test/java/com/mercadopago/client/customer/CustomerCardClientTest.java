@@ -7,7 +7,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
 
 import com.mercadopago.BaseClientTest;
-import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.helper.MockHelper;
@@ -16,56 +15,34 @@ import com.mercadopago.net.MPResourceList;
 import com.mercadopago.resources.customer.CustomerCard;
 import com.mercadopago.resources.customer.CustomerCardIssuer;
 import java.io.IOException;
-import java.text.ParseException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.protocol.HttpContext;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /** CustomerCardClientTest class. */
 public class CustomerCardClientTest extends BaseClientTest {
-  private static final String APPLICATION_JSON = "application/json";
+  private final String cardId = "1562188766852";
 
-  private static final int DEFAULT_TIMEOUT = 1000;
+  private final String customerId = "649457098-FybpOkG6zH8QRm";
+
+  private final String responseFileSingleCard = "/card/card_single.json";
+
+  private final String responseFileAllCards = "/card/card_all.json";
 
   private final CustomerCardClient cardClient = new CustomerCardClient();
 
-  private String cardId;
-
-  private String customerId;
-
-  private String responseFileSingleCard;
-
-  private String responseFileAllCards;
-
-  private CustomerCardCreateRequest customerCardCreateRequest;
-
-  /** Init method. */
-  @BeforeEach
-  public void init() {
-    customerCardCreateRequest =
-        CustomerCardCreateRequest.builder()
-            .token("abc")
-            .issuer(CustomerCardIssuer.builder().id("123").name("visa").build())
-            .build();
-    this.cardId = "1562188766852";
-    this.customerId = "649457098-FybpOkG6zH8QRm";
-    this.responseFileSingleCard = "/card/card_single.json";
-    this.responseFileAllCards = "/card/card_all.json";
-  }
-
   @Test
-  public void getCardSuccess() throws IOException, MPException, MPApiException, ParseException {
+  public void getCardSuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse =
         MockHelper.generateHttpResponseFromFile(responseFileSingleCard, HttpStatus.OK);
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     CustomerCard card = cardClient.get(customerId, cardId);
 
@@ -74,38 +51,30 @@ public class CustomerCardClientTest extends BaseClientTest {
   }
 
   @Test
-  public void getCardWithRequestOptionsSuccess()
-      throws IOException, MPException, MPApiException, ParseException {
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
+  public void getCardWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse =
         MockHelper.generateHttpResponseFromFile(responseFileSingleCard, HttpStatus.OK);
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
-    CustomerCard card = cardClient.get(customerId, cardId, requestOptions);
+    CustomerCard card = cardClient.get(customerId, cardId, buildRequestOptions());
 
     assertNotNull(card);
     assertCustomerCardFields(card);
   }
 
   @Test
-  public void createCardSuccess() throws IOException, MPException, MPApiException, ParseException {
+  public void createCardSuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse =
         MockHelper.generateHttpResponseFromFile(responseFileSingleCard, HttpStatus.OK);
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
-    CustomerCard card = cardClient.create(customerId, customerCardCreateRequest);
+    CustomerCard card = cardClient.create(customerId, buildCustomerCardCreateRequest());
 
     assertNotNull(card);
     assertCustomerCardFields(card);
@@ -113,35 +82,29 @@ public class CustomerCardClientTest extends BaseClientTest {
 
   @Test
   public void createCardWithRequestOptionsSuccess()
-      throws ParseException, IOException, MPException, MPApiException {
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
+      throws IOException, MPException, MPApiException {
     HttpResponse httpResponse =
         MockHelper.generateHttpResponseFromFile(responseFileSingleCard, HttpStatus.OK);
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
-    CustomerCard card = cardClient.create(customerId, customerCardCreateRequest, requestOptions);
+    CustomerCard card =
+        cardClient.create(customerId, buildCustomerCardCreateRequest(), buildRequestOptions());
 
     assertNotNull(card);
     assertCustomerCardFields(card);
   }
 
   @Test
-  public void deleteCardSuccess() throws ParseException, MPException, MPApiException, IOException {
+  public void deleteCardSuccess() throws MPException, MPApiException, IOException {
     HttpResponse httpResponse =
         MockHelper.generateHttpResponseFromFile(responseFileSingleCard, HttpStatus.OK);
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     CustomerCard card = cardClient.delete(customerId, cardId);
 
@@ -151,36 +114,28 @@ public class CustomerCardClientTest extends BaseClientTest {
 
   @Test
   public void deleteCardWithRequestOptionsSuccess()
-      throws MPException, MPApiException, IOException, ParseException {
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
+      throws MPException, MPApiException, IOException {
     HttpResponse httpResponse =
         MockHelper.generateHttpResponseFromFile(responseFileSingleCard, HttpStatus.OK);
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
-    CustomerCard card = cardClient.delete(customerId, cardId, requestOptions);
+    CustomerCard card = cardClient.delete(customerId, cardId, buildRequestOptions());
 
     assertNotNull(card);
     assertCustomerCardFields(card);
   }
 
   @Test
-  public void listAllCardsSuccess()
-      throws IOException, MPException, MPApiException, ParseException {
+  public void listAllCardsSuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse =
         MockHelper.generateHttpResponseFromFile(responseFileAllCards, HttpStatus.OK);
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     MPResourceList<CustomerCard> cards = cardClient.listAll(customerId);
 
@@ -194,22 +149,15 @@ public class CustomerCardClientTest extends BaseClientTest {
 
   @Test
   public void listAllCardsWithRequestOptionsSuccess()
-      throws IOException, MPException, MPApiException, ParseException {
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
+      throws IOException, MPException, MPApiException {
     HttpResponse httpResponse =
         MockHelper.generateHttpResponseFromFile(responseFileAllCards, HttpStatus.OK);
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
-    MPResourceList<CustomerCard> cards = cardClient.listAll(customerId, requestOptions);
+    MPResourceList<CustomerCard> cards = cardClient.listAll(customerId, buildRequestOptions());
 
     assertNotNull(cards);
     assertNotNull(cards.getResponse());
@@ -219,7 +167,14 @@ public class CustomerCardClientTest extends BaseClientTest {
     assertCustomerCardFields(cards.getResults().get(0));
   }
 
-  private void assertCustomerCardFields(CustomerCard card) throws ParseException {
+  private CustomerCardCreateRequest buildCustomerCardCreateRequest() {
+    return CustomerCardCreateRequest.builder()
+        .token("abc")
+        .issuer(CustomerCardIssuer.builder().id("123").name("visa").build())
+        .build();
+  }
+
+  private void assertCustomerCardFields(CustomerCard card) {
     assertEquals("1562188766852", card.getId());
     assertEquals(6, card.getExpirationMonth());
     assertEquals(2023, card.getExpirationYear());

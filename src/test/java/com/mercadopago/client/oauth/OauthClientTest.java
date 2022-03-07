@@ -28,10 +28,6 @@ import org.junit.jupiter.api.Test;
 
 /** OauthClientTest class. */
 public class OauthClientTest extends BaseClientTest {
-  private static final String APPLICATION_JSON = "application/json";
-
-  private static final int DEFAULT_TIMEOUT = 2000;
-
   private static HttpResponse oauthHttpResponse;
 
   private final String appId = "123";
@@ -42,8 +38,6 @@ public class OauthClientTest extends BaseClientTest {
 
   private final String refreshToken = "refreshToken";
 
-  private final String responseRedirectUri = "https://mercadopago-redirect-uri.mercadopago.com";
-
   private HttpResponse userHttpResponse;
 
   @Test
@@ -53,14 +47,14 @@ public class OauthClientTest extends BaseClientTest {
         MockHelper.generateHttpResponseFromFile("/user/user_base.json", HttpStatus.OK);
 
     doReturn(userHttpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(
             argThat(
                 new HttpRequestMatcher(
                     new HttpGet(String.format("%s/users/me", MercadoPagoConfig.BASE_URL)))),
             any(HttpContext.class));
     doReturn(oauthHttpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(
             argThat(
                 new HttpRequestMatcher(new HttpGet("https://auth.mercadopago.com/oauth/token"))),
@@ -76,30 +70,23 @@ public class OauthClientTest extends BaseClientTest {
       throws MPException, MPApiException, IOException, URISyntaxException {
     userHttpResponse =
         MockHelper.generateHttpResponseFromFile("/user/user_base.json", HttpStatus.OK);
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
 
     doReturn(userHttpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(
             argThat(
                 new HttpRequestMatcher(
                     new HttpGet(String.format("%s/users/me", MercadoPagoConfig.BASE_URL)))),
             any(HttpContext.class));
     doReturn(oauthHttpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(
             argThat(
                 new HttpRequestMatcher(new HttpGet("https://auth.mercadopago.com/oauth/token"))),
             any(HttpContext.class));
 
     String authorizationURL =
-        new OauthClient().getAuthorizationURL(appId, redirectUri, requestOptions);
+        new OauthClient().getAuthorizationURL(appId, redirectUri, buildRequestOptions());
 
     assertAuthorizationUrlComponents(authorizationURL);
   }
@@ -111,7 +98,7 @@ public class OauthClientTest extends BaseClientTest {
     oauthHttpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
     doReturn(oauthHttpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     CreateOauthCredential credential =
         new OauthClient().createCredential(authorizationCode, redirectUri);
@@ -135,7 +122,7 @@ public class OauthClientTest extends BaseClientTest {
             .build();
 
     doReturn(oauthHttpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     CreateOauthCredential credential =
         new OauthClient().createCredential(authorizationCode, redirectUri, requestOptions);
@@ -150,7 +137,7 @@ public class OauthClientTest extends BaseClientTest {
     oauthHttpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
     doReturn(oauthHttpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     RefreshOauthCredential credential = new OauthClient().refreshCredential(refreshToken);
     assertRefreshOauthCredentialFields(credential);
@@ -172,7 +159,7 @@ public class OauthClientTest extends BaseClientTest {
             .build();
 
     doReturn(oauthHttpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     RefreshOauthCredential credential =
         new OauthClient().refreshCredential(refreshToken, requestOptions);

@@ -18,7 +18,6 @@ import com.mercadopago.BaseClientTest;
 import com.mercadopago.client.common.AddressRequest;
 import com.mercadopago.client.common.IdentificationRequest;
 import com.mercadopago.client.common.PhoneRequest;
-import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.MPElementsResourcesPage;
@@ -37,32 +36,29 @@ import org.apache.http.protocol.HttpContext;
 import org.junit.jupiter.api.Test;
 
 class PreferenceClientTest extends BaseClientTest {
+  private final String preferenceBaseJson = "preference/preference_base.json";
 
-  private static final int DEFAULT_TIMEOUT = 1000;
+  private final String preferenceUpdatedJson = "preference/preference_updated.json";
 
-  private static final String PREFERENCE_BASE_JSON = "preference/preference_base.json";
+  private final String preferenceListJson = "preference/preference_list.json";
 
-  private static final String PREFERENCE_UPDATED_JSON = "preference/preference_updated.json";
+  private final String preferenceTestId = "823549964-e8063b12-1c8b-4333-b075-3ae52a0371c8";
 
-  private static final String PREFERENCE_LIST_JSON = "preference/preference_list.json";
-
-  private static final String PREFERENCE_TEST_ID = "823549964-e8063b12-1c8b-4333-b075-3ae52a0371c8";
-
-  private static final OffsetDateTime EXPIRATION_DATE_FROM =
+  private final OffsetDateTime expirationDateFrom =
       OffsetDateTime.of(2022, 1, 10, 10, 10, 10, 0, ZoneOffset.UTC);
 
-  private static final OffsetDateTime EXPIRATION_DATE_TO =
+  private final OffsetDateTime expirationDateTo =
       OffsetDateTime.of(2022, 2, 10, 10, 10, 10, 0, ZoneOffset.UTC);
 
   private final PreferenceClient client = new PreferenceClient();
 
   @Test
   void getSuccess() throws IOException, MPException, MPApiException {
-    HttpResponse httpResponse = generateHttpResponseFromFile(PREFERENCE_BASE_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(preferenceBaseJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
-    Preference preference = client.get(PREFERENCE_TEST_ID);
+    Preference preference = client.get(preferenceTestId);
 
     assertNotNull(preference.getResponse());
     assertEquals(OK, preference.getResponse().getStatusCode());
@@ -71,12 +67,11 @@ class PreferenceClientTest extends BaseClientTest {
 
   @Test
   void getWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
-    MPRequestOptions requestOptions = generateRequestOptions();
-    HttpResponse httpResponse = generateHttpResponseFromFile(PREFERENCE_BASE_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(preferenceBaseJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
-    Preference preference = client.get(PREFERENCE_TEST_ID, requestOptions);
+    Preference preference = client.get(preferenceTestId, buildRequestOptions());
 
     assertNotNull(preference.getResponse());
     assertEquals(OK, preference.getResponse().getStatusCode());
@@ -85,15 +80,15 @@ class PreferenceClientTest extends BaseClientTest {
 
   @Test
   void createSuccess() throws IOException, MPException, MPApiException {
-    HttpResponse httpResponse = generateHttpResponseFromFile(PREFERENCE_BASE_JSON, CREATED);
+    HttpResponse httpResponse = generateHttpResponseFromFile(preferenceBaseJson, CREATED);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     Preference preference = client.create(newPreference());
 
     JsonElement requestPayload =
-        generateJsonElementFromUriRequest(httpClientMock.getRequestPayload());
-    JsonElement requestPayloadMock = generateJsonElement(PREFERENCE_BASE_JSON);
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement(preferenceBaseJson);
 
     assertEquals(requestPayloadMock, requestPayload);
     assertNotNull(preference.getResponse());
@@ -103,16 +98,15 @@ class PreferenceClientTest extends BaseClientTest {
 
   @Test
   void createWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
-    MPRequestOptions requestOptions = generateRequestOptions();
-    HttpResponse httpResponse = generateHttpResponseFromFile(PREFERENCE_BASE_JSON, CREATED);
+    HttpResponse httpResponse = generateHttpResponseFromFile(preferenceBaseJson, CREATED);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
-    Preference preference = client.create(newPreference(), requestOptions);
+    Preference preference = client.create(newPreference(), buildRequestOptions());
 
     JsonElement requestPayload =
-        generateJsonElementFromUriRequest(httpClientMock.getRequestPayload());
-    JsonElement requestPayloadMock = generateJsonElement(PREFERENCE_BASE_JSON);
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement(preferenceBaseJson);
 
     assertEquals(requestPayloadMock, requestPayload);
     assertNotNull(preference.getResponse());
@@ -122,48 +116,48 @@ class PreferenceClientTest extends BaseClientTest {
 
   @Test
   void updateSuccess() throws IOException, MPException, MPApiException {
-    HttpResponse httpResponse = generateHttpResponseFromFile(PREFERENCE_UPDATED_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(preferenceUpdatedJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
-    Preference preference = client.update(PREFERENCE_TEST_ID, updatedPreference());
+    Preference preference = client.update(preferenceTestId, updatedPreference());
 
     JsonElement requestPayload =
-        generateJsonElementFromUriRequest(httpClientMock.getRequestPayload());
-    JsonElement requestPayloadMock = generateJsonElement(PREFERENCE_UPDATED_JSON);
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement(preferenceUpdatedJson);
 
     assertEquals(requestPayloadMock, requestPayload);
     assertNotNull(preference.getResponse());
     assertEquals(OK, preference.getResponse().getStatusCode());
-    assertEquals(PREFERENCE_TEST_ID, preference.getId());
+    assertEquals(preferenceTestId, preference.getId());
     assertEquals("Updated Store", preference.getStatementDescriptor());
   }
 
   @Test
   void updateWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
-    MPRequestOptions requestOptions = generateRequestOptions();
-    HttpResponse httpResponse = generateHttpResponseFromFile(PREFERENCE_UPDATED_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(preferenceUpdatedJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
-    Preference preference = client.update(PREFERENCE_TEST_ID, updatedPreference(), requestOptions);
+    Preference preference =
+        client.update(preferenceTestId, updatedPreference(), buildRequestOptions());
 
     JsonElement requestPayload =
-        generateJsonElementFromUriRequest(httpClientMock.getRequestPayload());
-    JsonElement requestPayloadMock = generateJsonElement(PREFERENCE_UPDATED_JSON);
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement(preferenceUpdatedJson);
 
     assertEquals(requestPayloadMock, requestPayload);
     assertNotNull(preference.getResponse());
     assertEquals(OK, preference.getResponse().getStatusCode());
-    assertEquals(PREFERENCE_TEST_ID, preference.getId());
+    assertEquals(preferenceTestId, preference.getId());
     assertEquals("Updated Store", preference.getStatementDescriptor());
   }
 
   @Test
   void searchSuccess() throws IOException, MPException, MPApiException {
-    HttpResponse httpResponse = generateHttpResponseFromFile(PREFERENCE_LIST_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(preferenceListJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     MPSearchRequest searchRequest = MPSearchRequest.builder().limit(2).offset(0).build();
     MPElementsResourcesPage<PreferenceSearch> result = client.search(searchRequest);
@@ -175,13 +169,13 @@ class PreferenceClientTest extends BaseClientTest {
 
   @Test
   void searchWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
-    MPRequestOptions requestOptions = generateRequestOptions();
-    HttpResponse httpResponse = generateHttpResponseFromFile(PREFERENCE_LIST_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(preferenceListJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     MPSearchRequest searchRequest = MPSearchRequest.builder().limit(2).offset(0).build();
-    MPElementsResourcesPage<PreferenceSearch> result = client.search(searchRequest, requestOptions);
+    MPElementsResourcesPage<PreferenceSearch> result =
+        client.search(searchRequest, buildRequestOptions());
 
     assertNotNull(result.getResponse());
     assertEquals(OK, result.getResponse().getStatusCode());
@@ -197,13 +191,13 @@ class PreferenceClientTest extends BaseClientTest {
     assertTrue(preference.getBinaryMode());
     assertEquals("6245132082630004", preference.getClientId());
     assertEquals(823549964L, preference.getCollectorId());
-    assertEquals(EXPIRATION_DATE_FROM, preference.getDateCreated());
-    assertEquals(EXPIRATION_DATE_TO, preference.getDateOfExpiration());
-    assertEquals(EXPIRATION_DATE_FROM, preference.getExpirationDateFrom());
-    assertEquals(EXPIRATION_DATE_TO, preference.getExpirationDateTo());
+    assertEquals(expirationDateFrom, preference.getDateCreated());
+    assertEquals(expirationDateTo, preference.getDateOfExpiration());
+    assertEquals(expirationDateFrom, preference.getExpirationDateFrom());
+    assertEquals(expirationDateTo, preference.getExpirationDateTo());
     assertFalse(preference.getExpires());
     assertEquals("1643827245", preference.getExternalReference());
-    assertEquals(PREFERENCE_TEST_ID, preference.getId());
+    assertEquals(preferenceTestId, preference.getId());
     assertEquals(
         "https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=823549964-e8063b12-1c8b-4333-b075-3ae52a0371c8",
         preference.getInitPoint());
@@ -242,7 +236,7 @@ class PreferenceClientTest extends BaseClientTest {
         preference.getSandboxInitPoint());
     assertEquals("custom", preference.getShipments().getMode());
     assertNull(preference.getShipments().getDefaultShippingMethod());
-    assertEquals(new BigDecimal("10"), preference.getShipments().getCost());
+    assertEquals(BigDecimal.TEN, preference.getShipments().getCost());
     assertEquals("06000000", preference.getShipments().getReceiverAddress().getZipCode());
     assertEquals("Street", preference.getShipments().getReceiverAddress().getStreetName());
     assertEquals("123", preference.getShipments().getReceiverAddress().getStreetNumber());
@@ -255,13 +249,13 @@ class PreferenceClientTest extends BaseClientTest {
   }
 
   private void assertPreferenceSearchFields(PreferenceSearch preference) {
-    assertEquals(PREFERENCE_TEST_ID, preference.getId());
+    assertEquals(preferenceTestId, preference.getId());
     assertEquals("6245132082630004", preference.getClientId());
     assertEquals(823549964L, preference.getCollectorId());
-    assertEquals(EXPIRATION_DATE_FROM, preference.getDateCreated());
-    assertEquals(EXPIRATION_DATE_FROM, preference.getExpirationDateFrom());
-    assertEquals(EXPIRATION_DATE_TO, preference.getExpirationDateTo());
-    assertEquals(EXPIRATION_DATE_FROM, preference.getLastUpdated());
+    assertEquals(expirationDateFrom, preference.getDateCreated());
+    assertEquals(expirationDateFrom, preference.getExpirationDateFrom());
+    assertEquals(expirationDateTo, preference.getExpirationDateTo());
+    assertEquals(expirationDateFrom, preference.getLastUpdated());
     assertFalse(preference.getExpires());
     assertEquals("1643827245", preference.getExternalReference());
     assertEquals("Games", preference.getItems().get(0));
@@ -312,9 +306,9 @@ class PreferenceClientTest extends BaseClientTest {
                 .pending("http://test.com/pending")
                 .build())
         .binaryMode(true)
-        .dateOfExpiration(EXPIRATION_DATE_TO)
-        .expirationDateFrom(EXPIRATION_DATE_FROM)
-        .expirationDateTo(EXPIRATION_DATE_TO)
+        .dateOfExpiration(expirationDateTo)
+        .expirationDateFrom(expirationDateFrom)
+        .expirationDateTo(expirationDateTo)
         .expires(false)
         .externalReference("1643827245")
         .items(items)
@@ -350,7 +344,7 @@ class PreferenceClientTest extends BaseClientTest {
                 .mode("custom")
                 .localPickup(false)
                 .dimensions("10x10x20,500")
-                .cost(new BigDecimal("10"))
+                .cost(BigDecimal.TEN)
                 .receiverAddress(
                     PreferenceReceiverAddressRequest.builder()
                         .zipCode("06000000")
@@ -366,14 +360,5 @@ class PreferenceClientTest extends BaseClientTest {
 
   private PreferenceRequest updatedPreference() {
     return PreferenceRequest.builder().statementDescriptor("Updated Store").build();
-  }
-
-  private MPRequestOptions generateRequestOptions() {
-    return MPRequestOptions.builder()
-        .accessToken("abc")
-        .connectionTimeout(DEFAULT_TIMEOUT)
-        .connectionRequestTimeout(DEFAULT_TIMEOUT)
-        .socketTimeout(DEFAULT_TIMEOUT)
-        .build();
   }
 }

@@ -236,7 +236,7 @@ class PreferenceClientIT extends BaseClientIT {
                 .mode("custom")
                 .localPickup(false)
                 .dimensions("10x10x20,500")
-                .cost(new BigDecimal("10"))
+                .cost(BigDecimal.TEN)
                 .receiverAddress(
                     PreferenceReceiverAddressRequest.builder()
                         .zipCode("06000000")

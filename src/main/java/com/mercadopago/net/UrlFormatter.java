@@ -49,10 +49,10 @@ public class UrlFormatter {
   }
 
   private static String generateFullPath(String path) {
-    if (!path.startsWith("https")) {
-      String formatPattern = path.startsWith("/") ? "%s%s" : "%s/%s";
-      return String.format(formatPattern, MercadoPagoConfig.BASE_URL, path);
-    }
-    return path;
+    String formatPattern = path.startsWith("/") ? "%s%s" : "%s/%s";
+
+    return !path.startsWith("https")
+        ? String.format(formatPattern, MercadoPagoConfig.BASE_URL, path)
+        : path;
   }
 }

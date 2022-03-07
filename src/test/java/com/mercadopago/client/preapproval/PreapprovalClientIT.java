@@ -178,7 +178,7 @@ class PreapprovalClientIT extends BaseClientIT {
   private PreapprovalCreateRequest generatePreapprovalRequest() {
     PreApprovalAutoRecurringCreateRequest autoRecurring =
         PreApprovalAutoRecurringCreateRequest.builder()
-            .transactionAmount(new BigDecimal("10"))
+            .transactionAmount(BigDecimal.TEN)
             .frequency(1)
             .frequencyType("months")
             .currencyId("BRL")

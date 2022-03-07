@@ -9,7 +9,6 @@ import static org.mockito.Mockito.doReturn;
 import com.mercadopago.BaseClientTest;
 import com.mercadopago.client.common.IdentificationRequest;
 import com.mercadopago.client.common.PhoneRequest;
-import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.helper.MockHelper;
@@ -30,39 +29,22 @@ import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.protocol.HttpContext;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /** CustomerClientTest class. */
 public class CustomerClientTest extends BaseClientTest {
   private final CustomerClient customerClient = new CustomerClient();
 
-  private HttpResponse customerClientHttpResponse;
-
-  private HttpResponse cardClientHttpResponse;
-
-  /**
-   * Init method.
-   *
-   * @throws IOException exception
-   */
-  @BeforeEach
-  public void init() throws IOException {
-    this.customerClientHttpResponse =
-        MockHelper.generateHttpResponseFromFile("/customer/customer_base.json", HttpStatus.OK);
-    customerClientHttpResponse.setHeader(HttpHeaders.CONTENT_TYPE, CONTENT_TYPE_APPLICATION_JSON);
-    cardClientHttpResponse =
-        MockHelper.generateHttpResponseFromFile("/card/card_single.json", HttpStatus.OK);
-  }
+  private final String customerId = "1068193981-pXRewrKqlP6pnn";
 
   @Test
-  public void getSuccess()
-      throws MPException, MPApiException, MPApiException, MPApiException, MPApiException,
-          ParseException, IOException {
-    String customerId = "1068193981-pXRewrKqlP6pnn";
+  public void getSuccess() throws MPException, MPApiException, ParseException, IOException {
+    HttpResponse httpResponse =
+        MockHelper.generateHttpResponseFromFile("/customer/customer_base.json", HttpStatus.OK);
+    httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
-    doReturn(customerClientHttpResponse)
-        .when(httpClient)
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
     Customer customer = customerClient.get(customerId);
@@ -72,168 +54,91 @@ public class CustomerClientTest extends BaseClientTest {
 
   @Test
   public void getWithRequestOptionsSuccess()
-      throws MPException, MPApiException, MPApiException, MPApiException, MPApiException,
-          ParseException, IOException {
-    String customerId = "1068193981-pXRewrKqlP6pnn";
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
+      throws MPException, MPApiException, ParseException, IOException {
+    HttpResponse httpResponse =
+        MockHelper.generateHttpResponseFromFile("/customer/customer_base.json", HttpStatus.OK);
+    httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
-    doReturn(customerClientHttpResponse)
-        .when(httpClient)
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-    Customer customer = customerClient.get(customerId, requestOptions);
+    Customer customer = customerClient.get(customerId, buildRequestOptions());
 
     assertCustomerFields(customer);
   }
 
   @Test
-  public void createSuccess()
-      throws MPException, MPApiException, MPApiException, MPApiException, MPApiException,
-          ParseException, IOException {
-    CustomerRequest request =
-        CustomerRequest.builder()
-            .address(
-                CustomerAddressRequest.builder()
-                    .streetName("abc")
-                    .streetNumber(123)
-                    .zipCode("xyz")
-                    .build())
-            .defaultAddress("Default address")
-            .firstName("John")
-            .lastName("Doe")
-            .phone(PhoneRequest.builder().areaCode("55").number("555555555").build())
-            .email("test@user.com")
-            .identification(IdentificationRequest.builder().type("CPF").number("1234").build())
-            .build();
+  public void createSuccess() throws MPException, MPApiException, ParseException, IOException {
+    HttpResponse httpResponse =
+        MockHelper.generateHttpResponseFromFile("/customer/customer_base.json", HttpStatus.OK);
+    httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
-    doReturn(customerClientHttpResponse)
-        .when(httpClient)
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-    Customer customer = customerClient.create(request);
+    Customer customer = customerClient.create(buildCustomerRequest());
 
     assertCustomerFields(customer);
   }
 
   @Test
   public void createWithRequestOptionsSuccess()
-      throws MPException, MPApiException, MPApiException, MPApiException, MPApiException,
-          ParseException, IOException {
-    CustomerRequest request =
-        CustomerRequest.builder()
-            .address(
-                CustomerAddressRequest.builder()
-                    .streetName("abc")
-                    .streetNumber(123)
-                    .zipCode("xyz")
-                    .build())
-            .defaultAddress("Default address")
-            .firstName("John")
-            .lastName("Doe")
-            .phone(PhoneRequest.builder().areaCode("55").number("555555555").build())
-            .email("test@user.com")
-            .identification(IdentificationRequest.builder().type("CPF").number("1234").build())
-            .build();
+      throws MPException, MPApiException, ParseException, IOException {
 
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
+    HttpResponse httpResponse =
+        MockHelper.generateHttpResponseFromFile("/customer/customer_base.json", HttpStatus.OK);
+    httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
-    doReturn(customerClientHttpResponse)
-        .when(httpClient)
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-    Customer customer = customerClient.create(request, requestOptions);
+    Customer customer = customerClient.create(buildCustomerRequest(), buildRequestOptions());
 
     assertCustomerFields(customer);
   }
 
   @Test
-  public void updateSuccess()
-      throws ParseException, MPException, MPApiException, MPApiException, MPApiException,
-          MPApiException, IOException {
-    String customerId = "1068193981-pXRewrKqlP6pnn";
-    CustomerRequest request =
-        CustomerRequest.builder()
-            .address(
-                CustomerAddressRequest.builder()
-                    .streetName("abc")
-                    .streetNumber(123)
-                    .zipCode("xyz")
-                    .build())
-            .defaultAddress("Default address")
-            .firstName("John")
-            .lastName("Doe")
-            .phone(PhoneRequest.builder().areaCode("55").number("555555555").build())
-            .email("test@user.com")
-            .identification(IdentificationRequest.builder().type("CPF").number("1234").build())
-            .build();
+  public void updateSuccess() throws MPException, MPApiException, IOException {
+    HttpResponse httpResponse =
+        MockHelper.generateHttpResponseFromFile("/customer/customer_base.json", HttpStatus.OK);
+    httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
-    doReturn(customerClientHttpResponse)
-        .when(httpClient)
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-    Customer customer = customerClient.update(customerId, request);
+    Customer customer = customerClient.update(customerId, buildCustomerRequest());
 
     assertCustomerFields(customer);
   }
 
   @Test
-  public void updateWithRequestOptionsSuccess()
-      throws MPException, MPApiException, MPApiException, MPApiException, MPApiException,
-          ParseException, IOException {
-    String customerId = "1068193981-pXRewrKqlP6pnn";
-    CustomerRequest request =
-        CustomerRequest.builder()
-            .address(
-                CustomerAddressRequest.builder()
-                    .streetName("abc")
-                    .streetNumber(123)
-                    .zipCode("xyz")
-                    .build())
-            .defaultAddress("Default address")
-            .firstName("John")
-            .lastName("Doe")
-            .phone(PhoneRequest.builder().areaCode("55").number("555555555").build())
-            .email("test@user.com")
-            .identification(IdentificationRequest.builder().type("CPF").number("1234").build())
-            .build();
+  public void updateWithRequestOptionsSuccess() throws MPException, MPApiException, IOException {
+    HttpResponse httpResponse =
+        MockHelper.generateHttpResponseFromFile("/customer/customer_base.json", HttpStatus.OK);
+    httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
-
-    doReturn(customerClientHttpResponse)
-        .when(httpClient)
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-    Customer customer = customerClient.update(customerId, request, requestOptions);
+    Customer customer =
+        customerClient.update(customerId, buildCustomerRequest(), buildRequestOptions());
 
     assertCustomerFields(customer);
   }
 
   @Test
-  public void deleteSuccess()
-      throws MPException, MPApiException, MPApiException, MPApiException, MPApiException,
-          ParseException, IOException {
-    String customerId = "1068193981-pXRewrKqlP6pnn";
+  public void deleteSuccess() throws MPException, MPApiException, IOException {
+    HttpResponse httpResponse =
+        MockHelper.generateHttpResponseFromFile("/customer/customer_base.json", HttpStatus.OK);
+    httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
-    doReturn(customerClientHttpResponse)
-        .when(httpClient)
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
     Customer customer = customerClient.delete(customerId);
@@ -242,24 +147,17 @@ public class CustomerClientTest extends BaseClientTest {
   }
 
   @Test
-  public void deleteWithRequestOptionsSuccess()
-      throws MPException, MPApiException, MPApiException, MPApiException, MPApiException,
-          ParseException, IOException {
-    String customerId = "1068193981-pXRewrKqlP6pnn";
+  public void deleteWithRequestOptionsSuccess() throws MPException, MPApiException, IOException {
 
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
+    HttpResponse httpResponse =
+        MockHelper.generateHttpResponseFromFile("/customer/customer_base.json", HttpStatus.OK);
+    httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
-    doReturn(customerClientHttpResponse)
-        .when(httpClient)
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-    Customer customer = customerClient.delete(customerId, requestOptions);
+    Customer customer = customerClient.delete(customerId, buildRequestOptions());
 
     assertCustomerFields(customer);
   }
@@ -275,7 +173,7 @@ public class CustomerClientTest extends BaseClientTest {
         MockHelper.generateHttpResponseFromFile("/customer/search_by_email.json", HttpStatus.OK);
 
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
     MPResultsResourcesPage<Customer> result = customerClient.search(searchRequest);
@@ -294,21 +192,15 @@ public class CustomerClientTest extends BaseClientTest {
     filters.put("email", "test@user.com");
     HttpResponse httpResponse =
         MockHelper.generateHttpResponseFromFile("/customer/search_by_email.json", HttpStatus.OK);
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
     MPSearchRequest searchRequest =
         MPSearchRequest.builder().limit(0).offset(0).filters(filters).build();
 
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-    MPResultsResourcesPage<Customer> result = customerClient.search(searchRequest, requestOptions);
+    MPResultsResourcesPage<Customer> result =
+        customerClient.search(searchRequest, buildRequestOptions());
 
     assertNotNull(result);
     assertEquals(10, result.getPaging().getLimit());
@@ -319,8 +211,11 @@ public class CustomerClientTest extends BaseClientTest {
 
   @Test
   public void getCardSuccess() throws IOException, MPException, MPApiException {
-    doReturn(cardClientHttpResponse)
-        .when(httpClient)
+    HttpResponse httpResponse =
+        MockHelper.generateHttpResponseFromFile("/card/card_single.json", HttpStatus.OK);
+
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     CustomerCard card = customerClient.getCard("649457098-FybpOkG6zH8QRm", "1562188766852");
 
@@ -330,19 +225,14 @@ public class CustomerClientTest extends BaseClientTest {
 
   @Test
   public void getCardWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
+    HttpResponse httpResponse =
+        MockHelper.generateHttpResponseFromFile("/card/card_single.json", HttpStatus.OK);
 
-    doReturn(cardClientHttpResponse)
-        .when(httpClient)
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     CustomerCard card =
-        customerClient.getCard("649457098-FybpOkG6zH8QRm", "1562188766852", requestOptions);
+        customerClient.getCard("649457098-FybpOkG6zH8QRm", "1562188766852", buildRequestOptions());
 
     assertNotNull(card);
     assertEquals("1562188766852", card.getId());
@@ -350,17 +240,14 @@ public class CustomerClientTest extends BaseClientTest {
 
   @Test
   public void createCardSuccess() throws IOException, MPException, MPApiException {
-    CustomerCardCreateRequest customerCardCreateRequest =
-        CustomerCardCreateRequest.builder()
-            .token("abc")
-            .issuer(CustomerCardIssuer.builder().id("123").name("visa").build())
-            .build();
+    HttpResponse httpResponse =
+        MockHelper.generateHttpResponseFromFile("/card/card_single.json", HttpStatus.OK);
 
-    doReturn(cardClientHttpResponse)
-        .when(httpClient)
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     CustomerCard card =
-        customerClient.createCard("649457098-FybpOkG6zH8QRm", customerCardCreateRequest);
+        customerClient.createCard("649457098-FybpOkG6zH8QRm", buildCustomerCardCreateRequest());
 
     assertNotNull(card);
     assertEquals("1562188766852", card.getId());
@@ -369,25 +256,15 @@ public class CustomerClientTest extends BaseClientTest {
   @Test
   public void createCardWithRequestOptionsSuccess()
       throws IOException, MPException, MPApiException {
-    CustomerCardCreateRequest customerCardCreateRequest =
-        CustomerCardCreateRequest.builder()
-            .token("abc")
-            .issuer(CustomerCardIssuer.builder().id("123").name("visa").build())
-            .build();
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
+    HttpResponse httpResponse =
+        MockHelper.generateHttpResponseFromFile("/card/card_single.json", HttpStatus.OK);
 
-    doReturn(cardClientHttpResponse)
-        .when(httpClient)
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     CustomerCard card =
         customerClient.createCard(
-            "649457098-FybpOkG6zH8QRm", customerCardCreateRequest, requestOptions);
+            "649457098-FybpOkG6zH8QRm", buildCustomerCardCreateRequest(), buildRequestOptions());
 
     assertNotNull(card);
     assertEquals("1562188766852", card.getId());
@@ -395,8 +272,11 @@ public class CustomerClientTest extends BaseClientTest {
 
   @Test
   public void deleteCardSuccess() throws IOException, MPException, MPApiException {
-    doReturn(cardClientHttpResponse)
-        .when(httpClient)
+    HttpResponse httpResponse =
+        MockHelper.generateHttpResponseFromFile("/card/card_single.json", HttpStatus.OK);
+
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     CustomerCard card = customerClient.deleteCard("649457098-FybpOkG6zH8QRm", "1562188766852");
 
@@ -407,18 +287,15 @@ public class CustomerClientTest extends BaseClientTest {
   @Test
   public void deleteCardWithRequestOptionsSuccess()
       throws IOException, MPException, MPApiException {
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
-    doReturn(cardClientHttpResponse)
-        .when(httpClient)
+    HttpResponse httpResponse =
+        MockHelper.generateHttpResponseFromFile("/card/card_single.json", HttpStatus.OK);
+
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     CustomerCard card =
-        customerClient.deleteCard("649457098-FybpOkG6zH8QRm", "1562188766852", requestOptions);
+        customerClient.deleteCard(
+            "649457098-FybpOkG6zH8QRm", "1562188766852", buildRequestOptions());
 
     assertNotNull(card);
     assertEquals("1562188766852", card.getId());
@@ -428,8 +305,9 @@ public class CustomerClientTest extends BaseClientTest {
   public void listCardsSuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse =
         MockHelper.generateHttpResponseFromFile("/card/card_all.json", HttpStatus.OK);
+
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     MPResourceList<CustomerCard> cards = customerClient.listCards("649457098-FybpOkG6zH8QRm");
 
@@ -441,20 +319,13 @@ public class CustomerClientTest extends BaseClientTest {
 
   @Test
   public void listCardsWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
-
     HttpResponse httpResponse =
         MockHelper.generateHttpResponseFromFile("/card/card_all.json", HttpStatus.OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
-    MPResourceList<CustomerCard> cards = customerClient.listCards("649457098-FybpOkG6zH8QRm");
+    MPResourceList<CustomerCard> cards =
+        customerClient.listCards("649457098-FybpOkG6zH8QRm", buildRequestOptions());
 
     assertNotNull(cards);
     assertNotNull(cards.getResponse());
@@ -462,7 +333,31 @@ public class CustomerClientTest extends BaseClientTest {
     assertEquals("1562188766852", cards.getResults().get(0).getId());
   }
 
-  private void assertCustomerFields(Customer customer) throws ParseException {
+  private CustomerRequest buildCustomerRequest() {
+    return CustomerRequest.builder()
+        .address(
+            CustomerAddressRequest.builder()
+                .streetName("abc")
+                .streetNumber(123)
+                .zipCode("xyz")
+                .build())
+        .defaultAddress("Default address")
+        .firstName("John")
+        .lastName("Doe")
+        .phone(PhoneRequest.builder().areaCode("55").number("555555555").build())
+        .email("test@user.com")
+        .identification(IdentificationRequest.builder().type("CPF").number("1234").build())
+        .build();
+  }
+
+  private CustomerCardCreateRequest buildCustomerCardCreateRequest() {
+    return CustomerCardCreateRequest.builder()
+        .token("abc")
+        .issuer(CustomerCardIssuer.builder().id("123").name("visa").build())
+        .build();
+  }
+
+  private void assertCustomerFields(Customer customer) {
     assertNotNull(customer);
     assertEquals("1068193981-pXRewrKqlP6pnn", customer.getId());
     assertEquals("test_payer_1629112604@testuser.com", customer.getEmail());

@@ -9,7 +9,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
 
 import com.mercadopago.BaseClientTest;
-import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.MPResourceList;
@@ -21,18 +20,15 @@ import org.apache.http.protocol.HttpContext;
 import org.junit.jupiter.api.Test;
 
 class IdentificationTypeClientTest extends BaseClientTest {
+  private final String identificationTypesJson = "identification/types.json";
 
-  private static final String IDENTIFICATION_TYPES_JSON = "identification/types.json";
-
-  private static final int DEFAULT_TIMEOUT = 1000;
-
-  IdentificationTypeClient client = new IdentificationTypeClient();
+  private final IdentificationTypeClient client = new IdentificationTypeClient();
 
   @Test
   void listSuccess() throws IOException, MPException, MPApiException {
-    HttpResponse httpResponse = generateHttpResponseFromFile(IDENTIFICATION_TYPES_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(identificationTypesJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
     MPResourceList<IdentificationType> identificationTypes = client.list();
@@ -43,19 +39,12 @@ class IdentificationTypeClientTest extends BaseClientTest {
 
   @Test
   void testListWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
-    HttpResponse httpResponse = generateHttpResponseFromFile(IDENTIFICATION_TYPES_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(identificationTypesJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-    MPResourceList<IdentificationType> identificationTypes = client.list(requestOptions);
+    MPResourceList<IdentificationType> identificationTypes = client.list(buildRequestOptions());
     assertNotNull(identificationTypes.getResponse());
     assertEquals(OK, identificationTypes.getResponse().getStatusCode());
     assertIdentificationTypes(identificationTypes);

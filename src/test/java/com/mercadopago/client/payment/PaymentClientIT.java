@@ -32,6 +32,7 @@ import org.junit.jupiter.api.Test;
 /** PaymentClientIT class. */
 public class PaymentClientIT extends BaseClientIT {
   private final PaymentClient client = new PaymentClient();
+
   private final CardTokenTestClient cardTokenTestClient = new CardTokenTestClient();
 
   @Test
