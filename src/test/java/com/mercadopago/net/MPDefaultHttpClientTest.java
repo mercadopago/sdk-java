@@ -22,7 +22,7 @@ class MPDefaultHttpClientTest extends BaseClientTest {
 
   private static final String RESPONSE_GENERIC_SUCCESS_JSON = "/response_generic_success.json";
   private static final int CUSTOM_TIMEOUT = 2000;
-  MPDefaultHttpClient mpDefaultHttpClient;
+  private MPDefaultHttpClient mpDefaultHttpClient;
 
   @Test
   void createDefaultHttpClientSuccess() {
@@ -32,7 +32,7 @@ class MPDefaultHttpClientTest extends BaseClientTest {
 
   @Test
   void sendSuccess() throws MPException, MPApiException, IOException {
-    mpDefaultHttpClient = new MPDefaultHttpClient(httpClient);
+    mpDefaultHttpClient = new MPDefaultHttpClient(HTTP_CLIENT);
     Map<String, String> headers = new HashMap<>();
     headers.put("x-test", "test");
 
@@ -42,7 +42,7 @@ class MPDefaultHttpClientTest extends BaseClientTest {
     HttpResponse httpResponse = generateHttpResponseFromFile(RESPONSE_GENERIC_SUCCESS_JSON, OK);
     httpResponse.setHeader("x-test", "test");
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
     MPResponse response = mpDefaultHttpClient.send(request);
@@ -54,7 +54,7 @@ class MPDefaultHttpClientTest extends BaseClientTest {
 
   @Test
   void sendWithCustomOptionsSuccess() throws MPException, MPApiException, IOException {
-    mpDefaultHttpClient = new MPDefaultHttpClient(httpClient);
+    mpDefaultHttpClient = new MPDefaultHttpClient(HTTP_CLIENT);
     Map<String, String> headers = new HashMap<>();
     headers.put("x-test", "test");
 
@@ -71,7 +71,7 @@ class MPDefaultHttpClientTest extends BaseClientTest {
     HttpResponse httpResponse = generateHttpResponseFromFile(RESPONSE_GENERIC_SUCCESS_JSON, OK);
     httpResponse.setHeader("x-test", "test");
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
     MPResponse response = mpDefaultHttpClient.send(request);

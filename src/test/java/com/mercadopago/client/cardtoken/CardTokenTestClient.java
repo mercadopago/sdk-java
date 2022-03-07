@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 /** CardTokenTestClient class. */
 public class CardTokenTestClient extends MercadoPagoClient {
 
-  Map<String, String> status =
+  private final Map<String, String> status =
       Stream.of(
               new AbstractMap.SimpleImmutableEntry<>("approved", "APRO"),
               new AbstractMap.SimpleImmutableEntry<>("pending", "CONT"),

@@ -5,14 +5,12 @@ import org.junit.jupiter.api.BeforeAll;
 
 /** BaseClientIT class. */
 public abstract class BaseClientIT {
-
   protected static final int DEFAULT_TIMEOUT = 2000;
-
-  protected static final String accessToken = System.getenv("ACCESS_TOKEN");
+  protected static final String ACCESS_TOKEN = System.getenv("ACCESS_TOKEN");
 
   @BeforeAll
   static void setup() {
-    MercadoPagoConfig.setAccessToken(accessToken);
+    MercadoPagoConfig.setAccessToken(ACCESS_TOKEN);
     MercadoPagoConfig.setHttpClient(null);
   }
 
@@ -27,7 +25,7 @@ public abstract class BaseClientIT {
   protected static String generateTestEmail() {
     int minValue = 10000000;
     int maxValue = 99999999;
-    int complement = (int) ((Math.random() * (maxValue - minValue)) + minValue);
+    int complement = (int) (Math.random() * (maxValue - minValue) + minValue);
     return String.format("test_user_%s@testuser.com", complement);
   }
 }

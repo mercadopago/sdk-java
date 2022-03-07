@@ -30,27 +30,16 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.protocol.HttpContext;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 /** MercadoPagoClientTest class. */
 public class MercadoPagoClientTest extends BaseClientTest {
-  private MPDefaultHttpClientMock mpHttpClient;
-  private HttpClient httpClientMock;
-  private TestClient testClient;
-  private String requestFile;
-  private String responseFile;
-
-  /** Init method. */
-  @BeforeEach
-  public void init() {
-    this.httpClientMock = mock(HttpClient.class);
-    this.mpHttpClient = new MPDefaultHttpClientMock(httpClientMock);
-    this.testClient = new TestClient(mpHttpClient);
-    this.requestFile = "request_generic.json";
-    this.responseFile = "response_generic_success.json";
-  }
+  private final HttpClient httpClientMock = mock(HttpClient.class);
+  private final MPDefaultHttpClientMock mpHttpClient = new MPDefaultHttpClientMock(httpClientMock);
+  private final TestClient testClient = new TestClient(mpHttpClient);
+  private final String requestFile = "request_generic.json";
+  private final String responseFile = "response_generic_success.json";
 
   @Test
   public void sendWithBodySuccess() throws IOException, MPException, MPApiException {
@@ -127,32 +116,24 @@ public class MercadoPagoClientTest extends BaseClientTest {
             .headers(new HashMap<>())
             .queryParams(queryParams)
             .build();
-    MPResponse mpResponse = testClient.sendRequest(mpRequest);
+    testClient.sendRequest(mpRequest);
 
     ArgumentCaptor<HttpRequestBase> httpBaseCaptor = ArgumentCaptor.forClass(HttpRequestBase.class);
     ArgumentCaptor<HttpClientContext> httpClientContextCaptor =
         ArgumentCaptor.forClass(HttpClientContext.class);
     verify(httpClientMock).execute(httpBaseCaptor.capture(), httpClientContextCaptor.capture());
-    assertTrue(httpBaseCaptor.getValue().getURI().getRawQuery().indexOf("entry1=value%261") > -1);
-    assertTrue(httpBaseCaptor.getValue().getURI().getRawQuery().indexOf("entry2=value%212") > -1);
+    assertTrue(httpBaseCaptor.getValue().getURI().getRawQuery().contains("entry1=value%261"));
+    assertTrue(httpBaseCaptor.getValue().getURI().getRawQuery().contains("entry2=value%212"));
   }
 
   @Test
   public void sendWithMPRequestOptionsSuccess() throws IOException, MPException, MPApiException {
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(1000)
-            .connectionRequestTimeout(1000)
-            .socketTimeout(1000)
-            .build();
-
     HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
     doReturn(httpResponse)
         .when(httpClientMock)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     MPResponse mpResponse =
-        testClient.sendRequest("/test", HttpMethod.GET, null, null, requestOptions);
+        testClient.sendRequest("/test", HttpMethod.GET, null, null, buildRequestOptions());
 
     assertNotNull(mpResponse);
     assertEquals(200, (int) mpResponse.getStatusCode());
@@ -224,7 +205,7 @@ public class MercadoPagoClientTest extends BaseClientTest {
     doReturn(httpResponse)
         .when(httpClientMock)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
-    MPResponse mpResponse = testClient.searchRequest("/test", searchRequest);
+    testClient.searchRequest("/test", searchRequest);
 
     ArgumentCaptor<HttpRequestBase> httpBaseCaptor = ArgumentCaptor.forClass(HttpRequestBase.class);
     ArgumentCaptor<HttpClientContext> httpClientContextCaptor =
@@ -280,9 +261,6 @@ public class MercadoPagoClientTest extends BaseClientTest {
     queryParams.put("entry1", "value&1");
     queryParams.put("entry2", "value!2");
 
-    Map<String, Object> filters = new HashMap<>();
-    filters.put("abc", "xyz");
-
     HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
     doReturn(httpResponse)
         .when(httpClientMock)
@@ -299,26 +277,18 @@ public class MercadoPagoClientTest extends BaseClientTest {
 
   @Test
   public void listWithMPRequestOptionsSuccess() throws IOException, MPException, MPApiException {
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(1000)
-            .connectionRequestTimeout(1000)
-            .socketTimeout(1000)
-            .build();
-
     HttpResponse httpResponse = MockHelper.generateHttpResponseFromFile(responseFile, 200);
     doReturn(httpResponse)
         .when(httpClientMock)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     MPResponse mpResponse =
-        testClient.listRequest("/test", HttpMethod.GET, null, null, requestOptions);
+        testClient.listRequest("/test", HttpMethod.GET, null, null, buildRequestOptions());
 
     assertNotNull(mpResponse);
     assertEquals(200, (int) mpResponse.getStatusCode());
   }
 
-  private class TestClient extends MercadoPagoClient {
+  private static class TestClient extends MercadoPagoClient {
 
     /**
      * MercadoPagoClient constructor.

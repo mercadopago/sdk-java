@@ -107,9 +107,6 @@ public class MercadoPagoConfig {
    * @return StreamHandler
    */
   public static StreamHandler getStreamHandler() {
-    if (Objects.isNull(loggingHandler)) {
-      return new ConsoleHandler();
-    }
-    return loggingHandler;
+    return Objects.nonNull(loggingHandler) ? loggingHandler : new ConsoleHandler();
   }
 }

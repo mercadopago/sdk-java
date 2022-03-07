@@ -240,33 +240,44 @@ public class MPDefaultHttpClient implements MPHttpClient {
 
   private HttpRequestBase getRequestBase(HttpMethod method, String uri, HttpEntity entity)
       throws MPMalformedRequestException {
-    if (method == null) {
+    if (Objects.isNull(method)) {
       throw new MPMalformedRequestException(
           "HttpMethod must be either \"GET\", \"POST\", \"PUT\" or \"DELETE\".");
     }
+
     if (StringUtils.isEmpty(uri)) {
       throw new MPMalformedRequestException("Uri can not be an empty String.");
     }
 
+    if ((method.equals(HttpMethod.GET) || method.equals(HttpMethod.DELETE))
+        && Objects.nonNull(entity)) {
+      throw new MPMalformedRequestException(PAYLOAD_NOT_SUPPORTED_MESSAGE);
+    }
+
+    return getHttpRequestBase(method, uri, entity);
+  }
+
+  private HttpRequestBase getHttpRequestBase(HttpMethod method, String uri, HttpEntity entity) {
     if (method.equals(HttpMethod.GET)) {
-      if (entity != null) {
-        throw new MPMalformedRequestException(PAYLOAD_NOT_SUPPORTED_MESSAGE);
-      }
       return new HttpGet(uri);
-    } else if (method.equals(HttpMethod.POST)) {
+    }
+
+    if (method.equals(HttpMethod.POST)) {
       HttpPost post = new HttpPost(uri);
       post.setEntity(entity);
       return post;
-    } else if (method.equals(HttpMethod.PUT)) {
+    }
+
+    if (method.equals(HttpMethod.PUT)) {
       HttpPut put = new HttpPut(uri);
       put.setEntity(entity);
       return put;
-    } else if (method.equals(HttpMethod.DELETE)) {
-      if (entity != null) {
-        throw new MPMalformedRequestException(PAYLOAD_NOT_SUPPORTED_MESSAGE);
-      }
+    }
+
+    if (method.equals(HttpMethod.DELETE)) {
       return new HttpDelete(uri);
     }
+
     return null;
   }
 

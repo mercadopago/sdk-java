@@ -42,52 +42,18 @@ import org.junit.jupiter.api.Test;
 
 /** PaymentClientTest class. */
 public class PaymentClientTest extends BaseClientTest {
-
-  private static final Long PAYMENT_TEST_ID = 17014025134L;
-
-  private static final Long REFUND_TEST_ID = 1245678203L;
-
-  private static final Long PAYMENT_COLLECTOR_ID = 810882223L;
-
-  private static final String TEST_CARD_TOKEN = "bf9edf6ffae3ab5742033f33c557d54e";
-
-  private static final int UNIT_PRICE = 100;
-
-  private static final String TEST = "Test";
-
-  private static final String USER = "User";
-
-  private static final String DESCRIPTION = "description";
-
-  private static final String STREET_NAME = "streetName";
-
-  private static final String ZIP_CODE = "0000";
-
-  private static final String STREET_NUMBER = "1234";
-
-  private static final String PAYMENT_BASE_JSON = "payment/payment_base.json";
-
-  private static final String PAYMENT_CAPTURED_JSON = "payment/payment_captured.json";
-
-  private static final String PAYMENT_CANCELLED_JSON = "payment/payment_cancelled.json";
-
-  private static final String CAPTURED_JSON = "payment/captured.json";
-
-  private static final String STATUS_CANCELLED_JSON = "payment/status_cancelled.json";
-
-  private static final String PAYMENT_SEARCH_JSON = "payment/payment_search.json";
-
-  private static final String REFUND_BASE_JSON = "refund/refund_base.json";
-
-  private static final String REFUND_LIST_JSON = "refund/refund_list.json";
-
-  private static final String REFUND_PARTIAL_JSON = "refund/refund_partial.json";
-
-  private static final OffsetDateTime DATE =
-      OffsetDateTime.of(2022, 1, 10, 10, 10, 10, 0, ZoneOffset.UTC);
-
-  private static final int DEFAULT_TIMEOUT = 1000;
-
+  private final Long paymentTestId = 17014025134L;
+  private final Long refundTestId = 1245678203L;
+  private final String paymentBaseJson = "payment/payment_base.json";
+  private final String paymentCapturedJson = "payment/payment_captured.json";
+  private final String paymentCancelledJson = "payment/payment_cancelled.json";
+  private final String capturedJson = "payment/captured.json";
+  private final String statusCancelledJson = "payment/status_cancelled.json";
+  private final String paymentSearchJson = "payment/payment_search.json";
+  private final String refundBaseJson = "refund/refund_base.json";
+  private final String refundListJson = "refund/refund_list.json";
+  private final String refundPartialJson = "refund/refund_partial.json";
+  private final OffsetDateTime date = OffsetDateTime.of(2022, 1, 10, 10, 10, 10, 0, ZoneOffset.UTC);
   private final PaymentClient client = new PaymentClient();
 
   @Test
@@ -96,8 +62,8 @@ public class PaymentClientTest extends BaseClientTest {
     Payment payment = createPayment();
 
     JsonElement requestPayload =
-        generateJsonElementFromUriRequest(httpClientMock.getRequestPayload());
-    JsonElement requestPayloadMock = generateJsonElement(PAYMENT_BASE_JSON);
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement(paymentBaseJson);
 
     assertEquals(requestPayloadMock, requestPayload);
     assertNotNull(payment.getResponse());
@@ -107,19 +73,12 @@ public class PaymentClientTest extends BaseClientTest {
 
   @Test
   public void createWithRequestOptionsSuccess() throws MPException, IOException, MPApiException {
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
 
-    Payment payment = createPayment(requestOptions);
+    Payment payment = createPayment(buildRequestOptions());
 
     JsonElement requestPayload =
-        generateJsonElementFromUriRequest(httpClientMock.getRequestPayload());
-    JsonElement requestPayloadMock = generateJsonElement(PAYMENT_BASE_JSON);
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement(paymentBaseJson);
 
     assertEquals(requestPayloadMock, requestPayload);
     assertNotNull(payment.getResponse());
@@ -130,11 +89,11 @@ public class PaymentClientTest extends BaseClientTest {
   @Test
   public void getSuccess() throws IOException, MPException, MPApiException {
 
-    HttpResponse httpResponse = generateHttpResponseFromFile(PAYMENT_BASE_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentBaseJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
-    Payment findPayment = client.get(PAYMENT_TEST_ID);
+    Payment findPayment = client.get(paymentTestId);
 
     assertNotNull(findPayment);
     assertPaymentFields(findPayment);
@@ -142,19 +101,12 @@ public class PaymentClientTest extends BaseClientTest {
 
   @Test
   public void getWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
 
-    HttpResponse httpResponse = generateHttpResponseFromFile(PAYMENT_BASE_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentBaseJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
-    Payment findPayment = client.get(PAYMENT_TEST_ID, requestOptions);
+    Payment findPayment = client.get(paymentTestId, buildRequestOptions());
 
     assertNotNull(findPayment);
     assertPaymentFields(findPayment);
@@ -163,16 +115,16 @@ public class PaymentClientTest extends BaseClientTest {
   @Test
   public void cancelSuccess() throws IOException, MPException, MPApiException {
 
-    HttpResponse httpResponse = generateHttpResponseFromFile(PAYMENT_CANCELLED_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentCancelledJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-    Payment paymentCancelled = client.cancel(PAYMENT_TEST_ID);
+    Payment paymentCancelled = client.cancel(paymentTestId);
 
     JsonElement requestPayload =
-        generateJsonElementFromUriRequest(httpClientMock.getRequestPayload());
-    JsonElement requestPayloadMock = generateJsonElement(STATUS_CANCELLED_JSON);
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement(statusCancelledJson);
 
     assertEquals(requestPayloadMock, requestPayload);
     assertNotNull(paymentCancelled.getResponse());
@@ -182,24 +134,17 @@ public class PaymentClientTest extends BaseClientTest {
 
   @Test
   public void cancelWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
 
-    HttpResponse httpResponse = generateHttpResponseFromFile(PAYMENT_CANCELLED_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentCancelledJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-    Payment paymentCancelled = client.cancel(PAYMENT_TEST_ID, requestOptions);
+    Payment paymentCancelled = client.cancel(paymentTestId, buildRequestOptions());
 
     JsonElement requestPayload =
-        generateJsonElementFromUriRequest(httpClientMock.getRequestPayload());
-    JsonElement requestPayloadMock = generateJsonElement(STATUS_CANCELLED_JSON);
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement(statusCancelledJson);
 
     assertEquals(requestPayloadMock, requestPayload);
     assertNotNull(paymentCancelled.getResponse());
@@ -210,16 +155,16 @@ public class PaymentClientTest extends BaseClientTest {
   @Test
   public void captureSuccess() throws IOException, MPException, MPApiException {
 
-    HttpResponse httpResponse = generateHttpResponseFromFile(PAYMENT_CAPTURED_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentCapturedJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-    Payment paymentCaptured = client.capture(PAYMENT_TEST_ID);
+    Payment paymentCaptured = client.capture(paymentTestId);
 
     JsonElement requestPayload =
-        generateJsonElementFromUriRequest(httpClientMock.getRequestPayload());
-    JsonElement requestPayloadMock = generateJsonElement(CAPTURED_JSON);
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement(capturedJson);
 
     assertEquals(requestPayloadMock, requestPayload);
 
@@ -230,24 +175,17 @@ public class PaymentClientTest extends BaseClientTest {
 
   @Test
   public void captureWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
 
-    HttpResponse httpResponse = generateHttpResponseFromFile(PAYMENT_CAPTURED_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentCapturedJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-    Payment paymentCaptured = client.capture(PAYMENT_TEST_ID, requestOptions);
+    Payment paymentCaptured = client.capture(paymentTestId, buildRequestOptions());
 
     JsonElement requestPayload =
-        generateJsonElementFromUriRequest(httpClientMock.getRequestPayload());
-    JsonElement requestPayloadMock = generateJsonElement(CAPTURED_JSON);
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement(capturedJson);
 
     assertEquals(requestPayloadMock, requestPayload);
     assertNotNull(paymentCaptured.getResponse());
@@ -257,9 +195,9 @@ public class PaymentClientTest extends BaseClientTest {
 
   @Test
   public void searchSuccess() throws IOException, MPException, MPApiException {
-    HttpResponse httpResponse = generateHttpResponseFromFile(PAYMENT_SEARCH_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentSearchJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
     MPSearchRequest request = MPSearchRequest.builder().limit(5).offset(0).build();
@@ -276,21 +214,14 @@ public class PaymentClientTest extends BaseClientTest {
 
   @Test
   public void searchWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
 
-    HttpResponse httpResponse = generateHttpResponseFromFile(PAYMENT_SEARCH_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentSearchJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
     MPSearchRequest request = MPSearchRequest.builder().limit(5).offset(0).build();
-    MPResultsResourcesPage<Payment> result = client.search(request, requestOptions);
+    MPResultsResourcesPage<Payment> result = client.search(request, buildRequestOptions());
 
     assertNotNull(result.getResponse().getContent());
     assertEquals(OK, result.getResponse().getStatusCode());
@@ -303,17 +234,17 @@ public class PaymentClientTest extends BaseClientTest {
 
   @Test
   public void refundPartialSuccess() throws IOException, MPException, MPApiException {
-    HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_BASE_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(refundBaseJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
     BigDecimal amount = new BigDecimal("50");
-    PaymentRefund result = client.refund(PAYMENT_TEST_ID, amount);
+    PaymentRefund result = client.refund(paymentTestId, amount);
 
     JsonElement requestPayload =
-        generateJsonElementFromUriRequest(httpClientMock.getRequestPayload());
-    JsonElement requestPayloadMock = generateJsonElement(REFUND_PARTIAL_JSON);
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement(refundPartialJson);
 
     assertEquals(requestPayloadMock, requestPayload);
     assertRefundFields(result);
@@ -322,25 +253,18 @@ public class PaymentClientTest extends BaseClientTest {
   @Test
   public void refundPartialWithRequestOptionsSuccess()
       throws IOException, MPException, MPApiException {
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
 
-    HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_BASE_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(refundBaseJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
     BigDecimal amount = new BigDecimal("50");
-    PaymentRefund result = client.refund(PAYMENT_TEST_ID, amount, requestOptions);
+    PaymentRefund result = client.refund(paymentTestId, amount, buildRequestOptions());
 
     JsonElement requestPayload =
-        generateJsonElementFromUriRequest(httpClientMock.getRequestPayload());
-    JsonElement requestPayloadMock = generateJsonElement(REFUND_PARTIAL_JSON);
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement(refundPartialJson);
 
     assertEquals(requestPayloadMock, requestPayload);
     assertRefundFields(result);
@@ -348,73 +272,59 @@ public class PaymentClientTest extends BaseClientTest {
 
   @Test
   public void refundTotalSuccess() throws IOException, MPException, MPApiException {
-    HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_BASE_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(refundBaseJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-    PaymentRefund result = client.refund(PAYMENT_TEST_ID);
+    PaymentRefund result = client.refund(paymentTestId);
     assertRefundFields(result);
   }
 
   @Test
   public void refundTotalWithRequestOptionsSuccess()
       throws IOException, MPException, MPApiException {
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
 
-    HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_BASE_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(refundBaseJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-    PaymentRefund result = client.refund(PAYMENT_TEST_ID, requestOptions);
+    PaymentRefund result = client.refund(paymentTestId, buildRequestOptions());
     assertRefundFields(result);
   }
 
   @Test
   public void getRefundSuccess() throws IOException, MPException, MPApiException {
-    HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_BASE_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(refundBaseJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-    PaymentRefund result = client.getRefund(PAYMENT_TEST_ID, REFUND_TEST_ID);
+    PaymentRefund result = client.getRefund(paymentTestId, refundTestId);
     assertRefundFields(result);
   }
 
   @Test
   public void getRefundWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
 
-    HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_BASE_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(refundBaseJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-    PaymentRefund result = client.getRefund(PAYMENT_TEST_ID, REFUND_TEST_ID, requestOptions);
+    PaymentRefund result = client.getRefund(paymentTestId, refundTestId, buildRequestOptions());
     assertRefundFields(result);
   }
 
   @Test
   public void listRefundsSuccess() throws IOException, MPException, MPApiException {
-    HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_LIST_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(refundListJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-    MPResourceList<PaymentRefund> result = client.listRefunds(PAYMENT_TEST_ID);
+    MPResourceList<PaymentRefund> result = client.listRefunds(paymentTestId);
     assertEquals(OK, result.getResponse().getStatusCode());
     assertNotNull(result.getResponse());
     assertEquals(2, result.getResults().size());
@@ -424,20 +334,13 @@ public class PaymentClientTest extends BaseClientTest {
   @Test
   public void listRefundsWithRequestOptionsSuccess()
       throws IOException, MPException, MPApiException {
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
 
-    HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_LIST_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(refundListJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-    MPResourceList<PaymentRefund> result = client.listRefunds(PAYMENT_TEST_ID, requestOptions);
+    MPResourceList<PaymentRefund> result = client.listRefunds(paymentTestId, buildRequestOptions());
     assertEquals(OK, result.getResponse().getStatusCode());
     assertNotNull(result.getResponse());
     assertEquals(2, result.getResults().size());
@@ -445,13 +348,13 @@ public class PaymentClientTest extends BaseClientTest {
   }
 
   private void assertRefundFields(PaymentRefund refund) {
-    assertEquals(REFUND_TEST_ID, refund.getId());
-    assertEquals(PAYMENT_TEST_ID, refund.getPaymentId());
+    assertEquals(refundTestId, refund.getId());
+    assertEquals(paymentTestId, refund.getPaymentId());
     assertEquals(new BigDecimal("50"), refund.getAmount());
     assertEquals("823549964", refund.getSource().getId());
     assertEquals("Mullins Hillary", refund.getSource().getName());
     assertEquals("collector", refund.getSource().getType());
-    assertEquals(DATE, refund.getDateCreated());
+    assertEquals(date, refund.getDateCreated());
     assertNull(refund.getUniqueSequenceNumber());
     assertEquals("standard", refund.getRefundMode());
     assertEquals(BigDecimal.ZERO, refund.getAdjustmentAmount());
@@ -465,22 +368,22 @@ public class PaymentClientTest extends BaseClientTest {
 
   private Payment createPayment(MPRequestOptions requestOptions)
       throws IOException, MPException, MPApiException {
-    HttpResponse httpResponse = generateHttpResponseFromFile(PAYMENT_BASE_JSON, CREATED);
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentBaseJson, CREATED);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     return Objects.nonNull(requestOptions)
-        ? client.create(newPayment(false), requestOptions)
-        : client.create(newPayment(false));
+        ? client.create(newPayment(), requestOptions)
+        : client.create(newPayment());
   }
 
   private void assertPaymentFields(Payment payment) {
-    assertEquals(PAYMENT_TEST_ID, payment.getId());
-    assertEquals(DATE, payment.getDateCreated());
-    assertEquals(DATE, payment.getDateApproved());
-    assertEquals(DATE, payment.getDateLastUpdated());
+    assertEquals(paymentTestId, payment.getId());
+    assertEquals(date, payment.getDateCreated());
+    assertEquals(date, payment.getDateApproved());
+    assertEquals(date, payment.getDateLastUpdated());
     assertNull(payment.getDateOfExpiration());
-    assertEquals(DATE, payment.getMoneyReleaseDate());
+    assertEquals(date, payment.getMoneyReleaseDate());
     assertEquals("regular_payment", payment.getOperationType());
     assertEquals("24", payment.getIssuerId());
     assertEquals("master", payment.getPaymentMethodId());
@@ -501,7 +404,8 @@ public class PaymentClientTest extends BaseClientTest {
     assertNull(payment.getIntegratorId());
     assertNull(payment.getPlatformId());
     assertNull(payment.getCorporationId());
-    assertEquals(PAYMENT_COLLECTOR_ID, payment.getCollectorId());
+    Long paymentCollectorId = 810882223L;
+    assertEquals(paymentCollectorId, payment.getCollectorId());
     assertNotNull(payment.getPayer());
     assertNull(payment.getPayer().getType());
     assertEquals("128185910", payment.getPayer().getId());
@@ -531,7 +435,7 @@ public class PaymentClientTest extends BaseClientTest {
     assertEquals("3003", payment.getAdditionalInfo().getPayer().getAddress().getStreetNumber());
     assertEquals("Nome", payment.getAdditionalInfo().getPayer().getFirstName());
     assertEquals("Sobrenome", payment.getAdditionalInfo().getPayer().getLastName());
-    assertEquals(DATE, payment.getAdditionalInfo().getPayer().getRegistrationDate());
+    assertEquals(date, payment.getAdditionalInfo().getPayer().getRegistrationDate());
     assertEquals(
         "95630000", payment.getAdditionalInfo().getShipments().getReceiverAddress().getZipCode());
     assertEquals(
@@ -570,8 +474,8 @@ public class PaymentClientTest extends BaseClientTest {
     assertEquals("6351", payment.getCard().getLastFourDigits());
     assertEquals(12, payment.getCard().getExpirationMonth());
     assertEquals(2022, payment.getCard().getExpirationYear());
-    assertEquals(DATE, payment.getCard().getDateCreated());
-    assertEquals(DATE, payment.getCard().getDateLastUpdated());
+    assertEquals(date, payment.getCard().getDateCreated());
+    assertEquals(date, payment.getCard().getDateLastUpdated());
     assertEquals("APRO", payment.getCard().getCardholder().getName());
     assertEquals("19119119100", payment.getCard().getCardholder().getIdentification().getNumber());
     assertEquals("CPF", payment.getCard().getCardholder().getIdentification().getType());
@@ -588,7 +492,7 @@ public class PaymentClientTest extends BaseClientTest {
     assertNull(payment.getPointOfInteraction().getTransactionData());
   }
 
-  private PaymentCreateRequest newPayment(boolean capture) {
+  private PaymentCreateRequest newPayment() {
     IdentificationRequest identification =
         IdentificationRequest.builder().type("CPF").number("37462770865").build();
 
@@ -597,8 +501,8 @@ public class PaymentClientTest extends BaseClientTest {
             .type("customer")
             .email("test_payer_9999999@testuser.com")
             .entityType("individual")
-            .firstName(TEST)
-            .lastName(USER)
+            .firstName("Test")
+            .lastName("User")
             .identification(identification)
             .build();
 
@@ -606,11 +510,11 @@ public class PaymentClientTest extends BaseClientTest {
         PaymentItemRequest.builder()
             .id("id")
             .title("title")
-            .description(DESCRIPTION)
+            .description("description")
             .pictureUrl("pictureUrl")
             .categoryId("categoryId")
             .quantity(1)
-            .unitPrice(new BigDecimal(UNIT_PRICE))
+            .unitPrice(new BigDecimal(100))
             .build();
 
     List<PaymentItemRequest> itemRequestList = new ArrayList<>();
@@ -620,27 +524,27 @@ public class PaymentClientTest extends BaseClientTest {
 
     AddressRequest address =
         AddressRequest.builder()
-            .streetName(STREET_NAME)
-            .zipCode(ZIP_CODE)
-            .streetNumber(STREET_NUMBER)
+            .streetName("streetName")
+            .zipCode("0000")
+            .streetNumber("1234")
             .build();
 
     PaymentAdditionalInfoPayerRequest additionalInfoPayer =
         PaymentAdditionalInfoPayerRequest.builder()
-            .firstName(TEST)
-            .lastName(USER)
+            .firstName("Test")
+            .lastName("User")
             .phone(phone)
             .address(address)
-            .registrationDate(DATE)
+            .registrationDate(date)
             .build();
 
     PaymentReceiverAddressRequest receiverAddress =
         PaymentReceiverAddressRequest.builder()
             .floor("floor")
             .apartment("apartment")
-            .zipCode(ZIP_CODE)
-            .streetNumber(STREET_NUMBER)
-            .streetName(STREET_NAME)
+            .streetName("streetName")
+            .zipCode("0000")
+            .streetNumber("1234")
             .build();
 
     PaymentShipmentsRequest shipments =
@@ -658,12 +562,12 @@ public class PaymentClientTest extends BaseClientTest {
         .payer(payer)
         .binaryMode(false)
         .externalReference("212efa19-da7a-4b4f-a3f0-4f458136d9ca")
-        .description(DESCRIPTION)
+        .description("description")
         .metadata(new HashMap<>())
-        .transactionAmount(new BigDecimal(UNIT_PRICE))
-        .capture(capture)
+        .transactionAmount(new BigDecimal(100))
+        .capture(false)
         .paymentMethodId("master")
-        .token(TEST_CARD_TOKEN)
+        .token("bf9edf6ffae3ab5742033f33c557d54e")
         .statementDescriptor("statementDescriptor")
         .installments(1)
         .notificationUrl("https://seu-site.com.br/webhooks")

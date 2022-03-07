@@ -14,7 +14,6 @@ import static org.mockito.Mockito.doReturn;
 
 import com.google.gson.JsonElement;
 import com.mercadopago.BaseClientTest;
-import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.MPResultsResourcesPage;
@@ -30,33 +29,24 @@ import org.apache.http.protocol.HttpContext;
 import org.junit.jupiter.api.Test;
 
 class PreapprovalClientTest extends BaseClientTest {
-
-  private static final String PREAPPROVAL_BASE_JSON = "preapproval/preapproval_base.json";
-
-  private static final String PREAPPROVAL_UPDATE_JSON = "preapproval/preapproval_update.json";
-
-  private static final String PREAPPROVAL_LIST_JSON = "preapproval/preapproval_list.json";
-
-  private static final String PREAPPROVAL_ID = "2c9380847e9b451c017ea1bd70ba0219";
-
-  private static final int DEFAULT_TIMEOUT = 1000;
-
-  private static final OffsetDateTime START_DATE =
+  private final String preapprovalBaseJson = "preapproval/preapproval_base.json";
+  private final String preapprovalUpdateJson = "preapproval/preapproval_update.json";
+  private final String preapprovalListJson = "preapproval/preapproval_list.json";
+  private final String preapprovalId = "2c9380847e9b451c017ea1bd70ba0219";
+  private final OffsetDateTime startDate =
       OffsetDateTime.of(2022, 1, 10, 10, 10, 10, 0, ZoneOffset.UTC);
-
-  private static final OffsetDateTime END_DATE =
+  private final OffsetDateTime endDate =
       OffsetDateTime.of(2023, 1, 10, 10, 10, 10, 0, ZoneOffset.UTC);
-
-  PreapprovalClient client = new PreapprovalClient();
+  private final PreapprovalClient client = new PreapprovalClient();
 
   @Test
   void getSuccess() throws IOException, MPException, MPApiException {
-    HttpResponse httpResponse = generateHttpResponseFromFile(PREAPPROVAL_BASE_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(preapprovalBaseJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-    Preapproval preapproval = client.get(PREAPPROVAL_ID);
+    Preapproval preapproval = client.get(preapprovalId);
 
     assertNotNull(preapproval.getResponse());
     assertEquals(OK, preapproval.getResponse().getStatusCode());
@@ -65,14 +55,12 @@ class PreapprovalClientTest extends BaseClientTest {
 
   @Test
   void getWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
-    MPRequestOptions requestOptions = generateRequestOptions();
-
-    HttpResponse httpResponse = generateHttpResponseFromFile(PREAPPROVAL_BASE_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(preapprovalBaseJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-    Preapproval preapproval = client.get(PREAPPROVAL_ID, requestOptions);
+    Preapproval preapproval = client.get(preapprovalId, buildRequestOptions());
 
     assertNotNull(preapproval.getResponse());
     assertEquals(OK, preapproval.getResponse().getStatusCode());
@@ -81,17 +69,17 @@ class PreapprovalClientTest extends BaseClientTest {
 
   @Test
   void createSuccess() throws IOException, MPException, MPApiException {
-    HttpResponse httpResponse = generateHttpResponseFromFile(PREAPPROVAL_BASE_JSON, CREATED);
+    HttpResponse httpResponse = generateHttpResponseFromFile(preapprovalBaseJson, CREATED);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
     PreapprovalCreateRequest request = generatePreapprovalRequest();
     Preapproval preapproval = client.create(request);
 
     JsonElement requestPayload =
-        generateJsonElementFromUriRequest(httpClientMock.getRequestPayload());
-    JsonElement requestPayloadMock = generateJsonElement(PREAPPROVAL_BASE_JSON);
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement(preapprovalBaseJson);
 
     assertEquals(requestPayloadMock, requestPayload);
     assertNotNull(preapproval.getResponse());
@@ -101,19 +89,17 @@ class PreapprovalClientTest extends BaseClientTest {
 
   @Test
   void createWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
-    MPRequestOptions requestOptions = generateRequestOptions();
-
-    HttpResponse httpResponse = generateHttpResponseFromFile(PREAPPROVAL_BASE_JSON, CREATED);
+    HttpResponse httpResponse = generateHttpResponseFromFile(preapprovalBaseJson, CREATED);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
     PreapprovalCreateRequest request = generatePreapprovalRequest();
-    Preapproval preapproval = client.create(request, requestOptions);
+    Preapproval preapproval = client.create(request, buildRequestOptions());
 
     JsonElement requestPayload =
-        generateJsonElementFromUriRequest(httpClientMock.getRequestPayload());
-    JsonElement requestPayloadMock = generateJsonElement(PREAPPROVAL_BASE_JSON);
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement(preapprovalBaseJson);
 
     assertEquals(requestPayloadMock, requestPayload);
     assertNotNull(preapproval.getResponse());
@@ -123,18 +109,18 @@ class PreapprovalClientTest extends BaseClientTest {
 
   @Test
   void updateSuccess() throws MPException, MPApiException, IOException {
-    HttpResponse httpResponse = generateHttpResponseFromFile(PREAPPROVAL_UPDATE_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(preapprovalUpdateJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
     PreapprovalUpdateRequest updateRequest =
         PreapprovalUpdateRequest.builder().reason("Updated reason").build();
-    Preapproval preapproval = client.update(PREAPPROVAL_ID, updateRequest);
+    Preapproval preapproval = client.update(preapprovalId, updateRequest);
 
     JsonElement requestPayload =
-        generateJsonElementFromUriRequest(httpClientMock.getRequestPayload());
-    JsonElement requestPayloadMock = generateJsonElement(PREAPPROVAL_UPDATE_JSON);
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement(preapprovalUpdateJson);
 
     assertEquals(requestPayloadMock, requestPayload);
     assertNotNull(preapproval.getResponse());
@@ -144,20 +130,18 @@ class PreapprovalClientTest extends BaseClientTest {
 
   @Test
   void updateWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
-    MPRequestOptions requestOptions = generateRequestOptions();
-
-    HttpResponse httpResponse = generateHttpResponseFromFile(PREAPPROVAL_UPDATE_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(preapprovalUpdateJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
     PreapprovalUpdateRequest updateRequest =
         PreapprovalUpdateRequest.builder().reason("Updated reason").build();
-    Preapproval preapproval = client.update(PREAPPROVAL_ID, updateRequest, requestOptions);
+    Preapproval preapproval = client.update(preapprovalId, updateRequest, buildRequestOptions());
 
     JsonElement requestPayload =
-        generateJsonElementFromUriRequest(httpClientMock.getRequestPayload());
-    JsonElement requestPayloadMock = generateJsonElement(PREAPPROVAL_UPDATE_JSON);
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement(preapprovalUpdateJson);
 
     assertEquals(requestPayloadMock, requestPayload);
     assertNotNull(preapproval.getResponse());
@@ -167,9 +151,9 @@ class PreapprovalClientTest extends BaseClientTest {
 
   @Test
   void searchSuccess() throws IOException, MPException, MPApiException {
-    HttpResponse httpResponse = generateHttpResponseFromFile(PREAPPROVAL_LIST_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(preapprovalListJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
     MPSearchRequest searchRequest = MPSearchRequest.builder().offset(0).limit(2).build();
@@ -188,17 +172,15 @@ class PreapprovalClientTest extends BaseClientTest {
 
   @Test
   void searchWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
-    MPRequestOptions requestOptions = generateRequestOptions();
-
-    HttpResponse httpResponse = generateHttpResponseFromFile(PREAPPROVAL_LIST_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(preapprovalListJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
     MPSearchRequest searchRequest = MPSearchRequest.builder().offset(0).limit(2).build();
 
     MPResultsResourcesPage<Preapproval> preapprovalList =
-        client.search(searchRequest, requestOptions);
+        client.search(searchRequest, buildRequestOptions());
 
     assertNotNull(preapprovalList.getResponse());
     assertEquals(OK, preapprovalList.getResponse().getStatusCode());
@@ -213,7 +195,7 @@ class PreapprovalClientTest extends BaseClientTest {
   private void assertPreapprovalFields(Preapproval preapproval, boolean updated) {
     String reason = updated ? "Updated reason" : "reason";
 
-    assertEquals(PREAPPROVAL_ID, preapproval.getId());
+    assertEquals(preapprovalId, preapproval.getId());
     assertEquals(766790067L, preapproval.getPayerId());
     assertTrue(preapproval.getPayerEmail().isEmpty());
     assertEquals("https://www.mercadopago.com.br", preapproval.getBackUrl());
@@ -222,7 +204,7 @@ class PreapprovalClientTest extends BaseClientTest {
     assertEquals("pending", preapproval.getStatus());
     assertEquals(reason, preapproval.getReason());
     assertEquals("23546246234", preapproval.getExternalReference());
-    assertEquals(START_DATE, preapproval.getDateCreated());
+    assertEquals(startDate, preapproval.getDateCreated());
     assertEquals(
         "https://www.mercadopago.com.br/subscriptions/checkout?preapproval_id=2c9380847e9b451c017ea1bd70ba0219",
         preapproval.getInitPoint());
@@ -231,19 +213,19 @@ class PreapprovalClientTest extends BaseClientTest {
     assertEquals("months", preapproval.getAutoRecurring().getFrequencyType());
     assertEquals(new BigDecimal("10.00"), preapproval.getAutoRecurring().getTransactionAmount());
     assertEquals("BRL", preapproval.getAutoRecurring().getCurrencyId());
-    assertEquals(START_DATE, preapproval.getAutoRecurring().getStartDate());
-    assertEquals(END_DATE, preapproval.getAutoRecurring().getEndDate());
+    assertEquals(startDate, preapproval.getAutoRecurring().getStartDate());
+    assertEquals(endDate, preapproval.getAutoRecurring().getEndDate());
   }
 
   private PreapprovalCreateRequest generatePreapprovalRequest() {
     PreApprovalAutoRecurringCreateRequest autoRecurring =
         PreApprovalAutoRecurringCreateRequest.builder()
-            .transactionAmount(new BigDecimal("10"))
+            .transactionAmount(BigDecimal.TEN)
             .frequency(1)
             .frequencyType("months")
             .currencyId("BRL")
-            .startDate(START_DATE)
-            .endDate(END_DATE)
+            .startDate(startDate)
+            .endDate(endDate)
             .build();
 
     return PreapprovalCreateRequest.builder()
@@ -252,15 +234,6 @@ class PreapprovalClientTest extends BaseClientTest {
         .reason("reason")
         .payerEmail("test_user_28355466@testuser.com")
         .autoRecurring(autoRecurring)
-        .build();
-  }
-
-  private MPRequestOptions generateRequestOptions() {
-    return MPRequestOptions.builder()
-        .accessToken("abc")
-        .connectionTimeout(DEFAULT_TIMEOUT)
-        .connectionRequestTimeout(DEFAULT_TIMEOUT)
-        .socketTimeout(DEFAULT_TIMEOUT)
         .build();
   }
 }

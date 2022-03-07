@@ -13,7 +13,6 @@ import static org.mockito.Mockito.doReturn;
 
 import com.google.gson.JsonElement;
 import com.mercadopago.BaseClientTest;
-import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.MPResourceList;
@@ -28,67 +27,51 @@ import org.apache.http.protocol.HttpContext;
 import org.junit.jupiter.api.Test;
 
 class PaymentRefundClientTest extends BaseClientTest {
-
-  private static final Long PAYMENT_TEST_ID = 17014025134L;
-
-  private static final Long REFUND_TEST_ID = 1245678203L;
-
-  private static final String REFUND_BASE_JSON = "refund/refund_base.json";
-
-  private static final String REFUND_LIST_JSON = "refund/refund_list.json";
-
-  private static final String REFUND_PARTIAL_JSON = "refund/refund_partial.json";
-
-  private static final OffsetDateTime DATE =
-      OffsetDateTime.of(2022, 1, 10, 10, 10, 10, 0, ZoneOffset.UTC);
-
+  private final Long paymentTestId = 17014025134L;
+  private final Long refundTestId = 1245678203L;
+  private final String refundBaseJson = "refund/refund_base.json";
+  private final String refundListJson = "refund/refund_list.json";
+  private final String refundPartialJson = "refund/refund_partial.json";
+  private final OffsetDateTime date = OffsetDateTime.of(2022, 1, 10, 10, 10, 10, 0, ZoneOffset.UTC);
   private final PaymentRefundClient client = new PaymentRefundClient();
 
   @Test
   void refundSuccess() throws IOException, MPException, MPApiException {
-    HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_BASE_JSON, CREATED);
+    HttpResponse httpResponse = generateHttpResponseFromFile(refundBaseJson, CREATED);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-    PaymentRefund result = client.refund(PAYMENT_TEST_ID);
+    PaymentRefund result = client.refund(paymentTestId);
 
     assertRefundFields(result);
   }
 
   @Test
   public void refundWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
-
-    HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_BASE_JSON, CREATED);
+    HttpResponse httpResponse = generateHttpResponseFromFile(refundBaseJson, CREATED);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-    PaymentRefund result = client.refund(PAYMENT_TEST_ID, requestOptions);
+    PaymentRefund result = client.refund(paymentTestId, buildRequestOptions());
 
     assertRefundFields(result);
   }
 
   @Test
   void refundPartialSuccess() throws IOException, MPException, MPApiException {
-    HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_BASE_JSON, CREATED);
+    HttpResponse httpResponse = generateHttpResponseFromFile(refundBaseJson, CREATED);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
     BigDecimal amount = new BigDecimal("50");
-    PaymentRefund result = client.refund(PAYMENT_TEST_ID, amount);
+    PaymentRefund result = client.refund(paymentTestId, amount);
 
     JsonElement requestPayload =
-        generateJsonElementFromUriRequest(httpClientMock.getRequestPayload());
-    JsonElement requestPayloadMock = generateJsonElement(REFUND_PARTIAL_JSON);
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement(refundPartialJson);
 
     assertEquals(requestPayloadMock, requestPayload);
     assertRefundFields(result);
@@ -97,25 +80,17 @@ class PaymentRefundClientTest extends BaseClientTest {
   @Test
   public void refundPartialWithRequestOptionsSuccess()
       throws IOException, MPException, MPApiException {
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
-
-    HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_BASE_JSON, CREATED);
+    HttpResponse httpResponse = generateHttpResponseFromFile(refundBaseJson, CREATED);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
     BigDecimal amount = new BigDecimal("50");
-    PaymentRefund result = client.refund(PAYMENT_TEST_ID, amount, requestOptions);
+    PaymentRefund result = client.refund(paymentTestId, amount, buildRequestOptions());
 
     JsonElement requestPayload =
-        generateJsonElementFromUriRequest(httpClientMock.getRequestPayload());
-    JsonElement requestPayloadMock = generateJsonElement(REFUND_PARTIAL_JSON);
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement(refundPartialJson);
 
     assertEquals(requestPayloadMock, requestPayload);
     assertRefundFields(result);
@@ -123,42 +98,34 @@ class PaymentRefundClientTest extends BaseClientTest {
 
   @Test
   public void getRefundSuccess() throws IOException, MPException, MPApiException {
-    HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_BASE_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(refundBaseJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-    PaymentRefund result = client.get(PAYMENT_TEST_ID, REFUND_TEST_ID);
+    PaymentRefund result = client.get(paymentTestId, refundTestId);
     assertRefundFields(result);
   }
 
   @Test
   public void getRefundWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
-
-    HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_BASE_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(refundBaseJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-    PaymentRefund result = client.get(PAYMENT_TEST_ID, REFUND_TEST_ID, requestOptions);
+    PaymentRefund result = client.get(paymentTestId, refundTestId, buildRequestOptions());
     assertRefundFields(result);
   }
 
   @Test
   public void listRefundsSuccess() throws IOException, MPException, MPApiException {
-    HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_LIST_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(refundListJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-    MPResourceList<PaymentRefund> result = client.list(PAYMENT_TEST_ID);
+    MPResourceList<PaymentRefund> result = client.list(paymentTestId);
     assertEquals(OK, result.getResponse().getStatusCode());
     assertNotNull(result.getResponse());
     assertEquals(2, result.getResults().size());
@@ -168,20 +135,12 @@ class PaymentRefundClientTest extends BaseClientTest {
   @Test
   public void listRefundsWithRequestOptionsSuccess()
       throws IOException, MPException, MPApiException {
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
-
-    HttpResponse httpResponse = generateHttpResponseFromFile(REFUND_LIST_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(refundListJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-    MPResourceList<PaymentRefund> result = client.list(PAYMENT_TEST_ID, requestOptions);
+    MPResourceList<PaymentRefund> result = client.list(paymentTestId, buildRequestOptions());
     assertEquals(OK, result.getResponse().getStatusCode());
     assertNotNull(result.getResponse());
     assertEquals(2, result.getResults().size());
@@ -189,13 +148,13 @@ class PaymentRefundClientTest extends BaseClientTest {
   }
 
   private void assertRefundFields(PaymentRefund refund) {
-    assertEquals(REFUND_TEST_ID, refund.getId());
-    assertEquals(PAYMENT_TEST_ID, refund.getPaymentId());
+    assertEquals(refundTestId, refund.getId());
+    assertEquals(paymentTestId, refund.getPaymentId());
     assertEquals(new BigDecimal("50"), refund.getAmount());
     assertEquals("823549964", refund.getSource().getId());
     assertEquals("Mullins Hillary", refund.getSource().getName());
     assertEquals("collector", refund.getSource().getType());
-    assertEquals(DATE, refund.getDateCreated());
+    assertEquals(date, refund.getDateCreated());
     assertNull(refund.getUniqueSequenceNumber());
     assertEquals("standard", refund.getRefundMode());
     assertEquals(BigDecimal.ZERO, refund.getAdjustmentAmount());

@@ -10,7 +10,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
 
 import com.mercadopago.BaseClientTest;
-import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.MPResourceList;
@@ -25,23 +24,14 @@ import org.apache.http.protocol.HttpContext;
 import org.junit.jupiter.api.Test;
 
 class PaymentMethodClientTest extends BaseClientTest {
-
-  private static final String PAYMENT_METHOD_BASE_JSON = "paymentmethod/payment_method_base.json";
-
-  private static final int DEFAULT_TIMEOUT = 1000;
-
-  private static final String THUMBNAIL =
-      "https://www.mercadopago.com/org-img/MP3/API/logos/debmaster.gif";
-
-  private static final Long ACCREDITATION_TIME = 1440L;
-
+  private final String paymentMethodBaseJson = "paymentmethod/payment_method_base.json";
   private final PaymentMethodClient client = new PaymentMethodClient();
 
   @Test
   void listSuccess() throws MPException, MPApiException, IOException {
-    HttpResponse httpResponse = generateHttpResponseFromFile(PAYMENT_METHOD_BASE_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentMethodBaseJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
     MPResourceList<PaymentMethod> paymentMethods = client.list();
@@ -52,25 +42,21 @@ class PaymentMethodClientTest extends BaseClientTest {
 
   @Test
   public void listSuccessWithRequestOptions() throws IOException, MPException, MPApiException {
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
-    HttpResponse httpResponse = generateHttpResponseFromFile(PAYMENT_METHOD_BASE_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentMethodBaseJson, OK);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-    MPResourceList<PaymentMethod> paymentMethods = client.list(requestOptions);
+    MPResourceList<PaymentMethod> paymentMethods = client.list(buildRequestOptions());
     assertNotNull(paymentMethods.getResponse());
     assertEquals(OK, paymentMethods.getResponse().getStatusCode());
     assertPaymentMethodFields(paymentMethods);
   }
 
   private void assertPaymentMethodFields(MPResourceList<PaymentMethod> paymentMethods) {
+    String thumbnail = "https://www.mercadopago.com/org-img/MP3/API/logos/debmaster.gif";
+    Long accreditationTime = 1440L;
+
     List<String> additionalInfoNeeded = new ArrayList<>();
     additionalInfoNeeded.add("cardholder_name");
     additionalInfoNeeded.add("cardholder_identification_type");
@@ -80,8 +66,8 @@ class PaymentMethodClientTest extends BaseClientTest {
     assertEquals("Mastercard Débito", paymentMethods.getResults().get(0).getName());
     assertEquals("debit_card", paymentMethods.getResults().get(0).getPaymentTypeId());
     assertEquals("testing", paymentMethods.getResults().get(0).getStatus());
-    assertEquals(THUMBNAIL, paymentMethods.getResults().get(0).getSecureThumbnail());
-    assertEquals(THUMBNAIL, paymentMethods.getResults().get(0).getThumbnail());
+    assertEquals(thumbnail, paymentMethods.getResults().get(0).getSecureThumbnail());
+    assertEquals(thumbnail, paymentMethods.getResults().get(0).getThumbnail());
     assertEquals("unsupported", paymentMethods.getResults().get(0).getDeferredCapture());
     assertEquals(1, paymentMethods.getResults().get(0).getSettings().size());
     assertEquals(
@@ -118,7 +104,7 @@ class PaymentMethodClientTest extends BaseClientTest {
             .containsAll(additionalInfoNeeded));
     assertEquals(new BigDecimal("0.5"), paymentMethods.getResults().get(0).getMinAllowedAmount());
     assertEquals(new BigDecimal("60000"), paymentMethods.getResults().get(0).getMaxAllowedAmount());
-    assertEquals(ACCREDITATION_TIME, paymentMethods.getResults().get(0).getAccreditationTime());
+    assertEquals(accreditationTime, paymentMethods.getResults().get(0).getAccreditationTime());
     assertTrue(paymentMethods.getResults().get(0).getFinancialInstitutions().isEmpty());
     assertTrue(paymentMethods.getResults().get(0).getProcessingModes().contains("aggregator"));
   }

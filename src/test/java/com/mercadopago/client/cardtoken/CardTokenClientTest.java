@@ -1,19 +1,17 @@
 package com.mercadopago.client.cardtoken;
 
-import static org.apache.maven.plugins.javadoc.JavadocUtil.DEFAULT_TIMEOUT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
 
+import com.mercadopago.BaseClientTest;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.helper.MockHelper;
-import com.mercadopago.mock.MPDefaultHttpClientMock;
 import com.mercadopago.net.HttpStatus;
 import com.mercadopago.resources.CardToken;
 import java.io.IOException;
@@ -22,41 +20,15 @@ import java.time.ZoneOffset;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.ParseException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.protocol.HttpContext;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /** CardTokenClientTest class. */
-public class CardTokenClientTest {
-  private static final String APPLICATION_JSON = "application/json";
-
-  private HttpClient httpClientMock;
-
-  private CardTokenClient tokenClient;
-
-  private String cardId;
-
-  private String responseFileCardToken;
-
-  private CardTokenRequest cardTokenRequest;
-
-  /** Init method. */
-  @BeforeEach
-  public void init() {
-    this.httpClientMock = mock(HttpClient.class);
-    MPDefaultHttpClientMock mpHttpClient = new MPDefaultHttpClientMock(httpClientMock);
-    this.tokenClient = new CardTokenClient(mpHttpClient);
-    this.cardId = "1562188766852";
-    this.responseFileCardToken = "/cardtoken/card_token_base.json";
-    this.cardTokenRequest =
-        CardTokenRequest.builder()
-            .cardId(cardId)
-            .customerId("649457098-FybpOkG6zH8QRm")
-            .securityCode("456")
-            .build();
-  }
+public class CardTokenClientTest extends BaseClientTest {
+  private final String responseFileCardToken = "/cardtoken/card_token_base.json";
+  private final String cardId = "1562188766852";
+  private final CardTokenClient tokenClient = new CardTokenClient();
 
   @Test
   public void getCardTokenSuccess()
@@ -66,7 +38,7 @@ public class CardTokenClientTest {
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
     doReturn(httpResponse)
-        .when(httpClientMock)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     CardToken token = tokenClient.get(cardId);
 
@@ -89,7 +61,7 @@ public class CardTokenClientTest {
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
     doReturn(httpResponse)
-        .when(httpClientMock)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     CardToken token = tokenClient.get(cardId, requestOptions);
 
@@ -105,9 +77,9 @@ public class CardTokenClientTest {
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
     doReturn(httpResponse)
-        .when(httpClientMock)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
-    CardToken token = tokenClient.create(cardTokenRequest);
+    CardToken token = tokenClient.create(buildCardTokenRequest());
 
     assertNotNull(token);
     assertCardTokenFields(token);
@@ -128,12 +100,20 @@ public class CardTokenClientTest {
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
     doReturn(httpResponse)
-        .when(httpClientMock)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
-    CardToken token = tokenClient.create(cardTokenRequest, requestOptions);
+    CardToken token = tokenClient.create(buildCardTokenRequest(), requestOptions);
 
     assertNotNull(token);
     assertCardTokenFields(token);
+  }
+
+  private CardTokenRequest buildCardTokenRequest() {
+    return CardTokenRequest.builder()
+        .cardId(cardId)
+        .customerId("649457098-FybpOkG6zH8QRm")
+        .securityCode("456")
+        .build();
   }
 
   private void assertCardTokenFields(CardToken token) throws java.text.ParseException {

@@ -11,10 +11,11 @@ import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.exceptions.MPException;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -122,49 +123,48 @@ public class MockHelper {
     mandatoryHeaders.add("X-Product-Id");
     mandatoryHeaders.add("X-Tracking-Id");
 
-    if (method.equals("POST") || method.equals("PUT")) {
+    if ("POST".equals(method) || "PUT".equals(method)) {
       mandatoryHeaders.add("Content-Type");
     }
 
-    if (method.equals("POST")) {
+    if ("POST".equals(method)) {
       mandatoryHeaders.add("X-Idempotency-Key");
     }
 
     for (String mandatoryHeader : mandatoryHeaders) {
-      boolean match =
-          Arrays.stream(headers).anyMatch(header -> header.getName().equals(mandatoryHeader));
-
-      if (!match) return false;
+      if (Arrays.stream(headers).noneMatch(header -> header.getName().equals(mandatoryHeader))) {
+        return false;
+      }
     }
 
     return true;
   }
 
   private static boolean haveMandatoryHeadersCorrectValues(Header[] headers) {
-    boolean match;
-
     for (Header header : headers) {
-      if (header.getName().equals("Authorization")) {
-        match = header.getValue().startsWith("Bearer");
-        if (!match) return false;
+      if ("Authorization".equals(header.getName()) && !header.getValue().startsWith("Bearer")) {
+        return false;
       }
-      if (header.getName().equals("User-Agent")) {
-        match =
-            String.format("MercadoPago Java SDK/%s", MercadoPagoConfig.CURRENT_VERSION)
-                .equals(header.getValue());
-        if (!match) return false;
+
+      if ("User-Agent".equals(header.getName())
+          && !String.format("MercadoPago Java SDK/%s", MercadoPagoConfig.CURRENT_VERSION)
+              .equals(header.getValue())) {
+        return false;
       }
-      if (header.getName().equals("X-Product-Id")) {
-        match = MercadoPagoConfig.PRODUCT_ID.equals(header.getValue());
-        if (!match) return false;
+
+      if ("X-Product-Id".equals(header.getName())
+          && !MercadoPagoConfig.PRODUCT_ID.equals(header.getValue())) {
+        return false;
       }
-      if (header.getName().equals("X-Tracking-Id")) {
-        match = MercadoPagoConfig.TRACKING_ID.equals(header.getValue());
-        if (!match) return false;
+
+      if ("X-Tracking-Id".equals(header.getName())
+          && !MercadoPagoConfig.TRACKING_ID.equals(header.getValue())) {
+        return false;
       }
-      if (header.getName().equals("Content-Type")) {
-        match = "application/json; charset=UTF-8".equals(header.getValue());
-        if (!match) return false;
+
+      if ("Content-Type".equals(header.getName())
+          && !"application/json; charset=UTF-8".equals(header.getValue())) {
+        return false;
       }
     }
 
@@ -183,7 +183,7 @@ public class MockHelper {
 
     String method = httpUriRequest.getMethod();
 
-    if (method.equals("POST") || method.equals("PUT")) {
+    if ("POST".equals(method) || "PUT".equals(method)) {
       HttpEntityEnclosingRequestBase requestBase = (HttpEntityEnclosingRequestBase) httpUriRequest;
 
       if (requestBase.getEntity() != null) {
@@ -210,7 +210,7 @@ public class MockHelper {
       throw new IllegalStateException("Error loading mocks.");
     }
 
-    InputStream is = new FileInputStream(file);
+    InputStream is = Files.newInputStream(Paths.get(String.valueOf(file)));
     return IOUtils.toString(is, StandardCharsets.UTF_8);
   }
 

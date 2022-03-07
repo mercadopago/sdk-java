@@ -6,7 +6,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
 
 import com.mercadopago.BaseClientTest;
-import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.helper.MockHelper;
@@ -17,26 +16,17 @@ import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.protocol.HttpContext;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class UserClientTest extends BaseClientTest {
-  private static final String APPLICATION_JSON = "application/json";
-
-  private static final int DEFAULT_TIMEOUT = 1000;
-
-  private static HttpResponse httpResponse;
-
-  @BeforeEach
-  public void init() throws IOException {
-    httpResponse = MockHelper.generateHttpResponseFromFile("/user/user_base.json", HttpStatus.OK);
-    httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
-  }
 
   @Test
   void getUserSuccess() throws IOException, MPException, MPApiException {
+    HttpResponse httpResponse =
+        MockHelper.generateHttpResponseFromFile("/user/user_base.json", HttpStatus.OK);
+    httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
     User user = new UserClient().get();
@@ -46,19 +36,15 @@ class UserClientTest extends BaseClientTest {
 
   @Test
   void getUserWithOptionsSuccess() throws MPException, MPApiException, IOException {
-    MPRequestOptions requestOptions =
-        MPRequestOptions.builder()
-            .accessToken("abc")
-            .connectionTimeout(DEFAULT_TIMEOUT)
-            .connectionRequestTimeout(DEFAULT_TIMEOUT)
-            .socketTimeout(DEFAULT_TIMEOUT)
-            .build();
+    HttpResponse httpResponse =
+        MockHelper.generateHttpResponseFromFile("/user/user_base.json", HttpStatus.OK);
+    httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
 
     doReturn(httpResponse)
-        .when(httpClient)
+        .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-    User user = new UserClient().get(requestOptions);
+    User user = new UserClient().get(buildRequestOptions());
     assertNotNull(user);
     assertUserFields(user);
   }
