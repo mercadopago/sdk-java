@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 
 class IdentificationTypeClientTest extends BaseClientTest {
   private final String identificationTypesJson = "identification/types.json";
+
   private final IdentificationTypeClient client = new IdentificationTypeClient();
 
   @Test

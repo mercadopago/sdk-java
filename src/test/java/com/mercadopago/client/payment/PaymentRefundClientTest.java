@@ -28,11 +28,17 @@ import org.junit.jupiter.api.Test;
 
 class PaymentRefundClientTest extends BaseClientTest {
   private final Long paymentTestId = 17014025134L;
+
   private final Long refundTestId = 1245678203L;
+
   private final String refundBaseJson = "refund/refund_base.json";
+
   private final String refundListJson = "refund/refund_list.json";
+
   private final String refundPartialJson = "refund/refund_partial.json";
+
   private final OffsetDateTime date = OffsetDateTime.of(2022, 1, 10, 10, 10, 10, 0, ZoneOffset.UTC);
+
   private final PaymentRefundClient client = new PaymentRefundClient();
 
   @Test

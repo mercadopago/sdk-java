@@ -36,9 +36,13 @@ import org.mockito.ArgumentCaptor;
 /** MercadoPagoClientTest class. */
 public class MercadoPagoClientTest extends BaseClientTest {
   private final HttpClient httpClientMock = mock(HttpClient.class);
+
   private final MPDefaultHttpClientMock mpHttpClient = new MPDefaultHttpClientMock(httpClientMock);
+
   private final TestClient testClient = new TestClient(mpHttpClient);
+
   private final String requestFile = "request_generic.json";
+
   private final String responseFile = "response_generic_success.json";
 
   @Test

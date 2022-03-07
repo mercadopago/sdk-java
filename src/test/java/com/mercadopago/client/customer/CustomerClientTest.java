@@ -34,6 +34,7 @@ import org.junit.jupiter.api.Test;
 /** CustomerClientTest class. */
 public class CustomerClientTest extends BaseClientTest {
   private final CustomerClient customerClient = new CustomerClient();
+
   private final String customerId = "1068193981-pXRewrKqlP6pnn";
 
   @Test

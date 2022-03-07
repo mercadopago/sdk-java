@@ -33,11 +33,17 @@ import org.junit.jupiter.api.Test;
 
 class MerchantOrderClientTest extends BaseClientTest {
   private final String orderBaseJson = "merchant/order_base.json";
+
   private final String orderUpdatedJson = "merchant/order_updated.json";
+
   private final String orderSearchJson = "merchant/order_search.json";
+
   private final String preferenceId = "798798399-13769cb5-b898-448f-8d5a-c939a8cee479";
+
   private final long merchantOrderId = 4018801790L;
+
   private final OffsetDateTime date = OffsetDateTime.of(2022, 1, 10, 10, 10, 10, 0, ZoneOffset.UTC);
+
   private final MerchantOrderClient client = new MerchantOrderClient();
 
   @Test

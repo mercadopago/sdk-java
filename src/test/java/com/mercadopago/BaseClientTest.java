@@ -10,8 +10,11 @@ import org.junit.jupiter.api.BeforeAll;
 /** BaseClientTest class. */
 public abstract class BaseClientTest {
   protected static final String APPLICATION_JSON = "application/json";
+
   protected static final HttpClientMock HTTP_CLIENT_MOCK = new HttpClientMock();
+
   protected static final HttpClient HTTP_CLIENT = HTTP_CLIENT_MOCK.getHttpClient();
+
   protected static final int DEFAULT_TIMEOUT = 1000;
 
   @BeforeAll

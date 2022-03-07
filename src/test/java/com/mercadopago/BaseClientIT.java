@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeAll;
 /** BaseClientIT class. */
 public abstract class BaseClientIT {
   protected static final int DEFAULT_TIMEOUT = 2000;
+
   protected static final String ACCESS_TOKEN = System.getenv("ACCESS_TOKEN");
 
   @BeforeAll

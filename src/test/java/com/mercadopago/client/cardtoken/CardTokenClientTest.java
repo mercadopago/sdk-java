@@ -27,12 +27,14 @@ import org.junit.jupiter.api.Test;
 /** CardTokenClientTest class. */
 public class CardTokenClientTest extends BaseClientTest {
   private final String responseFileCardToken = "/cardtoken/card_token_base.json";
+
   private final String cardId = "1562188766852";
+
   private final CardTokenClient tokenClient = new CardTokenClient();
 
   @Test
   public void getCardTokenSuccess()
-      throws IOException, MPException, MPApiException, ParseException, java.text.ParseException {
+      throws IOException, MPException, MPApiException, ParseException {
     HttpResponse httpResponse =
         MockHelper.generateHttpResponseFromFile(responseFileCardToken, HttpStatus.OK);
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
@@ -48,7 +50,7 @@ public class CardTokenClientTest extends BaseClientTest {
 
   @Test
   public void getCardTokenWithRequestOptionsSuccess()
-      throws IOException, MPException, MPApiException, ParseException, java.text.ParseException {
+      throws IOException, MPException, MPApiException, ParseException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
             .accessToken("abc")
@@ -71,7 +73,7 @@ public class CardTokenClientTest extends BaseClientTest {
 
   @Test
   public void createCardTokenSuccess()
-      throws IOException, MPException, MPApiException, ParseException, java.text.ParseException {
+      throws IOException, MPException, MPApiException, ParseException {
     HttpResponse httpResponse =
         MockHelper.generateHttpResponseFromFile(responseFileCardToken, HttpStatus.OK);
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
@@ -87,7 +89,7 @@ public class CardTokenClientTest extends BaseClientTest {
 
   @Test
   public void createCardTokenWithRequestOptionsSuccess()
-      throws ParseException, IOException, MPException, MPApiException, java.text.ParseException {
+      throws ParseException, IOException, MPException, MPApiException {
     MPRequestOptions requestOptions =
         MPRequestOptions.builder()
             .accessToken("abc")
@@ -116,7 +118,7 @@ public class CardTokenClientTest extends BaseClientTest {
         .build();
   }
 
-  private void assertCardTokenFields(CardToken token) throws java.text.ParseException {
+  private void assertCardTokenFields(CardToken token) {
     assertEquals("97849c845e879427b5cb1cb941a52806", token.getId());
     assertEquals("989192037129", token.getCardId());
     assertEquals("503143", token.getFirstSixDigits());

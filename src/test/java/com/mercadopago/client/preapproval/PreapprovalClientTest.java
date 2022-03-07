@@ -30,13 +30,19 @@ import org.junit.jupiter.api.Test;
 
 class PreapprovalClientTest extends BaseClientTest {
   private final String preapprovalBaseJson = "preapproval/preapproval_base.json";
+
   private final String preapprovalUpdateJson = "preapproval/preapproval_update.json";
+
   private final String preapprovalListJson = "preapproval/preapproval_list.json";
+
   private final String preapprovalId = "2c9380847e9b451c017ea1bd70ba0219";
+
   private final OffsetDateTime startDate =
       OffsetDateTime.of(2022, 1, 10, 10, 10, 10, 0, ZoneOffset.UTC);
+
   private final OffsetDateTime endDate =
       OffsetDateTime.of(2023, 1, 10, 10, 10, 10, 0, ZoneOffset.UTC);
+
   private final PreapprovalClient client = new PreapprovalClient();
 
   @Test
@@ -74,7 +80,7 @@ class PreapprovalClientTest extends BaseClientTest {
         .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-    PreapprovalCreateRequest request = generatePreapprovalRequest();
+    PreapprovalCreateRequest request = buildPreapprovalCreateRequest();
     Preapproval preapproval = client.create(request);
 
     JsonElement requestPayload =
@@ -94,7 +100,7 @@ class PreapprovalClientTest extends BaseClientTest {
         .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-    PreapprovalCreateRequest request = generatePreapprovalRequest();
+    PreapprovalCreateRequest request = buildPreapprovalCreateRequest();
     Preapproval preapproval = client.create(request, buildRequestOptions());
 
     JsonElement requestPayload =
@@ -217,7 +223,7 @@ class PreapprovalClientTest extends BaseClientTest {
     assertEquals(endDate, preapproval.getAutoRecurring().getEndDate());
   }
 
-  private PreapprovalCreateRequest generatePreapprovalRequest() {
+  private PreapprovalCreateRequest buildPreapprovalCreateRequest() {
     PreApprovalAutoRecurringCreateRequest autoRecurring =
         PreApprovalAutoRecurringCreateRequest.builder()
             .transactionAmount(BigDecimal.TEN)

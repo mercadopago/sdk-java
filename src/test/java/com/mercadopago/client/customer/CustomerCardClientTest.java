@@ -15,7 +15,6 @@ import com.mercadopago.net.MPResourceList;
 import com.mercadopago.resources.customer.CustomerCard;
 import com.mercadopago.resources.customer.CustomerCardIssuer;
 import java.io.IOException;
-import java.text.ParseException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import org.apache.http.HttpHeaders;
@@ -27,13 +26,17 @@ import org.junit.jupiter.api.Test;
 /** CustomerCardClientTest class. */
 public class CustomerCardClientTest extends BaseClientTest {
   private final String cardId = "1562188766852";
+
   private final String customerId = "649457098-FybpOkG6zH8QRm";
+
   private final String responseFileSingleCard = "/card/card_single.json";
+
   private final String responseFileAllCards = "/card/card_all.json";
+
   private final CustomerCardClient cardClient = new CustomerCardClient();
 
   @Test
-  public void getCardSuccess() throws IOException, MPException, MPApiException, ParseException {
+  public void getCardSuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse =
         MockHelper.generateHttpResponseFromFile(responseFileSingleCard, HttpStatus.OK);
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
@@ -48,8 +51,7 @@ public class CustomerCardClientTest extends BaseClientTest {
   }
 
   @Test
-  public void getCardWithRequestOptionsSuccess()
-      throws IOException, MPException, MPApiException, ParseException {
+  public void getCardWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse =
         MockHelper.generateHttpResponseFromFile(responseFileSingleCard, HttpStatus.OK);
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
@@ -64,7 +66,7 @@ public class CustomerCardClientTest extends BaseClientTest {
   }
 
   @Test
-  public void createCardSuccess() throws IOException, MPException, MPApiException, ParseException {
+  public void createCardSuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse =
         MockHelper.generateHttpResponseFromFile(responseFileSingleCard, HttpStatus.OK);
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
@@ -80,7 +82,7 @@ public class CustomerCardClientTest extends BaseClientTest {
 
   @Test
   public void createCardWithRequestOptionsSuccess()
-      throws ParseException, IOException, MPException, MPApiException {
+      throws IOException, MPException, MPApiException {
     HttpResponse httpResponse =
         MockHelper.generateHttpResponseFromFile(responseFileSingleCard, HttpStatus.OK);
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
@@ -96,7 +98,7 @@ public class CustomerCardClientTest extends BaseClientTest {
   }
 
   @Test
-  public void deleteCardSuccess() throws ParseException, MPException, MPApiException, IOException {
+  public void deleteCardSuccess() throws MPException, MPApiException, IOException {
     HttpResponse httpResponse =
         MockHelper.generateHttpResponseFromFile(responseFileSingleCard, HttpStatus.OK);
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
@@ -112,7 +114,7 @@ public class CustomerCardClientTest extends BaseClientTest {
 
   @Test
   public void deleteCardWithRequestOptionsSuccess()
-      throws MPException, MPApiException, IOException, ParseException {
+      throws MPException, MPApiException, IOException {
     HttpResponse httpResponse =
         MockHelper.generateHttpResponseFromFile(responseFileSingleCard, HttpStatus.OK);
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
@@ -127,8 +129,7 @@ public class CustomerCardClientTest extends BaseClientTest {
   }
 
   @Test
-  public void listAllCardsSuccess()
-      throws IOException, MPException, MPApiException, ParseException {
+  public void listAllCardsSuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse =
         MockHelper.generateHttpResponseFromFile(responseFileAllCards, HttpStatus.OK);
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
@@ -148,7 +149,7 @@ public class CustomerCardClientTest extends BaseClientTest {
 
   @Test
   public void listAllCardsWithRequestOptionsSuccess()
-      throws IOException, MPException, MPApiException, ParseException {
+      throws IOException, MPException, MPApiException {
     HttpResponse httpResponse =
         MockHelper.generateHttpResponseFromFile(responseFileAllCards, HttpStatus.OK);
     httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
@@ -173,7 +174,7 @@ public class CustomerCardClientTest extends BaseClientTest {
         .build();
   }
 
-  private void assertCustomerCardFields(CustomerCard card) throws ParseException {
+  private void assertCustomerCardFields(CustomerCard card) {
     assertEquals("1562188766852", card.getId());
     assertEquals(6, card.getExpirationMonth());
     assertEquals(2023, card.getExpirationYear());

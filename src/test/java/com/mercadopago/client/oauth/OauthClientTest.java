@@ -29,10 +29,15 @@ import org.junit.jupiter.api.Test;
 /** OauthClientTest class. */
 public class OauthClientTest extends BaseClientTest {
   private static HttpResponse oauthHttpResponse;
+
   private final String appId = "123";
+
   private final String redirectUri = "https://redirect-uri.com";
+
   private final String authorizationCode = "authCode";
+
   private final String refreshToken = "refreshToken";
+
   private HttpResponse userHttpResponse;
 
   @Test

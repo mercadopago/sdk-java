@@ -35,6 +35,7 @@ import org.junit.jupiter.api.Test;
 
 class MerchantOrderClientIT extends BaseClientIT {
   private final PreferenceClient preferenceClient = new PreferenceClient();
+
   private final MerchantOrderClient merchantOrderClient = new MerchantOrderClient();
 
   @Test

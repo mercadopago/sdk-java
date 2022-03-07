@@ -37,13 +37,19 @@ import org.junit.jupiter.api.Test;
 
 class PreferenceClientTest extends BaseClientTest {
   private final String preferenceBaseJson = "preference/preference_base.json";
+
   private final String preferenceUpdatedJson = "preference/preference_updated.json";
+
   private final String preferenceListJson = "preference/preference_list.json";
+
   private final String preferenceTestId = "823549964-e8063b12-1c8b-4333-b075-3ae52a0371c8";
+
   private final OffsetDateTime expirationDateFrom =
       OffsetDateTime.of(2022, 1, 10, 10, 10, 10, 0, ZoneOffset.UTC);
+
   private final OffsetDateTime expirationDateTo =
       OffsetDateTime.of(2022, 2, 10, 10, 10, 10, 0, ZoneOffset.UTC);
+
   private final PreferenceClient client = new PreferenceClient();
 
   @Test

@@ -25,6 +25,7 @@ import org.junit.jupiter.api.Test;
 
 class PaymentMethodClientTest extends BaseClientTest {
   private final String paymentMethodBaseJson = "paymentmethod/payment_method_base.json";
+
   private final PaymentMethodClient client = new PaymentMethodClient();
 
   @Test
