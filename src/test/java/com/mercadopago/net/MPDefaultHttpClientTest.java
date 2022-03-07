@@ -19,9 +19,7 @@ import org.apache.http.protocol.HttpContext;
 import org.junit.jupiter.api.Test;
 
 class MPDefaultHttpClientTest extends BaseClientTest {
-
-  private static final String RESPONSE_GENERIC_SUCCESS_JSON = "/response_generic_success.json";
-  private static final int CUSTOM_TIMEOUT = 2000;
+  private final String responseGenericSuccessJson = "/response_generic_success.json";
   private MPDefaultHttpClient mpDefaultHttpClient;
 
   @Test
@@ -39,7 +37,7 @@ class MPDefaultHttpClientTest extends BaseClientTest {
     MPRequest request =
         MPRequest.builder().method(HttpMethod.GET).uri("http://test.com").headers(headers).build();
 
-    HttpResponse httpResponse = generateHttpResponseFromFile(RESPONSE_GENERIC_SUCCESS_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(responseGenericSuccessJson, OK);
     httpResponse.setHeader("x-test", "test");
     doReturn(httpResponse)
         .when(HTTP_CLIENT)
@@ -58,17 +56,18 @@ class MPDefaultHttpClientTest extends BaseClientTest {
     Map<String, String> headers = new HashMap<>();
     headers.put("x-test", "test");
 
+    int customTimeout = 2000;
     MPRequest request =
         MPRequest.builder()
             .method(HttpMethod.GET)
             .uri("http://test.com")
             .headers(headers)
-            .socketTimeout(CUSTOM_TIMEOUT)
-            .connectionRequestTimeout(CUSTOM_TIMEOUT)
-            .connectionTimeout(CUSTOM_TIMEOUT)
+            .socketTimeout(customTimeout)
+            .connectionRequestTimeout(customTimeout)
+            .connectionTimeout(customTimeout)
             .build();
 
-    HttpResponse httpResponse = generateHttpResponseFromFile(RESPONSE_GENERIC_SUCCESS_JSON, OK);
+    HttpResponse httpResponse = generateHttpResponseFromFile(responseGenericSuccessJson, OK);
     httpResponse.setHeader("x-test", "test");
     doReturn(httpResponse)
         .when(HTTP_CLIENT)
