@@ -5,11 +5,10 @@ name: Publish package to the Maven Central Repository and GitHub Packages
 
 on:
   release:
-    types: [ created ]
+    types: [ released ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
