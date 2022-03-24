@@ -1,0 +1,130 @@
+{
+  "id": 21071815560,
+  "date_created": "2022-01-10T10:10:10.000-00:00",
+  "date_approved": null,
+  "date_last_updated": "2022-01-10T10:10:10.000-00:00",
+  "date_of_expiration": "2022-02-10T10:10:10.000-00:00",
+  "money_release_date": null,
+  "operation_type": "regular_payment",
+  "issuer_id": null,
+  "payment_method_id": "pix",
+  "payment_type_id": "bank_transfer",
+  "status": "pending",
+  "status_detail": "pending_waiting_transfer",
+  "currency_id": "BRL",
+  "description": "description",
+  "live_mode": true,
+  "sponsor_id": null,
+  "authorization_code": null,
+  "money_release_schema": null,
+  "taxes_amount": 0,
+  "counter_currency": null,
+  "brand_id": null,
+  "shipping_amount": 0,
+  "pos_id": null,
+  "store_id": null,
+  "integrator_id": null,
+  "platform_id": null,
+  "corporation_id": null,
+  "collector_id": 471763966,
+  "payer": {
+    "type": null,
+    "id": "128185910",
+    "operator_id": null,
+    "email": "test_user_1648059260@testuser.com",
+    "identification": {
+      "type": null,
+      "number": null
+    },
+    "phone": {
+      "area_code": null,
+      "number": null,
+      "extension": null
+    },
+    "first_name": null,
+    "last_name": null,
+    "entity_type": null
+  },
+  "marketplace_owner": null,
+  "metadata": {},
+  "additional_info": {
+    "available_balance": null,
+    "nsu_processadora": null,
+    "authentication_code": null
+  },
+  "order": {},
+  "external_reference": null,
+  "transaction_amount": 100,
+  "transaction_amount_refunded": 0,
+  "coupon_amount": 0,
+  "differential_pricing_id": null,
+  "deduction_schema": null,
+  "callback_url": null,
+  "installments": 1,
+  "transaction_details": {
+    "payment_method_reference_id": null,
+    "net_received_amount": 0,
+    "total_paid_amount": 100,
+    "overpaid_amount": 0,
+    "external_resource_url": null,
+    "installment_amount": 0,
+    "financial_institution": null,
+    "payable_deferral_period": null,
+    "acquirer_reference": null,
+    "bank_transfer_id": null,
+    "transaction_id": null
+  },
+  "fee_details": [],
+  "charges_details": [],
+  "captured": true,
+  "binary_mode": false,
+  "call_for_authorize_id": null,
+  "statement_descriptor": null,
+  "card": {},
+  "notification_url": null,
+  "refunds": [],
+  "processing_mode": "aggregator",
+  "merchant_account_id": null,
+  "merchant_number": null,
+  "acquirer_reconciliation": [],
+  "point_of_interaction": {
+    "type": "OPENPLATFORM",
+    "business_info": {
+      "unit": "online_payments",
+      "sub_unit": "default"
+    },
+    "location": {
+      "state_id": null,
+      "source": null
+    },
+    "application_data": {
+      "name": null,
+      "version": null
+    },
+    "transaction_data": {
+      "qr_code": "00020126580014br.gov.bcb.pix0136d58a7469-afb3-48dd-b279-5576754cd5f75204000053039865406100.005802BR5911TETE97814116009Sao Paulo62240520mpqrinter2107181556063044CC4",
+      "bank_transfer_id": null,
+      "transaction_id": null,
+      "financial_institution": null,
+      "bank_info": {
+        "payer": {
+          "account_id": null,
+          "id": null,
+          "long_name": null,
+          "external_account_id": null
+        },
+        "collector": {
+          "account_id": null,
+          "long_name": null,
+          "account_holder_name": "Salazar Tucker",
+          "transfer_account_id": null
+        },
+        "is_same_bank_account_owner": null,
+        "origin_bank_id": null,
+        "origin_wallet_id": null
+      },
+      "qr_code_base64": "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",
+      "ticket_url": "https://www.mercadopago.com.br/payments/21071815560/ticket?caller_id=471763966&hash=abcd1234efgh5678"
+    }
+  }
+}

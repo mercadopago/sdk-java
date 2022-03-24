@@ -10,6 +10,7 @@ public class TransactionData {
     private Long bankTransferId;
     private Long financialInstitution;
     private BankInfo bankInfo;
+    private String ticketUrl;
 
     /**
      * @return QR code
@@ -105,5 +106,13 @@ public class TransactionData {
     public TransactionData setBankInfo(BankInfo bankInfo) {
         this.bankInfo = bankInfo;
         return this;
+    }
+
+    public String getTicketUrl() {
+        return ticketUrl;
+    }
+
+    public void setTicketUrl(String ticketUrl) {
+        this.ticketUrl = ticketUrl;
     }
 }
