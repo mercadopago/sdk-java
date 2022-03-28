@@ -48,6 +48,8 @@ public class PaymentClientTest extends BaseClientTest {
 
   private final String paymentBaseJson = "payment/payment_base.json";
 
+  private final String paymentPixJson = "payment/payment_pix.json";
+
   private final String paymentCapturedJson = "payment/payment_captured.json";
 
   private final String paymentCancelledJson = "payment/payment_cancelled.json";
@@ -71,7 +73,7 @@ public class PaymentClientTest extends BaseClientTest {
   @Test
   public void createSuccess() throws MPException, IOException, MPApiException {
 
-    Payment payment = createPayment();
+    Payment payment = createCardPayment();
 
     JsonElement requestPayload =
         generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
@@ -86,7 +88,7 @@ public class PaymentClientTest extends BaseClientTest {
   @Test
   public void createWithRequestOptionsSuccess() throws MPException, IOException, MPApiException {
 
-    Payment payment = createPayment(buildRequestOptions());
+    Payment payment = createCardPayment(buildRequestOptions());
 
     JsonElement requestPayload =
         generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
@@ -96,6 +98,46 @@ public class PaymentClientTest extends BaseClientTest {
     assertNotNull(payment.getResponse());
     assertEquals(CREATED, payment.getResponse().getStatusCode());
     assertPaymentFields(payment);
+  }
+
+  @Test
+  public void createPixSuccess() throws MPException, IOException, MPApiException {
+
+    Payment payment = createPixPayment();
+
+    JsonElement requestPayload =
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement(paymentPixJson);
+
+    assertEquals(requestPayloadMock, requestPayload);
+    assertNotNull(payment.getResponse());
+    assertEquals(CREATED, payment.getResponse().getStatusCode());
+    assertEquals("pix", payment.getPaymentMethodId());
+    assertEquals(
+        "https://www.mercadopago.com.br/payments/21071815560/ticket?caller_id=471763966&hash=abcd1234efgh5678",
+        payment.getPointOfInteraction().getTransactionData().getTicketUrl());
+    assertNotNull(payment.getPointOfInteraction().getTransactionData().getQrCode());
+    assertNotNull(payment.getPointOfInteraction().getTransactionData().getQrCodeBase64());
+  }
+
+  @Test
+  public void createPixWithRequestOptionsSuccess() throws MPException, IOException, MPApiException {
+
+    Payment payment = createPixPayment(buildRequestOptions());
+
+    JsonElement requestPayload =
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement(paymentPixJson);
+
+    assertEquals(requestPayloadMock, requestPayload);
+    assertNotNull(payment.getResponse());
+    assertEquals(CREATED, payment.getResponse().getStatusCode());
+    assertEquals("pix", payment.getPaymentMethodId());
+    assertEquals(
+        "https://www.mercadopago.com.br/payments/21071815560/ticket?caller_id=471763966&hash=abcd1234efgh5678",
+        payment.getPointOfInteraction().getTransactionData().getTicketUrl());
+    assertNotNull(payment.getPointOfInteraction().getTransactionData().getQrCode());
+    assertNotNull(payment.getPointOfInteraction().getTransactionData().getQrCodeBase64());
   }
 
   @Test
@@ -374,19 +416,38 @@ public class PaymentClientTest extends BaseClientTest {
     assertNull(refund.getReason());
   }
 
-  private Payment createPayment() throws IOException, MPException, MPApiException {
-    return this.createPayment(null);
+  private Payment createCardPayment() throws IOException, MPException, MPApiException {
+    return this.createPayment("card", null);
   }
 
-  private Payment createPayment(MPRequestOptions requestOptions)
+  private Payment createCardPayment(MPRequestOptions requestOptions)
       throws IOException, MPException, MPApiException {
-    HttpResponse httpResponse = generateHttpResponseFromFile(paymentBaseJson, CREATED);
+    return this.createPayment("card", requestOptions);
+  }
+
+  private Payment createPixPayment() throws IOException, MPException, MPApiException {
+    return this.createPayment("pix", null);
+  }
+
+  private Payment createPixPayment(MPRequestOptions requestOptions)
+      throws IOException, MPException, MPApiException {
+    return this.createPayment("pix", requestOptions);
+  }
+
+  private Payment createPayment(String paymentMethod, MPRequestOptions requestOptions)
+      throws IOException, MPException, MPApiException {
+    String file = paymentMethod.equals("pix") ? paymentPixJson : paymentBaseJson;
+    PaymentCreateRequest paymentCreateRequest =
+        paymentMethod.equals("pix") ? newPixPayment() : newCardPayment();
+
+    HttpResponse httpResponse = generateHttpResponseFromFile(file, CREATED);
     doReturn(httpResponse)
         .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
     return Objects.nonNull(requestOptions)
-        ? client.create(newPayment(), requestOptions)
-        : client.create(newPayment());
+        ? client.create(paymentCreateRequest, requestOptions)
+        : client.create(paymentCreateRequest);
   }
 
   private void assertPaymentFields(Payment payment) {
@@ -504,7 +565,7 @@ public class PaymentClientTest extends BaseClientTest {
     assertNull(payment.getPointOfInteraction().getTransactionData());
   }
 
-  private PaymentCreateRequest newPayment() {
+  private PaymentCreateRequest newCardPayment() {
     IdentificationRequest identification =
         IdentificationRequest.builder().type("CPF").number("37462770865").build();
 
@@ -584,6 +645,16 @@ public class PaymentClientTest extends BaseClientTest {
         .installments(1)
         .notificationUrl("https://seu-site.com.br/webhooks")
         .additionalInfo(additionalInfo)
+        .build();
+  }
+
+  private PaymentCreateRequest newPixPayment() {
+    return PaymentCreateRequest.builder()
+        .transactionAmount(new BigDecimal(100))
+        .dateOfExpiration(OffsetDateTime.of(2022, 2, 10, 10, 10, 10, 0, ZoneOffset.UTC))
+        .paymentMethodId("pix")
+        .description("description")
+        .payer(PaymentPayerRequest.builder().email("test_user_1648059260@testuser.com").build())
         .build();
   }
 }

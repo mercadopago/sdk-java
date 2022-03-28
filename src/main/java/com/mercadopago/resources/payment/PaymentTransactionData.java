@@ -22,4 +22,7 @@ public class PaymentTransactionData {
 
   /** Bank info. */
   private PaymentBankInfo bankInfo;
+
+  /** Ticket Url. */
+  private String ticketUrl;
 }

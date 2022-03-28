@@ -1,0 +1,9 @@
+{
+  "date_of_expiration": "2022-02-10T10:10:10.000Z",
+  "description": "description",
+  "payer": {
+    "email": "test_user_1648059260@testuser.com"
+  },
+  "payment_method_id": "pix",
+  "transaction_amount": 100
+}
