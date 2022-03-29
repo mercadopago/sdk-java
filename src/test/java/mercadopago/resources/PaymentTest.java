@@ -38,6 +38,8 @@ public class PaymentTest extends BaseResourceTest {
 
   private static final String PAYMENT_BASE_JSON = "payment/payment_base.json";
 
+  private static final String PAYMENT_PIX_JSON = "payment/payment_pix.json";
+
   private static final String PAYMENT_CAPTURED_JSON = "payment/payment_captured.json";
 
   private static final String PAYMENT_CANCELLED_JSON = "payment/payment_cancelled.json";
@@ -134,6 +136,43 @@ public class PaymentTest extends BaseResourceTest {
     assertNotNull(payment.getLastApiResponse());
     assertEquals(HTTP_STATUS_CREATED, payment.getLastApiResponse().getStatusCode());
     assertNotNull(payment.getId());
+  }
+
+  @Test
+  public void paymentPixSaveTest() throws MPException, IOException {
+
+    httpClientMock.mock(PAYMENT_PIX_JSON, HTTP_STATUS_CREATED, PAYMENT_PIX_JSON);
+
+    Payment payment = newPixPayment();
+    payment.save();
+    assertNotNull(payment.getLastApiResponse());
+    assertEquals(HTTP_STATUS_CREATED, payment.getLastApiResponse().getStatusCode());
+    assertNotNull(payment.getId());
+    assertEquals("pix", payment.getPaymentMethodId());
+    assertEquals(
+        "https://www.mercadopago.com.br/payments/21071815560/ticket?caller_id=471763966&hash=abcd1234efgh5678",
+        payment.getPointOfInteraction().getTransactionData().getTicketUrl());
+    assertNotNull(payment.getPointOfInteraction().getTransactionData().getQrCode());
+    assertNotNull(payment.getPointOfInteraction().getTransactionData().getQrCodeBase64());
+  }
+
+  @Test
+  public void paymentPixSaveRequestOptionsTest() throws MPException, IOException {
+
+    httpClientMock.mock(PAYMENT_PIX_JSON, HTTP_STATUS_CREATED, PAYMENT_PIX_JSON);
+
+    MPRequestOptions requestOptions = newRequestOptions();
+    Payment payment = newPixPayment();
+    payment.save(requestOptions);
+    assertNotNull(payment.getLastApiResponse());
+    assertEquals(HTTP_STATUS_CREATED, payment.getLastApiResponse().getStatusCode());
+    assertNotNull(payment.getId());
+    assertEquals("pix", payment.getPaymentMethodId());
+    assertEquals(
+        "https://www.mercadopago.com.br/payments/21071815560/ticket?caller_id=471763966&hash=abcd1234efgh5678",
+        payment.getPointOfInteraction().getTransactionData().getTicketUrl());
+    assertNotNull(payment.getPointOfInteraction().getTransactionData().getQrCode());
+    assertNotNull(payment.getPointOfInteraction().getTransactionData().getQrCodeBase64());
   }
 
   @Test
@@ -345,6 +384,15 @@ public class PaymentTest extends BaseResourceTest {
                     .setStreetNumberString("1234")
                     .setFloor("floor")
                     .setApartment("apartment"))));
+  }
+
+  public static Payment newPixPayment() {
+    return new Payment()
+        .setTransactionAmount(100f)
+        .setDateOfExpiration(new Date(2022, Calendar.FEBRUARY, 10, 10, 10, 10))
+        .setPaymentMethodId("pix")
+        .setDescription("description")
+        .setPayer(new Payer().setEmail("test_user_1648059260@testuser.com"));
   }
 }
 
