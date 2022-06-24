@@ -1,0 +1,13 @@
+{
+  "amount": 1500,
+  "description": "your payment intent description",
+  "payment": {
+    "installments": 1,
+    "type": "credit_card",
+    "installments_cost": "seller"
+  },
+  "additional_info": {
+    "external_reference": "4561ads-das4das4-das4754-das456",
+    "print_on_terminal": true
+  }
+}
