@@ -3,9 +3,9 @@ package com.mercadopago.resources.point;
 import com.mercadopago.net.MPResource;
 import lombok.Getter;
 
-/** Point Payment Intent delete resource. */
+/** Point cancel payment intent resource. */
 @Getter
-public class PointPaymentIntentDelete extends MPResource {
+public class PointCancelPaymentIntent extends MPResource {
   /** Payment intent ID. */
   private String id;
 }

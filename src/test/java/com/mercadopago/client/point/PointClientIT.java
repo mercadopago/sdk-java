@@ -10,8 +10,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.mercadopago.BaseClientIT;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
+import com.mercadopago.resources.point.PointCancelPaymentIntent;
 import com.mercadopago.resources.point.PointPaymentIntent;
-import com.mercadopago.resources.point.PointPaymentIntentDelete;
 import com.mercadopago.resources.point.PointPaymentIntentList;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -91,16 +91,16 @@ class PointClientIT extends BaseClientIT {
   }
 
   @Test
-  void deletePaymentIntentSuccess() {
+  void cancelPaymentIntentSuccess() {
     try {
       PointPaymentIntentRequest request = buildPaymentIntentRequest();
       PointPaymentIntent paymentIntent = client.createPaymentIntent(deviceId, request);
-      PointPaymentIntentDelete paymentIntentDelete =
-          client.deletePaymentIntent(deviceId, paymentIntent.getId());
+      PointCancelPaymentIntent cancelPaymentIntent =
+          client.cancelPaymentIntent(deviceId, paymentIntent.getId());
 
-      assertNotNull(paymentIntentDelete.getResponse());
-      assertEquals(OK, paymentIntentDelete.getResponse().getStatusCode());
-      assertEquals(paymentIntent.getId(), paymentIntentDelete.getId());
+      assertNotNull(cancelPaymentIntent.getResponse());
+      assertEquals(OK, cancelPaymentIntent.getResponse().getStatusCode());
+      assertEquals(paymentIntent.getId(), cancelPaymentIntent.getId());
     } catch (MPApiException mpApiException) {
       fail(mpApiException.getApiResponse().getContent());
     } catch (MPException mpException) {
@@ -109,16 +109,16 @@ class PointClientIT extends BaseClientIT {
   }
 
   @Test
-  void deletePaymentIntentWithRequestOptionsSuccess() {
+  void cancelPaymentIntentWithRequestOptionsSuccess() {
     try {
       PointPaymentIntentRequest request = buildPaymentIntentRequest();
       PointPaymentIntent paymentIntent = client.createPaymentIntent(deviceId, request);
-      PointPaymentIntentDelete paymentIntentDelete =
-          client.deletePaymentIntent(deviceId, paymentIntent.getId(), buildRequestOptions());
+      PointCancelPaymentIntent cancelPaymentIntent =
+          client.cancelPaymentIntent(deviceId, paymentIntent.getId(), buildRequestOptions());
 
-      assertNotNull(paymentIntentDelete.getResponse());
-      assertEquals(OK, paymentIntentDelete.getResponse().getStatusCode());
-      assertEquals(paymentIntent.getId(), paymentIntentDelete.getId());
+      assertNotNull(cancelPaymentIntent.getResponse());
+      assertEquals(OK, cancelPaymentIntent.getResponse().getStatusCode());
+      assertEquals(paymentIntent.getId(), cancelPaymentIntent.getId());
     } catch (MPApiException mpApiException) {
       fail(mpApiException.getApiResponse().getContent());
     } catch (MPException mpException) {

@@ -12,8 +12,8 @@ import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPHttpClient;
 import com.mercadopago.net.MPRequest;
 import com.mercadopago.net.MPResponse;
+import com.mercadopago.resources.point.PointCancelPaymentIntent;
 import com.mercadopago.resources.point.PointPaymentIntent;
-import com.mercadopago.resources.point.PointPaymentIntentDelete;
 import com.mercadopago.resources.point.PointPaymentIntentList;
 import com.mercadopago.serialization.Serializer;
 import java.util.logging.Logger;
@@ -157,9 +157,9 @@ public class PointClient extends MercadoPagoClient {
    *     href="https://www.mercadopago.com.br/developers/pt/reference/integrations_api/_point_integration-api_devices_deviceid_payment-intents_paymentintentid/delete">api
    *     docs</a>
    */
-  public PointPaymentIntentDelete deletePaymentIntent(String deviceId, String paymentIntentId)
+  public PointCancelPaymentIntent cancelPaymentIntent(String deviceId, String paymentIntentId)
       throws MPException, MPApiException {
-    return this.deletePaymentIntent(deviceId, paymentIntentId, null);
+    return this.cancelPaymentIntent(deviceId, paymentIntentId, null);
   }
 
   /**
@@ -174,7 +174,7 @@ public class PointClient extends MercadoPagoClient {
    *     href="https://www.mercadopago.com.br/developers/pt/reference/integrations_api/_point_integration-api_devices_deviceid_payment-intents_paymentintentid/delete">api
    *     docs</a>
    */
-  public PointPaymentIntentDelete deletePaymentIntent(
+  public PointCancelPaymentIntent cancelPaymentIntent(
       String deviceId, String paymentIntentId, MPRequestOptions requestOptions)
       throws MPException, MPApiException {
 
@@ -185,8 +185,8 @@ public class PointClient extends MercadoPagoClient {
             .build();
 
     MPResponse response = send(mpRequest, requestOptions);
-    PointPaymentIntentDelete result =
-        deserializeFromJson(PointPaymentIntentDelete.class, response.getContent());
+    PointCancelPaymentIntent result =
+        deserializeFromJson(PointCancelPaymentIntent.class, response.getContent());
     result.setResponse(response);
 
     return result;
