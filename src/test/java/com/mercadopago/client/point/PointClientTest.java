@@ -20,6 +20,7 @@ import com.mercadopago.resources.point.PointCancelPaymentIntent;
 import com.mercadopago.resources.point.PointPaymentIntent;
 import com.mercadopago.resources.point.PointPaymentIntentList;
 import com.mercadopago.resources.point.PointSearchPaymentIntent;
+import com.mercadopago.resources.point.PointStatusPaymentIntent;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -39,6 +40,8 @@ class PointClientTest extends BaseClientTest {
   private final String paymentIntentDeleteJson = "point/payment_intent_delete.json";
 
   private final String paymentIntentSearchJson = "point/payment_intent_search.json";
+
+  private final String paymentIntentStatusJson = "point/payment_intent_status.json";
 
   private final String deviceId = "GERTEC_MP35P__8701012051267123";
 
@@ -177,6 +180,42 @@ class PointClientTest extends BaseClientTest {
     assertNotNull(searchPaymentIntent.getResponse());
     assertEquals(OK, searchPaymentIntent.getResponse().getStatusCode());
     assertSearchPaymentIntentFields(searchPaymentIntent);
+  }
+
+  @Test
+  void getPaymentIntentStatusSuccess() throws IOException, MPException, MPApiException {
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentIntentStatusJson, OK);
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    PointStatusPaymentIntent paymentIntentStatus = client.getPaymentIntentStatus(paymentIntentId);
+
+    assertNotNull(paymentIntentStatus.getResponse());
+    assertEquals(OK, paymentIntentStatus.getResponse().getStatusCode());
+    assertEquals("CANCELED", paymentIntentStatus.getStatus());
+    assertEquals(
+        OffsetDateTime.of(2022, 6, 27, 10, 10, 10, 0, ZoneOffset.UTC),
+        paymentIntentStatus.getCreatedOn());
+  }
+
+  @Test
+  void getPaymentIntentStatusWithRequestOptionsSuccess()
+      throws IOException, MPException, MPApiException {
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentIntentStatusJson, OK);
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    PointStatusPaymentIntent paymentIntentStatus =
+        client.getPaymentIntentStatus(paymentIntentId, buildRequestOptions());
+
+    assertNotNull(paymentIntentStatus.getResponse());
+    assertEquals(OK, paymentIntentStatus.getResponse().getStatusCode());
+    assertEquals("CANCELED", paymentIntentStatus.getStatus());
+    assertEquals(
+        OffsetDateTime.of(2022, 6, 27, 10, 10, 10, 0, ZoneOffset.UTC),
+        paymentIntentStatus.getCreatedOn());
   }
 
   private void assertPaymentIntentFields(PointPaymentIntent paymentIntent) {
