@@ -19,6 +19,7 @@ import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.point.PointCancelPaymentIntent;
 import com.mercadopago.resources.point.PointPaymentIntent;
 import com.mercadopago.resources.point.PointPaymentIntentList;
+import com.mercadopago.resources.point.PointSearchPaymentIntent;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -36,6 +37,8 @@ class PointClientTest extends BaseClientTest {
   private final String paymentIntentListJson = "point/payment_intent_list.json";
 
   private final String paymentIntentDeleteJson = "point/payment_intent_delete.json";
+
+  private final String paymentIntentSearchJson = "point/payment_intent_search.json";
 
   private final String deviceId = "GERTEC_MP35P__8701012051267123";
 
@@ -146,6 +149,36 @@ class PointClientTest extends BaseClientTest {
     assertEquals(paymentIntentId, cancelPaymentIntent.getId());
   }
 
+  @Test
+  void searchPaymentIntentSuccess() throws IOException, MPException, MPApiException {
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentIntentSearchJson, OK);
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    PointSearchPaymentIntent searchPaymentIntent = client.searchPaymentIntent(paymentIntentId);
+
+    assertNotNull(searchPaymentIntent.getResponse());
+    assertEquals(OK, searchPaymentIntent.getResponse().getStatusCode());
+    assertSearchPaymentIntentFields(searchPaymentIntent);
+  }
+
+  @Test
+  void searchPaymentIntentWithRequestOptionsSuccess()
+      throws IOException, MPException, MPApiException {
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentIntentSearchJson, OK);
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    PointSearchPaymentIntent searchPaymentIntent =
+        client.searchPaymentIntent(paymentIntentId, buildRequestOptions());
+
+    assertNotNull(searchPaymentIntent.getResponse());
+    assertEquals(OK, searchPaymentIntent.getResponse().getStatusCode());
+    assertSearchPaymentIntentFields(searchPaymentIntent);
+  }
+
   private void assertPaymentIntentFields(PointPaymentIntent paymentIntent) {
     assertNotNull(paymentIntent.getAdditionalInfo());
     assertEquals(
@@ -189,6 +222,23 @@ class PointClientTest extends BaseClientTest {
     assertEquals(
         OffsetDateTime.of(2022, 1, 26, 10, 10, 10, 0, ZoneOffset.UTC),
         paymentIntentList.getEvents().get(2).getCreatedOn());
+  }
+
+  private void assertSearchPaymentIntentFields(PointSearchPaymentIntent searchPaymentIntent) {
+    assertNotNull(searchPaymentIntent.getAdditionalInfo());
+    assertEquals(
+        "4561ads-das4das4-das4754-das456",
+        searchPaymentIntent.getAdditionalInfo().getExternalReference());
+    assertTrue(searchPaymentIntent.getAdditionalInfo().getPrintOnTerminal());
+    assertEquals(new BigDecimal("1500"), searchPaymentIntent.getAmount());
+    assertEquals("your payment intent description", searchPaymentIntent.getDescription());
+    assertEquals("GERTEC_MP35P__8701012051267123", searchPaymentIntent.getDeviceId());
+    assertEquals("afa5ffb4-9094-43de-8192-fb951e96ee95", searchPaymentIntent.getId());
+    assertNotNull(searchPaymentIntent.getPayment());
+    assertEquals(1, searchPaymentIntent.getPayment().getInstallments());
+    assertEquals("seller", searchPaymentIntent.getPayment().getInstallmentsCost());
+    assertEquals("credit_card", searchPaymentIntent.getPayment().getType());
+    assertEquals("OPEN", searchPaymentIntent.getState());
   }
 
   private PointPaymentIntentRequest newPaymentIntentRequest() {

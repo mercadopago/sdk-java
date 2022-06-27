@@ -1,0 +1,16 @@
+{
+  "additional_info": {
+    "external_reference": "4561ads-das4das4-das4754-das456",
+    "print_on_terminal": true
+  },
+  "amount": 1500,
+  "description": "your payment intent description",
+  "device_id": "GERTEC_MP35P__8701012051267123",
+  "id": "afa5ffb4-9094-43de-8192-fb951e96ee95",
+  "payment": {
+    "installments": 1,
+    "installments_cost": "seller",
+    "type": "credit_card"
+  },
+  "state": "OPEN"
+}
