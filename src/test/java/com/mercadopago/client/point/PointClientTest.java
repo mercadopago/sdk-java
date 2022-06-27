@@ -4,7 +4,9 @@ import static com.mercadopago.helper.MockHelper.generateHttpResponseFromFile;
 import static com.mercadopago.helper.MockHelper.generateJsonElement;
 import static com.mercadopago.helper.MockHelper.generateJsonElementFromUriRequest;
 import static com.mercadopago.net.HttpStatus.CREATED;
+import static com.mercadopago.net.HttpStatus.OK;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Matchers.any;
@@ -15,8 +17,12 @@ import com.mercadopago.BaseClientTest;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.point.PointPaymentIntent;
+import com.mercadopago.resources.point.PointPaymentIntentList;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.protocol.HttpContext;
@@ -25,6 +31,8 @@ import org.junit.jupiter.api.Test;
 /** PointClientTest class. */
 class PointClientTest extends BaseClientTest {
   private final String paymentIntentJson = "point/payment_intent.json";
+
+  private final String paymentIntentListJson = "point/payment_intent_list.json";
 
   private final String deviceId = "GERTEC_MP35P__8701012051267123";
 
@@ -71,6 +79,37 @@ class PointClientTest extends BaseClientTest {
     assertPaymentIntentFields(paymentIntent);
   }
 
+  @Test
+  void getPaymentIntentListSuccess() throws IOException, MPException, MPApiException {
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentIntentListJson, OK);
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    PointPaymentIntentList paymentIntentList =
+        client.getPaymentIntentList(newPaymentIntentListRequest());
+
+    assertNotNull(paymentIntentList.getResponse());
+    assertEquals(OK, paymentIntentList.getResponse().getStatusCode());
+    assertPaymentIntentListFields(paymentIntentList);
+  }
+
+  @Test
+  void getPaymentIntentListWithRequestOptionsSuccess()
+      throws IOException, MPException, MPApiException {
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentIntentListJson, OK);
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    PointPaymentIntentList paymentIntentList =
+        client.getPaymentIntentList(newPaymentIntentListRequest(), buildRequestOptions());
+
+    assertNotNull(paymentIntentList.getResponse());
+    assertEquals(OK, paymentIntentList.getResponse().getStatusCode());
+    assertPaymentIntentListFields(paymentIntentList);
+  }
+
   private void assertPaymentIntentFields(PointPaymentIntent paymentIntent) {
     assertNotNull(paymentIntent.getAdditionalInfo());
     assertEquals(
@@ -85,6 +124,35 @@ class PointClientTest extends BaseClientTest {
     assertEquals(1, paymentIntent.getPayment().getInstallments());
     assertEquals("seller", paymentIntent.getPayment().getInstallmentsCost());
     assertEquals("credit_card", paymentIntent.getPayment().getType());
+  }
+
+  private void assertPaymentIntentListFields(PointPaymentIntentList paymentIntentList) {
+    assertFalse(paymentIntentList.getEvents().isEmpty());
+    assertEquals(3, paymentIntentList.getEvents().size());
+
+    assertEquals(
+        "d2ee3a75-ca25-4bf3-9eca-f5f2d8f23bf4",
+        paymentIntentList.getEvents().get(0).getPaymentIntentId());
+    assertEquals("ABANDONED", paymentIntentList.getEvents().get(0).getStatus());
+    assertEquals(
+        OffsetDateTime.of(2022, 1, 24, 10, 10, 10, 0, ZoneOffset.UTC),
+        paymentIntentList.getEvents().get(0).getCreatedOn());
+
+    assertEquals(
+        "a16aba35-d43c-409d-b6c8-c3020797b061",
+        paymentIntentList.getEvents().get(1).getPaymentIntentId());
+    assertEquals("CANCELED", paymentIntentList.getEvents().get(1).getStatus());
+    assertEquals(
+        OffsetDateTime.of(2022, 1, 25, 10, 10, 10, 0, ZoneOffset.UTC),
+        paymentIntentList.getEvents().get(1).getCreatedOn());
+
+    assertEquals(
+        "68bf6839-ddb3-4825-8f4c-7eb26e68a5c3",
+        paymentIntentList.getEvents().get(2).getPaymentIntentId());
+    assertEquals("ABANDONED", paymentIntentList.getEvents().get(2).getStatus());
+    assertEquals(
+        OffsetDateTime.of(2022, 1, 26, 10, 10, 10, 0, ZoneOffset.UTC),
+        paymentIntentList.getEvents().get(2).getCreatedOn());
   }
 
   private PointPaymentIntentRequest newPaymentIntentRequest() {
@@ -108,5 +176,11 @@ class PointClientTest extends BaseClientTest {
         .payment(payment)
         .additionalInfo(additionalInfo)
         .build();
+  }
+
+  private PointPaymentIntentListRequest newPaymentIntentListRequest() {
+    LocalDate startDate = LocalDate.of(2022, 1, 1);
+    LocalDate endDate = LocalDate.of(2022, 1, 30);
+    return PointPaymentIntentListRequest.builder().startDate(startDate).endDate(endDate).build();
   }
 }

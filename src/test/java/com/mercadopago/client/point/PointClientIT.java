@@ -1,6 +1,7 @@
 package com.mercadopago.client.point;
 
 import static com.mercadopago.net.HttpStatus.CREATED;
+import static com.mercadopago.net.HttpStatus.OK;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -10,7 +11,9 @@ import com.mercadopago.BaseClientIT;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.point.PointPaymentIntent;
+import com.mercadopago.resources.point.PointPaymentIntentList;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 
 /** PointClientIT class. */
@@ -54,6 +57,38 @@ class PointClientIT extends BaseClientIT {
     }
   }
 
+  @Test
+  void getPaymentIntentListSuccess() {
+    try {
+      PointPaymentIntentList paymentIntentList =
+          client.getPaymentIntentList(newPaymentIntentListRequest());
+
+      assertNotNull(paymentIntentList.getResponse());
+      assertEquals(OK, paymentIntentList.getResponse().getStatusCode());
+      assertNotNull(paymentIntentList.getEvents());
+    } catch (MPApiException mpApiException) {
+      fail(mpApiException.getApiResponse().getContent());
+    } catch (MPException mpException) {
+      fail(mpException.getMessage());
+    }
+  }
+
+  @Test
+  void getPaymentIntentListWithRequestOptionsSuccess() {
+    try {
+      PointPaymentIntentList paymentIntentList =
+          client.getPaymentIntentList(newPaymentIntentListRequest(), buildRequestOptions());
+
+      assertNotNull(paymentIntentList.getResponse());
+      assertEquals(OK, paymentIntentList.getResponse().getStatusCode());
+      assertNotNull(paymentIntentList.getEvents());
+    } catch (MPApiException mpApiException) {
+      fail(mpApiException.getApiResponse().getContent());
+    } catch (MPException mpException) {
+      fail(mpException.getMessage());
+    }
+  }
+
   private void assertPaymentIntentFields(PointPaymentIntent paymentIntent) {
     assertNotNull(paymentIntent.getId());
     assertNotNull(paymentIntent.getAdditionalInfo());
@@ -88,5 +123,11 @@ class PointClientIT extends BaseClientIT {
         .payment(payment)
         .additionalInfo(additionalInfo)
         .build();
+  }
+
+  private PointPaymentIntentListRequest newPaymentIntentListRequest() {
+    LocalDate startDate = LocalDate.of(2022, 1, 1);
+    LocalDate endDate = LocalDate.of(2022, 1, 30);
+    return PointPaymentIntentListRequest.builder().startDate(startDate).endDate(endDate).build();
   }
 }
