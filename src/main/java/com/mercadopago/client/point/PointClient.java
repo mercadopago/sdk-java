@@ -45,6 +45,7 @@ public class PointClient extends MercadoPagoClient {
   /**
    * Method responsible for creating a payment intent.
    *
+   * @param deviceId device id
    * @param request attributes used to create a payment intent
    * @return payment intent information
    * @throws MPException an error if the request fails
@@ -60,6 +61,7 @@ public class PointClient extends MercadoPagoClient {
   /**
    * Method responsible for creating payment intent with request options.
    *
+   * @param deviceId device id
    * @param request attributes used to create a payment intent
    * @param requestOptions metadata to customize the request
    * @return payment intent information
