@@ -29,6 +29,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
@@ -242,7 +243,7 @@ public class MPDefaultHttpClient implements MPHttpClient {
       throws MPMalformedRequestException {
     if (Objects.isNull(method)) {
       throw new MPMalformedRequestException(
-          "HttpMethod must be either \"GET\", \"POST\", \"PUT\" or \"DELETE\".");
+          "HttpMethod must be either \"GET\", \"POST\", \"PUT\", \"PATCH\" or \"DELETE\".");
     }
 
     if (StringUtils.isEmpty(uri)) {
@@ -272,6 +273,12 @@ public class MPDefaultHttpClient implements MPHttpClient {
       HttpPut put = new HttpPut(uri);
       put.setEntity(entity);
       return put;
+    }
+
+    if (method.equals(HttpMethod.PATCH)) {
+      HttpPatch patch = new HttpPatch(uri);
+      patch.setEntity(entity);
+      return patch;
     }
 
     if (method.equals(HttpMethod.DELETE)) {
