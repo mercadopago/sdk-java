@@ -50,7 +50,7 @@ public class PointClient extends MercadoPagoClient {
    * @return payment intent information
    * @throws MPException an error if the request fails
    * @see <a
-   *     href="https://www.mercadopago.com.br/developers/pt/reference/integrations_api_paymentintent_mlb/_point_integration-api_devices_deviceid_payment-intents/post">api
+   *     href="https://www.mercadopago.com/developers/pt/reference/integrations_api_paymentintent_mlb/_point_integration-api_devices_deviceid_payment-intents/post">api
    *     docs</a>
    */
   public PointPaymentIntent createPaymentIntent(String deviceId, PointPaymentIntentRequest request)

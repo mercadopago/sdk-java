@@ -88,7 +88,6 @@ class PointClientTest extends BaseClientTest {
   }
 
   private PointPaymentIntentRequest newPaymentIntentRequest() {
-
     PointPaymentIntentPaymentRequest payment =
         PointPaymentIntentPaymentRequest.builder()
             .installments(1)

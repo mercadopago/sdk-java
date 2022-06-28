@@ -69,7 +69,6 @@ class PointClientIT extends BaseClientIT {
   }
 
   private PointPaymentIntentRequest buildPaymentIntentRequest() {
-
     PointPaymentIntentPaymentRequest payment =
         PointPaymentIntentPaymentRequest.builder()
             .installments(1)
