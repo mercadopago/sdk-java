@@ -12,7 +12,9 @@ import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPHttpClient;
 import com.mercadopago.net.MPRequest;
 import com.mercadopago.net.MPResponse;
+import com.mercadopago.net.MPSearchRequest;
 import com.mercadopago.resources.point.PointCancelPaymentIntent;
+import com.mercadopago.resources.point.PointDevices;
 import com.mercadopago.resources.point.PointPaymentIntent;
 import com.mercadopago.resources.point.PointPaymentIntentList;
 import com.mercadopago.resources.point.PointSearchPaymentIntent;
@@ -39,6 +41,8 @@ public class PointClient extends MercadoPagoClient {
 
   private static final String PAYMENT_INTENT_STATUS_URL =
       "point/integration-api/payment-intents/%s/events";
+
+  private static final String DEVICES_URL = "point/integration-api/devices";
 
   /** Default constructor. Uses the default http client used by the SDK. */
   public PointClient() {
@@ -284,6 +288,48 @@ public class PointClient extends MercadoPagoClient {
     MPResponse response = send(mpRequest, requestOptions);
     PointStatusPaymentIntent result =
         deserializeFromJson(PointStatusPaymentIntent.class, response.getContent());
+    result.setResponse(response);
+
+    return result;
+  }
+
+  /**
+   * Method responsible for getting the devices. Devices can be filtered by pos and/or store.
+   *
+   * @param request attributes used to set search params
+   * @return devices
+   * @throws MPException an error if the request fails
+   * @see <a
+   *     href="https://www.mercadopago.com.br/developers/pt/reference/integrations_api/_point_integration-api_devices/get">api
+   *     docs</a>
+   */
+  public PointDevices getDevices(MPSearchRequest request) throws MPException, MPApiException {
+    return this.getDevices(request, null);
+  }
+
+  /**
+   * Method responsible for getting the devices. Devices can be filtered by pos and/or store.
+   *
+   * @param request attributes used to set search params
+   * @param requestOptions metadata to customize the request
+   * @return devices
+   * @throws MPException an error if the request fails
+   * @see <a
+   *     href="https://www.mercadopago.com.br/developers/pt/reference/integrations_api/_point_integration-api_devices/get">api
+   *     docs</a>
+   */
+  public PointDevices getDevices(MPSearchRequest request, MPRequestOptions requestOptions)
+      throws MPException, MPApiException {
+
+    MPRequest mpRequest =
+        MPRequest.builder()
+            .uri(DEVICES_URL)
+            .method(HttpMethod.GET)
+            .queryParams(request.getParameters())
+            .build();
+
+    MPResponse response = send(mpRequest, requestOptions);
+    PointDevices result = deserializeFromJson(PointDevices.class, response.getContent());
     result.setResponse(response);
 
     return result;

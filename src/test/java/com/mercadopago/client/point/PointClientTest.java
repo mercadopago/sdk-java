@@ -16,7 +16,9 @@ import com.google.gson.JsonElement;
 import com.mercadopago.BaseClientTest;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
+import com.mercadopago.net.MPSearchRequest;
 import com.mercadopago.resources.point.PointCancelPaymentIntent;
+import com.mercadopago.resources.point.PointDevices;
 import com.mercadopago.resources.point.PointPaymentIntent;
 import com.mercadopago.resources.point.PointPaymentIntentList;
 import com.mercadopago.resources.point.PointSearchPaymentIntent;
@@ -26,6 +28,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.protocol.HttpContext;
@@ -42,6 +46,8 @@ class PointClientTest extends BaseClientTest {
   private final String paymentIntentSearchJson = "point/payment_intent_search.json";
 
   private final String paymentIntentStatusJson = "point/payment_intent_status.json";
+
+  private final String devicesListJson = "point/devices_list.json";
 
   private final String deviceId = "GERTEC_MP35P__8701012051267123";
 
@@ -218,6 +224,34 @@ class PointClientTest extends BaseClientTest {
         paymentIntentStatus.getCreatedOn());
   }
 
+  @Test
+  void getDevicesSuccess() throws IOException, MPException, MPApiException {
+    HttpResponse httpResponse = generateHttpResponseFromFile(devicesListJson, OK);
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    PointDevices pointDevices = client.getDevices(newSearchDevicesRequest());
+
+    assertNotNull(pointDevices.getResponse());
+    assertEquals(OK, pointDevices.getResponse().getStatusCode());
+    assertSearchDevicesFields(pointDevices);
+  }
+
+  @Test
+  void getDevicesWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
+    HttpResponse httpResponse = generateHttpResponseFromFile(devicesListJson, OK);
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    PointDevices pointDevices = client.getDevices(newSearchDevicesRequest(), buildRequestOptions());
+
+    assertNotNull(pointDevices.getResponse());
+    assertEquals(OK, pointDevices.getResponse().getStatusCode());
+    assertSearchDevicesFields(pointDevices);
+  }
+
   private void assertPaymentIntentFields(PointPaymentIntent paymentIntent) {
     assertNotNull(paymentIntent.getAdditionalInfo());
     assertEquals(
@@ -280,6 +314,16 @@ class PointClientTest extends BaseClientTest {
     assertEquals("OPEN", searchPaymentIntent.getState());
   }
 
+  private void assertSearchDevicesFields(PointDevices pointDevices) {
+    assertEquals(1, pointDevices.getDevices().size());
+    assertEquals("GERTEC_MP35P__8701012051267123", pointDevices.getDevices().get(0).getId());
+    assertEquals("PDV", pointDevices.getDevices().get(0).getOperatingMode());
+    assertNotNull(pointDevices.getPaging());
+    assertEquals(1, pointDevices.getPaging().getTotal());
+    assertEquals(50, pointDevices.getPaging().getLimit());
+    assertEquals(0, pointDevices.getPaging().getOffset());
+  }
+
   private PointPaymentIntentRequest newPaymentIntentRequest() {
     PointPaymentIntentPaymentRequest payment =
         PointPaymentIntentPaymentRequest.builder()
@@ -307,5 +351,12 @@ class PointClientTest extends BaseClientTest {
     LocalDate startDate = LocalDate.of(2022, 1, 1);
     LocalDate endDate = LocalDate.of(2022, 1, 30);
     return PointPaymentIntentListRequest.builder().startDate(startDate).endDate(endDate).build();
+  }
+
+  private MPSearchRequest newSearchDevicesRequest() {
+    Map<String, Object> filters = new HashMap<>();
+    filters.put("store_id", "9999999");
+    filters.put("posId", 8888888);
+    return MPSearchRequest.builder().filters(filters).limit(50).offset(0).build();
   }
 }
