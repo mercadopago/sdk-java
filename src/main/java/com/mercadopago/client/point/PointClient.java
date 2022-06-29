@@ -15,6 +15,7 @@ import com.mercadopago.net.MPResponse;
 import com.mercadopago.resources.point.PointCancelPaymentIntent;
 import com.mercadopago.resources.point.PointPaymentIntent;
 import com.mercadopago.resources.point.PointPaymentIntentList;
+import com.mercadopago.resources.point.PointSearchPaymentIntent;
 import com.mercadopago.serialization.Serializer;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
@@ -31,6 +32,9 @@ public class PointClient extends MercadoPagoClient {
 
   private static final String PAYMENT_INTENT_DELETE_URL =
       "point/integration-api/devices/%s/payment-intents/%s";
+
+  private static final String PAYMENT_INTENT_SEARCH_URL =
+      "point/integration-api/payment-intents/%s";
 
   /** Default constructor. Uses the default http client used by the SDK. */
   public PointClient() {
@@ -188,6 +192,50 @@ public class PointClient extends MercadoPagoClient {
     MPResponse response = send(mpRequest, requestOptions);
     PointCancelPaymentIntent result =
         deserializeFromJson(PointCancelPaymentIntent.class, response.getContent());
+    result.setResponse(response);
+
+    return result;
+  }
+
+  /**
+   * Method responsible for getting a payment intent.
+   *
+   * @param paymentIntentId payment intent id
+   * @return payment intent
+   * @throws MPException an error if the request fails
+   * @see <a
+   *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_payment-intents_paymentintentid/get">api
+   *     docs</a>
+   */
+  public PointSearchPaymentIntent searchPaymentIntent(String paymentIntentId)
+      throws MPException, MPApiException {
+    return this.searchPaymentIntent(paymentIntentId, null);
+  }
+
+  /**
+   * Method responsible for getting a payment intent.
+   *
+   * @param paymentIntentId payment intent id
+   * @param requestOptions metadata to customize the request
+   * @return payment intent
+   * @throws MPException an error if the request fails
+   * @see <a
+   *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_payment-intents_paymentintentid/get">api
+   *     docs</a>
+   */
+  public PointSearchPaymentIntent searchPaymentIntent(
+      String paymentIntentId, MPRequestOptions requestOptions) throws MPException, MPApiException {
+    LOGGER.info("Sending search point payment intent request");
+
+    MPRequest mpRequest =
+        MPRequest.builder()
+            .uri(String.format(PAYMENT_INTENT_SEARCH_URL, paymentIntentId))
+            .method(HttpMethod.GET)
+            .build();
+
+    MPResponse response = send(mpRequest, requestOptions);
+    PointSearchPaymentIntent result =
+        deserializeFromJson(PointSearchPaymentIntent.class, response.getContent());
     result.setResponse(response);
 
     return result;

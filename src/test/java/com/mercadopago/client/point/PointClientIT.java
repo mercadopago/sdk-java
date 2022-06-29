@@ -13,6 +13,7 @@ import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.point.PointCancelPaymentIntent;
 import com.mercadopago.resources.point.PointPaymentIntent;
 import com.mercadopago.resources.point.PointPaymentIntentList;
+import com.mercadopago.resources.point.PointSearchPaymentIntent;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
@@ -119,6 +120,46 @@ class PointClientIT extends BaseClientIT {
       assertNotNull(cancelPaymentIntent.getResponse());
       assertEquals(OK, cancelPaymentIntent.getResponse().getStatusCode());
       assertEquals(paymentIntent.getId(), cancelPaymentIntent.getId());
+    } catch (MPApiException mpApiException) {
+      fail(mpApiException.getApiResponse().getContent());
+    } catch (MPException mpException) {
+      fail(mpException.getMessage());
+    }
+  }
+
+  @Test
+  void searchPaymentIntentSuccess() {
+    try {
+      PointPaymentIntentRequest request = buildPaymentIntentRequest();
+      PointPaymentIntent paymentIntent = client.createPaymentIntent(deviceId, request);
+      PointSearchPaymentIntent searchPaymentIntent =
+          client.searchPaymentIntent(paymentIntent.getId());
+
+      assertNotNull(searchPaymentIntent.getResponse());
+      assertEquals(OK, searchPaymentIntent.getResponse().getStatusCode());
+      assertEquals(paymentIntent.getId(), searchPaymentIntent.getId());
+      assertNotNull(searchPaymentIntent.getState());
+      client.cancelPaymentIntent(deviceId, paymentIntent.getId());
+    } catch (MPApiException mpApiException) {
+      fail(mpApiException.getApiResponse().getContent());
+    } catch (MPException mpException) {
+      fail(mpException.getMessage());
+    }
+  }
+
+  @Test
+  void searchPaymentIntentWithRequestOptionsSuccess() {
+    try {
+      PointPaymentIntentRequest request = buildPaymentIntentRequest();
+      PointPaymentIntent paymentIntent = client.createPaymentIntent(deviceId, request);
+      PointSearchPaymentIntent searchPaymentIntent =
+          client.searchPaymentIntent(paymentIntent.getId(), buildRequestOptions());
+
+      assertNotNull(searchPaymentIntent.getResponse());
+      assertEquals(OK, searchPaymentIntent.getResponse().getStatusCode());
+      assertEquals(paymentIntent.getId(), searchPaymentIntent.getId());
+      assertNotNull(searchPaymentIntent.getState());
+      client.cancelPaymentIntent(deviceId, paymentIntent.getId());
     } catch (MPApiException mpApiException) {
       fail(mpApiException.getApiResponse().getContent());
     } catch (MPException mpException) {
