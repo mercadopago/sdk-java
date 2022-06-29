@@ -1,5 +1,6 @@
 package com.mercadopago.client.point;
 
+import static com.mercadopago.client.point.OperatingMode.PDV;
 import static com.mercadopago.helper.MockHelper.generateHttpResponseFromFile;
 import static com.mercadopago.helper.MockHelper.generateJsonElement;
 import static com.mercadopago.helper.MockHelper.generateJsonElementFromUriRequest;
@@ -256,25 +257,30 @@ class PointClientTest extends BaseClientTest {
   }
 
   @Test
-  void changeDeviceOperationModeSuccess() throws IOException, MPException, MPApiException {
+  void changeDeviceOperatingModeSuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse = generateHttpResponseFromFile(devicesOperatingModeJson, OK);
     doReturn(httpResponse)
         .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
     PointDeviceOperatingModeRequest request =
-        PointDeviceOperatingModeRequest.builder().operatingMode("PDV").build();
+        PointDeviceOperatingModeRequest.builder().operatingMode(PDV).build();
 
     PointDeviceOperatingMode deviceOperatingMode =
         client.changeDeviceOperatingMode(deviceId, request);
 
+    JsonElement requestPayload =
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement(devicesOperatingModeJson);
+
+    assertEquals(requestPayloadMock, requestPayload);
     assertNotNull(deviceOperatingMode.getResponse());
     assertEquals(OK, deviceOperatingMode.getResponse().getStatusCode());
-    assertEquals("PDV", deviceOperatingMode.getOperatingMode());
+    assertEquals(PDV, deviceOperatingMode.getOperatingMode());
   }
 
   @Test
-  void changeDeviceOperationModeWithRequestOptionsSuccess()
+  void changeDeviceOperatingModeWithRequestOptionsSuccess()
       throws IOException, MPException, MPApiException {
     HttpResponse httpResponse = generateHttpResponseFromFile(devicesOperatingModeJson, OK);
     doReturn(httpResponse)
@@ -282,14 +288,19 @@ class PointClientTest extends BaseClientTest {
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
     PointDeviceOperatingModeRequest request =
-        PointDeviceOperatingModeRequest.builder().operatingMode("PDV").build();
+        PointDeviceOperatingModeRequest.builder().operatingMode(PDV).build();
 
     PointDeviceOperatingMode deviceOperatingMode =
         client.changeDeviceOperatingMode(deviceId, request, buildRequestOptions());
 
+    JsonElement requestPayload =
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement(devicesOperatingModeJson);
+
+    assertEquals(requestPayloadMock, requestPayload);
     assertNotNull(deviceOperatingMode.getResponse());
     assertEquals(OK, deviceOperatingMode.getResponse().getStatusCode());
-    assertEquals("PDV", deviceOperatingMode.getOperatingMode());
+    assertEquals(PDV, deviceOperatingMode.getOperatingMode());
   }
 
   private void assertPaymentIntentFields(PointPaymentIntent paymentIntent) {

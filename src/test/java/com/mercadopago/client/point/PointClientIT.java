@@ -1,5 +1,7 @@
 package com.mercadopago.client.point;
 
+import static com.mercadopago.client.point.OperatingMode.PDV;
+import static com.mercadopago.client.point.OperatingMode.STANDALONE;
 import static com.mercadopago.net.HttpStatus.CREATED;
 import static com.mercadopago.net.HttpStatus.OK;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -249,17 +251,17 @@ class PointClientIT extends BaseClientIT {
   }
 
   @Test
-  void changeDeviceOperationModeSuccess() {
+  void changeDeviceOperatingModeSuccess() {
     try {
       PointDeviceOperatingModeRequest request =
-          PointDeviceOperatingModeRequest.builder().operatingMode("PDV").build();
+          PointDeviceOperatingModeRequest.builder().operatingMode(STANDALONE).build();
 
       PointDeviceOperatingMode deviceOperatingMode =
           client.changeDeviceOperatingMode(deviceId, request);
 
       assertNotNull(deviceOperatingMode.getResponse());
       assertEquals(OK, deviceOperatingMode.getResponse().getStatusCode());
-      assertEquals("PDV", deviceOperatingMode.getOperatingMode());
+      assertEquals(STANDALONE, deviceOperatingMode.getOperatingMode());
     } catch (MPApiException mpApiException) {
       fail(mpApiException.getApiResponse().getContent());
     } catch (MPException mpException) {
@@ -268,17 +270,17 @@ class PointClientIT extends BaseClientIT {
   }
 
   @Test
-  void changeDeviceOperationModeWithRequestOptionsSuccess() {
+  void changeDeviceOperatingModeWithRequestOptionsSuccess() {
     try {
       PointDeviceOperatingModeRequest request =
-          PointDeviceOperatingModeRequest.builder().operatingMode("PDV").build();
+          PointDeviceOperatingModeRequest.builder().operatingMode(PDV).build();
 
       PointDeviceOperatingMode deviceOperatingMode =
           client.changeDeviceOperatingMode(deviceId, request, buildRequestOptions());
 
       assertNotNull(deviceOperatingMode.getResponse());
       assertEquals(OK, deviceOperatingMode.getResponse().getStatusCode());
-      assertEquals("PDV", deviceOperatingMode.getOperatingMode());
+      assertEquals(PDV, deviceOperatingMode.getOperatingMode());
     } catch (MPApiException mpApiException) {
       fail(mpApiException.getApiResponse().getContent());
     } catch (MPException mpException) {

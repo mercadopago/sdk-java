@@ -8,5 +8,5 @@ import lombok.Getter;
 @Builder
 public class PointDeviceOperatingModeRequest {
   /** Device operating mode. */
-  private final String operatingMode;
+  private final OperatingMode operatingMode;
 }
