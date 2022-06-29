@@ -10,7 +10,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.mercadopago.BaseClientIT;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
+import com.mercadopago.net.MPSearchRequest;
 import com.mercadopago.resources.point.PointCancelPaymentIntent;
+import com.mercadopago.resources.point.PointDevices;
 import com.mercadopago.resources.point.PointPaymentIntent;
 import com.mercadopago.resources.point.PointPaymentIntentList;
 import com.mercadopago.resources.point.PointSearchPaymentIntent;
@@ -208,6 +210,43 @@ class PointClientIT extends BaseClientIT {
     }
   }
 
+  @Test
+  void getDevicesSuccess() {
+    try {
+      PointDevices pointDevices = client.getDevices(newSearchDevicesRequest());
+
+      assertNotNull(pointDevices.getResponse());
+      assertEquals(OK, pointDevices.getResponse().getStatusCode());
+      assertNotNull(pointDevices.getDevices());
+      assertNotNull(pointDevices.getPaging());
+      assertEquals(50, pointDevices.getPaging().getLimit());
+      assertEquals(0, pointDevices.getPaging().getOffset());
+    } catch (MPApiException mpApiException) {
+      fail(mpApiException.getApiResponse().getContent());
+    } catch (MPException mpException) {
+      fail(mpException.getMessage());
+    }
+  }
+
+  @Test
+  void getDevicesWithRequestOptionsSuccess() {
+    try {
+      PointDevices pointDevices =
+          client.getDevices(newSearchDevicesRequest(), buildRequestOptions());
+
+      assertNotNull(pointDevices.getResponse());
+      assertEquals(OK, pointDevices.getResponse().getStatusCode());
+      assertNotNull(pointDevices.getDevices());
+      assertNotNull(pointDevices.getPaging());
+      assertEquals(50, pointDevices.getPaging().getLimit());
+      assertEquals(0, pointDevices.getPaging().getOffset());
+    } catch (MPApiException mpApiException) {
+      fail(mpApiException.getApiResponse().getContent());
+    } catch (MPException mpException) {
+      fail(mpException.getMessage());
+    }
+  }
+
   private void assertPaymentIntentFields(PointPaymentIntent paymentIntent) {
     assertNotNull(paymentIntent.getId());
     assertNotNull(paymentIntent.getAdditionalInfo());
@@ -248,5 +287,9 @@ class PointClientIT extends BaseClientIT {
     LocalDate startDate = LocalDate.of(2022, 1, 1);
     LocalDate endDate = LocalDate.of(2022, 1, 30);
     return PointPaymentIntentListRequest.builder().startDate(startDate).endDate(endDate).build();
+  }
+
+  private MPSearchRequest newSearchDevicesRequest() {
+    return MPSearchRequest.builder().limit(50).offset(0).build();
   }
 }
