@@ -204,7 +204,7 @@ public class PointClient extends MercadoPagoClient {
    * @return payment intent
    * @throws MPException an error if the request fails
    * @see <a
-   *     href="https://www.mercadopago.com.br/developers/pt/reference/integrations_api/_point_integration-api_payment-intents_paymentintentid/get">api
+   *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_payment-intents_paymentintentid/get">api
    *     docs</a>
    */
   public PointSearchPaymentIntent searchPaymentIntent(String paymentIntentId)
@@ -220,11 +220,12 @@ public class PointClient extends MercadoPagoClient {
    * @return payment intent
    * @throws MPException an error if the request fails
    * @see <a
-   *     href="https://www.mercadopago.com.br/developers/pt/reference/integrations_api/_point_integration-api_payment-intents_paymentintentid/get">api
+   *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_payment-intents_paymentintentid/get">api
    *     docs</a>
    */
   public PointSearchPaymentIntent searchPaymentIntent(
       String paymentIntentId, MPRequestOptions requestOptions) throws MPException, MPApiException {
+    LOGGER.info("Sending search point payment intent request");
 
     MPRequest mpRequest =
         MPRequest.builder()
