@@ -16,6 +16,7 @@ import com.google.gson.JsonElement;
 import com.mercadopago.BaseClientTest;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
+import com.mercadopago.resources.point.PointCancelPaymentIntent;
 import com.mercadopago.resources.point.PointPaymentIntent;
 import com.mercadopago.resources.point.PointPaymentIntentList;
 import java.io.IOException;
@@ -34,7 +35,11 @@ class PointClientTest extends BaseClientTest {
 
   private final String paymentIntentListJson = "point/payment_intent_list.json";
 
+  private final String paymentIntentDeleteJson = "point/payment_intent_delete.json";
+
   private final String deviceId = "GERTEC_MP35P__8701012051267123";
+
+  private final String paymentIntentId = "afa5ffb4-9094-43de-8192-fb951e96ee95";
 
   private final PointClient client = new PointClient();
 
@@ -108,6 +113,37 @@ class PointClientTest extends BaseClientTest {
     assertNotNull(paymentIntentList.getResponse());
     assertEquals(OK, paymentIntentList.getResponse().getStatusCode());
     assertPaymentIntentListFields(paymentIntentList);
+  }
+
+  @Test
+  void cancelPaymentIntentSuccess() throws IOException, MPException, MPApiException {
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentIntentDeleteJson, OK);
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    PointCancelPaymentIntent cancelPaymentIntent =
+        client.cancelPaymentIntent(deviceId, paymentIntentId);
+
+    assertNotNull(cancelPaymentIntent.getResponse());
+    assertEquals(OK, cancelPaymentIntent.getResponse().getStatusCode());
+    assertEquals(paymentIntentId, cancelPaymentIntent.getId());
+  }
+
+  @Test
+  void cancelPaymentIntentWithRequestOptionsSuccess()
+      throws IOException, MPException, MPApiException {
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentIntentDeleteJson, OK);
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    PointCancelPaymentIntent cancelPaymentIntent =
+        client.cancelPaymentIntent(deviceId, paymentIntentId, buildRequestOptions());
+
+    assertNotNull(cancelPaymentIntent.getResponse());
+    assertEquals(OK, cancelPaymentIntent.getResponse().getStatusCode());
+    assertEquals(paymentIntentId, cancelPaymentIntent.getId());
   }
 
   private void assertPaymentIntentFields(PointPaymentIntent paymentIntent) {

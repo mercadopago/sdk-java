@@ -12,6 +12,7 @@ import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPHttpClient;
 import com.mercadopago.net.MPRequest;
 import com.mercadopago.net.MPResponse;
+import com.mercadopago.resources.point.PointCancelPaymentIntent;
 import com.mercadopago.resources.point.PointPaymentIntent;
 import com.mercadopago.resources.point.PointPaymentIntentList;
 import com.mercadopago.serialization.Serializer;
@@ -27,6 +28,9 @@ public class PointClient extends MercadoPagoClient {
 
   private static final String PAYMENT_INTENT_LIST_URL =
       "/point/integration-api/payment-intents/events";
+
+  private static final String PAYMENT_INTENT_DELETE_URL =
+      "point/integration-api/devices/%s/payment-intents/%s";
 
   /** Default constructor. Uses the default http client used by the SDK. */
   public PointClient() {
@@ -137,6 +141,53 @@ public class PointClient extends MercadoPagoClient {
     MPResponse response = send(mpRequest, requestOptions);
     PointPaymentIntentList result =
         deserializeFromJson(PointPaymentIntentList.class, response.getContent());
+    result.setResponse(response);
+
+    return result;
+  }
+
+  /**
+   * Method responsible for cancelling a payment intent.
+   *
+   * @param deviceId device id
+   * @param paymentIntentId payment intent id
+   * @return cancelled payment intent id
+   * @throws MPException an error if the request fails
+   * @see <a
+   *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_devices_deviceid_payment-intents_paymentintentid/delete">api
+   *     docs</a>
+   */
+  public PointCancelPaymentIntent cancelPaymentIntent(String deviceId, String paymentIntentId)
+      throws MPException, MPApiException {
+    return this.cancelPaymentIntent(deviceId, paymentIntentId, null);
+  }
+
+  /**
+   * Method responsible for cancelling a payment intent.
+   *
+   * @param deviceId device id
+   * @param paymentIntentId payment intent id
+   * @param requestOptions metadata to customize the request
+   * @return cancelled payment intent id
+   * @throws MPException an error if the request fails
+   * @see <a
+   *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_devices_deviceid_payment-intents_paymentintentid/delete">api
+   *     docs</a>
+   */
+  public PointCancelPaymentIntent cancelPaymentIntent(
+      String deviceId, String paymentIntentId, MPRequestOptions requestOptions)
+      throws MPException, MPApiException {
+    LOGGER.info("Sending cancel point payment intent request");
+
+    MPRequest mpRequest =
+        MPRequest.builder()
+            .uri(String.format(PAYMENT_INTENT_DELETE_URL, deviceId, paymentIntentId))
+            .method(HttpMethod.DELETE)
+            .build();
+
+    MPResponse response = send(mpRequest, requestOptions);
+    PointCancelPaymentIntent result =
+        deserializeFromJson(PointCancelPaymentIntent.class, response.getContent());
     result.setResponse(response);
 
     return result;

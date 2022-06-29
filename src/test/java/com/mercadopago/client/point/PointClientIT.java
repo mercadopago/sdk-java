@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.mercadopago.BaseClientIT;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
+import com.mercadopago.resources.point.PointCancelPaymentIntent;
 import com.mercadopago.resources.point.PointPaymentIntent;
 import com.mercadopago.resources.point.PointPaymentIntentList;
 import java.math.BigDecimal;
@@ -82,6 +83,42 @@ class PointClientIT extends BaseClientIT {
       assertNotNull(paymentIntentList.getResponse());
       assertEquals(OK, paymentIntentList.getResponse().getStatusCode());
       assertNotNull(paymentIntentList.getEvents());
+    } catch (MPApiException mpApiException) {
+      fail(mpApiException.getApiResponse().getContent());
+    } catch (MPException mpException) {
+      fail(mpException.getMessage());
+    }
+  }
+
+  @Test
+  void cancelPaymentIntentSuccess() {
+    try {
+      PointPaymentIntentRequest request = buildPaymentIntentRequest();
+      PointPaymentIntent paymentIntent = client.createPaymentIntent(deviceId, request);
+      PointCancelPaymentIntent cancelPaymentIntent =
+          client.cancelPaymentIntent(deviceId, paymentIntent.getId());
+
+      assertNotNull(cancelPaymentIntent.getResponse());
+      assertEquals(OK, cancelPaymentIntent.getResponse().getStatusCode());
+      assertEquals(paymentIntent.getId(), cancelPaymentIntent.getId());
+    } catch (MPApiException mpApiException) {
+      fail(mpApiException.getApiResponse().getContent());
+    } catch (MPException mpException) {
+      fail(mpException.getMessage());
+    }
+  }
+
+  @Test
+  void cancelPaymentIntentWithRequestOptionsSuccess() {
+    try {
+      PointPaymentIntentRequest request = buildPaymentIntentRequest();
+      PointPaymentIntent paymentIntent = client.createPaymentIntent(deviceId, request);
+      PointCancelPaymentIntent cancelPaymentIntent =
+          client.cancelPaymentIntent(deviceId, paymentIntent.getId(), buildRequestOptions());
+
+      assertNotNull(cancelPaymentIntent.getResponse());
+      assertEquals(OK, cancelPaymentIntent.getResponse().getStatusCode());
+      assertEquals(paymentIntent.getId(), cancelPaymentIntent.getId());
     } catch (MPApiException mpApiException) {
       fail(mpApiException.getApiResponse().getContent());
     } catch (MPException mpException) {
