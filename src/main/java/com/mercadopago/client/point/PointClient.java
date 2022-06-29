@@ -171,12 +171,13 @@ public class PointClient extends MercadoPagoClient {
    * @return cancelled payment intent id
    * @throws MPException an error if the request fails
    * @see <a
-   *     href="https://www.mercadopago.com.br/developers/pt/reference/integrations_api/_point_integration-api_devices_deviceid_payment-intents_paymentintentid/delete">api
+   *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_devices_deviceid_payment-intents_paymentintentid/delete">api
    *     docs</a>
    */
   public PointCancelPaymentIntent cancelPaymentIntent(
       String deviceId, String paymentIntentId, MPRequestOptions requestOptions)
       throws MPException, MPApiException {
+    LOGGER.info("Sending cancel point payment intent request");
 
     MPRequest mpRequest =
         MPRequest.builder()
