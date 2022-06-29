@@ -300,7 +300,7 @@ public class PointClient extends MercadoPagoClient {
    * @return devices
    * @throws MPException an error if the request fails
    * @see <a
-   *     href="https://www.mercadopago.com.br/developers/pt/reference/integrations_api/_point_integration-api_devices/get">api
+   *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_devices/get">api
    *     docs</a>
    */
   public PointDevices getDevices(MPSearchRequest request) throws MPException, MPApiException {
@@ -308,18 +308,20 @@ public class PointClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for getting the devices. Devices can be filtered by pos and/or store.
+   * Method responsible for getting the devices. Devices can be filtered by pos and/or store with
+   * request options.
    *
    * @param request attributes used to set search params
    * @param requestOptions metadata to customize the request
    * @return devices
    * @throws MPException an error if the request fails
    * @see <a
-   *     href="https://www.mercadopago.com.br/developers/pt/reference/integrations_api/_point_integration-api_devices/get">api
+   *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_devices/get">api
    *     docs</a>
    */
   public PointDevices getDevices(MPSearchRequest request, MPRequestOptions requestOptions)
       throws MPException, MPApiException {
+    LOGGER.info("Sending get point devices request");
 
     MPRequest mpRequest =
         MPRequest.builder()
