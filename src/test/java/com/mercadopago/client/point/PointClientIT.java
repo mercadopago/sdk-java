@@ -14,6 +14,7 @@ import com.mercadopago.resources.point.PointCancelPaymentIntent;
 import com.mercadopago.resources.point.PointPaymentIntent;
 import com.mercadopago.resources.point.PointPaymentIntentList;
 import com.mercadopago.resources.point.PointSearchPaymentIntent;
+import com.mercadopago.resources.point.PointStatusPaymentIntent;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
@@ -159,6 +160,46 @@ class PointClientIT extends BaseClientIT {
       assertEquals(OK, searchPaymentIntent.getResponse().getStatusCode());
       assertEquals(paymentIntent.getId(), searchPaymentIntent.getId());
       assertNotNull(searchPaymentIntent.getState());
+      client.cancelPaymentIntent(deviceId, paymentIntent.getId());
+    } catch (MPApiException mpApiException) {
+      fail(mpApiException.getApiResponse().getContent());
+    } catch (MPException mpException) {
+      fail(mpException.getMessage());
+    }
+  }
+
+  @Test
+  void getPaymentIntentStatusSuccess() {
+    try {
+      PointPaymentIntentRequest request = buildPaymentIntentRequest();
+      PointPaymentIntent paymentIntent = client.createPaymentIntent(deviceId, request);
+      PointStatusPaymentIntent paymentIntentStatus =
+          client.getPaymentIntentStatus(paymentIntent.getId());
+
+      assertNotNull(paymentIntentStatus.getResponse());
+      assertEquals(OK, paymentIntentStatus.getResponse().getStatusCode());
+      assertEquals("OPEN", paymentIntentStatus.getStatus());
+      assertNotNull(paymentIntentStatus.getCreatedOn());
+      client.cancelPaymentIntent(deviceId, paymentIntent.getId());
+    } catch (MPApiException mpApiException) {
+      fail(mpApiException.getApiResponse().getContent());
+    } catch (MPException mpException) {
+      fail(mpException.getMessage());
+    }
+  }
+
+  @Test
+  void getPaymentIntentStatusWithRequestOptionsSuccess() {
+    try {
+      PointPaymentIntentRequest request = buildPaymentIntentRequest();
+      PointPaymentIntent paymentIntent = client.createPaymentIntent(deviceId, request);
+      PointStatusPaymentIntent paymentIntentStatus =
+          client.getPaymentIntentStatus(paymentIntent.getId(), buildRequestOptions());
+
+      assertNotNull(paymentIntentStatus.getResponse());
+      assertEquals(OK, paymentIntentStatus.getResponse().getStatusCode());
+      assertEquals("OPEN", paymentIntentStatus.getStatus());
+      assertNotNull(paymentIntentStatus.getCreatedOn());
       client.cancelPaymentIntent(deviceId, paymentIntent.getId());
     } catch (MPApiException mpApiException) {
       fail(mpApiException.getApiResponse().getContent());

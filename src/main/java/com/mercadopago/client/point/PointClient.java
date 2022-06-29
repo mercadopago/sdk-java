@@ -16,6 +16,7 @@ import com.mercadopago.resources.point.PointCancelPaymentIntent;
 import com.mercadopago.resources.point.PointPaymentIntent;
 import com.mercadopago.resources.point.PointPaymentIntentList;
 import com.mercadopago.resources.point.PointSearchPaymentIntent;
+import com.mercadopago.resources.point.PointStatusPaymentIntent;
 import com.mercadopago.serialization.Serializer;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
@@ -35,6 +36,9 @@ public class PointClient extends MercadoPagoClient {
 
   private static final String PAYMENT_INTENT_SEARCH_URL =
       "point/integration-api/payment-intents/%s";
+
+  private static final String PAYMENT_INTENT_STATUS_URL =
+      "point/integration-api/payment-intents/%s/events";
 
   /** Default constructor. Uses the default http client used by the SDK. */
   public PointClient() {
@@ -236,6 +240,50 @@ public class PointClient extends MercadoPagoClient {
     MPResponse response = send(mpRequest, requestOptions);
     PointSearchPaymentIntent result =
         deserializeFromJson(PointSearchPaymentIntent.class, response.getContent());
+    result.setResponse(response);
+
+    return result;
+  }
+
+  /**
+   * Method responsible for finding the last state of a payment intent.
+   *
+   * @param paymentIntentId payment intent id
+   * @return payment intent status
+   * @throws MPException an error if the request fails
+   * @see <a
+   *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_payment-intents_paymentintentid_events/get">api
+   *     docs</a>
+   */
+  public PointStatusPaymentIntent getPaymentIntentStatus(String paymentIntentId)
+      throws MPException, MPApiException {
+    return this.getPaymentIntentStatus(paymentIntentId, null);
+  }
+
+  /**
+   * Method responsible for finding the last state of a payment intent.
+   *
+   * @param paymentIntentId payment intent id
+   * @param requestOptions metadata to customize the request
+   * @return payment intent status
+   * @throws MPException an error if the request fails
+   * @see <a
+   *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_payment-intents_paymentintentid_events/get">api
+   *     docs</a>
+   */
+  public PointStatusPaymentIntent getPaymentIntentStatus(
+      String paymentIntentId, MPRequestOptions requestOptions) throws MPException, MPApiException {
+    LOGGER.info("Sending get point payment intent status request");
+
+    MPRequest mpRequest =
+        MPRequest.builder()
+            .uri(String.format(PAYMENT_INTENT_STATUS_URL, paymentIntentId))
+            .method(HttpMethod.GET)
+            .build();
+
+    MPResponse response = send(mpRequest, requestOptions);
+    PointStatusPaymentIntent result =
+        deserializeFromJson(PointStatusPaymentIntent.class, response.getContent());
     result.setResponse(response);
 
     return result;
