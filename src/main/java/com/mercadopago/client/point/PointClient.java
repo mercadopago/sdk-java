@@ -348,7 +348,7 @@ public class PointClient extends MercadoPagoClient {
    * @return device operating mode
    * @throws MPException an error if the request fails
    * @see <a
-   *     href="https://www.mercadopago.com.br/developers/pt/reference/integrations_api/_point_integration-api_devices_device-id/patch">api
+   *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_devices_device-id/patch">api
    *     docs</a>
    */
   public PointDeviceOperatingMode changeDeviceOperatingMode(
@@ -357,7 +357,7 @@ public class PointClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for change the device operating mode.
+   * Method responsible for change the device operating mode with request options.
    *
    * @param deviceId device id
    * @param request request used to set operating mode
@@ -365,12 +365,13 @@ public class PointClient extends MercadoPagoClient {
    * @return device operating mode
    * @throws MPException an error if the request fails
    * @see <a
-   *     href="https://www.mercadopago.com.br/developers/pt/reference/integrations_api/_point_integration-api_devices_device-id/patch">api
+   *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_devices_device-id/patch">api
    *     docs</a>
    */
   public PointDeviceOperatingMode changeDeviceOperatingMode(
       String deviceId, PointDeviceOperatingModeRequest request, MPRequestOptions requestOptions)
       throws MPException, MPApiException {
+    LOGGER.info("Sending change point device operating mode request");
 
     MPRequest mpRequest =
         MPRequest.builder()
