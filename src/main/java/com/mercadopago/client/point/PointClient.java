@@ -102,7 +102,7 @@ public class PointClient extends MercadoPagoClient {
    * @return list of payment intents.
    * @throws MPException an error if the request fails
    * @see <a
-   *     href="https://www.mercadopago.com.br/developers/pt/reference/integrations_api/_point_integration-api_payment-intents_events/get">api
+   *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_payment-intents_events/get">api
    *     docs</a>
    */
   public PointPaymentIntentList getPaymentIntentList(PointPaymentIntentListRequest request)
@@ -119,7 +119,7 @@ public class PointClient extends MercadoPagoClient {
    * @return list of payment intents.
    * @throws MPException an error if the request fails
    * @see <a
-   *     href="https://www.mercadopago.com.br/developers/pt/reference/integrations_api/_point_integration-api_payment-intents_events/get">api
+   *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_payment-intents_events/get">api
    *     docs</a>
    */
   public PointPaymentIntentList getPaymentIntentList(
