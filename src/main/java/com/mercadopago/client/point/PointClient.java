@@ -13,6 +13,7 @@ import com.mercadopago.net.MPHttpClient;
 import com.mercadopago.net.MPRequest;
 import com.mercadopago.net.MPResponse;
 import com.mercadopago.resources.point.PointPaymentIntent;
+import com.mercadopago.resources.point.PointPaymentIntentList;
 import com.mercadopago.serialization.Serializer;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
@@ -23,6 +24,9 @@ public class PointClient extends MercadoPagoClient {
 
   private static final String PAYMENT_INTENT_URL =
       "/point/integration-api/devices/%s/payment-intents";
+
+  private static final String PAYMENT_INTENT_LIST_URL =
+      "/point/integration-api/payment-intents/events";
 
   /** Default constructor. Uses the default http client used by the SDK. */
   public PointClient() {
@@ -85,6 +89,54 @@ public class PointClient extends MercadoPagoClient {
     MPResponse response = send(mpRequest, requestOptions);
     PointPaymentIntent result =
         deserializeFromJson(PointPaymentIntent.class, response.getContent());
+    result.setResponse(response);
+
+    return result;
+  }
+
+  /**
+   * Method responsible for getting a list of payment intents with their final states between a date
+   * range.
+   *
+   * @param request attributes used to set date range.
+   * @return list of payment intents.
+   * @throws MPException an error if the request fails
+   * @see <a
+   *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_payment-intents_events/get">api
+   *     docs</a>
+   */
+  public PointPaymentIntentList getPaymentIntentList(PointPaymentIntentListRequest request)
+      throws MPException, MPApiException {
+    return this.getPaymentIntentList(request, null);
+  }
+
+  /**
+   * Method responsible for getting a list of payment intents with their final states between a date
+   * range with request options.
+   *
+   * @param request attributes used to set date range.
+   * @param requestOptions metadata to customize the request
+   * @return list of payment intents.
+   * @throws MPException an error if the request fails
+   * @see <a
+   *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_payment-intents_events/get">api
+   *     docs</a>
+   */
+  public PointPaymentIntentList getPaymentIntentList(
+      PointPaymentIntentListRequest request, MPRequestOptions requestOptions)
+      throws MPException, MPApiException {
+    LOGGER.info("Sending get point payment intent list request");
+
+    MPRequest mpRequest =
+        MPRequest.builder()
+            .uri(PAYMENT_INTENT_LIST_URL)
+            .method(HttpMethod.GET)
+            .queryParams(request.getParams())
+            .build();
+
+    MPResponse response = send(mpRequest, requestOptions);
+    PointPaymentIntentList result =
+        deserializeFromJson(PointPaymentIntentList.class, response.getContent());
     result.setResponse(response);
 
     return result;

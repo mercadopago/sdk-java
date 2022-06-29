@@ -1,0 +1,19 @@
+{
+  "events": [
+    {
+      "payment_intent_id": "d2ee3a75-ca25-4bf3-9eca-f5f2d8f23bf4",
+      "status": "ABANDONED",
+      "created_on": "2022-01-24T10:10:10Z"
+    },
+    {
+      "payment_intent_id": "a16aba35-d43c-409d-b6c8-c3020797b061",
+      "status": "CANCELED",
+      "created_on": "2022-01-25T10:10:10Z"
+    },
+    {
+      "payment_intent_id": "68bf6839-ddb3-4825-8f4c-7eb26e68a5c3",
+      "status": "ABANDONED",
+      "created_on": "2022-01-26T10:10:10Z"
+    }
+  ]
+}
