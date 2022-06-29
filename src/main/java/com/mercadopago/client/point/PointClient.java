@@ -125,6 +125,7 @@ public class PointClient extends MercadoPagoClient {
   public PointPaymentIntentList getPaymentIntentList(
       PointPaymentIntentListRequest request, MPRequestOptions requestOptions)
       throws MPException, MPApiException {
+    LOGGER.info("Sending get point payment intent list request");
 
     MPRequest mpRequest =
         MPRequest.builder()

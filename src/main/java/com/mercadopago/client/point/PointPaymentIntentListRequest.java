@@ -10,7 +10,10 @@ import lombok.Getter;
 @Getter
 @Builder
 public class PointPaymentIntentListRequest {
+  /** Initial date. */
   private final LocalDate startDate;
+
+  /** End date. */
   private final LocalDate endDate;
 
   /**
