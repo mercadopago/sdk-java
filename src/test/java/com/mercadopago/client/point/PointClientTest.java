@@ -1,5 +1,6 @@
 package com.mercadopago.client.point;
 
+import static com.mercadopago.client.point.OperatingMode.PDV;
 import static com.mercadopago.helper.MockHelper.generateHttpResponseFromFile;
 import static com.mercadopago.helper.MockHelper.generateJsonElement;
 import static com.mercadopago.helper.MockHelper.generateJsonElementFromUriRequest;
@@ -18,6 +19,7 @@ import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.MPSearchRequest;
 import com.mercadopago.resources.point.PointCancelPaymentIntent;
+import com.mercadopago.resources.point.PointDeviceOperatingMode;
 import com.mercadopago.resources.point.PointDevices;
 import com.mercadopago.resources.point.PointPaymentIntent;
 import com.mercadopago.resources.point.PointPaymentIntentList;
@@ -48,6 +50,8 @@ class PointClientTest extends BaseClientTest {
   private final String paymentIntentStatusJson = "point/payment_intent_status.json";
 
   private final String devicesListJson = "point/devices_list.json";
+
+  private final String devicesOperatingModeJson = "point/devices_operating_mode.json";
 
   private final String deviceId = "GERTEC_MP35P__8701012051267123";
 
@@ -250,6 +254,53 @@ class PointClientTest extends BaseClientTest {
     assertNotNull(pointDevices.getResponse());
     assertEquals(OK, pointDevices.getResponse().getStatusCode());
     assertSearchDevicesFields(pointDevices);
+  }
+
+  @Test
+  void changeDeviceOperatingModeSuccess() throws IOException, MPException, MPApiException {
+    HttpResponse httpResponse = generateHttpResponseFromFile(devicesOperatingModeJson, OK);
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    PointDeviceOperatingModeRequest request =
+        PointDeviceOperatingModeRequest.builder().operatingMode(PDV).build();
+
+    PointDeviceOperatingMode deviceOperatingMode =
+        client.changeDeviceOperatingMode(deviceId, request);
+
+    JsonElement requestPayload =
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement(devicesOperatingModeJson);
+
+    assertEquals(requestPayloadMock, requestPayload);
+    assertNotNull(deviceOperatingMode.getResponse());
+    assertEquals(OK, deviceOperatingMode.getResponse().getStatusCode());
+    assertEquals(PDV, deviceOperatingMode.getOperatingMode());
+  }
+
+  @Test
+  void changeDeviceOperatingModeWithRequestOptionsSuccess()
+      throws IOException, MPException, MPApiException {
+    HttpResponse httpResponse = generateHttpResponseFromFile(devicesOperatingModeJson, OK);
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    PointDeviceOperatingModeRequest request =
+        PointDeviceOperatingModeRequest.builder().operatingMode(PDV).build();
+
+    PointDeviceOperatingMode deviceOperatingMode =
+        client.changeDeviceOperatingMode(deviceId, request, buildRequestOptions());
+
+    JsonElement requestPayload =
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement(devicesOperatingModeJson);
+
+    assertEquals(requestPayloadMock, requestPayload);
+    assertNotNull(deviceOperatingMode.getResponse());
+    assertEquals(OK, deviceOperatingMode.getResponse().getStatusCode());
+    assertEquals(PDV, deviceOperatingMode.getOperatingMode());
   }
 
   private void assertPaymentIntentFields(PointPaymentIntent paymentIntent) {

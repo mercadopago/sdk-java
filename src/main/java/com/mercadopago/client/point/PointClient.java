@@ -14,6 +14,7 @@ import com.mercadopago.net.MPRequest;
 import com.mercadopago.net.MPResponse;
 import com.mercadopago.net.MPSearchRequest;
 import com.mercadopago.resources.point.PointCancelPaymentIntent;
+import com.mercadopago.resources.point.PointDeviceOperatingMode;
 import com.mercadopago.resources.point.PointDevices;
 import com.mercadopago.resources.point.PointPaymentIntent;
 import com.mercadopago.resources.point.PointPaymentIntentList;
@@ -43,6 +44,8 @@ public class PointClient extends MercadoPagoClient {
       "point/integration-api/payment-intents/%s/events";
 
   private static final String DEVICES_URL = "point/integration-api/devices";
+
+  private static final String DEVICE_WITH_ID_URL = "point/integration-api/devices/%s";
 
   /** Default constructor. Uses the default http client used by the SDK. */
   public PointClient() {
@@ -332,6 +335,54 @@ public class PointClient extends MercadoPagoClient {
 
     MPResponse response = send(mpRequest, requestOptions);
     PointDevices result = deserializeFromJson(PointDevices.class, response.getContent());
+    result.setResponse(response);
+
+    return result;
+  }
+
+  /**
+   * Method responsible for change the device operating mode.
+   *
+   * @param deviceId device id
+   * @param request request used to set operating mode
+   * @return device operating mode
+   * @throws MPException an error if the request fails
+   * @see <a
+   *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_devices_device-id/patch">api
+   *     docs</a>
+   */
+  public PointDeviceOperatingMode changeDeviceOperatingMode(
+      String deviceId, PointDeviceOperatingModeRequest request) throws MPException, MPApiException {
+    return this.changeDeviceOperatingMode(deviceId, request, null);
+  }
+
+  /**
+   * Method responsible for change the device operating mode with request options.
+   *
+   * @param deviceId device id
+   * @param request request used to set operating mode
+   * @param requestOptions metadata to customize the request
+   * @return device operating mode
+   * @throws MPException an error if the request fails
+   * @see <a
+   *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_devices_device-id/patch">api
+   *     docs</a>
+   */
+  public PointDeviceOperatingMode changeDeviceOperatingMode(
+      String deviceId, PointDeviceOperatingModeRequest request, MPRequestOptions requestOptions)
+      throws MPException, MPApiException {
+    LOGGER.info("Sending change point device operating mode request");
+
+    MPRequest mpRequest =
+        MPRequest.builder()
+            .uri(String.format(DEVICE_WITH_ID_URL, deviceId))
+            .method(HttpMethod.PATCH)
+            .payload(Serializer.serializeToJson(request))
+            .build();
+
+    MPResponse response = send(mpRequest, requestOptions);
+    PointDeviceOperatingMode result =
+        deserializeFromJson(PointDeviceOperatingMode.class, response.getContent());
     result.setResponse(response);
 
     return result;
