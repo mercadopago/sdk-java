@@ -15,4 +15,10 @@ public class PointPaymentIntentAdditionalInfoRequest {
 
   /** A boolean value that determines if you want to print the ticket on the device. */
   private final Boolean printOnTerminal;
+
+  /**
+   * An alphanumeric value to identify the invoice or ticket number. It will be printed on the
+   * device ticket.
+   */
+  private final String ticketNumber;
 }
