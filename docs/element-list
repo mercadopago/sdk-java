@@ -8,6 +8,7 @@ com.mercadopago.client.merchantorder
 com.mercadopago.client.oauth
 com.mercadopago.client.payment
 com.mercadopago.client.paymentmethod
+com.mercadopago.client.point
 com.mercadopago.client.preapproval
 com.mercadopago.client.preference
 com.mercadopago.client.user
@@ -22,6 +23,7 @@ com.mercadopago.resources.merchantorder
 com.mercadopago.resources.oauth
 com.mercadopago.resources.payment
 com.mercadopago.resources.paymentmethod
+com.mercadopago.resources.point
 com.mercadopago.resources.preapproval
 com.mercadopago.resources.preference
 com.mercadopago.resources.user

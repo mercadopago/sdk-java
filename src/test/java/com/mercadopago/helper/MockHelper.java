@@ -183,7 +183,7 @@ public class MockHelper {
 
     String method = httpUriRequest.getMethod();
 
-    if ("POST".equals(method) || "PUT".equals(method)) {
+    if ("POST".equals(method) || "PUT".equals(method) || "PATCH".equals(method)) {
       HttpEntityEnclosingRequestBase requestBase = (HttpEntityEnclosingRequestBase) httpUriRequest;
 
       if (requestBase.getEntity() != null) {

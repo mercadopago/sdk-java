@@ -31,7 +31,7 @@ import java.util.List;
 public class Serializer {
 
   private static final String DESERIALIZE_DATE_FORMAT_ISO8601 =
-      "yyyy-MM-dd'T'HH:mm:ss.SSS[XXX][XX][X]";
+      "yyyy-MM-dd'T'HH:mm:ss[.SSS][XXX][XX][X]";
 
   private static final String SERIALIZE_DATE_FORMAT_ISO8601 = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
 

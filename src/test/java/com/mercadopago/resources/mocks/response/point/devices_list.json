@@ -1,0 +1,13 @@
+{
+  "devices": [
+    {
+      "id": "GERTEC_MP35P__8701012051267123",
+      "operating_mode": "PDV"
+    }
+  ],
+  "paging": {
+    "total": 1,
+    "limit": 50,
+    "offset": 0
+  }
+}
