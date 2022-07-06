@@ -6,6 +6,7 @@ package com.mercadopago.resources.datastructures.payment;
 public class PointOfInteraction {
     private String type;
     private String subType;
+    private String linkedTo;
     private ApplicationData applicationData;
     private TransactionData transactionData;
 
@@ -38,6 +39,23 @@ public class PointOfInteraction {
      */
     public PointOfInteraction setSubType(String subType) {
         this.subType = subType;
+        return this;
+    }
+
+    /**
+     * @return linked to information
+     */
+    public String getLinkedTo() {
+        return linkedTo;
+    }
+
+
+    /**
+     * @param linkedTo linked to information
+     * @return point of interaction
+     */
+    public PointOfInteraction setLinkedTo(String linkedTo) {
+        this.linkedTo = linkedTo;
         return this;
     }
 
