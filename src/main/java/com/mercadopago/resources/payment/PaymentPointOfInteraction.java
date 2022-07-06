@@ -11,6 +11,9 @@ public class PaymentPointOfInteraction {
   /** Sub type. */
   private String subType;
 
+  /** Linked to information. */
+  private String linkedTo;
+
   /** Application data. */
   private PaymentApplicationData applicationData;
 
