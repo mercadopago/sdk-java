@@ -97,6 +97,9 @@ public class PaymentCreateRequest {
   /** Transaction details. */
   private final PaymentTransactionDetailsRequest transactionDetails;
 
+  /** Point of interaction. */
+  private final PaymentPointOfInteractionRequest pointOfInteraction;
+
   /** Sponsor Identification. */
   private final Long sponsorId;
 
