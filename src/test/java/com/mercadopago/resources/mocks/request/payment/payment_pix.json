@@ -5,5 +5,8 @@
     "email": "test_user_1648059260@testuser.com"
   },
   "payment_method_id": "pix",
+  "point_of_interaction": {
+    "linked_to": "openfinance"
+  },
   "transaction_amount": 100
 }
