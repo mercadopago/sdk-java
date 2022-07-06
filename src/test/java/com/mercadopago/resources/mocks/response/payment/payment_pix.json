@@ -89,6 +89,7 @@
   "acquirer_reconciliation": [],
   "point_of_interaction": {
     "type": "OPENPLATFORM",
+    "linked_to": "openfinance",
     "business_info": {
       "unit": "online_payments",
       "sub_unit": "default"

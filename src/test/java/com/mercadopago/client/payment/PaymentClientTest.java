@@ -116,6 +116,7 @@ public class PaymentClientTest extends BaseClientTest {
     assertEquals(
         "https://www.mercadopago.com.br/payments/21071815560/ticket?caller_id=471763966&hash=abcd1234efgh5678",
         payment.getPointOfInteraction().getTransactionData().getTicketUrl());
+    assertEquals("openfinance", payment.getPointOfInteraction().getLinkedTo());
     assertNotNull(payment.getPointOfInteraction().getTransactionData().getQrCode());
     assertNotNull(payment.getPointOfInteraction().getTransactionData().getQrCodeBase64());
   }
@@ -136,6 +137,7 @@ public class PaymentClientTest extends BaseClientTest {
     assertEquals(
         "https://www.mercadopago.com.br/payments/21071815560/ticket?caller_id=471763966&hash=abcd1234efgh5678",
         payment.getPointOfInteraction().getTransactionData().getTicketUrl());
+    assertEquals("openfinance", payment.getPointOfInteraction().getLinkedTo());
     assertNotNull(payment.getPointOfInteraction().getTransactionData().getQrCode());
     assertNotNull(payment.getPointOfInteraction().getTransactionData().getQrCodeBase64());
   }
@@ -655,6 +657,8 @@ public class PaymentClientTest extends BaseClientTest {
         .paymentMethodId("pix")
         .description("description")
         .payer(PaymentPayerRequest.builder().email("test_user_1648059260@testuser.com").build())
+        .pointOfInteraction(
+            PaymentPointOfInteractionRequest.builder().linkedTo("openfinance").build())
         .build();
   }
 }
