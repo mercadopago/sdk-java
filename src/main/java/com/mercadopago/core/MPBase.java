@@ -513,7 +513,7 @@ public abstract class MPBase {
                 if (paramIterator <= 2 && mapParams != null &&
                         StringUtils.isNotEmpty(mapParams.get("param" + String.valueOf(paramIterator)))) {
                     value = mapParams.get("param" + String.valueOf(paramIterator));
-                    mapParams.remove(param);
+                    mapParams.remove("param" + String.valueOf(paramIterator));
                 } else if (mapParams != null && StringUtils.isNotEmpty(mapParams.get(param))) {
                     value = mapParams.get(param);
                     mapParams.remove(param);
