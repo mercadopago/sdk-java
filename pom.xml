@@ -3,7 +3,7 @@
 
     <groupId>com.mercadopago</groupId>
     <artifactId>sdk-java</artifactId>
-    <version>1.11.5</version>
+    <version>1.11.6</version>
     <packaging>jar</packaging>
 
     <name>Mercadopago SDK</name>
