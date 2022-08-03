@@ -2,6 +2,7 @@ package com.mercadopago.client.payment;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 import lombok.Builder;
 import lombok.Getter;
@@ -105,4 +106,7 @@ public class PaymentCreateRequest {
 
   /** How will look the payment in the card bill (e.g.: MERCADOPAGO). */
   private final String statementDescriptor;
+
+  /** Taxes for payments. */
+  private final List<PaymentTaxRequest> taxes;
 }
