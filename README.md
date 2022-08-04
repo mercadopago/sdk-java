@@ -8,7 +8,7 @@ This library provides developers with a simple set of bindings to help you integ
 
 ## 💡 Requirements
 
-Java 1.7 or higher
+Java 1.8 or higher
 
 ## 📲 Installation 
 
@@ -22,7 +22,7 @@ First time using Mercado Pago? Create your [Mercado Pago account](https://www.me
         <dependency>
             <groupId> com.mercadopago </groupId>
             <artifactId> sdk-java </artifactId>
-            <version> 1.11.6 </version>
+            <version> 1.11.8 </version>
         </dependency>
     </dependencies>
     ...
