@@ -25,6 +25,7 @@ import com.mercadopago.resources.datastructures.payment.Phone;
 import com.mercadopago.resources.datastructures.payment.Shipments;
 import com.mercadopago.resources.datastructures.payment.TransactionDetails;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -84,7 +85,9 @@ public class PaymentTest extends BaseResourceTest {
         .setPaymentMode("credit")
         .setPaymentMethodOptionId("x")
         .setCouponAmount(2f)
-        .setMerchantAccountId("y");
+        .setMerchantAccountId("y")
+        .setNetAmount(0.1F)
+        .setTaxes(new ArrayList<>());
 
     assertNotNull(payment.getPayer());
     assertNotNull(payment.getBinaryMode());
@@ -111,6 +114,8 @@ public class PaymentTest extends BaseResourceTest {
     assertNotNull(payment.getPaymentMethodOptionId());
     assertNotNull(payment.getCouponAmount());
     assertNotNull(payment.getMerchantAccountid());
+    assertNotNull(payment.getNetAmount());
+    assertNotNull(payment.getTaxes());
   }
 
   @Test

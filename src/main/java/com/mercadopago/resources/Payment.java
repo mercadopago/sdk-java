@@ -16,6 +16,7 @@ import com.mercadopago.resources.datastructures.payment.FeeDetail;
 import com.mercadopago.resources.datastructures.payment.Order;
 import com.mercadopago.resources.datastructures.payment.Payer;
 import com.mercadopago.resources.datastructures.payment.PointOfInteraction;
+import com.mercadopago.resources.datastructures.payment.Tax;
 import com.mercadopago.resources.datastructures.payment.TransactionDetails;
 import java.util.ArrayList;
 import java.util.Date;
@@ -117,6 +118,10 @@ public class Payment extends MPBase {
     private String paymentMethodOptionId = null;
     private Date dateOfExpiration = null;
     private PointOfInteraction pointOfInteraction = null;
+
+    private Float netAmount = null;
+
+    private ArrayList<Tax> taxes = null;
 
     /**
      * @return payment ID
@@ -726,6 +731,49 @@ public class Payment extends MPBase {
      */
     public Payment setPointOfInteraction(PointOfInteraction pointOfInteraction) {
         this.pointOfInteraction = pointOfInteraction;
+        return this;
+    }
+
+    /**
+     * @return net amount
+     */
+    public Float getNetAmount() {
+        return netAmount;
+    }
+
+    /**
+     * @param netAmount net amount
+     * @return the payment
+     */
+    public Payment setNetAmount(Float netAmount) {
+        this.netAmount = netAmount;
+        return this;
+    }
+
+    /**
+     * @return taxes
+     */
+    public ArrayList<Tax> getTaxes() { return this.taxes; }
+
+    /**
+     * @param taxes taxes
+     * @return the payment
+     */
+    public Payment setTaxes(ArrayList<Tax> taxes) {
+        this.taxes = taxes;
+        return this;
+    }
+
+    /**
+     * Append a tax into the payment
+     * @param tax tax
+     * @return the payment
+     */
+    public Payment appendTax(Tax tax) {
+        if (this.taxes == null) {
+            this.taxes = new ArrayList<>();
+        }
+        this.taxes.add(tax);
         return this;
     }
 
