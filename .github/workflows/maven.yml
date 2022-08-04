@@ -13,14 +13,16 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        java-version: [ '1.6', '1.7', '1.8' ]
     steps:
     - uses: actions/checkout@v2
 
-    - name: Set up JDK 1.8
+    - name: Set up JDK ${{ matrix.java-version }}
       uses: actions/setup-java@v1
       with:
-        java-version: 1.8
+        java-version: ${{ matrix.java-version }}
     - name: Compile
       run: mvn compile
 
