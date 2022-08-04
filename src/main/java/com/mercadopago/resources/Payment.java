@@ -771,7 +771,7 @@ public class Payment extends MPBase {
      */
     public Payment appendTax(Tax tax) {
         if (this.taxes == null) {
-            this.taxes = new ArrayList<>();
+            this.taxes = new ArrayList<Tax>();
         }
         this.taxes.add(tax);
         return this;

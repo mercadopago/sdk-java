@@ -3,7 +3,7 @@
 
     <groupId>com.mercadopago</groupId>
     <artifactId>sdk-java</artifactId>
-    <version>1.11.6</version>
+    <version>1.11.7</version>
     <packaging>jar</packaging>
 
     <name>Mercadopago SDK</name>
@@ -99,7 +99,7 @@
           		<artifactId>maven-javadoc-plugin</artifactId>
           		<version>3.0.1</version>
                 <configuration>
-                    <source>1.6</source>
+                    <source>1.8</source>
                     <doclint>none</doclint>
                 </configuration>
           		<executions>
