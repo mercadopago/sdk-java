@@ -1,6 +1,7 @@
 package com.mercadopago.client.payment;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,5 +18,5 @@ public class PaymentDiscountRequest {
   private BigDecimal value;
 
   /** Discount Limit Date. */
-  private OffsetDateTime limitDate;
+  private LocalDate limitDate;
 }

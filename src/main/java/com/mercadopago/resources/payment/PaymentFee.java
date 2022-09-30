@@ -14,4 +14,7 @@ public class PaymentFee {
 
   /** Fee value. */
   private BigDecimal value;
+
+  /** Amount Applied. */
+  private BigDecimal amountApplied;
 }
