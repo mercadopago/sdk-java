@@ -185,4 +185,7 @@ public class Payment extends MPResource {
 
   /** Point of interaction. */
   private PaymentPointOfInteraction pointOfInteraction;
+
+  /** PaymentMethod. */
+  private PaymentMethod paymentMethod;
 }
