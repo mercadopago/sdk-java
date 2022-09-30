@@ -9,4 +9,7 @@ import lombok.Getter;
 public class PaymentPointOfInteractionRequest {
   /** Linked to information. */
   private final String linkedTo;
+
+  /** Transaction Data. */
+  private final PaymentTransactionDataRequest transactionData;
 }
