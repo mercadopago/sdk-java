@@ -22,4 +22,7 @@ public class PaymentAdditionalInfoRequest {
 
   /** Barcode. */
   private final PaymentAdditionalInfoBarcodeRequest barcode;
+
+  /** Ticket Info. */
+  private final PaymentTicketInfoRequest ticketInfo;
 }
