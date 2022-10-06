@@ -3,7 +3,7 @@ package com.mercadopago.resources.payment;
 import java.math.BigDecimal;
 import lombok.Getter;
 
-/** PaymentFeeRequest class. */
+/** PaymentFee class. */
 @Getter
 public class PaymentFee {
 

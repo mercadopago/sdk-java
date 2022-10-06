@@ -204,7 +204,7 @@ public class Serializer {
     }
   }
 
-  public static class OffsetDateTimeAdapter implements JsonSerializer<OffsetDateTime>, JsonDeserializer<OffsetDateTime> {
+  private static class OffsetDateTimeAdapter implements JsonSerializer<OffsetDateTime>, JsonDeserializer<OffsetDateTime> {
     @Override
     public JsonElement serialize(OffsetDateTime localDate, Type type, JsonSerializationContext context) {
       return new JsonPrimitive(DateTimeFormatter.ofPattern(SERIALIZE_DATE_FORMAT_ISO8601).format(localDate));
@@ -217,7 +217,7 @@ public class Serializer {
     }
   }
 
-  public static class LocalDateAdapter implements JsonSerializer<LocalDate>, JsonDeserializer<LocalDate> {
+  private static class LocalDateAdapter implements JsonSerializer<LocalDate>, JsonDeserializer<LocalDate> {
     @Override
     public JsonElement serialize(LocalDate localDate, Type type, JsonSerializationContext context) {
       return new JsonPrimitive(localDate.format(DateTimeFormatter.ISO_LOCAL_DATE));
