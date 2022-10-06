@@ -9,10 +9,6 @@ public abstract class BaseClientIT {
 
   protected static final String ACCESS_TOKEN = System.getenv("ACCESS_TOKEN");
 
-
-
-
-
   @BeforeAll
   static void setup() {
     MercadoPagoConfig.setAccessToken(ACCESS_TOKEN);

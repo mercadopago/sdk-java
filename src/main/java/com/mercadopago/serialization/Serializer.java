@@ -6,10 +6,14 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
@@ -22,6 +26,7 @@ import com.mercadopago.net.MPResultsResourcesPage;
 import java.io.IOException;
 import java.io.StringReader;
 import java.lang.reflect.Type;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -37,20 +42,8 @@ public class Serializer {
 
   private static final Gson GSON =
       new GsonBuilder()
-          .registerTypeAdapter(
-              OffsetDateTime.class,
-              (JsonDeserializer<OffsetDateTime>)
-                  (json, type, context) ->
-                      OffsetDateTime.parse(
-                          json.getAsString(),
-                          DateTimeFormatter.ofPattern(DESERIALIZE_DATE_FORMAT_ISO8601)))
-          .registerTypeAdapter(
-              OffsetDateTime.class,
-              (JsonSerializer<OffsetDateTime>)
-                  (offsetDateTime, type, context) ->
-                      new JsonPrimitive(
-                          DateTimeFormatter.ofPattern(SERIALIZE_DATE_FORMAT_ISO8601)
-                              .format(offsetDateTime)))
+          .registerTypeAdapter(OffsetDateTime.class, new OffsetDateTimeAdapter())
+          .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
           .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
           .create();
 
@@ -208,6 +201,32 @@ public class Serializer {
       return true;
     } catch (final MalformedJsonException ignored) {
       return false;
+    }
+  }
+
+  public static class OffsetDateTimeAdapter implements JsonSerializer<OffsetDateTime>, JsonDeserializer<OffsetDateTime> {
+    @Override
+    public JsonElement serialize(OffsetDateTime localDate, Type type, JsonSerializationContext context) {
+      return new JsonPrimitive(DateTimeFormatter.ofPattern(SERIALIZE_DATE_FORMAT_ISO8601).format(localDate));
+    }
+
+    @Override
+    public OffsetDateTime deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext)
+        throws JsonParseException {
+      return OffsetDateTime.parse(jsonElement.getAsString(), DateTimeFormatter.ofPattern(DESERIALIZE_DATE_FORMAT_ISO8601));
+    }
+  }
+
+  public static class LocalDateAdapter implements JsonSerializer<LocalDate>, JsonDeserializer<LocalDate> {
+    @Override
+    public JsonElement serialize(LocalDate localDate, Type type, JsonSerializationContext context) {
+      return new JsonPrimitive(localDate.format(DateTimeFormatter.ISO_LOCAL_DATE));
+    }
+
+    @Override
+    public LocalDate deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext)
+        throws JsonParseException {
+      return LocalDate.parse(jsonElement.getAsString(), DateTimeFormatter.ISO_LOCAL_DATE);
     }
   }
 }
