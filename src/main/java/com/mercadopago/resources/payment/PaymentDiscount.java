@@ -2,13 +2,10 @@ package com.mercadopago.resources.payment;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
-import lombok.Builder;
 import lombok.Getter;
 
 /** PaymentDiscount class. */
 @Getter
-@Builder
 public class PaymentDiscount {
 
   /** Discount type. */
