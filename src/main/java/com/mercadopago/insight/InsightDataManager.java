@@ -131,7 +131,7 @@ public class InsightDataManager {
         } catch (IOException e) {
             lightResponse = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 404, null));
             getDefaultResponse();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             lightResponse = new BasicHttpResponse(new BasicStatusLine(request.getProtocolVersion(), 500, e.getMessage()));
             getDefaultResponse();
         }
@@ -252,7 +252,7 @@ public class InsightDataManager {
 
             insightResponse = executeRequest(insightRequest);
 
-        } catch (Exception e) {
+        } catch (Throwable e) {
             insightResponse = new BasicHttpResponse(new BasicStatusLine(insightRequest.getProtocolVersion(), 500, e.getMessage()));
         }
 
@@ -349,7 +349,7 @@ public class InsightDataManager {
         try {
             long memSize = ((com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalPhysicalMemorySize();
             memorySize =  String.valueOf(memSize);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             return memorySize;
         }
 
@@ -360,7 +360,7 @@ public class InsightDataManager {
         InetAddress localhost = null;
         try {
             localhost = InetAddress.getLocalHost();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             // DO nothing
         }
         return localhost != null ? localhost.getHostAddress() : "";
@@ -370,7 +370,7 @@ public class InsightDataManager {
         int retry = 1;
         try {
             retry = new Long(_context.getConnection().getMetrics().getRequestCount()).intValue();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             // DO nothing
         }
 
