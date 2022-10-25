@@ -109,4 +109,7 @@ public class PaymentCreateRequest {
 
   /** Taxes for payments. */
   private final List<PaymentTaxRequest> taxes;
+
+  /** Payment Method. */
+  private final PaymentMethodRequest paymentMethod;
 }

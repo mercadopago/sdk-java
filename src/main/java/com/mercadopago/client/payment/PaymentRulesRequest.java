@@ -4,10 +4,10 @@ import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 
-/** PaymentTicketInfoRequest class. */
+/** PaymentRulesRequest class. */
 @Getter
 @Builder
-public class PaymentTicketInfoRequest {
+public class PaymentRulesRequest {
 
   /** Discounts. */
   private List<PaymentDiscountRequest> discounts;

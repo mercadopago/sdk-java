@@ -3,9 +3,9 @@ package com.mercadopago.resources.payment;
 import java.util.List;
 import lombok.Getter;
 
-/** PaymentTicketInfo class. */
+/** PaymentRules class. */
 @Getter
-public class PaymentTicketInfo {
+public class PaymentRules {
 
   /** Discounts. */
   private List<PaymentDiscount> discounts;

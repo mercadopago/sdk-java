@@ -20,6 +20,7 @@ import com.mercadopago.net.MPResultsResourcesPage;
 import com.mercadopago.net.MPSearchRequest;
 import com.mercadopago.resources.CardToken;
 import com.mercadopago.resources.payment.Payment;
+import com.mercadopago.resources.payment.PaymentMethod;
 import com.mercadopago.resources.payment.PaymentRefund;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -453,21 +454,25 @@ public class PaymentClientIT extends BaseClientIT {
     List<PaymentDiscountRequest> discounts = new ArrayList<>();
     discounts.add(discount);
 
-    PaymentTicketInfoRequest ticketInfo =
-        PaymentTicketInfoRequest.builder()
+    PaymentRulesRequest rules =
+        PaymentRulesRequest.builder()
             .fine(fine)
             .interest(interest)
             .discounts(discounts)
             .build();
 
-    PaymentTransactionDataRequest transactionData =
-        PaymentTransactionDataRequest.builder()
-            .ticketInfo(ticketInfo)
+    PaymentDataRequest data =
+        PaymentDataRequest.builder()
+            .rules(rules)
+            .build();
+
+    PaymentMethodRequest paymentMethod =
+        PaymentMethodRequest.builder()
+            .data(data)
             .build();
 
     PaymentPointOfInteractionRequest pointOfInteraction =
         PaymentPointOfInteractionRequest.builder()
-            .transactionData(transactionData)
             .type("TYPE")
             .build();
 
@@ -481,6 +486,7 @@ public class PaymentClientIT extends BaseClientIT {
         .paymentMethodId("master")
         .additionalInfo(additionalInfo)
         .pointOfInteraction(pointOfInteraction)
+        .paymentMethod(paymentMethod)
         .build();
   }
 }
