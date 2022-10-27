@@ -29,6 +29,7 @@ import com.mercadopago.resources.payment.Payment;
 import com.mercadopago.resources.payment.PaymentRefund;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -633,6 +634,45 @@ public class PaymentClientTest extends BaseClientTest {
             .ipAddress("127.0.0.1")
             .build();
 
+    PaymentFeeRequest fine =
+        PaymentFeeRequest.builder()
+            .type("fixed")
+            .value(new BigDecimal(2))
+            .build();
+
+    PaymentFeeRequest interest =
+        PaymentFeeRequest.builder()
+            .type("fixed")
+            .value(new BigDecimal("0.03"))
+            .build();
+
+    PaymentDiscountRequest discount =
+        PaymentDiscountRequest.builder()
+            .type("fixed")
+            .value(new BigDecimal(5))
+            .limitDate(LocalDate.of(2022, 10, 25))
+            .build();
+
+    List<PaymentDiscountRequest> discounts = new ArrayList<>();
+    discounts.add(discount);
+
+    PaymentRulesRequest rules =
+        PaymentRulesRequest.builder()
+            .fine(fine)
+            .interest(interest)
+            .discounts(discounts)
+            .build();
+
+    PaymentDataRequest data =
+        PaymentDataRequest.builder()
+            .rules(rules)
+            .build();
+
+    PaymentMethodRequest paymentMethod =
+        PaymentMethodRequest.builder()
+            .data(data)
+            .build();
+
     return PaymentCreateRequest.builder()
         .payer(payer)
         .binaryMode(false)
@@ -647,6 +687,7 @@ public class PaymentClientTest extends BaseClientTest {
         .installments(1)
         .notificationUrl("https://seu-site.com.br/webhooks")
         .additionalInfo(additionalInfo)
+        .paymentMethod(paymentMethod)
         .build();
   }
 
