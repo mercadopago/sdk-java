@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
@@ -24,26 +25,47 @@ import java.io.StringReader;
 import java.lang.reflect.Type;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 /** Serializer class, responsible for objects serialization and deserialization. */
 public class Serializer {
 
-  private static final String DESERIALIZE_DATE_FORMAT_ISO8601 =
-      "yyyy-MM-dd'T'HH:mm:ss[.SSS][XXX][XX][X]";
+  private static final DateTimeFormatter DESERIALIZE_DATE_FORMAT_ISO8601_EXTENDED =
+      DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss[.SSS][XXX][XX][X]");
+
+  private static final DateTimeFormatter DESERIALIZE_DATE_FORMAT_ISO8601_BASIC =
+      DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss[.SSS][XXX][XX][X]");
+
+  private static final DateTimeFormatter[] ISO8601_DATETIME_FORMATTERS =
+      new DateTimeFormatter[] {
+        DateTimeFormatter.ISO_DATE_TIME,
+        DESERIALIZE_DATE_FORMAT_ISO8601_EXTENDED,
+        DESERIALIZE_DATE_FORMAT_ISO8601_BASIC,
+      };
 
   private static final String SERIALIZE_DATE_FORMAT_ISO8601 = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
+
+  private static OffsetDateTime parseDateTime(JsonElement json) {
+    for (int i = 0; i < ISO8601_DATETIME_FORMATTERS.length; i++) {
+      try {
+        return OffsetDateTime.parse(json.getAsString(), ISO8601_DATETIME_FORMATTERS[i]);
+      } catch (DateTimeParseException e) {
+        // try all formatters, if none works, throw exception from last one
+        if (i == ISO8601_DATETIME_FORMATTERS.length - 1) {
+          throw e;
+        }
+      }
+    }
+    return null;
+  }
 
   private static final Gson GSON =
       new GsonBuilder()
           .registerTypeAdapter(
               OffsetDateTime.class,
-              (JsonDeserializer<OffsetDateTime>)
-                  (json, type, context) ->
-                      OffsetDateTime.parse(
-                          json.getAsString(),
-                          DateTimeFormatter.ofPattern(DESERIALIZE_DATE_FORMAT_ISO8601)))
+              (JsonDeserializer<OffsetDateTime>) (json, type, context) -> parseDateTime(json))
           .registerTypeAdapter(
               OffsetDateTime.class,
               (JsonSerializer<OffsetDateTime>)
