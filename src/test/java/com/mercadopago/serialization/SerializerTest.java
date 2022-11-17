@@ -13,6 +13,7 @@ import com.mercadopago.client.customer.CustomerCardCreateRequest;
 import com.mercadopago.exceptions.MPJsonParseException;
 import com.mercadopago.helper.MockHelper;
 import com.mercadopago.net.MPElementsResourcesPage;
+import com.mercadopago.net.MPResource;
 import com.mercadopago.net.MPResourceList;
 import com.mercadopago.net.MPResultsResourcesPage;
 import com.mercadopago.resources.customer.CustomerCard;
@@ -20,6 +21,8 @@ import com.mercadopago.resources.merchantorder.MerchantOrder;
 import com.mercadopago.resources.payment.Payment;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.time.OffsetDateTime;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -121,5 +124,23 @@ public class SerializerTest {
     JsonObject json = Serializer.serializeToJson(cardCreateRequest);
 
     assertNotNull(json);
+  }
+
+  @Test
+  public void deserializeListFromJsonIso8601Timestamps() throws IOException, MPJsonParseException {
+    String timestampsJson =
+        MockHelper.readFile(
+            "serializer_iso8601_timestamps.json",
+            "./src/test/java/com/mercadopago/resources/mocks/helper/");
+    Iso8601Timestamps deserialized =
+        Serializer.deserializeFromJson(Iso8601Timestamps.class, timestampsJson);
+
+    assertEquals(2021, deserialized.timestamps.get(0).getYear());
+    assertEquals(1, deserialized.timestamps.get(0).getMonth().getValue());
+    assertEquals(13, deserialized.timestamps.get(0).getDayOfYear());
+  }
+
+  private static class Iso8601Timestamps extends MPResource {
+    public List<OffsetDateTime> timestamps;
   }
 }

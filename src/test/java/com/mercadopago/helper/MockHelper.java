@@ -202,7 +202,15 @@ public class MockHelper {
     return readFile(mockFile, MOCKS_RESPONSE_PATH);
   }
 
-  private static String readFile(String mockFile, String path) throws IOException {
+  /**
+   * Read file contents and convert them to string.
+   *
+   * @param mockFile the mock file to be read
+   * @param path path to file
+   * @return string contents of file
+   * @throws IOException problem reading file
+   */
+  public static String readFile(String mockFile, String path) throws IOException {
 
     File file = new File(StringUtils.join(path, mockFile));
 
