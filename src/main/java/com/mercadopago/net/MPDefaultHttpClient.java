@@ -111,11 +111,11 @@ public class MPDefaultHttpClient implements MPHttpClient {
             .disableCookieManagement()
             .disableRedirectHandling();
 
-    if (Objects.isNull(MercadoPagoConfig.getProxy())) {
+    if (Objects.nonNull(MercadoPagoConfig.getProxy())) {
       httpClientBuilder.setProxy(MercadoPagoConfig.getProxy());
     }
 
-    if (Objects.isNull(MercadoPagoConfig.getRetryHandler())) {
+    if (Objects.nonNull(MercadoPagoConfig.getRetryHandler())) {
       httpClientBuilder.setRetryHandler(MercadoPagoConfig.getRetryHandler());
     } else {
       DefaultHttpRequestRetryHandler retryHandler =
