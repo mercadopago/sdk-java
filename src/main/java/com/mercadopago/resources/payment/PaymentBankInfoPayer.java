@@ -1,5 +1,6 @@
 package com.mercadopago.resources.payment;
 
+import java.math.BigInteger;
 import lombok.Getter;
 
 /** PaymentBankInfoPayer class. */
@@ -9,7 +10,7 @@ public class PaymentBankInfoPayer {
   private String email;
 
   /** Account ID. */
-  private Long accountId;
+  private BigInteger accountId;
 
   /** Account long name. */
   private String longName;
