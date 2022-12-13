@@ -16,12 +16,12 @@
           "bank_info": {
             "is_same_bank_account_owner": null,
             "payer": {
-              "account_id": null,
+              "account_id": "9224382036864776100",
               "id": null,
               "long_name": null
             },
             "collector": {
-              "account_id": null,
+              "account_id": "9325372136954476022",
               "account_holder_name": "Salazar Tucker",
               "long_name": null,
               "transfer_account_id": null
