@@ -112,4 +112,7 @@ public class PaymentCreateRequest {
 
   /** Payment Method. */
   private final PaymentMethodRequest paymentMethod;
+
+  /** 3DS Info. */
+  private final PaymentThreeDSInfo threeDSInfo;
 }

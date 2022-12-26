@@ -1,0 +1,7 @@
+<cache-control version='2' xmlns='http://xmlresolver.org/ns/catalog'>
+<no-cache uri='^file:' delete-wait='604800' size='1000' space='10240000' max-age='-1'/>
+<no-cache uri='^jar:file:' delete-wait='604800' size='1000' space='10240000' max-age='-1'/>
+<no-cache uri='^classpath:' delete-wait='604800' size='1000' space='10240000' max-age='-1'/>
+<no-cache uri='^path:' delete-wait='604800' size='1000' space='10240000' max-age='-1'/>
+</cache-control>
+
