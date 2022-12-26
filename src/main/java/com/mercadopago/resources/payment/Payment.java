@@ -1,5 +1,6 @@
 package com.mercadopago.resources.payment;
 
+import com.mercadopago.client.payment.PaymentThreeDSInfo;
 import com.mercadopago.net.MPResource;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -185,4 +186,10 @@ public class Payment extends MPResource {
 
   /** Point of interaction. */
   private PaymentPointOfInteraction pointOfInteraction;
+
+  /** 3DS. */
+  private static final String PaymentThreeDSecureMode = "not_supported";
+
+  /** 3DS Info. */
+  private PaymentThreeDSInfo threeDSInfo;
 }
