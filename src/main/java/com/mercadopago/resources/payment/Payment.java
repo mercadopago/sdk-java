@@ -190,6 +190,9 @@ public class Payment extends MPResource {
   /** PaymentMethod. */
   private PaymentMethod paymentMethod;
 
+  /** 3DS. */
+  private String paymentThreeDSecureMode;
+
   /** 3DS Info. */
   private PaymentThreeDSInfo threeDSInfo;
 }

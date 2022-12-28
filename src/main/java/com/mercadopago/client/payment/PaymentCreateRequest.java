@@ -113,6 +113,9 @@ public class PaymentCreateRequest {
   /** Payment Method. */
   private final PaymentMethodRequest paymentMethod;
 
+  /** 3DS. */
+  private final String paymentThreeDSecureMode;
+
   /** 3DS Info. */
   private final PaymentThreeDSInfo threeDSInfo;
 }
