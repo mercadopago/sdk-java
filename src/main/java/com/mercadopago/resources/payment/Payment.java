@@ -188,7 +188,7 @@ public class Payment extends MPResource {
   private PaymentPointOfInteraction pointOfInteraction;
 
   /** 3DS. */
-  private static final String PaymentThreeDSecureMode = "not_supported";
+  private String paymentThreeDSecureMode;
 
   /** 3DS Info. */
   private PaymentThreeDSInfo threeDSInfo;

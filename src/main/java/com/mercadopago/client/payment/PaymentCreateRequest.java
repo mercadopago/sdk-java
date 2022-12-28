@@ -111,7 +111,7 @@ public class PaymentCreateRequest {
   private final List<PaymentTaxRequest> taxes;
 
   /** 3DS. */
-  private static final String PaymentThreeDSecureMode = "not_supported";
+  private final String paymentThreeDSecureMode;
 
   /** 3DS Info. */
   private final PaymentThreeDSInfo threeDSInfo;
