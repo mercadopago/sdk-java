@@ -86,6 +86,21 @@ public class PaymentClientTest extends BaseClientTest {
   }
 
   @Test
+  public void createWithThreeDSecureSuccess() throws MPException, IOException, MPApiException {
+
+    Payment payment = createCardPayment();
+
+    JsonElement requestPayload =
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement(paymentBaseJson);
+
+    assertEquals(requestPayloadMock, requestPayload);
+    assertNotNull(payment.getResponse());
+    assertEquals(CREATED, payment.getResponse().getStatusCode());
+    assertPaymentFields(payment);
+  }
+
+  @Test
   public void createWithRequestOptionsSuccess() throws MPException, IOException, MPApiException {
 
     Payment payment = createCardPayment(buildRequestOptions());
@@ -639,6 +654,7 @@ public class PaymentClientTest extends BaseClientTest {
         .externalReference("212efa19-da7a-4b4f-a3f0-4f458136d9ca")
         .description("description")
         .metadata(new HashMap<>())
+        .threeDSecureMode("not_supported")
         .transactionAmount(new BigDecimal(100))
         .capture(false)
         .paymentMethodId("master")

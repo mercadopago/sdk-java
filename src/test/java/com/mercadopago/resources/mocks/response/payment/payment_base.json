@@ -48,6 +48,86 @@
   "metadata": {
     "order_number": "order_1631894348"
   },
+  "internal_metadata": {
+    "rule_engine": {
+      "with_promise": false,
+      "valid_promise": false,
+      "rules": [
+        {
+          "rule_id": 21002808561,
+          "rule_set": "processing_fee_and_release"
+        },
+        {
+          "rule_id": 21000231962,
+          "rule_set": "financing_fee_collector"
+        }
+      ]
+    },
+    "unified_processing": true,
+    "3ds_disabled_reason": "none",
+    "approval_optimization_context": [
+      {
+        "trx_id": "86000149282_377b7377776e737f3377",
+        "profile_id": "g2_getnet_getnet_7187497",
+        "gtw_context": {
+          "response_code": null,
+          "http_status": null,
+          "operation": "authorization"
+        },
+        "approval_decision": {
+          "abtesting_flows": null,
+          "deferred_retry": true,
+          "data_only": false,
+          "retry_after_time": "2022-12-27T21:00:00Z",
+          "approval_flows": [
+            "tokenization",
+            "threeds",
+            "data_only",
+            "no_cvv",
+            "default"
+          ],
+          "three_ds": true,
+          "remove_cvv": false,
+          "operation_mode": "async",
+          "best_flows": ["threeds"]
+        },
+        "mcc": null,
+        "attempt": 1,
+        "security_code_data": null
+      }
+    ],
+    "g2": "on",
+    "3ds_status": "CHALLENGE",
+    "3ds_challenge": true,
+    "3ds_challenge_drop_reason": "none",
+    "rejected_by_penalty": false,
+    "payment_method_id": "67696841",
+    "pci_info": {
+      "ct_x_forwarded_for": null,
+      "pay_x_forwarded_for": "10.195.1.92, 10.54.29.159",
+      "is_public": false
+    },
+    "mcc_assigned": "5099",
+    "internal_risk_analysis": "by_risk",
+    "approval_decision": {
+      "abtesting_flows": null,
+      "deferred_retry": true,
+      "data_only": false,
+      "retry_after_time": "2022-12-27T21:00:00Z",
+      "approval_flows": [
+        "tokenization",
+        "threeds",
+        "data_only",
+        "no_cvv",
+        "default"
+      ],
+      "three_ds": true,
+      "remove_cvv": false,
+      "operation_mode": "async",
+      "best_flows": ["threeds"]
+    },
+    "mcc_source": "DEFAULT"
+  },
   "additional_info": {
     "items": [
       {
@@ -138,5 +218,10 @@
   "merchant_account_id": null,
   "merchant_number": null,
   "acquirer_reconciliation": [],
-  "point_of_interaction": {}
+  "point_of_interaction": {},
+  "three_dsinfo": {
+    "external_resource_url":
+    "https://acs-public.tp.mastercard.com/api/v1/browser_challenges",
+    "creq": "eyJ0aHJlZURTU2VydmVyVHJhbnNJRCI6ImE4NDQ1NTE2LThjNzktNGQ1NC04MjRmLTU5YzgzNDRiY2FjNCIsImFjc1RyYW5zSUQiOiJmZjVlMWM4YS00M2Y2LTQ5ZDEtYjhmMy02M2FmMzJkMzgwYTEiLCJjaGFsbGVuZ2VXaW5kb3dTaXplIjoiMDQiLCJtZXNzYWdlVHlwZSI6IkNSZXEiLCJtZXNzYWdlVmVyc2lvbiI6IjIuMS4wIn0"
+  }
 }
