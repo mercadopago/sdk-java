@@ -82,5 +82,6 @@
         }
       }
     }
-  }
+  },
+  "three_d_secure_mode":  "not_supported"
 }
