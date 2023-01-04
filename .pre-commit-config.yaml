@@ -4,10 +4,4 @@ repos:
     hooks:
       - id: pretty-format-java
         args: [ --autofix ]
-  - repo: https://github.com/gherynos/pre-commit-java
-    rev: v0.1.0
-    hooks:
-      - id: checkstyle
-        args:
-          - -c
-          - .code_quality/checkstyle_rules.xml
+

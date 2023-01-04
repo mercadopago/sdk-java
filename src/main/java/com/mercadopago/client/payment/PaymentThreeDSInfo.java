@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class PaymentThreeDSInfo {
-  /** External Resource Url. */
+  /** External Resource Url 3DS. */
   private final String externalResourceUrl;
 
   /** creq. */
