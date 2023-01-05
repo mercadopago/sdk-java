@@ -191,4 +191,10 @@ public class Payment extends MPResource {
 
   /** 3DS Info. */
   private PaymentThreeDSInfo threeDSInfo;
+
+  /**
+   * Internal data that can be attached to the payment to record additional attributes of the
+   * merchant.
+   */
+  private Map<String, Object> internalMetadata;
 }
