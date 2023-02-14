@@ -187,7 +187,7 @@ public class Payment extends MPResource {
   private PaymentPointOfInteraction pointOfInteraction;
 
   /** 3DS Info. */
-  private PaymentThreeDSInfo threeDSInfo;
+  private PaymentThreeDSInfo threeDsinfo;
 
   /**
    * Internal data that can be attached to the payment to record additional attributes of the

@@ -34,6 +34,7 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
@@ -66,6 +67,8 @@ public class PaymentClientTest extends BaseClientTest {
 
   private final String refundPartialJson = "refund/refund_partial.json";
 
+  private final String payment3ds = "payment/payment_3ds.json";
+
   private final OffsetDateTime date = OffsetDateTime.of(2022, 1, 10, 10, 10, 10, 0, ZoneOffset.UTC);
 
   private final PaymentClient client = new PaymentClient();
@@ -88,16 +91,21 @@ public class PaymentClientTest extends BaseClientTest {
   @Test
   public void createWithThreeDSecureSuccess() throws MPException, IOException, MPApiException {
 
-    Payment payment = createCardPayment();
+    Payment payment = createCardPaymentWith3ds();
 
     JsonElement requestPayload =
         generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
-    JsonElement requestPayloadMock = generateJsonElement(paymentBaseJson);
+    JsonElement requestPayloadMock = generateJsonElement(payment3ds);
 
     assertEquals(requestPayloadMock, requestPayload);
     assertNotNull(payment.getResponse());
     assertEquals(CREATED, payment.getResponse().getStatusCode());
-    assertPaymentFields(payment);
+    assertEquals(
+        payment.getThreeDsinfo().getCreq(),
+        "eyJ0aHJlZURTU2VydmVyVHJhbnNJRCI6ImE4NDQ1NTE2LThjNzktNGQ1NC04MjRmLTU5YzgzNDRiY2FjNCIsImFj");
+    assertEquals(
+        payment.getThreeDsinfo().getExternalResourceUrl(),
+        "https://acs-public.tp.mastercard.com/api/v1/browser_challenges");
   }
 
   @Test
@@ -442,6 +450,10 @@ public class PaymentClientTest extends BaseClientTest {
     return this.createPayment("card", requestOptions);
   }
 
+  private Payment createCardPaymentWith3ds() throws IOException, MPException, MPApiException {
+    return this.createPayment("3ds", null);
+  }
+
   private Payment createPixPayment() throws IOException, MPException, MPApiException {
     return this.createPayment("pix", null);
   }
@@ -453,11 +465,15 @@ public class PaymentClientTest extends BaseClientTest {
 
   private Payment createPayment(String paymentMethod, MPRequestOptions requestOptions)
       throws IOException, MPException, MPApiException {
-    String file = paymentMethod.equals("pix") ? paymentPixJson : paymentBaseJson;
-    PaymentCreateRequest paymentCreateRequest =
-        paymentMethod.equals("pix") ? newPixPayment() : newCardPayment();
+    Map<String, String> file = new HashMap<>();
+    file.put("pix", paymentPixJson);
+    file.put("card", paymentBaseJson);
+    file.put("3ds", payment3ds);
 
-    HttpResponse httpResponse = generateHttpResponseFromFile(file, CREATED);
+    PaymentCreateRequest paymentCreateRequest =
+        paymentMethod.equals("pix") ? newPixPayment() : newCardPayment(paymentMethod.equals("3ds"));
+
+    HttpResponse httpResponse = generateHttpResponseFromFile(file.get(paymentMethod), CREATED);
     doReturn(httpResponse)
         .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
@@ -582,7 +598,9 @@ public class PaymentClientTest extends BaseClientTest {
     assertNull(payment.getPointOfInteraction().getTransactionData());
   }
 
-  private PaymentCreateRequest newCardPayment() {
+  private PaymentCreateRequest newCardPayment(boolean with3ds) {
+    String threeDSecureMode = with3ds ? "optional" : "not_supported";
+
     IdentificationRequest identification =
         IdentificationRequest.builder().type("CPF").number("37462770865").build();
 
@@ -654,7 +672,7 @@ public class PaymentClientTest extends BaseClientTest {
         .externalReference("212efa19-da7a-4b4f-a3f0-4f458136d9ca")
         .description("description")
         .metadata(new HashMap<>())
-        .threeDSecureMode("not_supported")
+        .threeDSecureMode(threeDSecureMode)
         .transactionAmount(new BigDecimal(100))
         .capture(false)
         .paymentMethodId("master")
