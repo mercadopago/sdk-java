@@ -64,5 +64,24 @@
   "token": "bf9edf6ffae3ab5742033f33c557d54e",
   "transaction_amount": 100,
   "statement_descriptor": "statementDescriptor",
+  "payment_method": {
+    "data": {
+      "rules": {
+        "discounts":[{
+          "type":"fixed",
+          "value":5,
+          "limit_date":"2022-10-25"
+        }],
+        "fine":{
+          "type":"fixed",
+          "value":2
+        },
+        "interest":{
+          "type":"fixed",
+          "value":0.03
+        }
+      }
+    }
+  },
   "three_d_secure_mode":  "optional"
 }
