@@ -73,11 +73,11 @@
           "limit_date":"2022-10-25"
         }],
         "fine":{
-          "type":"fixed",
+          "type":"percentage",
           "value":2
         },
         "interest":{
-          "type":"fixed",
+          "type":"percentage",
           "value":0.03
         }
       }

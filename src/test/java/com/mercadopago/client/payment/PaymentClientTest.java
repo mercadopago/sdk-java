@@ -668,10 +668,10 @@ public class PaymentClientTest extends BaseClientTest {
             .build();
 
     PaymentFeeRequest fine =
-        PaymentFeeRequest.builder().type("fixed").value(new BigDecimal(2)).build();
+        PaymentFeeRequest.builder().type("percentage").value(new BigDecimal(2)).build();
 
     PaymentFeeRequest interest =
-        PaymentFeeRequest.builder().type("fixed").value(new BigDecimal("0.03")).build();
+        PaymentFeeRequest.builder().type("percentage").value(new BigDecimal("0.03")).build();
 
     PaymentDiscountRequest discount =
         PaymentDiscountRequest.builder()
