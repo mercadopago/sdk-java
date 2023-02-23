@@ -16,7 +16,4 @@ public class PaymentDiscount {
 
   /** Discount Limit Date. */
   private LocalDate limitDate;
-
-  /** Amount Applied. */
-  private BigDecimal amountApplied;
 }
