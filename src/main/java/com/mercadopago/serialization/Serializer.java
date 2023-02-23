@@ -79,6 +79,10 @@ public class Serializer {
               (JsonSerializer<LocalDate>)
                   (localDate, type, context) ->
                       new JsonPrimitive(localDate.format(DateTimeFormatter.ISO_LOCAL_DATE)))
+          .registerTypeAdapter(
+              LocalDate.class,
+              (JsonDeserializer<LocalDate>)
+                  (localDate, type, context) -> LocalDate.parse(localDate.getAsString()))
           .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
           .create();
 

@@ -37,6 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Supplier;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.protocol.HttpContext;
@@ -68,7 +69,9 @@ public class PaymentClientTest extends BaseClientTest {
 
   private final String refundPartialJson = "refund/refund_partial.json";
 
-  private final String payment3ds = "payment/payment_3ds.json";
+  private final String payment3dsJson = "payment/payment_3ds.json";
+
+  private final String paymentBoletoJson = "payment/payment_boleto.json";
 
   private final OffsetDateTime date = OffsetDateTime.of(2022, 1, 10, 10, 10, 10, 0, ZoneOffset.UTC);
 
@@ -96,7 +99,7 @@ public class PaymentClientTest extends BaseClientTest {
 
     JsonElement requestPayload =
         generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
-    JsonElement requestPayloadMock = generateJsonElement(payment3ds);
+    JsonElement requestPayloadMock = generateJsonElement(payment3dsJson);
 
     assertEquals(requestPayloadMock, requestPayload);
     assertNotNull(payment.getResponse());
@@ -164,6 +167,44 @@ public class PaymentClientTest extends BaseClientTest {
     assertEquals("openfinance", payment.getPointOfInteraction().getLinkedTo());
     assertNotNull(payment.getPointOfInteraction().getTransactionData().getQrCode());
     assertNotNull(payment.getPointOfInteraction().getTransactionData().getQrCodeBase64());
+  }
+
+  @Test
+  public void createBoletoWithDiscountFineInterestSuccess()
+      throws IOException, MPException, MPApiException {
+    Payment payment = createBoletoPayment();
+
+    JsonElement requestPayload =
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement(paymentBoletoJson);
+
+    assertEquals(requestPayloadMock, requestPayload);
+    assertNotNull(payment.getResponse());
+    assertEquals(CREATED, payment.getResponse().getStatusCode());
+    assertEquals("bolbradesco", payment.getPaymentMethodId());
+    assertEquals(
+        "fixed", payment.getPaymentMethod().getData().getRules().getDiscounts().get(0).getType());
+    assertEquals(
+        new BigDecimal(5),
+        payment.getPaymentMethod().getData().getRules().getDiscounts().get(0).getValue());
+    assertEquals(
+        "2022-10-25",
+        payment
+            .getPaymentMethod()
+            .getData()
+            .getRules()
+            .getDiscounts()
+            .get(0)
+            .getLimitDate()
+            .toString());
+    assertEquals("percentage", payment.getPaymentMethod().getData().getRules().getFine().getType());
+    assertEquals(
+        new BigDecimal(2), payment.getPaymentMethod().getData().getRules().getFine().getValue());
+    assertEquals(
+        "percentage", payment.getPaymentMethod().getData().getRules().getInterest().getType());
+    assertEquals(
+        new BigDecimal("0.03"),
+        payment.getPaymentMethod().getData().getRules().getInterest().getValue());
   }
 
   @Test
@@ -464,17 +505,34 @@ public class PaymentClientTest extends BaseClientTest {
     return this.createPayment("pix", requestOptions);
   }
 
+  private Payment createBoletoPayment() throws IOException, MPException, MPApiException {
+    return this.createPayment("bolbradesco", null);
+  }
+
   private Payment createPayment(String paymentMethod, MPRequestOptions requestOptions)
       throws IOException, MPException, MPApiException {
-    Map<String, String> file = new HashMap<>();
-    file.put("pix", paymentPixJson);
-    file.put("card", paymentBaseJson);
-    file.put("3ds", payment3ds);
+    class CreateInfo {
+      final Supplier<PaymentCreateRequest> createRequestFn;
+
+      private final String responseFile;
+
+      protected CreateInfo(String responseFile, Supplier<PaymentCreateRequest> createRequestFn) {
+        this.responseFile = responseFile;
+        this.createRequestFn = createRequestFn;
+      }
+    }
+
+    Map<String, CreateInfo> paymentMethods = new HashMap<>();
+    paymentMethods.put("pix", new CreateInfo(paymentPixJson, this::newPixPayment));
+    paymentMethods.put("card", new CreateInfo(paymentBaseJson, () -> newCardPayment(false)));
+    paymentMethods.put("3ds", new CreateInfo(payment3dsJson, () -> newCardPayment(true)));
+    paymentMethods.put("bolbradesco", new CreateInfo(paymentBoletoJson, this::newBoletoPayment));
 
     PaymentCreateRequest paymentCreateRequest =
-        paymentMethod.equals("pix") ? newPixPayment() : newCardPayment(paymentMethod.equals("3ds"));
+        paymentMethods.get(paymentMethod).createRequestFn.get();
 
-    HttpResponse httpResponse = generateHttpResponseFromFile(file.get(paymentMethod), CREATED);
+    HttpResponse httpResponse =
+        generateHttpResponseFromFile(paymentMethods.get(paymentMethod).responseFile, CREATED);
     doReturn(httpResponse)
         .when(HTTP_CLIENT)
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
@@ -667,6 +725,102 @@ public class PaymentClientTest extends BaseClientTest {
             .ipAddress("127.0.0.1")
             .build();
 
+    return PaymentCreateRequest.builder()
+        .payer(payer)
+        .binaryMode(false)
+        .externalReference("212efa19-da7a-4b4f-a3f0-4f458136d9ca")
+        .description("description")
+        .metadata(new HashMap<>())
+        .threeDSecureMode(threeDSecureMode)
+        .transactionAmount(new BigDecimal(100))
+        .capture(false)
+        .paymentMethodId("master")
+        .token("bf9edf6ffae3ab5742033f33c557d54e")
+        .statementDescriptor("statementDescriptor")
+        .installments(1)
+        .notificationUrl("https://seu-site.com.br/webhooks")
+        .additionalInfo(additionalInfo)
+        .build();
+  }
+
+  private PaymentCreateRequest newPixPayment() {
+    return PaymentCreateRequest.builder()
+        .transactionAmount(new BigDecimal(100))
+        .dateOfExpiration(OffsetDateTime.of(2022, 2, 10, 10, 10, 10, 0, ZoneOffset.UTC))
+        .paymentMethodId("pix")
+        .description("description")
+        .payer(PaymentPayerRequest.builder().email("test_user_1648059260@testuser.com").build())
+        .pointOfInteraction(
+            PaymentPointOfInteractionRequest.builder().linkedTo("openfinance").build())
+        .build();
+  }
+
+  private PaymentCreateRequest newBoletoPayment() {
+    IdentificationRequest identification =
+        IdentificationRequest.builder().type("CPF").number("37462770865").build();
+
+    PaymentPayerRequest payer =
+        PaymentPayerRequest.builder()
+            .type("customer")
+            .email("test_payer_9999999@testuser.com")
+            .entityType("individual")
+            .firstName("Test")
+            .lastName("User")
+            .identification(identification)
+            .build();
+
+    PaymentItemRequest item =
+        PaymentItemRequest.builder()
+            .id("id")
+            .title("title")
+            .description("description")
+            .pictureUrl("pictureUrl")
+            .categoryId("categoryId")
+            .quantity(1)
+            .unitPrice(new BigDecimal(100))
+            .build();
+
+    List<PaymentItemRequest> itemRequestList = new ArrayList<>();
+    itemRequestList.add(item);
+
+    PhoneRequest phone = PhoneRequest.builder().areaCode("000").number("0000-0000").build();
+
+    AddressRequest address =
+        AddressRequest.builder()
+            .streetName("streetName")
+            .zipCode("0000")
+            .streetNumber("1234")
+            .build();
+
+    PaymentAdditionalInfoPayerRequest additionalInfoPayer =
+        PaymentAdditionalInfoPayerRequest.builder()
+            .firstName("Test")
+            .lastName("User")
+            .phone(phone)
+            .address(address)
+            .registrationDate(date)
+            .build();
+
+    PaymentReceiverAddressRequest receiverAddress =
+        PaymentReceiverAddressRequest.builder()
+            .floor("floor")
+            .apartment("apartment")
+            .streetName("streetName")
+            .zipCode("0000")
+            .streetNumber("1234")
+            .build();
+
+    PaymentShipmentsRequest shipments =
+        PaymentShipmentsRequest.builder().receiverAddress(receiverAddress).build();
+
+    PaymentAdditionalInfoRequest additionalInfo =
+        PaymentAdditionalInfoRequest.builder()
+            .items(itemRequestList)
+            .payer(additionalInfoPayer)
+            .shipments(shipments)
+            .ipAddress("127.0.0.1")
+            .build();
+
     PaymentFeeRequest fine =
         PaymentFeeRequest.builder().type("percentage").value(new BigDecimal(2)).build();
 
@@ -696,28 +850,14 @@ public class PaymentClientTest extends BaseClientTest {
         .externalReference("212efa19-da7a-4b4f-a3f0-4f458136d9ca")
         .description("description")
         .metadata(new HashMap<>())
-        .threeDSecureMode(threeDSecureMode)
         .transactionAmount(new BigDecimal(100))
         .capture(false)
-        .paymentMethodId("master")
-        .token("bf9edf6ffae3ab5742033f33c557d54e")
+        .paymentMethodId("bolbradesco")
         .statementDescriptor("statementDescriptor")
         .installments(1)
         .notificationUrl("https://seu-site.com.br/webhooks")
         .additionalInfo(additionalInfo)
         .paymentMethod(paymentMethod)
-        .build();
-  }
-
-  private PaymentCreateRequest newPixPayment() {
-    return PaymentCreateRequest.builder()
-        .transactionAmount(new BigDecimal(100))
-        .dateOfExpiration(OffsetDateTime.of(2022, 2, 10, 10, 10, 10, 0, ZoneOffset.UTC))
-        .paymentMethodId("pix")
-        .description("description")
-        .payer(PaymentPayerRequest.builder().email("test_user_1648059260@testuser.com").build())
-        .pointOfInteraction(
-            PaymentPointOfInteractionRequest.builder().linkedTo("openfinance").build())
         .build();
   }
 }

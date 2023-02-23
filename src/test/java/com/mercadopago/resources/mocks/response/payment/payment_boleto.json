@@ -1,0 +1,161 @@
+{
+  "id": 1311781516,
+  "date_created": "2023-02-23T16:32:52.889-04:00",
+  "date_approved": null,
+  "date_last_updated": "2023-02-23T16:32:52.889-04:00",
+  "date_of_expiration": "2023-02-27T22:59:59.000-04:00",
+  "money_release_date": null,
+  "money_release_status": null,
+  "operation_type": "regular_payment",
+  "issuer_id": null,
+  "payment_method_id": "bolbradesco",
+  "payment_type_id": "ticket",
+  "payment_method": {
+    "id": "bolbradesco",
+    "type": "ticket",
+    "data": {
+      "rules": {
+        "discounts":[{
+          "type":"fixed",
+          "value":5,
+          "limit_date":"2022-10-25"
+        }],
+        "fine":{
+          "type":"percentage",
+          "value":2
+        },
+        "interest":{
+          "type":"percentage",
+          "value":0.03
+        }
+      }
+    },
+    "forward_data": {
+      "ticket_number": "",
+      "agreement_number": ""
+    }
+  },
+  "status": "pending",
+  "status_detail": "pending_waiting_payment",
+  "currency_id": "BRL",
+  "description": "description",
+  "live_mode": false,
+  "sponsor_id": null,
+  "authorization_code": null,
+  "money_release_schema": null,
+  "taxes_amount": 0,
+  "counter_currency": null,
+  "brand_id": null,
+  "shipping_amount": 0,
+  "build_version": "2.133.0",
+  "pos_id": null,
+  "store_id": null,
+  "integrator_id": null,
+  "platform_id": null,
+  "corporation_id": null,
+  "payer": {
+    "first_name": null,
+    "last_name": null,
+    "email": "test_user@testuser.com",
+    "identification": {
+      "number": "32659430",
+      "type": "DNI"
+    },
+    "phone": {
+      "area_code": null,
+      "number": null,
+      "extension": null
+    },
+    "type": null,
+    "entity_type": null,
+    "id": "1316710913"
+  },
+  "collector_id": 1036739580,
+  "marketplace_owner": null,
+  "metadata": {
+    "order_number": "order_1677184372"
+  },
+  "additional_info": {
+    "items": [
+      {
+        "id": "id",
+        "title": "title",
+        "description": "description",
+        "picture_url": null,
+        "category_id": "Tickets",
+        "quantity": "1",
+        "unit_price": "100"
+      }
+    ],
+    "payer": {
+      "phone": {
+        "area_code": "11",
+        "number": "985664721"
+      },
+      "address": {
+        "zip_code": "06233-200",
+        "street_name": "Av. das Nações Unidas",
+        "street_number": "3003"
+      },
+      "first_name": "Test",
+      "last_name": "User",
+      "registration_date": "2022-08-06T09:25:04.000-03:00"
+    },
+    "shipments": {
+      "receiver_address": {
+        "zip_code": "95630000",
+        "street_name": "são Luiz",
+        "street_number": "15",
+        "floor": "12",
+        "apartment": "123"
+      }
+    },
+    "available_balance": null,
+    "nsu_processadora": null,
+    "authentication_code": null
+  },
+  "order": {},
+  "external_reference": "1677145242",
+  "transaction_amount": 100,
+  "transaction_amount_refunded": 0,
+  "coupon_amount": 0,
+  "differential_pricing_id": null,
+  "financing_group": null,
+  "deduction_schema": null,
+  "barcode": {
+    "content": "23793927400000100503000260600338183000633330"
+  },
+  "installments": 1,
+  "transaction_details": {
+    "payment_method_reference_id": "6033391830",
+    "acquirer_reference": "",
+    "verification_code": "6002389830",
+    "net_received_amount": 0,
+    "total_paid_amount": 100,
+    "overpaid_amount": 0,
+    "external_resource_url": "https://www.mercadopago.com.br/sandbox/payments/1311781516/ticket?caller_id=1316710913&payment_method_id=bolbradesco&payment_id=1311781516&payment_method_reference_id=6003381830&hash=ec2351c2-3ddc-4458-b147-0a86d2573785",
+    "installment_amount": 0,
+    "financial_institution": "bradesco",
+    "payable_deferral_period": null
+  },
+  "fee_details": [],
+  "charges_details": [],
+  "captured": true,
+  "binary_mode": false,
+  "call_for_authorize_id": null,
+  "statement_descriptor": null,
+  "card": {},
+  "notification_url": null,
+  "refunds": [],
+  "processing_mode": "aggregator",
+  "merchant_account_id": null,
+  "merchant_number": null,
+  "acquirer_reconciliation": [],
+  "point_of_interaction": {
+    "type": "UNSPECIFIED",
+    "business_info": {
+      "unit": "online_payments",
+      "sub_unit": "default"
+    }
+  }
+}
