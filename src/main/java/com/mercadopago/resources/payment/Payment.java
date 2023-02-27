@@ -1,5 +1,6 @@
 package com.mercadopago.resources.payment;
 
+import com.google.gson.annotations.SerializedName;
 import com.mercadopago.net.MPResource;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -190,7 +191,8 @@ public class Payment extends MPResource {
   private PaymentMethod paymentMethod;
 
   /** 3DS Info. */
-  private PaymentThreeDSInfo threeDsinfo;
+  @SerializedName("three_dsinfo")
+  private PaymentThreeDSInfo threeDSInfo;
 
   /**
    * Internal data that can be attached to the payment to record additional attributes of the

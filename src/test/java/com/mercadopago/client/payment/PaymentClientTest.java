@@ -105,10 +105,10 @@ public class PaymentClientTest extends BaseClientTest {
     assertNotNull(payment.getResponse());
     assertEquals(CREATED, payment.getResponse().getStatusCode());
     assertEquals(
-        payment.getThreeDsinfo().getCreq(),
+        payment.getThreeDSInfo().getCreq(),
         "eyJ0aHJlZURTU2VydmVyVHJhbnNJRCI6ImE4NDQ1NTE2LThjNzktNGQ1NC04MjRmLTU5YzgzNDRiY2FjNCIsImFj");
     assertEquals(
-        payment.getThreeDsinfo().getExternalResourceUrl(),
+        payment.getThreeDSInfo().getExternalResourceUrl(),
         "https://acs-public.tp.mastercard.com/api/v1/browser_challenges");
   }
 
