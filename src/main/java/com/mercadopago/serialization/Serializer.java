@@ -23,6 +23,7 @@ import com.mercadopago.net.MPResultsResourcesPage;
 import java.io.IOException;
 import java.io.StringReader;
 import java.lang.reflect.Type;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -73,6 +74,15 @@ public class Serializer {
                       new JsonPrimitive(
                           DateTimeFormatter.ofPattern(SERIALIZE_DATE_FORMAT_ISO8601)
                               .format(offsetDateTime)))
+          .registerTypeAdapter(
+              LocalDate.class,
+              (JsonSerializer<LocalDate>)
+                  (localDate, type, context) ->
+                      new JsonPrimitive(localDate.format(DateTimeFormatter.ISO_LOCAL_DATE)))
+          .registerTypeAdapter(
+              LocalDate.class,
+              (JsonDeserializer<LocalDate>)
+                  (localDate, type, context) -> LocalDate.parse(localDate.getAsString()))
           .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
           .create();
 

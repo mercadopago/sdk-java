@@ -22,6 +22,7 @@ import com.mercadopago.resources.CardToken;
 import com.mercadopago.resources.payment.Payment;
 import com.mercadopago.resources.payment.PaymentRefund;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -430,6 +431,32 @@ public class PaymentClientIT extends BaseClientIT {
             .ipAddress("127.0.0.1")
             .build();
 
+    PaymentFeeRequest fine =
+        PaymentFeeRequest.builder().type("percentage").value(new BigDecimal(2)).build();
+
+    PaymentFeeRequest interest =
+        PaymentFeeRequest.builder().type("percentage").value(new BigDecimal("0.03")).build();
+
+    PaymentDiscountRequest discount =
+        PaymentDiscountRequest.builder()
+            .type("fixed")
+            .value(new BigDecimal(5))
+            .limitDate(LocalDate.of(2022, 10, 25))
+            .build();
+
+    List<PaymentDiscountRequest> discounts = new ArrayList<>();
+    discounts.add(discount);
+
+    PaymentRulesRequest rules =
+        PaymentRulesRequest.builder().fine(fine).interest(interest).discounts(discounts).build();
+
+    PaymentDataRequest data = PaymentDataRequest.builder().rules(rules).build();
+
+    PaymentMethodRequest paymentMethod = PaymentMethodRequest.builder().data(data).build();
+
+    PaymentPointOfInteractionRequest pointOfInteraction =
+        PaymentPointOfInteractionRequest.builder().type("TYPE").build();
+
     return PaymentCreateRequest.builder()
         .transactionAmount(new BigDecimal("100"))
         .token(cardToken.getId())
@@ -439,6 +466,8 @@ public class PaymentClientIT extends BaseClientIT {
         .metadata(new HashMap<>())
         .paymentMethodId("master")
         .additionalInfo(additionalInfo)
+        .pointOfInteraction(pointOfInteraction)
+        .paymentMethod(paymentMethod)
         .build();
   }
 }

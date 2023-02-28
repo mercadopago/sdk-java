@@ -60,9 +60,26 @@
     "last_name": "User",
     "entity_type": "individual"
   },
-  "payment_method_id": "master",
-  "token": "bf9edf6ffae3ab5742033f33c557d54e",
+  "payment_method_id": "bolbradesco",
   "transaction_amount": 100,
   "statement_descriptor": "statementDescriptor",
-  "three_d_secure_mode":  "not_supported"
+  "payment_method": {
+    "data": {
+      "rules": {
+        "discounts":[{
+          "type":"fixed",
+          "value":5,
+          "limit_date":"2022-10-25"
+        }],
+        "fine":{
+          "type":"percentage",
+          "value":2
+        },
+        "interest":{
+          "type":"percentage",
+          "value":0.03
+        }
+      }
+    }
+  }
 }

@@ -64,5 +64,5 @@
   "token": "bf9edf6ffae3ab5742033f33c557d54e",
   "transaction_amount": 100,
   "statement_descriptor": "statementDescriptor",
-  "three_d_secure_mode":  "not_supported"
+  "three_d_secure_mode":  "optional"
 }
