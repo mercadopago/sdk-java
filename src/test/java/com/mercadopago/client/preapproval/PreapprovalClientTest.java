@@ -44,7 +44,7 @@ class PreapprovalClientTest extends BaseClientTest {
       OffsetDateTime.of(2023, 1, 10, 10, 10, 10, 0, ZoneOffset.UTC);
 
   private final OffsetDateTime nextPaymentDate =
-          OffsetDateTime.of(2022, 1, 10, 10, 10, 10, 0, ZoneOffset.UTC);
+      OffsetDateTime.of(2022, 1, 10, 10, 10, 10, 0, ZoneOffset.UTC);
 
   private final PreapprovalClient client = new PreapprovalClient();
 
