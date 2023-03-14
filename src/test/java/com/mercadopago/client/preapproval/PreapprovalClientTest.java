@@ -43,6 +43,9 @@ class PreapprovalClientTest extends BaseClientTest {
   private final OffsetDateTime endDate =
       OffsetDateTime.of(2023, 1, 10, 10, 10, 10, 0, ZoneOffset.UTC);
 
+  private final OffsetDateTime nextPaymentDate =
+          OffsetDateTime.of(2022, 1, 10, 10, 10, 10, 0, ZoneOffset.UTC);
+
   private final PreapprovalClient client = new PreapprovalClient();
 
   @Test
@@ -211,6 +214,7 @@ class PreapprovalClientTest extends BaseClientTest {
     assertEquals(reason, preapproval.getReason());
     assertEquals("23546246234", preapproval.getExternalReference());
     assertEquals(startDate, preapproval.getDateCreated());
+    assertEquals(nextPaymentDate, preapproval.getNextPaymentDate());
     assertEquals(
         "https://www.mercadopago.com.br/subscriptions/checkout?preapproval_id=2c9380847e9b451c017ea1bd70ba0219",
         preapproval.getInitPoint());
