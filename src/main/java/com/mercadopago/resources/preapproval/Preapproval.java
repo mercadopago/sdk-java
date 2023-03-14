@@ -34,6 +34,9 @@ public class Preapproval extends MPResource {
   /** Preapproval reference value. */
   private String externalReference;
 
+  /** Date of the next payment debit. */
+  private OffsetDateTime nextPaymentDate;
+
   /** Creation date. */
   private OffsetDateTime dateCreated;
 
