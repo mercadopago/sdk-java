@@ -13,3 +13,20 @@ maven-central-deploy.log
 .settings
 .project
 classes/
+
+### Gradle ###
+.gradle
+gradle/
+build.gradle
+settings.gradle
+gradlew
+gradlew.bat
+# Ignore Gradle GUI config
+gradle-app.setting
+
+# Cache of project
+.gradletasknamecache
+
+### Gradle Patch ###
+# Java heap dump
+*.hprof
