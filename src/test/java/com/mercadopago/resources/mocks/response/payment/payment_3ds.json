@@ -219,7 +219,7 @@
   "merchant_number": null,
   "acquirer_reconciliation": [],
   "point_of_interaction": {},
-  "three_dsinfo": {
+  "three_ds_info": {
     "external_resource_url":
     "https://acs-public.tp.mastercard.com/api/v1/browser_challenges",
     "creq": "eyJ0aHJlZURTU2VydmVyVHJhbnNJRCI6ImE4NDQ1NTE2LThjNzktNGQ1NC04MjRmLTU5YzgzNDRiY2FjNCIsImFj"

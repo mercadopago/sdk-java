@@ -191,7 +191,7 @@ public class Payment extends MPResource {
   private PaymentMethod paymentMethod;
 
   /** 3DS Info. */
-  @SerializedName("three_dsinfo")
+  @SerializedName("three_ds_info")
   private PaymentThreeDSInfo threeDSInfo;
 
   /**
