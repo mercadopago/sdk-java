@@ -1,0 +1,112 @@
+{
+  "id": 111,
+  "date_created": "2023-03-08T09:45:24.038-04:00",
+  "date_approved": null,
+  "date_last_updated": "2023-03-08T09:45:24.038-04:00",
+  "date_of_expiration": null,
+  "money_release_date": null,
+  "money_release_status": null,
+  "operation_type": "regular_payment",
+  "issuer_id": null,
+  "payment_method_id": "pse",
+  "payment_type_id": "bank_transfer",
+  "payment_method": {
+    "id": "pse",
+    "type": "bank_transfer"
+  },
+  "status": "pending",
+  "status_detail": "pending_waiting_transfer",
+  "currency_id": "COP",
+  "description": "description",
+  "live_mode": false,
+  "sponsor_id": null,
+  "authorization_code": null,
+  "money_release_schema": null,
+  "taxes_amount": 0,
+  "counter_currency": null,
+  "brand_id": null,
+  "shipping_amount": 0,
+  "build_version": "2.136.0",
+  "pos_id": null,
+  "store_id": null,
+  "integrator_id": null,
+  "platform_id": null,
+  "corporation_id": null,
+  "payer": {
+    "first_name": null,
+    "last_name": null,
+    "email": "email@example.com",
+    "identification": {
+      "number": "111111",
+      "type": "DNI"
+    },
+    "phone": {
+      "area_code": null,
+      "number": null,
+      "extension": null
+    },
+    "type": null,
+    "entity_type": null,
+    "id": "11111"
+  },
+  "collector_id": 830082116,
+  "marketplace_owner": null,
+  "metadata": {},
+  "additional_info": {
+    "ip_address": "127.0.0.1",
+    "available_balance": null,
+    "nsu_processadora": null,
+    "authentication_code": null
+  },
+  "order": {},
+  "external_reference": null,
+  "transaction_amount": 5000,
+  "net_amount": null,
+  "taxes": [
+    {
+      "value": null,
+      "type": "IVA"
+    }
+  ],
+  "transaction_amount_refunded": 0,
+  "coupon_amount": 0,
+  "differential_pricing_id": null,
+  "financing_group": null,
+  "deduction_schema": null,
+  "callback_url": "http://your-site.com",
+  "installments": 1,
+  "transaction_details": {
+    "payment_method_reference_id": null,
+    "acquirer_reference": null,
+    "net_received_amount": 0,
+    "total_paid_amount": 5000,
+    "overpaid_amount": 0,
+    "external_resource_url": "https://www.mercadopago.com.co/sandbox/payments/1111/bank_transfer?caller_id=2222&hash=1234",
+    "installment_amount": 0,
+    "financial_institution": "1009",
+    "payable_deferral_period": null,
+    "bank_transfer_id": 153030,
+    "transaction_id": "111"
+  },
+  "fee_details": [],
+  "charges_details": [],
+  "captured": true,
+  "binary_mode": false,
+  "call_for_authorize_id": null,
+  "statement_descriptor": null,
+  "card": {},
+  "notification_url": "http://your-site.com",
+  "refunds": [],
+  "processing_mode": "aggregator",
+  "merchant_account_id": null,
+  "merchant_number": null,
+  "acquirer_reconciliation": [],
+  "point_of_interaction": {
+    "type": "UNSPECIFIED",
+    "business_info": {
+      "unit": "online_payments",
+      "sub_unit": "default"
+    }
+  },
+  "tags": null
+}

@@ -67,6 +67,8 @@ public class PaymentClientTest extends BaseClientTest {
 
   private final String paymentBoletoJson = "payment/payment_boleto.json";
 
+  private final String paymentPseJson = "payment/payment_pse.json";
+
   private final String refundBaseJson = "refund/refund_base.json";
 
   private final String refundListJson = "refund/refund_list.json";
@@ -205,6 +207,27 @@ public class PaymentClientTest extends BaseClientTest {
     assertEquals(
         new BigDecimal("0.03"),
         payment.getPaymentMethod().getData().getRules().getInterest().getValue());
+  }
+
+  @Test
+  public void createPsePaymentSuccess() throws MPException, MPApiException, IOException {
+    Payment payment = createPsePayment();
+
+    JsonElement requestPayload =
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement(paymentPseJson);
+
+    assertEquals(requestPayloadMock, requestPayload);
+    assertNotNull(payment.getResponse());
+    assertEquals(CREATED, payment.getResponse().getStatusCode());
+    assertEquals("pse", payment.getPaymentMethodId());
+    assertEquals("COP", payment.getCurrencyId());
+    assertEquals("bank_transfer", payment.getPaymentTypeId());
+    assertEquals("pending", payment.getStatus());
+    assertEquals("1009", payment.getTransactionDetails().getFinancialInstitution());
+    assertEquals(
+        "https://www.mercadopago.com.co/sandbox/payments/1111/bank_transfer?caller_id=2222&hash=1234",
+        payment.getTransactionDetails().getExternalResourceUrl());
   }
 
   @Test
@@ -509,6 +532,10 @@ public class PaymentClientTest extends BaseClientTest {
     return this.createPayment("bolbradesco", null);
   }
 
+  private Payment createPsePayment() throws IOException, MPException, MPApiException {
+    return this.createPayment("pse", null);
+  }
+
   private Payment createPayment(String paymentMethod, MPRequestOptions requestOptions)
       throws IOException, MPException, MPApiException {
     class CreateInfo {
@@ -527,6 +554,7 @@ public class PaymentClientTest extends BaseClientTest {
     paymentMethods.put("card", new CreateInfo(paymentBaseJson, () -> newCardPayment(false)));
     paymentMethods.put("3ds", new CreateInfo(payment3dsJson, () -> newCardPayment(true)));
     paymentMethods.put("bolbradesco", new CreateInfo(paymentBoletoJson, this::newBoletoPayment));
+    paymentMethods.put("pse", new CreateInfo(paymentPseJson, this::newPsePayment));
 
     PaymentCreateRequest paymentCreateRequest =
         paymentMethods.get(paymentMethod).createRequestFn.get();
@@ -858,6 +886,47 @@ public class PaymentClientTest extends BaseClientTest {
         .notificationUrl("https://seu-site.com.br/webhooks")
         .additionalInfo(additionalInfo)
         .paymentMethod(paymentMethod)
+        .build();
+  }
+
+  private PaymentCreateRequest newPsePayment() {
+    IdentificationRequest identification =
+        IdentificationRequest.builder().type("CPF").number("37462770865").build();
+
+    PaymentPayerAddressRequest address =
+        PaymentPayerAddressRequest.builder()
+            .streetName("streetName")
+            .streetNumber("streetNumber")
+            .zipCode("zipCode")
+            .build();
+
+    PaymentPayerPhoneRequest phone =
+        PaymentPayerPhoneRequest.builder().areaCode("111").number("123456").build();
+
+    PaymentPayerRequest payer =
+        PaymentPayerRequest.builder()
+            .type("customer")
+            .email("test_payer_9999999@testuser.com")
+            .entityType("individual")
+            .firstName("Test")
+            .lastName("User")
+            .identification(identification)
+            .address(address)
+            .phone(phone)
+            .build();
+
+    PaymentAdditionalInfoRequest additionalInfo =
+        PaymentAdditionalInfoRequest.builder().ipAddress("127.0.0.1").build();
+    PaymentTransactionDetailsRequest transactionDetails =
+        PaymentTransactionDetailsRequest.builder().financialInstitution("1009").build();
+
+    return PaymentCreateRequest.builder()
+        .payer(payer)
+        .description("description")
+        .transactionAmount(new BigDecimal(100))
+        .transactionDetails(transactionDetails)
+        .paymentMethodId("pse")
+        .additionalInfo(additionalInfo)
         .build();
   }
 }
