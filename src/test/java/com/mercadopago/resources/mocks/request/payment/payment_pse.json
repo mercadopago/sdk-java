@@ -10,8 +10,8 @@
     "first_name": "Test",
     "last_name": "User",
     "identification": {
-      "type": "CPF",
-      "number": "37462770865"
+      "type": "C.C.",
+      "number": "1111111111"
     },
     "address": {
       "street_name": "streetName",
