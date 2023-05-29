@@ -891,7 +891,7 @@ public class PaymentClientTest extends BaseClientTest {
 
   private PaymentCreateRequest newPsePayment() {
     IdentificationRequest identification =
-        IdentificationRequest.builder().type("CPF").number("37462770865").build();
+        IdentificationRequest.builder().type("C.C.").number("1111111111").build();
 
     PaymentPayerAddressRequest address =
         PaymentPayerAddressRequest.builder()
