@@ -28,4 +28,10 @@ public class PaymentPayerRequest {
 
   /** Payer's entity type (only for bank transfers). */
   private final String entityType;
+
+  /** Payer's address information. */
+  private PaymentPayerAddressRequest address;
+
+  /** Payer's phone information. */
+  private PaymentPayerPhoneRequest phone;
 }

@@ -1,11 +1,11 @@
 package com.mercadopago.client.common;
 
-import lombok.Builder;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
 /** AddressRequest class. */
 @Getter
-@Builder
+@SuperBuilder
 public class AddressRequest {
   /** Zip code. */
   private final String zipCode;

@@ -1,0 +1,31 @@
+{
+  "additional_info": {
+    "ip_address": "127.0.0.1"
+  },
+  "description": "description",
+  "payer": {
+    "type": "customer",
+    "email": "test_payer_9999999@testuser.com",
+    "entity_type": "individual",
+    "first_name": "Test",
+    "last_name": "User",
+    "identification": {
+      "type": "C.C.",
+      "number": "1111111111"
+    },
+    "address": {
+      "street_name": "streetName",
+      "street_number": "streetNumber",
+      "zip_code": "zipCode"
+    },
+    "phone": {
+      "area_code": "111",
+      "number": "123456"
+    }
+  },
+  "payment_method_id": "pse",
+  "transaction_amount": 100,
+  "transaction_details": {
+    "financial_institution": "1009"
+  }
+}
