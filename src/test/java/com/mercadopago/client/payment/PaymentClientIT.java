@@ -13,8 +13,10 @@ import com.mercadopago.client.cardtoken.CardTokenTestClient;
 import com.mercadopago.client.common.AddressRequest;
 import com.mercadopago.client.common.IdentificationRequest;
 import com.mercadopago.client.common.PhoneRequest;
+import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
+import com.mercadopago.net.Headers;
 import com.mercadopago.net.MPResourceList;
 import com.mercadopago.net.MPResultsResourcesPage;
 import com.mercadopago.net.MPSearchRequest;
@@ -28,6 +30,9 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import lombok.var;
 import org.junit.jupiter.api.Test;
 
 /** PaymentClientIT class. */
@@ -45,6 +50,36 @@ public class PaymentClientIT extends BaseClientIT {
       assertNotNull(payment.getResponse());
       assertEquals(CREATED, payment.getResponse().getStatusCode());
       assertNotNull(payment.getId());
+    } catch (MPApiException mpApiException) {
+      fail(mpApiException.getApiResponse().getContent());
+    } catch (MPException mpException) {
+      fail(mpException.getMessage());
+    }
+  }
+
+  @Test
+  public void createPaymentWithCustomizedHeadersWithSuccess() {
+    try {
+      PaymentCreateRequest paymentCreateRequest = mockPaymentRequest();
+
+      String idempotencyKey = UUID.randomUUID().toString();
+      Map<String, String> customHeaders = new HashMap<>();
+      customHeaders.put(Headers.IDEMPOTENCY_KEY, idempotencyKey);
+
+      MPRequestOptions requestOptions =
+          MPRequestOptions.builder()
+              .customHeaders(customHeaders)
+              .build();
+
+      var firstPayment = client.create(paymentCreateRequest, requestOptions);
+      var secondPayment = client.create(paymentCreateRequest, requestOptions);
+
+      assertNotNull(firstPayment.getResponse());
+      assertNotNull(secondPayment.getResponse());
+      assertEquals(CREATED, firstPayment.getResponse().getStatusCode());
+      assertEquals(OK, secondPayment.getResponse().getStatusCode());
+      assertEquals(firstPayment.getId(), secondPayment.getId());
+
     } catch (MPApiException mpApiException) {
       fail(mpApiException.getApiResponse().getContent());
     } catch (MPException mpException) {
@@ -469,5 +504,25 @@ public class PaymentClientIT extends BaseClientIT {
         .pointOfInteraction(pointOfInteraction)
         .paymentMethod(paymentMethod)
         .build();
+  }
+
+  public PaymentCreateRequest mockPaymentRequest() {
+
+    return PaymentCreateRequest.builder()
+        .transactionAmount(new BigDecimal(5))
+        .description("description")
+        .paymentMethodId("pix")
+        .payer(
+            PaymentPayerRequest.builder()
+                .email("test_user_45843885@testuser.com")
+                .firstName("User")
+                .lastName("Test")
+                .identification(
+                    IdentificationRequest.builder()
+                        .type("CPF")
+                        .number("01234567890").build())
+                .build())
+        .build();
+
   }
 }

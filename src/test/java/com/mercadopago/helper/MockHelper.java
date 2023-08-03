@@ -9,6 +9,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.exceptions.MPException;
+import com.mercadopago.net.Headers;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -118,17 +119,17 @@ public class MockHelper {
 
   private static boolean hasMandatoryHeaders(Header[] headers, String method) {
     List<String> mandatoryHeaders = new ArrayList<>();
-    mandatoryHeaders.add("Authorization");
-    mandatoryHeaders.add("User-Agent");
-    mandatoryHeaders.add("X-Product-Id");
-    mandatoryHeaders.add("X-Tracking-Id");
+    mandatoryHeaders.add(Headers.AUTHORIZATION);
+    mandatoryHeaders.add(Headers.USER_AGENT);
+    mandatoryHeaders.add(Headers.PRODUCT_ID);
+    mandatoryHeaders.add(Headers.TRACKING_ID);
 
     if ("POST".equals(method) || "PUT".equals(method)) {
-      mandatoryHeaders.add("Content-Type");
+      mandatoryHeaders.add(Headers.CONTENT_TYPE);
     }
 
     if ("POST".equals(method)) {
-      mandatoryHeaders.add("X-Idempotency-Key");
+      mandatoryHeaders.add(Headers.IDEMPOTENCY_KEY);
     }
 
     for (String mandatoryHeader : mandatoryHeaders) {
@@ -142,27 +143,27 @@ public class MockHelper {
 
   private static boolean haveMandatoryHeadersCorrectValues(Header[] headers) {
     for (Header header : headers) {
-      if ("Authorization".equals(header.getName()) && !header.getValue().startsWith("Bearer")) {
+      if (Headers.AUTHORIZATION.equals(header.getName()) && !header.getValue().startsWith("Bearer")) {
         return false;
       }
 
-      if ("User-Agent".equals(header.getName())
+      if (Headers.USER_AGENT.equals(header.getName())
           && !String.format("MercadoPago Java SDK/%s", MercadoPagoConfig.CURRENT_VERSION)
               .equals(header.getValue())) {
         return false;
       }
 
-      if ("X-Product-Id".equals(header.getName())
+      if (Headers.PRODUCT_ID.equals(header.getName())
           && !MercadoPagoConfig.PRODUCT_ID.equals(header.getValue())) {
         return false;
       }
 
-      if ("X-Tracking-Id".equals(header.getName())
+      if (Headers.TRACKING_ID.equals(header.getName())
           && !MercadoPagoConfig.TRACKING_ID.equals(header.getValue())) {
         return false;
       }
 
-      if ("Content-Type".equals(header.getName())
+      if (Headers.CONTENT_TYPE.equals(header.getName())
           && !"application/json; charset=UTF-8".equals(header.getValue())) {
         return false;
       }

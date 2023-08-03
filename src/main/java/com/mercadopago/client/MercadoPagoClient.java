@@ -252,12 +252,12 @@ public abstract class MercadoPagoClient {
 
     if (Objects.nonNull(requestOptions) && Objects.nonNull(requestOptions.getCustomHeaders())) {
       for (Map.Entry<String, String> entry : requestOptions.getCustomHeaders().entrySet()) {
-        headers.put(entry.getKey(), entry.getValue());
+        headers.put(entry.getKey().toLowerCase(), entry.getValue());
       }
     }
 
     if (!uri.contains("/oauth/token")) {
-      headers.put("Authorization", String.format("Bearer %s", getAccessToken(requestOptions)));
+      headers.put(Headers.AUTHORIZATION, String.format("Bearer %s", getAccessToken(requestOptions)));
     }
     return headers;
   }
@@ -270,19 +270,25 @@ public abstract class MercadoPagoClient {
       headers.put(entry.getKey(), entry.getValue());
     }
 
-    if (shouldAddIdempotencyKey(request)) {
+    if (shouldAddIdempotencyKey(request, headers)) {
       headers.put(Headers.IDEMPOTENCY_KEY, request.createIdempotencyKey());
     }
 
-    if (!request.getUri().contains("/oauth/token") && !headers.containsKey("Authorization")) {
-      headers.put("Authorization", String.format("Bearer %s", getAccessToken(null)));
+    if (!request.getUri().contains("/oauth/token") && !headers.containsKey(Headers.AUTHORIZATION)) {
+      headers.put(Headers.AUTHORIZATION, String.format("Bearer %s", getAccessToken(null)));
     }
 
     return headers;
   }
 
-  private boolean shouldAddIdempotencyKey(MPRequest request) {
-    return request.getMethod() == HttpMethod.POST;
+  private boolean shouldAddIdempotencyKey(MPRequest request, Map headers) {
+    boolean containsIdempotency = headers.containsKey(Headers.IDEMPOTENCY_KEY);
+
+    if (containsIdempotency) return false;
+
+    return request.getMethod() == HttpMethod.POST ||
+        request.getMethod() == HttpMethod.PUT ||
+        request.getMethod() == HttpMethod.PATCH;
   }
 
   private String getAccessToken(MPRequestOptions requestOptions) {
