@@ -2,23 +2,23 @@ package com.mercadopago.net;
 
 /** Headers class. */
 public class Headers {
-  public static final String AUTHORIZATION = "authorization";
+  public static final String AUTHORIZATION = "Authorization";
 
-  public static final String CONTENT_TYPE = "content-type";
+  public static final String CONTENT_TYPE = "Content-Type";
 
-  public static final String ACCEPT = "accept";
+  public static final String ACCEPT = "Accept";
 
-  public static final String USER_AGENT = "user-agent";
+  public static final String USER_AGENT = "User-Agent";
 
-  public static final String IDEMPOTENCY_KEY = "x-idempotency-key";
+  public static final String IDEMPOTENCY_KEY = "X-Idempotency-Key";
 
-  public static final String PRODUCT_ID = "x-product-id";
+  public static final String PRODUCT_ID = "X-Product-Id";
 
-  public static final String TRACKING_ID = "x-tracking-id";
+  public static final String TRACKING_ID = "X-Tracking-Id";
 
-  public static final String CORPORATION_ID = "x-corporation-id";
+  public static final String CORPORATION_ID = "X-Corporation-Id";
 
-  public static final String INTEGRATOR_ID = "x-integrator-id";
+  public static final String INTEGRATOR_ID = "X-Integrator-Id";
 
-  public static final String PLATFORM_ID = "x-platform-id";
+  public static final String PLATFORM_ID = "X-Platform-Id";
 }

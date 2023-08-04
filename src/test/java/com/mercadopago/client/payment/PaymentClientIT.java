@@ -60,7 +60,7 @@ public class PaymentClientIT extends BaseClientIT {
   @Test
   public void createPaymentWithCustomizedHeadersWithSuccess() {
     try {
-      PaymentCreateRequest paymentCreateRequest = mockPaymentRequest();
+      PaymentCreateRequest paymentCreateRequest = pixPaymentRequest();
 
       String idempotencyKey = UUID.randomUUID().toString();
       Map<String, String> customHeaders = new HashMap<>();
@@ -506,7 +506,7 @@ public class PaymentClientIT extends BaseClientIT {
         .build();
   }
 
-  public PaymentCreateRequest mockPaymentRequest() {
+  public PaymentCreateRequest pixPaymentRequest() {
 
     return PaymentCreateRequest.builder()
         .transactionAmount(new BigDecimal(5))

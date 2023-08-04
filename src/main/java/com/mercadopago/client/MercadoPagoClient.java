@@ -282,7 +282,7 @@ public abstract class MercadoPagoClient {
   }
 
   private boolean shouldAddIdempotencyKey(MPRequest request, Map headers) {
-    boolean containsIdempotency = headers.containsKey(Headers.IDEMPOTENCY_KEY);
+    boolean containsIdempotency = headers.containsKey(Headers.IDEMPOTENCY_KEY.toLowerCase());
 
     if (containsIdempotency) return false;
 
