@@ -60,7 +60,7 @@ public class PaymentClientIT extends BaseClientIT {
   @Test
   public void createPaymentWithCustomizedHeadersWithSuccess() {
     try {
-      PaymentCreateRequest paymentCreateRequest = pixPaymentRequest();
+      PaymentCreateRequest paymentCreateRequest = newPayment("approved");
 
       String idempotencyKey = UUID.randomUUID().toString();
       Map<String, String> customHeaders = new HashMap<>();
@@ -490,7 +490,7 @@ public class PaymentClientIT extends BaseClientIT {
     PaymentMethodRequest paymentMethod = PaymentMethodRequest.builder().data(data).build();
 
     PaymentPointOfInteractionRequest pointOfInteraction =
-        PaymentPointOfInteractionRequest.builder().type("TYPE").build();
+        PaymentPointOfInteractionRequest.builder().type("OPENPLATFORM").build();
 
     return PaymentCreateRequest.builder()
         .transactionAmount(new BigDecimal("100"))
@@ -504,25 +504,5 @@ public class PaymentClientIT extends BaseClientIT {
         .pointOfInteraction(pointOfInteraction)
         .paymentMethod(paymentMethod)
         .build();
-  }
-
-  public PaymentCreateRequest pixPaymentRequest() {
-
-    return PaymentCreateRequest.builder()
-        .transactionAmount(new BigDecimal(5))
-        .description("description")
-        .paymentMethodId("pix")
-        .payer(
-            PaymentPayerRequest.builder()
-                .email("test_user_45843885@testuser.com")
-                .firstName("User")
-                .lastName("Test")
-                .identification(
-                    IdentificationRequest.builder()
-                        .type("CPF")
-                        .number("01234567890").build())
-                .build())
-        .build();
-
   }
 }
