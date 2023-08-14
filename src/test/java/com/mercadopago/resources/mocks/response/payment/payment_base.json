@@ -4,7 +4,7 @@
   "date_approved": "2022-01-10T10:10:10.000-00:00",
   "date_last_updated": "2022-01-10T10:10:10.000-00:00",
   "date_of_expiration": null,
-  "money_release_date": "2022-01-10T10:10:10.000-00:00",
+  "money_release_date": "",
   "operation_type": "regular_payment",
   "issuer_id": "24",
   "payment_method_id": "master",
