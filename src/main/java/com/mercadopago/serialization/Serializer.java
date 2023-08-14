@@ -49,7 +49,7 @@ public class Serializer {
   private static final String SERIALIZE_DATE_FORMAT_ISO8601 = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
 
   private static OffsetDateTime parseDateTime(JsonElement json) {
-    if (json.getAsString().isEmpty()) {
+    if (json == null || json.getAsString().isEmpty()) {
       return null;
     }
 
