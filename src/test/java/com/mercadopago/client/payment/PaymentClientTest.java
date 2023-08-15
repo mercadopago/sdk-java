@@ -576,7 +576,7 @@ public class PaymentClientTest extends BaseClientTest {
     assertEquals(date, payment.getDateApproved());
     assertEquals(date, payment.getDateLastUpdated());
     assertNull(payment.getDateOfExpiration());
-    assertEquals(date, payment.getMoneyReleaseDate());
+    assertNull(payment.getMoneyReleaseDate());
     assertEquals("regular_payment", payment.getOperationType());
     assertEquals("24", payment.getIssuerId());
     assertEquals("master", payment.getPaymentMethodId());
