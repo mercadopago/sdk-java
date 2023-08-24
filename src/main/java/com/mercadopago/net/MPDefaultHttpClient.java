@@ -134,7 +134,11 @@ public class MPDefaultHttpClient implements MPHttpClient {
 
       HttpResponse response = executeHttpRequest(mpRequest, completeRequest, context);
 
-      String responseBody = EntityUtils.toString(response.getEntity(), UTF_8);
+      String responseBody = "";
+      if (Objects.nonNull(response.getEntity())) {
+        responseBody = EntityUtils.toString(response.getEntity(), UTF_8);
+      }
+
       Map<String, List<String>> headers = getHeaders(response);
       int statusCode = response.getStatusLine().getStatusCode();
       MPResponse mpResponse = new MPResponse(statusCode, headers, responseBody);
