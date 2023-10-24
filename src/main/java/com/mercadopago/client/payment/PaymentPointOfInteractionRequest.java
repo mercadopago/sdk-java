@@ -12,7 +12,7 @@ public class PaymentPointOfInteractionRequest {
 
   /** Type. */
   private final String type;
-
+  /**  Transaction data. */
   private final PaymentTransactionDataRequest transactionData;
 
 }

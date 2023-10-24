@@ -1,6 +1,5 @@
 package com.mercadopago.resources.payment;
 
-import com.mercadopago.client.payment.PaymentSubscriptionSequenceRequest;
 import lombok.Getter;
 
 /** PaymentTransactionData class. */

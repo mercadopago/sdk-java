@@ -6,8 +6,8 @@ import lombok.Getter;
 public class PaymentInvoicePeriod {
 
   /** Period. */
-  public int period;
+  private int period;
 
   /** Type. */
-  public String type;
+  private String type;
 }
