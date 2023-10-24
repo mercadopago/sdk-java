@@ -24,6 +24,8 @@ public abstract class MercadoPagoClient {
   private static final String ACCEPT_HEADER_VALUE = "application/json";
 
   private static final String CONTENT_TYPE_HEADER_VALUE = "application/json; charset=UTF-8";
+  private static final String BEARER = "Bearer %s";
+  private static final String OAUTH_TOKEN = "/oauth/token";
 
   protected final MPHttpClient httpClient;
 
@@ -68,15 +70,13 @@ public abstract class MercadoPagoClient {
   protected MPResponse send(MPRequest request, MPRequestOptions requestOptions)
       throws MPException, MPApiException {
     String uri = UrlFormatter.format(request.getUri(), request.getQueryParams());
-    Map<String, String> addHeadersByDefault = addDefaultHeaders(request, requestOptions); // esse metodo teria um melhor nome sendo addDefaultHeader?
-    Map<String, String> defaultAndCustomHeaders = addCustomHeaders(addHeadersByDefault, uri, requestOptions);
 
     return httpClient.send(
         MPRequest.builder()
             .uri(uri)
             .accessToken(getAccessToken(requestOptions))
             .method(request.getMethod())
-            .headers(defaultAndCustomHeaders)
+            .headers(addRequestHeaders(request, requestOptions))
             .payload(request.getPayload())
             .connectionRequestTimeout(addConnectionRequestTimeout(request, requestOptions))
             .connectionTimeout(addConnectionTimeout(request, requestOptions))
@@ -204,7 +204,7 @@ public abstract class MercadoPagoClient {
         .payload(payload)
         .method(method)
         .queryParams(queryParams)
-        .headers(addCustomHeaders(defaultHeaders, path, requestOptions))
+        .headers(addCustomHeaders(path, requestOptions))
         .connectionRequestTimeout(addConnectionRequestTimeout(null, requestOptions))
         .connectionTimeout(addConnectionTimeout(null, requestOptions))
         .socketTimeout(addSocketTimeout(null, requestOptions))
@@ -247,12 +247,12 @@ public abstract class MercadoPagoClient {
     return MercadoPagoConfig.getConnectionRequestTimeout();
   }
 
+  private Map<String, String> addRequestHeaders(MPRequest request, MPRequestOptions requestOptions) {
 
-  public Map<String, String> addDefaultHeaders(MPRequest request, MPRequestOptions requestOptions) {
     Map<String, String> headers =
         nonNull(request.getHeaders()) ? request.getHeaders() : new HashMap<>();
 
-    headers.putAll(defaultHeaders);
+    headers.putAll(addDefaultHeaders(request));
 
     if (isNotBlank(MercadoPagoConfig.getCorporationId())) {
       headers.put(Headers.CORPORATION_ID, MercadoPagoConfig.getCorporationId());
@@ -266,40 +266,51 @@ public abstract class MercadoPagoClient {
       headers.put(Headers.PLATFORM_ID, MercadoPagoConfig.getPlatformId());
     }
 
-    if (shouldAddIdempotencyKey(request, headers)) {
-      headers.put(Headers.IDEMPOTENCY_KEY, request.createIdempotencyKey());
-    }
-
-    if (!request.getUri().contains("/oauth/token") && !headers.containsKey(Headers.AUTHORIZATION)) {
-      headers.put(Headers.AUTHORIZATION, String.format("Bearer %s", getAccessToken(null)));
-    }
-
     if (nonNull(requestOptions) && isNotEmpty(requestOptions.getCustomHeaders()) ) {
-      for (Map.Entry<String, String> header : requestOptions.getCustomHeaders().entrySet()) { // ver essa regra aqui
+      for (Map.Entry<String, String> header : requestOptions.getCustomHeaders().entrySet()) {
         if (!headers.containsKey(header.getKey()) && !Headers.CONTENT_TYPE.equalsIgnoreCase(header.getKey())) {
           headers.put(header.getKey().toLowerCase(), header.getValue());
         }
       }
     }
 
+    headers.putAll(addCustomHeaders(request.getUri(), requestOptions));
     return headers;
   }
 
-  private Map<String, String> addCustomHeaders(Map<String, String> headers, String uri, MPRequestOptions requestOptions) {
+  private Map<String, String> addDefaultHeaders(MPRequest request) {
+    Map<String, String> headers = new HashMap<>(defaultHeaders);
+    if (shouldAddIdempotencyKey(request)) {
+      headers.put(Headers.IDEMPOTENCY_KEY, request.createIdempotencyKey());
+    }
+
+    if (!request.getUri().contains(OAUTH_TOKEN) && !headers.containsKey(Headers.AUTHORIZATION)) {
+      headers.put(Headers.AUTHORIZATION, String.format(BEARER, getAccessToken(null)));
+    }
+    return headers;
+  }
+
+  private Map<String, String> addCustomHeaders(String uri, MPRequestOptions requestOptions) {
+    Map<String, String> headers = new HashMap<>();
     if (nonNull(requestOptions) && nonNull(requestOptions.getCustomHeaders())) {
       for (Map.Entry<String, String> entry : requestOptions.getCustomHeaders().entrySet()) {
         headers.put(entry.getKey().toLowerCase(), entry.getValue());
       }
     }
 
-    if (!uri.contains("/oauth/token")) {
-      headers.put(Headers.AUTHORIZATION, String.format("Bearer %s", getAccessToken(requestOptions)));
+    if (!uri.contains(OAUTH_TOKEN)) {
+      headers.put(Headers.AUTHORIZATION, String.format(BEARER, getAccessToken(requestOptions)));
     }
+
     return headers;
   }
 
-  private boolean shouldAddIdempotencyKey(MPRequest request, Map headers) {
-    boolean containsIdempotency = headers.containsKey(Headers.IDEMPOTENCY_KEY.toLowerCase());
+  private boolean shouldAddIdempotencyKey(MPRequest request) {
+
+    boolean containsIdempotency = false;
+    if (nonNull(request) && nonNull(request.getHeaders())) {
+      containsIdempotency = request.getHeaders().containsKey(Headers.IDEMPOTENCY_KEY.toLowerCase());
+    }
 
     if (containsIdempotency) return false;
 

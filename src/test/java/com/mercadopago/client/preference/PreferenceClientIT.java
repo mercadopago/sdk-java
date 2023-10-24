@@ -101,10 +101,6 @@ class PreferenceClientIT extends BaseClientIT {
       assertNotNull(preference.getResponse());
       assertEquals(CREATED, preference.getResponse().getStatusCode());
       assertNotNull(preference.getId());
-      System.out.println(idempotency);
-      System.out.println(idempotencyKey);
-      System.out.println(mpRequestOptions);
-      System.out.println("preference: " + preference.getResponse().getHeaders());
     } catch (MPApiException mpApiException) {
       fail(mpApiException.getApiResponse().getContent());
     } catch (MPException mpException) {
