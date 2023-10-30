@@ -15,7 +15,7 @@ import org.apache.http.client.HttpRequestRetryHandler;
 /** Mercado Pago configuration class. */
 public class MercadoPagoConfig {
 
-  public static final String CURRENT_VERSION = "2.1.15";
+  public static final String CURRENT_VERSION = "2.1.16";
 
   public static final String PRODUCT_ID = "BC32A7VTRPP001U8NHJ0";
 
