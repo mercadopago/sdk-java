@@ -25,4 +25,22 @@ public class PaymentTransactionData {
 
   /** Ticket Url. */
   private String ticketUrl;
+
+  /** First time use. */
+  private boolean firstTimeUse;
+
+  /** Subscription sequence. */
+  private PaymentSubscriptionSequence subscriptionSequence;
+
+  /** Subscription id. */
+  private String subscriptionId;
+
+  /** Invoice period. */
+  private PaymentInvoicePeriod invoicePeriod;
+
+  /** Payment reference. */
+  private PaymentPaymentReference paymentReference;
+
+  /** Billing date. */
+  private String billingDate;
 }
