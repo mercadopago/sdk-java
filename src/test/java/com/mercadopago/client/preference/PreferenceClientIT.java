@@ -11,15 +11,20 @@ import com.mercadopago.BaseClientIT;
 import com.mercadopago.client.common.AddressRequest;
 import com.mercadopago.client.common.IdentificationRequest;
 import com.mercadopago.client.common.PhoneRequest;
+import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
+import com.mercadopago.net.Headers;
 import com.mercadopago.net.MPElementsResourcesPage;
 import com.mercadopago.net.MPSearchRequest;
 import com.mercadopago.resources.preference.Preference;
 import com.mercadopago.resources.preference.PreferenceSearch;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 /** PreferenceClientIT class. */
@@ -82,7 +87,16 @@ class PreferenceClientIT extends BaseClientIT {
   void createWithRequestOptionsSuccess() {
     try {
       PreferenceRequest preferenceRequest = buildPreferenceRequest();
-      Preference preference = client.create(preferenceRequest, buildRequestOptions());
+
+      String idempotency = UUID.randomUUID().toString();
+      Map<String, String> idempotencyKey = new HashMap<>();
+      idempotencyKey.put(Headers.IDEMPOTENCY_KEY, idempotency);
+      MPRequestOptions mpRequestOptions = MPRequestOptions
+          .builder()
+          .customHeaders(idempotencyKey)
+          .build();
+
+      Preference preference = client.create(preferenceRequest, mpRequestOptions);
 
       assertNotNull(preference.getResponse());
       assertEquals(CREATED, preference.getResponse().getStatusCode());
