@@ -11,7 +11,7 @@ public class PaymentTransactionData {
   /** QR code image in Base 64. */
   private String qrCodeBase64;
 
-  /** Transaction ID. */
+  /** BACEN identifier for Pix. */
   private String transactionId;
 
   /** Bank transfer ID. */
