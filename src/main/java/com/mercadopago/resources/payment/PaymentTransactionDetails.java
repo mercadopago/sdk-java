@@ -32,4 +32,7 @@ public class PaymentTransactionDetails {
 
   /** Acquirer Reference. */
   private String acquirerReference;
+
+  /** BACEN identifier for Pix. */
+  private String transactionId;
 }
