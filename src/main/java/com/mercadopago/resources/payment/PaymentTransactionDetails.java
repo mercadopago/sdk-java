@@ -1,7 +1,6 @@
 package com.mercadopago.resources.payment;
 
 import java.math.BigDecimal;
-
 import lombok.Getter;
 
 /** PaymentTransactionDetails class. */
