@@ -8,5 +8,5 @@ import lombok.Getter;
 @Builder
 public class PaymentBarcode {
     /** Barcode content. */
-    private final String content;
+    private String content;
 }
