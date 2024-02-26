@@ -35,4 +35,19 @@ public class PaymentTransactionDetails {
 
   /** BACEN identifier for Pix. */
   private String transactionId;
+
+  /** Barcode digitable line. */
+  private String digitableLine;
+
+  /** Verification code. */
+  private String verificationCode;
+
+  /** Payable deferral period. */
+  private String payableDeferralPeriod;
+
+  /** Bank transfer id. */
+  private String bankTransferId;
+
+  /** Barcode data. */
+  private PaymentBarcode barcode;
 }
