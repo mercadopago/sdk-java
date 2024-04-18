@@ -1,5 +1,6 @@
 package com.mercadopago.client.preference;
 
+import java.time.OffsetDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -12,4 +13,7 @@ public class PreferenceCategoryDescriptorRequest {
 
   /** Flight information. */
   private final PreferenceRouteRequest route;
+
+  /** Date of event */
+  private final OffsetDateTime eventDate;
 }
