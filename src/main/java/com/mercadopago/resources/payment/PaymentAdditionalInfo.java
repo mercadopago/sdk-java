@@ -10,7 +10,7 @@ public class PaymentAdditionalInfo {
   private String ipAddress;
 
   /** List of items to be paid. */
-  private List<? extends PaymentItem> items;
+  private List<PaymentItem> items;
 
   /** Payer's information. */
   private PaymentAdditionalInfoPayer payer;
