@@ -12,7 +12,7 @@ public class PaymentAdditionalInfoRequest {
   private final String ipAddress;
 
   /** Items. */
-  private final List<PaymentItemRequest> items;
+  private final List<? extends PaymentItemRequest> items;
 
   /** Payer. */
   private final PaymentAdditionalInfoPayerRequest payer;

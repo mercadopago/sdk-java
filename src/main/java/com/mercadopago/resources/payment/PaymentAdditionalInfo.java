@@ -2,6 +2,7 @@ package com.mercadopago.resources.payment;
 
 import java.util.List;
 import lombok.Getter;
+import lombok.Setter;
 
 /** PaymentAdditionalInfo class. */
 @Getter
@@ -10,7 +11,7 @@ public class PaymentAdditionalInfo {
   private String ipAddress;
 
   /** List of items to be paid. */
-  private List<PaymentItem> items;
+  private List<? extends PaymentItem> items;
 
   /** Payer's information. */
   private PaymentAdditionalInfoPayer payer;
