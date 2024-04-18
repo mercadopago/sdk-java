@@ -2,7 +2,6 @@ package com.mercadopago.resources.payment;
 
 import java.util.List;
 import lombok.Getter;
-import lombok.Setter;
 
 /** PaymentAdditionalInfo class. */
 @Getter
