@@ -29,4 +29,7 @@ public class PreferenceItem {
 
   /** Currency ID. ISO_4217 code. */
   private String currencyId;
+
+  /** Category Descriptor */
+  private PreferenceCategoryDescriptor categoryDescriptor;
 }

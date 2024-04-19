@@ -31,4 +31,7 @@ public class PreferenceItemRequest {
 
   /** Currency ID. ISO_4217 code. */
   private final String currencyId;
+
+  /** Category descriptor*/
+  private final PreferenceCategoryDescriptorRequest categoryDescriptor;
 }
