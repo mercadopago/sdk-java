@@ -285,7 +285,7 @@ public abstract class MercadoPagoClient {
     }
 
     if (!request.getUri().contains(OAUTH_TOKEN) && !headers.containsKey(Headers.AUTHORIZATION)) {
-      headers.put(Headers.AUTHORIZATION, String.format(BEARER, getAccessToken(null)));
+      headers.put(Headers.AUTHORIZATION, String.format(BEARER, request.getAccessToken()));
     }
     return headers;
   }
@@ -296,10 +296,6 @@ public abstract class MercadoPagoClient {
       for (Map.Entry<String, String> entry : requestOptions.getCustomHeaders().entrySet()) {
         headers.put(entry.getKey().toLowerCase(), entry.getValue());
       }
-    }
-
-    if (!uri.contains(OAUTH_TOKEN)) {
-      headers.put(Headers.AUTHORIZATION, String.format(BEARER, getAccessToken(requestOptions)));
     }
 
     return headers;
