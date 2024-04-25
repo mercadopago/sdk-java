@@ -284,7 +284,7 @@ public abstract class MercadoPagoClient {
       headers.put(Headers.IDEMPOTENCY_KEY, request.createIdempotencyKey());
     }
 
-    if (!request.getUri().contains(OAUTH_TOKEN) && !headers.containsKey(Headers.AUTHORIZATION)) {
+    if (request!= null && !request.getUri().contains(OAUTH_TOKEN) && request.getAccessToken() != null) {
       headers.put(Headers.AUTHORIZATION, String.format(BEARER, request.getAccessToken()));
     }
     return headers;
@@ -296,6 +296,10 @@ public abstract class MercadoPagoClient {
       for (Map.Entry<String, String> entry : requestOptions.getCustomHeaders().entrySet()) {
         headers.put(entry.getKey().toLowerCase(), entry.getValue());
       }
+    }
+
+    if (requestOptions!= null && !uri.contains(OAUTH_TOKEN)) {
+      headers.put(Headers.AUTHORIZATION, String.format(BEARER, getAccessToken(requestOptions)));
     }
 
     return headers;
