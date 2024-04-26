@@ -284,8 +284,8 @@ public abstract class MercadoPagoClient {
       headers.put(Headers.IDEMPOTENCY_KEY, request.createIdempotencyKey());
     }
 
-    if (!request.getUri().contains(OAUTH_TOKEN) && !headers.containsKey(Headers.AUTHORIZATION)) {
-      headers.put(Headers.AUTHORIZATION, String.format(BEARER, getAccessToken(null)));
+    if (request!= null && !request.getUri().contains(OAUTH_TOKEN) && request.getAccessToken() != null) {
+      headers.put(Headers.AUTHORIZATION, String.format(BEARER, request.getAccessToken()));
     }
     return headers;
   }
@@ -298,7 +298,7 @@ public abstract class MercadoPagoClient {
       }
     }
 
-    if (!uri.contains(OAUTH_TOKEN)) {
+    if (requestOptions!= null && !uri.contains(OAUTH_TOKEN)) {
       headers.put(Headers.AUTHORIZATION, String.format(BEARER, getAccessToken(requestOptions)));
     }
 
