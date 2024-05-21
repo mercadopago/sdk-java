@@ -8,6 +8,9 @@ import lombok.Getter;
 @Builder
 public class PaymentMethodRequest {
 
+  /** Type. */
+  private final String type;
+
   /** Data. */
   private final PaymentDataRequest data;
 }
