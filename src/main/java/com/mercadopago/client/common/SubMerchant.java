@@ -17,7 +17,7 @@ public class SubMerchant {
     private final String country;
 
     /** Street number where the submerchant is located **/
-    private final String addressDoorNumber;
+    private final Integer addressDoorNumber;
 
     /** CEP of the submerchant **/
     private final String zip;
