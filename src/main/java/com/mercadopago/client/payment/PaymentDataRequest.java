@@ -10,4 +10,7 @@ public class PaymentDataRequest {
 
   /** Rules. */
   private final PaymentRulesRequest rules;
+
+  /** Authentication. */
+  private final PaymentAuthenticationRequest authentication;
 }
