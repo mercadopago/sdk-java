@@ -284,10 +284,15 @@ public abstract class MercadoPagoClient {
       headers.put(Headers.IDEMPOTENCY_KEY, request.createIdempotencyKey());
     }
 
-    if (!request.getUri().contains(OAUTH_TOKEN) && !headers.containsKey(Headers.AUTHORIZATION)) {
-      headers.put(Headers.AUTHORIZATION, String.format(BEARER, getAccessToken(null)));
+    if (nonNull(request) && !request.getUri().contains(OAUTH_TOKEN) && !headers.containsKey(Headers.AUTHORIZATION)) {
+      headers.put(Headers.AUTHORIZATION, String.format(BEARER, chooseAccessToken(request)));
     }
+
     return headers;
+  }
+
+  private String chooseAccessToken(MPRequest request) {
+    return request.getAccessToken() != null ? request.getAccessToken() : MercadoPagoConfig.getAccessToken();
   }
 
   private Map<String, String> addCustomHeaders(String uri, MPRequestOptions requestOptions) {
@@ -298,7 +303,7 @@ public abstract class MercadoPagoClient {
       }
     }
 
-    if (!uri.contains(OAUTH_TOKEN)) {
+    if (requestOptions!= null && !uri.contains(OAUTH_TOKEN)) {
       headers.put(Headers.AUTHORIZATION, String.format(BEARER, getAccessToken(requestOptions)));
     }
 

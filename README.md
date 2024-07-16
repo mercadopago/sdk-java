@@ -17,7 +17,6 @@ already.
 1. Append MercadoPago dependencies to pom.xml
 
   ```xml
-
 <dependency>
     <groupId>com.mercadopago</groupId>
     <artifactId>sdk-java</artifactId>

@@ -80,6 +80,9 @@ public class PaymentCreateRequest {
   /** Payer information. */
   private final PaymentPayerRequest payer;
 
+  /** Forward Data information. */
+  private final PaymentForwardDataRequest forwardData;
+
   /** Payment method chosen to do the payment. */
   private final String paymentMethodId;
 
