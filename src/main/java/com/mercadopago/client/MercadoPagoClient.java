@@ -1,7 +1,7 @@
 package com.mercadopago.client;
 
 import static java.util.Objects.nonNull;
-import static org.apache.commons.collections.MapUtils.isNotEmpty;
+import static org.apache.commons.collections4.MapUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import com.google.gson.JsonObject;
