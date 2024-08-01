@@ -1,13 +1,17 @@
 repos:
-  - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
-    rev: v2.2.0
+  # Websec hook is MANDATORY, DO NOT comment it.
+  - repo: https://github.com/melisource/fury_websec-git-hooks
+    rev: v1.1.0
     hooks:
-      - id: pretty-format-java
-        args: [ --autofix ]
-  - repo: https://github.com/gherynos/pre-commit-java
-    rev: v0.1.0
+      - id: pre_commit_hook
+        stages: [commit]
+      - id: post_commit_hook
+        stages: [post-commit]
+
+  # Datasec hook is MANDATORY, DO NOT comment it.
+  - repo: https://github.com/melisource/fury_datasec-git-hooks
+    rev: 1.0.3
     hooks:
-      - id: checkstyle
-        args:
-          - -c
-          - .code_quality/checkstyle_rules.xml
+      - id: pre_commit_hook
+        stages: [commit]
+        verbose: true
