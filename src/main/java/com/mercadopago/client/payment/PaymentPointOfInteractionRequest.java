@@ -12,6 +12,10 @@ public class PaymentPointOfInteractionRequest {
 
   /** Type. */
   private final String type;
+
+  //** Sub Type */
+  private final String subType;
+
   /**  Transaction data. */
   private final PaymentTransactionDataRequest transactionData;
 
