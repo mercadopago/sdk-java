@@ -8,4 +8,13 @@ public class PaymentData {
 
   /** PaymentRules. */
   private PaymentRules rules;
+
+  /** Reference Id. */
+  private String referenceId;
+
+  /** External Reference Id. */
+  private String externalReferenceId;
+
+  /** External Resource Url. */
+  private String externalResourceUrl;
 }
