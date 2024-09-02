@@ -16,13 +16,13 @@ already.
 
 1. Append MercadoPago dependencies to pom.xml
 
-  ```xml
+```xml
 <dependency>
-    <groupId>com.mercadopago</groupId>
-    <artifactId>sdk-java</artifactId>
-    <version>2.1.28</version>
+  <groupId>com.mercadopago</groupId>
+  <artifactId>sdk-java</artifactId>
+  <version>2.1.29</version>
 </dependency>
-  ```
+```
 
 2. Run `mvn install` and that's all, you have Mercado Pago SDK installed.
 
@@ -164,13 +164,13 @@ branch.
 ## ❤️ Support
 
 If you require technical support, please contact our support team at our developers
-site:  [English](https://www.mercadopago.com/developers/en/support/center/contact)
+site: [English](https://www.mercadopago.com/developers/en/support/center/contact)
 / [Portuguese](https://www.mercadopago.com/developers/pt/support/center/contact)
 / [Spanish](https://www.mercadopago.com/developers/es/support/center/contact)
 
 ## 🏻 License
 
 ```
-MIT license. Copyright (c) 2022 - Mercado Pago / Mercado Libre 
+MIT license. Copyright (c) 2022 - Mercado Pago / Mercado Libre
 For more information, see the LICENSE file.
 ```
