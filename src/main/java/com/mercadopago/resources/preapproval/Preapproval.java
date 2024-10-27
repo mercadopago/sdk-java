@@ -57,4 +57,7 @@ public class Preapproval extends MPResource {
 
   /** Version. */
   private Long version;
+
+  /** Summary information on subscription invoices and charges. */
+  private Summarized summarized;
 }

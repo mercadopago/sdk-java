@@ -22,5 +22,15 @@
     "free_trial": null
   },
   "payment_method_id": null,
-  "first_invoice_offset": null
+  "first_invoice_offset": null,
+  "summarized": {
+    "quotas": null,
+    "charged_quantity": 2,
+    "pending_charge_quantity": null,
+    "charged_amount": 30000.00,
+    "pending_charge_amount": null,
+    "semaphore": "yellow",
+    "last_charged_date": "2024-10-13T16:01:38.388-04:00",
+    "last_charged_amount": 16000.00
+  }
 }

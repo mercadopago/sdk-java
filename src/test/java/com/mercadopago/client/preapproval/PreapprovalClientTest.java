@@ -225,6 +225,14 @@ class PreapprovalClientTest extends BaseClientTest {
     assertEquals("BRL", preapproval.getAutoRecurring().getCurrencyId());
     assertEquals(startDate, preapproval.getAutoRecurring().getStartDate());
     assertEquals(endDate, preapproval.getAutoRecurring().getEndDate());
+    assertNull(preapproval.getSummarized().getQuotas());
+    assertEquals(2, preapproval.getSummarized().getChargedQuantity());
+    assertNull(preapproval.getSummarized().getPendingChargeQuantity());
+    assertEquals(30000L, preapproval.getSummarized().getChargedAmount());
+    assertNull(preapproval.getSummarized().getPendingChargeAmount());
+    assertEquals("yellow", preapproval.getSummarized().getSemaphore());
+    assertEquals("2024-10-13T16:01:38.388-04:00", preapproval.getSummarized().getLastChargedDate().toString());
+    assertEquals(16000L, preapproval.getSummarized().getLastChargedAmount());
   }
 
   private PreapprovalCreateRequest buildPreapprovalCreateRequest() {
