@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class createOrder {
+public class CreateOrder {
 
     public static void main(String[] args) {
         MercadoPagoConfig.setAccessToken("{{ACCESS_TOKEN}}");
