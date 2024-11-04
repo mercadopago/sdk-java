@@ -21,6 +21,8 @@ import static com.mercadopago.MercadoPagoConfig.getStreamHandler;
 public class OrderClient extends MercadoPagoClient {
     private static final Logger LOGGER = Logger.getLogger(OrderClient.class.getName());
 
+    private static final String URL_WITH_ID = "/v1/orders/%s";
+
     /** Default constructor. Uses the default http client used by the SDK. */
     public OrderClient() {
         this(MercadoPagoConfig.getHttpClient());
@@ -66,7 +68,7 @@ public class OrderClient extends MercadoPagoClient {
     }
 
     /**
-     * Method responsible for creating order with request options
+     * Method responsible for creating order without request options
      *
      * @param request request
      * @return order response
@@ -77,4 +79,37 @@ public class OrderClient extends MercadoPagoClient {
         return this.create(request, null);
     }
 
+    /**
+     * Method responsible for obtaining order by id
+     *
+     * @param id orderId
+     * @return order response
+     * @throws MPException an error if the request fails
+     * @throws MPApiException an error if the request fails
+     */
+    public Order get(String id) throws MPException, MPApiException {
+        return this.get(id, null);
+    }
+
+    /**
+     * Method responsible for obtaining order by id with request options
+     *
+     * @param id orderId
+     * @param requestOptions metadata to customize the request
+     * @return order response
+     * @throws MPException an error if the request fails
+     * @throws MPApiException an error if the request fails
+     */
+    public Order get(String id, MPRequestOptions requestOptions) throws MPException, MPApiException {
+        LOGGER.info("Sending order get request");
+
+        MPResponse response =
+                send(String.format(URL_WITH_ID, id), HttpMethod.GET, null, null, requestOptions);
+
+        Order result = Serializer.deserializeFromJson(Order.class, response.getContent());
+        result.setResponse(response);
+
+        return result;
+
+    }
 }
