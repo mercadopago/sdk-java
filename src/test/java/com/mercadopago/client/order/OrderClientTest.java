@@ -115,4 +115,37 @@ class OrderClientTest extends BaseClientTest {
 
         Assertions.assertEquals("Order id cannot be null or empty", exception.getMessage());
     }
+
+    @Test
+    void createTransactionWithRequestOptionsSuccess() throws MPException, MPApiException, IOException {
+        HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_TRANSACTION_RESPONSE_FILE, HttpStatus.OK);
+
+        Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+        String orderId = "123";
+        OrderPaymentRequest paymentRequest = OrderPaymentRequest.builder()
+                .amount("100.00")
+                .currency("BRL")
+                .paymentMethod(OrderPaymentMethodRequest.builder()
+                        .id("master")
+                        .type("credit_card")
+                        .token("some-token")
+                        .installments(1)
+                        .issuerId("701")
+                        .statementDescriptor("statement")
+                        .build())
+                .build();
+
+        OrderTransactionRequest request = OrderTransactionRequest.builder()
+                .payments(Collections.singletonList(paymentRequest))
+                .build();
+
+
+        OrderTransactionRequest orderTransactionRequest = client.createTransaction(orderId, request, null);
+
+        Assertions.assertNotNull(orderTransactionRequest);
+        Assertions.assertEquals("100.00", orderTransactionRequest.getPayments().get(0).getAmount());
+        Assertions.assertEquals("BRL", orderTransactionRequest.getPayments().get(0).getCurrency());
+        Assertions.assertEquals("master", orderTransactionRequest.getPayments().get(0).getPaymentMethod().getId());
+    }
 }

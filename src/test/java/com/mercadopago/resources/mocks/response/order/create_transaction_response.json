@@ -1,0 +1,16 @@
+{
+    "payments": [
+      {
+        "amount": "100.00",
+        "currency": "BRL",
+        "payment_method": {
+          "id": "master",
+          "type": "credit_card",
+          "token": "some-token",
+          "installments": 1,
+          "issuer_id": "701",
+          "statement_descriptor": "statement"
+        }
+      }
+    ]
+  }
