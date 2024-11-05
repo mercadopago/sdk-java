@@ -93,4 +93,26 @@ class OrderClientTest extends BaseClientTest {
         Assertions.assertNotNull(order);
         Assertions.assertEquals(orderId, order.getId());
     }
+
+    @Test
+    void processWithNullIdThrowsException() {
+        String orderId = null;
+
+        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            client.process(orderId);
+        });
+
+        Assertions.assertEquals("Order id cannot be null or empty", exception.getMessage());
+    }
+
+    @Test
+    void processWithEmptyIdThrowsException() {
+        String orderId = "";
+
+        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            client.process(orderId);
+        });
+
+        Assertions.assertEquals("Order id cannot be null or empty", exception.getMessage());
+    }
 }

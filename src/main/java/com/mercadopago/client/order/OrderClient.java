@@ -22,6 +22,7 @@ public class OrderClient extends MercadoPagoClient {
     private static final Logger LOGGER = Logger.getLogger(OrderClient.class.getName());
 
     private static final String URL_WITH_ID = "/v1/orders/%s";
+    private static final String URL_PROCESS = URL_WITH_ID + "/process";
 
     /** Default constructor. Uses the default http client used by the SDK. */
     public OrderClient() {
@@ -110,7 +111,6 @@ public class OrderClient extends MercadoPagoClient {
         result.setResponse(response);
 
         return result;
-
     }
 
     /**
@@ -141,7 +141,7 @@ public class OrderClient extends MercadoPagoClient {
             throw new IllegalArgumentException("Order id cannot be null or empty");
         }
 
-        String processUrl = String.format(URL_WITH_ID, id) + "/process";
+        String processUrl = String.format(URL_PROCESS, id);
 
         MPResponse response = send(processUrl, HttpMethod.POST, null, null, requestOptions);
 

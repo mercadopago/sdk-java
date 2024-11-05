@@ -25,7 +25,7 @@ public class ProcessOrderById {
 
         try {
             Order order = client.process("{{ORDER_ID}}", requestOptions);
-            System.out.println("Process} order: " + order.getId());
+            System.out.println("Process order: " + order.getId());
         } catch (MPException | MPApiException e) {
             System.out.println("Error getting order: " + e.getMessage());
         }
