@@ -23,6 +23,7 @@ public class OrderClient extends MercadoPagoClient {
 
     private static final String URL_WITH_ID = "/v1/orders/%s";
     private static final String URL_PROCESS = URL_WITH_ID + "/process";
+    private static final String URL_CREATE_TRANSACTION = URL_WITH_ID + "/transactions";
 
     /** Default constructor. Uses the default http client used by the SDK. */
     public OrderClient() {
@@ -149,5 +150,46 @@ public class OrderClient extends MercadoPagoClient {
         result.setResponse(response);
 
         return result;
+    }
+
+     /**
+     * Method responsible for creating order with request options
+     *
+     * @param orderId The ID of the order for which the transaction is created
+     * @param request The request object containing transaction details
+     * @param requestOptions Metadata to customize the request
+     * @return The response for the transaction intent
+     * @throws MPException an error if the request fails
+     * @throws MPApiException an error if the request fails
+     */
+    public OrderTransactionRequest createTransaction(String orderId, OrderTransactionRequest request,
+                                                     MPRequestOptions requestOptions) throws MPException, MPApiException {
+        LOGGER.info("Sending order transaction intent request");
+
+        MPRequest mpRequest = MPRequest.builder()
+                .uri(String.format(URL_CREATE_TRANSACTION, orderId))
+                .method(HttpMethod.POST)
+                .payload(Serializer.serializeToJson(request))
+                .build();
+
+        MPResponse response = send(mpRequest, requestOptions);
+        OrderTransactionRequest result = Serializer.deserializeFromJson(OrderTransactionRequest.class, response.getContent());
+        result.setResponse(response);
+
+        return result;
+    }
+
+    /**
+     * Method responsible for creating a transaction intent for an order
+     *
+     * @param orderId The ID of the order for which the transaction is created
+     * @param request The request object containing transaction details
+     * @return The response for the transaction intent
+     * @throws MPException an error if the request fails
+     * @throws MPApiException an error if the request fails
+     */
+    public OrderTransactionRequest createTransaction(String orderId, OrderTransactionRequest request)
+            throws MPException, MPApiException {
+        return this.createTransaction(orderId, request, null);
     }
 }

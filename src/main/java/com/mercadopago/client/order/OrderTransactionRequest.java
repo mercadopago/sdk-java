@@ -8,7 +8,7 @@ import java.util.List;
 /** OrderTransactionRequest class. */
 @Builder
 @Getter
-public class OrderTransactionRequest {
+public class OrderTransactionRequest extends MPResource{
 
     /** List of payments. */
     private List<OrderPaymentRequest> payments;
