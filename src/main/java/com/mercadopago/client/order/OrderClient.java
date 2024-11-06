@@ -151,7 +151,7 @@ public class OrderClient extends MercadoPagoClient {
 
         MPResponse response = send(url, HttpMethod.POST, null, null, requestOptions);
 
-        Order order = Serializer.deserializeFromJson(Order.class, response.getContent());
+        Order result = Serializer.deserializeFromJson(Order.class, response.getContent());
         order.setResponse(response);
 
         return order;
