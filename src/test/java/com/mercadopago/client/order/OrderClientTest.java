@@ -142,7 +142,7 @@ class OrderClientTest extends BaseClientTest {
                 .build();
 
 
-        OrderTransactionRequest orderTransactionRequest = client.createTransaction(orderId, request, null);
+        OrderTransactionRequest orderTransactionRequest = client.createTransaction(orderId, request);
 
         Assertions.assertNotNull(orderTransactionRequest);
         Assertions.assertEquals("100.00", orderTransactionRequest.getPayments().get(0).getAmount());
