@@ -15,6 +15,8 @@ import com.mercadopago.serialization.Serializer;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 
+import org.apache.commons.lang.StringUtils;
+
 import static com.mercadopago.MercadoPagoConfig.getStreamHandler;
 
 /** Client that use the Order API */
@@ -149,7 +151,7 @@ public class OrderClient extends MercadoPagoClient {
 
         MPResponse response = send(url, HttpMethod.POST, null, null, requestOptions);
 
-        Order result = Serializer.deserializeFromJson(Order.class, response.getContent());
+        Order order = Serializer.deserializeFromJson(Order.class, response.getContent());
         order.setResponse(response);
 
         return order;
