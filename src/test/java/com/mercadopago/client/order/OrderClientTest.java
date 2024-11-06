@@ -6,6 +6,7 @@ import com.mercadopago.exceptions.MPException;
 import com.mercadopago.helper.MockHelper;
 import com.mercadopago.net.HttpStatus;
 import com.mercadopago.resources.order.Order;
+import com.mercadopago.resources.order.OrderTransaction;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.protocol.HttpContext;
@@ -142,11 +143,11 @@ class OrderClientTest extends BaseClientTest {
                 .build();
 
 
-        OrderTransactionRequest orderTransactionRequest = client.createTransaction(orderId, request);
+        OrderTransaction orderTransaction = client.createTransaction(orderId, request);
 
-        Assertions.assertNotNull(orderTransactionRequest);
-        Assertions.assertEquals("100.00", orderTransactionRequest.getPayments().get(0).getAmount());
-        Assertions.assertEquals("BRL", orderTransactionRequest.getPayments().get(0).getCurrency());
-        Assertions.assertEquals("master", orderTransactionRequest.getPayments().get(0).getPaymentMethod().getId());
+        Assertions.assertNotNull(orderTransaction);
+        Assertions.assertEquals("100.00", orderTransaction.getPayments().get(0).getAmount());
+        Assertions.assertEquals("BRL", orderTransaction.getPayments().get(0).getCurrency());
+        Assertions.assertEquals("master", orderTransaction.getPayments().get(0).getPaymentMethod().getId());
     }
 }

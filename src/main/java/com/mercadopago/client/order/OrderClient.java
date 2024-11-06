@@ -10,6 +10,7 @@ import com.mercadopago.net.MPHttpClient;
 import com.mercadopago.net.MPRequest;
 import com.mercadopago.net.MPResponse;
 import com.mercadopago.resources.order.Order;
+import com.mercadopago.resources.order.OrderTransaction;
 import com.mercadopago.serialization.Serializer;
 import org.apache.commons.lang.StringUtils;
 
@@ -163,11 +164,11 @@ public class OrderClient extends MercadoPagoClient {
      * @param orderId The ID of the order for which the transaction is created
      * @param request The request object containing transaction details
      * @param requestOptions Metadata to customize the request
-     * @return The response for the transaction intent
+     * @return The response for the order transaction
      * @throws MPException an error if the request fails
      * @throws MPApiException an error if the request fails
      */
-    public OrderTransactionRequest createTransaction(String orderId, OrderTransactionRequest request,
+    public OrderTransaction createTransaction(String orderId, OrderTransactionRequest request,
                                                      MPRequestOptions requestOptions) throws MPException, MPApiException {
         LOGGER.info("Sending order transaction intent request");
 
@@ -190,13 +191,12 @@ public class OrderClient extends MercadoPagoClient {
      *
      * @param orderId The ID of the order for which the transaction is created
      * @param request The request object containing transaction details
-     * @return The response for the transaction intent
+     * @return The response for the order transaction
      * @throws MPException an error if the request fails
      * @throws MPApiException an error if the request fails
      */
-    public OrderTransactionRequest createTransaction(String orderId, OrderTransactionRequest request)
+    public OrderTransaction createTransaction(String orderId, OrderTransactionRequest request)
             throws MPException, MPApiException {
         return this.createTransaction(orderId, request, null);
-
     }
 }
