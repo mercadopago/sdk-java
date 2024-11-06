@@ -22,6 +22,7 @@ public class OrderClient extends MercadoPagoClient {
     private static final Logger LOGGER = Logger.getLogger(OrderClient.class.getName());
 
     private static final String URL_WITH_ID = "/v1/orders/%s";
+    private static final String URL_PROCESS = URL_WITH_ID + "/process";
 
     /** Default constructor. Uses the default http client used by the SDK. */
     public OrderClient() {
@@ -102,14 +103,55 @@ public class OrderClient extends MercadoPagoClient {
      */
     public Order get(String id, MPRequestOptions requestOptions) throws MPException, MPApiException {
         LOGGER.info("Sending order get request");
+        
+        if (StringUtils.isBlank(id)) {
+            throw new IllegalArgumentException("Order id cannot be null or empty");
+        }
 
-        MPResponse response =
-                send(String.format(URL_WITH_ID, id), HttpMethod.GET, null, null, requestOptions);
+        String url = String.format(URL_WITH_ID, id);
+        MPResponse response = send(url, HttpMethod.GET, null, null, requestOptions);
+
+        Order order = Serializer.deserializeFromJson(Order.class, response.getContent());
+        order.setResponse(response);
+
+        return order;
+    }
+
+    /**
+     * Method responsible for process an order by ID
+     *
+     * @param id orderId
+     * @return order response
+     * @throws MPException an error if the request fails
+     * @throws MPApiException an error if the request fails
+     */
+    public Order process(String id) throws MPException, MPApiException {
+        return this.process(id, null);
+    }
+
+    /**
+     * Method responsible for process an order by ID with request options
+     *
+     * @param id orderId
+     * @param requestOptions metadata to customize the request
+     * @return order response
+     * @throws MPException an error if the request fails
+     * @throws MPApiException an error if the request fails
+     */
+    public Order process(String id, MPRequestOptions requestOptions) throws MPException, MPApiException {
+        LOGGER.info("Sending order process request");
+
+        if (StringUtils.isBlank(id)) {
+            throw new IllegalArgumentException("Order id cannot be null or empty");
+        }
+
+        String url = String.format(URL_PROCESS, id);
+
+        MPResponse response = send(url, HttpMethod.POST, null, null, requestOptions);
 
         Order result = Serializer.deserializeFromJson(Order.class, response.getContent());
-        result.setResponse(response);
+        order.setResponse(response);
 
-        return result;
-
+        return order;
     }
 }
