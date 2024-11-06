@@ -54,9 +54,9 @@ public class CreateTransaction{
 
         try{
             MPResponse response = client.createTransaction(orderId, transactionRequest, requestOptions).getResponse();
-            System.out.println("Transaction intent created: " + response.getContent());
+            System.out.println("Order transaction created: " + response.getContent());
         } catch (Exception e) {
-            System.out.println("Error creating transaction intent: " + e.getMessage());
+            System.out.println("Error creating order transaction: " + e.getMessage());
         }
     }
 }

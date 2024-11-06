@@ -23,7 +23,7 @@ public class OrderClient extends MercadoPagoClient {
 
     private static final String URL_WITH_ID = "/v1/orders/%s";
     private static final String URL_PROCESS = URL_WITH_ID + "/process";
-    private static final String URL_CREATE_TRANSACTION = URL_WITH_ID + "/transactions";
+    private static final String URL_TRANSACTION = URL_WITH_ID + "/transactions";
 
     /** Default constructor. Uses the default http client used by the SDK. */
     public OrderClient() {
@@ -167,20 +167,21 @@ public class OrderClient extends MercadoPagoClient {
         LOGGER.info("Sending order transaction intent request");
 
         MPRequest mpRequest = MPRequest.builder()
-                .uri(String.format(URL_CREATE_TRANSACTION, orderId))
+                .uri(String.format(URL_TRANSACTION, orderId))
                 .method(HttpMethod.POST)
                 .payload(Serializer.serializeToJson(request))
                 .build();
 
         MPResponse response = send(mpRequest, requestOptions);
-        OrderTransactionRequest result = Serializer.deserializeFromJson(OrderTransactionRequest.class, response.getContent());
-        result.setResponse(response);
 
-        return result;
+        OrderTransactionRequest order = Serializer.deserializeFromJson(OrderTransactionRequest.class, response.getContent());
+        order.setResponse(response);
+
+        return order;
     }
 
     /**
-     * Method responsible for creating a transaction intent for an order
+     * Method responsible for creating a transaction for an order
      *
      * @param orderId The ID of the order for which the transaction is created
      * @param request The request object containing transaction details
