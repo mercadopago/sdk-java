@@ -197,5 +197,10 @@ public class OrderClient extends MercadoPagoClient {
     public OrderTransactionRequest createTransaction(String orderId, OrderTransactionRequest request)
             throws MPException, MPApiException {
         return this.createTransaction(orderId, request, null);
+
+        Order order = Serializer.deserializeFromJson(Order.class, response.getContent());
+        order.setResponse(response);
+
+        return order;
     }
 }

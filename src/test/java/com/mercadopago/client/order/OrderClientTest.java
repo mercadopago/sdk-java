@@ -79,7 +79,6 @@ class OrderClientTest extends BaseClientTest {
 
         Assertions.assertNotNull(order);
         Assertions.assertEquals(orderId, order.getId());
-
     }
 
     @Test
