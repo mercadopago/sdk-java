@@ -11,6 +11,7 @@ import com.mercadopago.net.MPRequest;
 import com.mercadopago.net.MPResponse;
 import com.mercadopago.resources.order.Order;
 import com.mercadopago.serialization.Serializer;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
@@ -104,14 +105,18 @@ public class OrderClient extends MercadoPagoClient {
      */
     public Order get(String id, MPRequestOptions requestOptions) throws MPException, MPApiException {
         LOGGER.info("Sending order get request");
+        
+        if (StringUtils.isBlank(id)) {
+            throw new IllegalArgumentException("Order id cannot be null or empty");
+        }
 
-        MPResponse response =
-                send(String.format(URL_WITH_ID, id), HttpMethod.GET, null, null, requestOptions);
+        String url = String.format(URL_WITH_ID, id);
+        MPResponse response = send(url, HttpMethod.GET, null, null, requestOptions);
 
-        Order result = Serializer.deserializeFromJson(Order.class, response.getContent());
-        result.setResponse(response);
+        Order order = Serializer.deserializeFromJson(Order.class, response.getContent());
+        order.setResponse(response);
 
-        return result;
+        return order;
     }
 
     /**
@@ -138,18 +143,18 @@ public class OrderClient extends MercadoPagoClient {
     public Order process(String id, MPRequestOptions requestOptions) throws MPException, MPApiException {
         LOGGER.info("Sending order process request");
 
-        if (id == null || id.isEmpty()) {
+        if (StringUtils.isBlank(id)) {
             throw new IllegalArgumentException("Order id cannot be null or empty");
         }
 
-        String processUrl = String.format(URL_PROCESS, id);
+        String url = String.format(URL_PROCESS, id);
 
-        MPResponse response = send(processUrl, HttpMethod.POST, null, null, requestOptions);
+        MPResponse response = send(url, HttpMethod.POST, null, null, requestOptions);
 
-        Order result = Serializer.deserializeFromJson(Order.class, response.getContent());
-        result.setResponse(response);
+        Order order = Serializer.deserializeFromJson(Order.class, response.getContent());
+        order.setResponse(response);
 
-        return result;
+        return order;
     }
 
      /**
