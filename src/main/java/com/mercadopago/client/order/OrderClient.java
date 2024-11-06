@@ -179,7 +179,7 @@ public class OrderClient extends MercadoPagoClient {
 
         MPResponse response = send(mpRequest, requestOptions);
 
-        OrderTransactionRequest order = Serializer.deserializeFromJson(OrderTransactionRequest.class, response.getContent());
+        OrderTransaction order = Serializer.deserializeFromJson(OrderTransaction.class, response.getContent());
         order.setResponse(response);
 
         return order;
@@ -197,5 +197,6 @@ public class OrderClient extends MercadoPagoClient {
     public OrderTransactionRequest createTransaction(String orderId, OrderTransactionRequest request)
             throws MPException, MPApiException {
         return this.createTransaction(orderId, request, null);
+
     }
 }
