@@ -201,4 +201,56 @@ public class OrderClient extends MercadoPagoClient {
             throws MPException, MPApiException {
         return this.createTransaction(orderId, request, null);
     }
+
+    /**
+     * Method responsible for update a transaction by id with request options
+     *
+     * @param orderId orderId
+     * @param transactionId transactionId
+     * @param requestOptions Metadata to customize the request
+     * @return The response for the order transaction
+     * @throws MPException an error if the request fails
+     * @throws MPApiException an error if the request fails
+     */
+    public OrderTransaction updateTransaction(String orderId, String transactionId, OrderTransactionRequest request,
+                                                     MPRequestOptions requestOptions) throws MPException, MPApiException {
+        LOGGER.info("Sending order transaction update request");
+
+        if (StringUtils.isBlank(orderId)) {
+            throw new IllegalArgumentException("Order id cannot be null or empty");
+        }
+
+        if (StringUtils.isBlank(transactionId)) {
+            throw new IllegalArgumentException("Transaction id cannot be null or empty");
+        }
+
+        String url = String.format(URL_TRANSACTION + "/%s", orderId, transactionId);
+
+        MPRequest mpRequest = MPRequest.builder()
+                .uri(url)
+                .method(HttpMethod.PUT)
+                .payload(Serializer.serializeToJson(request))
+                .build();
+
+        MPResponse response = send(mpRequest, requestOptions);
+
+        OrderTransaction order = Serializer.deserializeFromJson(OrderTransaction.class, response.getContent());
+        order.setResponse(response);
+
+        return order;
+    }
+    /**
+     * Method responsible for updating a transaction for an order
+     *
+     * @param orderId The ID of the order for which the transaction is created
+     * @param transactionId The ID of the transaction to be updated
+     * @param request The request object containing transaction details
+     * @return The response for the order transaction
+     * @throws MPException an error if the request fails
+     * @throws MPApiException an error if the request fails
+     */
+    public OrderTransaction updateTransaction(String orderId,String transactionId, OrderTransactionRequest request)
+            throws MPException, MPApiException {
+        return this.updateTransaction(orderId, transactionId, request, null);
+    }
 }
