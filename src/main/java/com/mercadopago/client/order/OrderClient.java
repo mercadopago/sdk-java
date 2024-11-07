@@ -10,7 +10,9 @@ import com.mercadopago.net.MPHttpClient;
 import com.mercadopago.net.MPRequest;
 import com.mercadopago.net.MPResponse;
 import com.mercadopago.resources.order.Order;
+import com.mercadopago.resources.order.OrderTransaction;
 import com.mercadopago.serialization.Serializer;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
@@ -25,6 +27,7 @@ public class OrderClient extends MercadoPagoClient {
 
     private static final String URL_WITH_ID = "/v1/orders/%s";
     private static final String URL_PROCESS = URL_WITH_ID + "/process";
+    private static final String URL_TRANSACTION = URL_WITH_ID + "/transactions";
 
     /** Default constructor. Uses the default http client used by the SDK. */
     public OrderClient() {
@@ -155,5 +158,47 @@ public class OrderClient extends MercadoPagoClient {
         order.setResponse(response);
 
         return order;
+    }
+
+     /**
+     * Method responsible for creating order with request options
+     *
+     * @param orderId The ID of the order for which the transaction is created
+     * @param request The request object containing transaction details
+     * @param requestOptions Metadata to customize the request
+     * @return The response for the order transaction
+     * @throws MPException an error if the request fails
+     * @throws MPApiException an error if the request fails
+     */
+    public OrderTransaction createTransaction(String orderId, OrderTransactionRequest request,
+                                                     MPRequestOptions requestOptions) throws MPException, MPApiException {
+        LOGGER.info("Sending order transaction intent request");
+
+        MPRequest mpRequest = MPRequest.builder()
+                .uri(String.format(URL_TRANSACTION, orderId))
+                .method(HttpMethod.POST)
+                .payload(Serializer.serializeToJson(request))
+                .build();
+
+        MPResponse response = send(mpRequest, requestOptions);
+
+        OrderTransaction order = Serializer.deserializeFromJson(OrderTransaction.class, response.getContent());
+        order.setResponse(response);
+
+        return order;
+    }
+
+    /**
+     * Method responsible for creating a transaction for an order
+     *
+     * @param orderId The ID of the order for which the transaction is created
+     * @param request The request object containing transaction details
+     * @return The response for the order transaction
+     * @throws MPException an error if the request fails
+     * @throws MPApiException an error if the request fails
+     */
+    public OrderTransaction createTransaction(String orderId, OrderTransactionRequest request)
+            throws MPException, MPApiException {
+        return this.createTransaction(orderId, request, null);
     }
 }

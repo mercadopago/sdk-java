@@ -6,6 +6,7 @@ import com.mercadopago.exceptions.MPException;
 import com.mercadopago.helper.MockHelper;
 import com.mercadopago.net.HttpStatus;
 import com.mercadopago.resources.order.Order;
+import com.mercadopago.resources.order.OrderTransaction;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.protocol.HttpContext;
@@ -15,6 +16,7 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.Matchers.any;
@@ -23,6 +25,7 @@ class OrderClientTest extends BaseClientTest {
 
     //File Mock Responses
     private static final String CREATE_ORDER_RESPONSE_FILE = "order/create_order_response.json";
+    private static final String CREATE_TRANSACTION_RESPONSE_FILE = "order/create_transaction_response.json";
 
     private final OrderClient client = new OrderClient();
 
@@ -113,5 +116,38 @@ class OrderClientTest extends BaseClientTest {
         });
 
         Assertions.assertEquals("Order id cannot be null or empty", exception.getMessage());
+    }
+
+    @Test
+    void createTransactionWithRequestOptionsSuccess() throws MPException, MPApiException, IOException {
+        HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_TRANSACTION_RESPONSE_FILE, HttpStatus.OK);
+
+        Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+        String orderId = "123";
+        OrderPaymentRequest paymentRequest = OrderPaymentRequest.builder()
+                .amount("100.00")
+                .currency("BRL")
+                .paymentMethod(OrderPaymentMethodRequest.builder()
+                        .id("master")
+                        .type("credit_card")
+                        .token("some-token")
+                        .installments(1)
+                        .issuerId("701")
+                        .statementDescriptor("statement")
+                        .build())
+                .build();
+
+        OrderTransactionRequest request = OrderTransactionRequest.builder()
+                .payments(Collections.singletonList(paymentRequest))
+                .build();
+
+
+        OrderTransaction orderTransaction = client.createTransaction(orderId, request);
+
+        Assertions.assertNotNull(orderTransaction);
+        Assertions.assertEquals("100.00", orderTransaction.getPayments().get(0).getAmount());
+        Assertions.assertEquals("BRL", orderTransaction.getPayments().get(0).getCurrency());
+        Assertions.assertEquals("master", orderTransaction.getPayments().get(0).getPaymentMethod().getId());
     }
 }
