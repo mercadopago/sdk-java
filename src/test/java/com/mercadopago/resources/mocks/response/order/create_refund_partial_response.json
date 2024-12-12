@@ -1,0 +1,16 @@
+{
+  "id": "01JCK7NYARQB4J3RN0SX6SSB2C",
+  "status": "processed",
+  "status_detail": "partially_refunded",
+  "transactions": {
+    "refunds": [
+      {
+        "id": "ref_01JCK7R5R73JCYXRCKFH7MJR9K",
+        "transaction_id": "pay_01JCK7NYARQB4J3RN0SX81MCPM",
+        "reference_id": "01JCK7R50JP8NRMKC51R6B460C",
+        "amount": "100.00",
+        "status": "processed"
+      }
+    ]
+  }
+}

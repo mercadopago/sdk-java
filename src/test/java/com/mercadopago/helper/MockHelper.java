@@ -73,7 +73,7 @@ public class MockHelper {
    * @param statusCode status code
    * @return http response
    */
-  public static HttpResponse generateHttpResponseFromFile(int statusCode) {
+  public static HttpResponse generateHttpResponse(int statusCode) {
 
     return new BasicHttpResponse(
         new BasicStatusLine(HttpVersion.HTTP_1_1, statusCode, REASON_PHRASE.get(statusCode)));

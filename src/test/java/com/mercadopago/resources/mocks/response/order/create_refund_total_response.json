@@ -1,0 +1,16 @@
+{
+  "id": "01JCK2RRKV10XVTEBJR598QH9Z",
+  "status": "refunded",
+  "status_detail": "refunded",
+  "transactions": {
+    "refunds": [
+      {
+        "id": "ref_01JCK2SDVFSJGY54AMJCDR9X7R",
+        "transaction_id": "pay_01JCK2RRKV10XVTEBJR6W4CC18",
+        "reference_id": "01JCK2SD3HC5GVDXSZK4926SAW",
+        "amount": "200.00",
+        "status": "processed"
+      }
+    ]
+  }
+}
