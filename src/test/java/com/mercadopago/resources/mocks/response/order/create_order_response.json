@@ -31,7 +31,5 @@
       }
     ]
   },
-  "type_config": {
-    "capture_mode": "automatic"
-  }
+  "capture_mode": "automatic"
 }

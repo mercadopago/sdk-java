@@ -14,11 +14,35 @@ public class Order extends MPResource {
     /** Order ID. */
     private String id;
 
-    /** Configures which processing modes to use. */
-    private String processingMode;
+    /** Type of Order. */
+    private String type;
 
     /** External reference. */
     private String externalReference;
+
+    /** Country Code. */
+    private String countryCode;
+
+    /** Status of Order. */
+    private String status;
+
+    /** Status Detail of Order. */
+    private String statusDetail;
+
+    /** Capture Mode of Order. */
+    private String captureMode;
+
+    /** Transactions information. */
+    private OrderTransaction transactions;
+
+    /** Payer information. */
+    private OrderPayer payer;
+
+    /** Total amount of the order. */
+    private String totalAmount;
+
+    /** Configures which processing modes to use. */
+    private String processingMode;
 
     /** Description of Order. */
     private String description;
@@ -29,48 +53,10 @@ public class Order extends MPResource {
     /** Fee collected by a marketplace or MercadoPago Application. */
     private String marketplaceFee;
 
-    /** Campaign ID. */
-    private String campaignId;
-
-    /** Total amount of the order. */
-    private String totalAmount;
-
-    /** Currency information. */
-    private String currency;
+    /** Items information. */
+    private List<OrderItem> items;
 
     /** Date of expiration. */
     private String expirationTime;
 
-    /** Site ID. */
-    private String siteId;
-
-    /** Unique ID that identifies your integration. You can get it in Your credentials. */
-    private String clientId;
-
-    /** ID of the collector associated with the order. */
-    private String collectorId;
-
-    /** Date of creation. */
-    private String createdDate;
-
-    /** Last modified date. */
-    private String lastUpdatedDate;
-
-    /** Type of Order. */
-    private String type;
-
-    /** Status of Order. */
-    private String status;
-
-    /** Payer information. */
-    private OrderPayer payer;
-
-    /** Transactions information. */
-    private OrderTransaction transactions;
-
-    /** Shipping information. */
-    private OrderShipment shipment;
-
-    /** Items information. */
-    private List<OrderItem> items;
 }

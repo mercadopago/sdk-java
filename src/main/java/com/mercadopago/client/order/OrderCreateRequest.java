@@ -6,6 +6,8 @@ import lombok.Getter;
 
 import java.util.List;
 
+// API version: b950ae02-4f49-4686-9ad3-7929b21b6495
+
 /** Order class. */
 @Builder
 @Getter
@@ -13,29 +15,26 @@ public class OrderCreateRequest extends MPResource {
     /** Order type. */
     private String type;
 
-    /** Total amount of the order. */
-    private String totalAmount;
-
     /** Reference you can synchronize with your payment system. */
     private String externalReference;
 
     /** Order transaction information. */
     private OrderTransactionRequest transactions;
 
-    /** Currency information. */
-    private String currency;
+    /** Payer's information. */
+    private OrderPayerRequest payer;
 
-    /** Configures which processing modes to use. */
-    private String processingMode;
+    /** Total amount of the order. */
+    private String totalAmount;
 
     /** Capture mode. */
     private String captureMode;
 
+    /** Configures which processing modes to use. */
+    private String processingMode;
+
     /** Description of the order. */
     private String description;
-
-    /** Payer's information. */
-    private OrderPayerRequest payer;
 
     /** Origin of the payment. */
     private String marketplace;
@@ -43,20 +42,8 @@ public class OrderCreateRequest extends MPResource {
     /** Fee collected by a marketplace or MercadoPago Application. */
     private String marketplaceFee;
 
-    /** Discount campaign ID. */
-    private String campaignId;
-
     /** Items information. */
     private List<OrderItemRequest> items;
-
-    /** Coupon information. */
-    private OrderCouponRequest coupon;
-
-    /** Information's about split payments. */
-    private List<OrderSplitRequest> splits;
-
-    /** Shipping information. */
-    private OrderShipmentRequest shipment;
 
     /** Expiration time of the order. */
     private String expirationTime;

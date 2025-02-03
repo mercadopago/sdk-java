@@ -10,6 +10,11 @@ import com.mercadopago.resources.order.Order;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Mercado Pago Process Order.
+ *
+ * @see <a href="https://mercadopago.com/developers/en/reference/order/online/process-order/post">Documentation</a>
+ */
 public class ProcessOrderById {
 
     public static void main(String[] args) {
@@ -18,7 +23,7 @@ public class ProcessOrderById {
         OrderClient client = new OrderClient();
 
         Map<String, String> headers = new HashMap<>();
-        headers.put("X-Sandbox", "true");
+        headers.put("X-Idempotency-Key", "{{IDEMPOTENCY_KEY}}");
         
         MPRequestOptions requestOptions = MPRequestOptions.builder()
                 .customHeaders(headers)

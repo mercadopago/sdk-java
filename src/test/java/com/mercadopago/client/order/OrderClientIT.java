@@ -7,7 +7,6 @@ import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.CardToken;
 import com.mercadopago.resources.order.Order;
-import com.mercadopago.resources.order.OrderRefund;
 import com.mercadopago.resources.order.OrderTransaction;
 import com.mercadopago.resources.order.UpdateOrderTransaction;
 import org.junit.jupiter.api.Test;
@@ -146,7 +145,6 @@ public class OrderClientIT extends BaseClientIT {
       assertEquals("100.00", processedOrder.getTotalAmount());
       assertEquals("processed", processedOrder.getStatus());
       assertEquals("processed", processedOrder.getTransactions().getPayments().get(0).getStatus());
-      assertEquals("accredited", processedOrder.getTransactions().getPayments().get(0).getStatusDetail());
     } catch (MPApiException mpApiException) {
       fail(mpApiException.getApiResponse().getContent());
     } catch (MPException mpException) {
@@ -192,7 +190,6 @@ public class OrderClientIT extends BaseClientIT {
       assertEquals("processed", capturedOrder.getStatus());
       assertEquals("100.00", capturedOrder.getTransactions().getPayments().get(0).getAmount());
       assertEquals("processed", capturedOrder.getTransactions().getPayments().get(0).getStatus());
-      assertEquals("accredited", capturedOrder.getTransactions().getPayments().get(0).getStatusDetail());
     } catch (MPApiException mpApiException) {
       fail(mpApiException.getApiResponse().getContent());
     } catch (MPException mpException) {
@@ -234,9 +231,8 @@ public class OrderClientIT extends BaseClientIT {
       assertNotNull(cancelledOrder.getResponse());
       assertEquals(OK, cancelledOrder.getResponse().getStatusCode());
       assertEquals(order.getId(), cancelledOrder.getId());
-      assertEquals("cancelled", cancelledOrder.getStatus());
-      assertEquals("cancelled", cancelledOrder.getTransactions().getPayments().get(0).getStatus());
-      assertEquals("cancelled_transaction", cancelledOrder.getTransactions().getPayments().get(0).getStatusDetail());
+      assertEquals("canceled", cancelledOrder.getStatus());
+      assertEquals("canceled", cancelledOrder.getTransactions().getPayments().get(0).getStatus());
     } catch (MPApiException mpApiException) {
       fail(mpApiException.getApiResponse().getContent());
     } catch (MPException mpException) {
@@ -274,13 +270,13 @@ public class OrderClientIT extends BaseClientIT {
 
       Order order = client.create(orderCreateRequest);
       Thread.sleep(3000);
-      OrderRefund refundedOrder = client.refund(order.getId());
+      Order refundedOrder = client.refund(order.getId());
 
       assertNotNull(refundedOrder.getResponse());
       assertEquals(CREATED, refundedOrder.getResponse().getStatusCode());
       assertEquals(order.getId(), refundedOrder.getId());
       assertEquals("refunded", refundedOrder.getStatus());
-      assertEquals("refunded", refundedOrder.getStatus_detail());
+      assertEquals("refunded", refundedOrder.getStatusDetail());
       assertEquals("processed", refundedOrder.getTransactions().getRefunds().get(0).getStatus());
     } catch (MPApiException mpApiException) {
       fail(mpApiException.getApiResponse().getContent());
@@ -327,13 +323,13 @@ public class OrderClientIT extends BaseClientIT {
       OrderRefundRequest orderRefundRequest = OrderRefundRequest.builder()
               .transactions(refundPaymentRequest)
               .build();
-      OrderRefund refundedOrder = client.refund(order.getId(), orderRefundRequest);
+      Order refundedOrder = client.refund(order.getId(), orderRefundRequest);
 
       assertNotNull(refundedOrder.getResponse());
       assertEquals(CREATED, refundedOrder.getResponse().getStatusCode());
       assertEquals(order.getId(), refundedOrder.getId());
       assertEquals("processed", refundedOrder.getStatus());
-      assertEquals("partially_refunded", refundedOrder.getStatus_detail());
+      assertEquals("partially_refunded", refundedOrder.getStatusDetail());
       assertEquals("processed", refundedOrder.getTransactions().getRefunds().get(0).getStatus());
     } catch (MPApiException mpApiException) {
       fail(mpApiException.getApiResponse().getContent());

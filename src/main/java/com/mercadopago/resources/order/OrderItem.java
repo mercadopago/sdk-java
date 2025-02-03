@@ -9,27 +9,22 @@ public class OrderItem {
     /** Title of the item. */
     private String title;
 
-    /** Description of the item. */
-    private String description;
-
     /** Unit price of the item. */
     private String unitPrice;
 
-    /** Code of the item. */
-    private String code;
+    /** Quantity of the item. */
+    private Integer quantity;
 
-    /** Type of the item. */
-    private String type;
+    /** ID of the item. */
+    private String id;
+
+    /** Category Id of the item. */
+    private String categoryId;
+
+    /** Description of the item. */
+    private String description;
 
     /** Picture URL of the item. */
     private String pictureUrl;
 
-    /** Quantity of the item. */
-    private int quantity;
-
-    /** True if you purchase the item with warranty, false if not. */
-    private Boolean warranty;
-
-    /** Category Descriptor information */
-    private OrderCategoryDescriptor categoryDescriptor;
 }

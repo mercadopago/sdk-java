@@ -13,26 +13,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Mercado Pago Create Order transaction.
+ *
+ * @see <a href="https://mercadopago.com/developers/en/reference/order/online-payments/add-transaction/post">Documentation</a>
+ */
 public class CreateTransaction{
 
     public static void main(String[] args) {
-        MercadoPagoConfig.setAccessToken("{{Token}}");
-        String orderId = "{{OrderId}}";
+        MercadoPagoConfig.setAccessToken("{{ACCESS_TOKEN}}");
+        String orderId = "{{ORDER_ID}}";
 
         OrderClient client = new OrderClient();
 
         OrderPaymentMethodRequest paymentMethodRequest = OrderPaymentMethodRequest.builder()
                 .id("master")
                 .type("credit_card")
-                .token("{{card_token}}")
+                .token("{{CARD_TOKEN}}")
                 .installments(1)
-                .issuerId("123")
                 .statementDescriptor("statement")
                 .build();
 
         OrderPaymentRequest paymentRequest = OrderPaymentRequest.builder()
                 .amount("100.00")
-                .currency("BRL")
                 .paymentMethod(paymentMethodRequest)
                 .build();
 
@@ -44,9 +47,7 @@ public class CreateTransaction{
                 .build();
 
         Map<String, String> headers = new HashMap<>();
-        headers.put("X-Sandbox", "true");
-        headers.put("X-Idempotency-Key", "123456");
-        headers.put("X-Caller-SiteID", "MLB");
+        headers.put("X-Idempotency-Key", "{{IDEMPOTENCY_KEY}}");
 
         MPRequestOptions requestOptions = MPRequestOptions.builder()
                 .customHeaders(headers)

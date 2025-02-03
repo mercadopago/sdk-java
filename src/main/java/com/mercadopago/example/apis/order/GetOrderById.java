@@ -10,6 +10,11 @@ import com.mercadopago.resources.order.Order;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Mercado Pago Get Order.
+ *
+ * @see <a href="https://mercadopago.com/developers/en/reference/order/online-payments/get-order/get">Documentation</a>
+ */
 public class GetOrderById {
 
     public static void main(String[] args) {
@@ -17,15 +22,8 @@ public class GetOrderById {
 
         OrderClient client = new OrderClient();
 
-        Map<String, String> headers = new HashMap<>();
-        headers.put("X-Sandbox", "true");
-        
-        MPRequestOptions requestOptions = MPRequestOptions.builder()
-                .customHeaders(headers)
-                .build();
-
         try {
-            Order order = client.get("{{ORDER_ID}}", requestOptions);
+            Order order = client.get("{{ORDER_ID}}");
             System.out.println("Getting order: " + order.getId());
         } catch (MPException | MPApiException e) {
             System.out.println("Error getting order: " + e.getMessage());

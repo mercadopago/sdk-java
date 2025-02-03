@@ -354,7 +354,7 @@ public class OrderClient extends MercadoPagoClient {
      * @throws MPException    an error if the request fails
      * @throws MPApiException an error if the request fails
      */
-    public OrderRefund refund(String orderId) throws MPException, MPApiException {
+    public Order refund(String orderId) throws MPException, MPApiException {
         return this.refund(orderId, null, null);
     }
 
@@ -367,7 +367,7 @@ public class OrderClient extends MercadoPagoClient {
      * @throws MPException    an error if the request fails
      * @throws MPApiException an error if the request fails
      */
-    public OrderRefund refund(String orderId, MPRequestOptions requestOptions) throws MPException, MPApiException {
+    public Order refund(String orderId, MPRequestOptions requestOptions) throws MPException, MPApiException {
         return this.refund(orderId, null, requestOptions);
     }
 
@@ -379,7 +379,7 @@ public class OrderClient extends MercadoPagoClient {
      * @throws MPException    an error if the request fails
      * @throws MPApiException an error if the request fails
      */
-    public OrderRefund refund(String orderId, OrderRefundRequest request) throws MPException, MPApiException {
+    public Order refund(String orderId, OrderRefundRequest request) throws MPException, MPApiException {
         return this.refund(orderId, request, null);
     }
 
@@ -392,7 +392,7 @@ public class OrderClient extends MercadoPagoClient {
      * @throws MPException    an error if the request fails
      * @throws MPApiException an error if the request fails
      */
-    public OrderRefund refund(String orderId, OrderRefundRequest request, MPRequestOptions requestOptions) throws MPException, MPApiException {
+    public Order refund(String orderId, OrderRefundRequest request, MPRequestOptions requestOptions) throws MPException, MPApiException {
         LOGGER.info("Sending order transaction intent request");
 
         validateOrderID(orderId);
@@ -407,7 +407,7 @@ public class OrderClient extends MercadoPagoClient {
 
         MPResponse response = send(mpRequest, requestOptions);
 
-        OrderRefund order = Serializer.deserializeFromJson(OrderRefund.class, response.getContent());
+        Order order = Serializer.deserializeFromJson(Order.class, response.getContent());
         order.setResponse(response);
         return order;
     }

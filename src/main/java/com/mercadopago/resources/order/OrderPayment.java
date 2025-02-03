@@ -2,6 +2,8 @@ package com.mercadopago.resources.order;
 
 import lombok.Getter;
 
+// API version: b950ae02-4f49-4686-9ad3-7929b21b6495
+
 /** OrderPayment class. */
 @Getter
 public class OrderPayment {
@@ -9,20 +11,14 @@ public class OrderPayment {
     /** Payment ID. */
     private String id;
 
-    /** Payment amount. */
-    private String amount;
-
-    /** Payment currency. */
-    private String currency;
+    /** Reference ID. */
+    private String referenceId;
 
     /** Payment status. */
     private String status;
 
-    /** Payment status detail. */
-    private String statusDetail;
-
-    /** Reference to the order. */
-    private OrderReference reference;
+    /** Payment amount. */
+    private String amount;
 
     /** Payment method information. */
     private OrderPaymentMethod paymentMethod;

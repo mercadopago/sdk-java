@@ -2,6 +2,8 @@ package com.mercadopago.client.order;
 
 import lombok.Getter;
 
+// API version: b950ae02-4f49-4686-9ad3-7929b21b6495
+
 /** OrderItemRequest class. */
 @Getter
 public class OrderItemRequest {
@@ -13,23 +15,18 @@ public class OrderItemRequest {
     private String unitPrice;
 
     /** Quantity of the item. */
-    private int quantity;
+    private Integer quantity;
+
+    /** ID of the item. */
+    private String id;
+
+    /** Category ID of the item. */
+    private String categoryId;
 
     /** Description of the item. */
     private String description;
 
-    /** Code of the item. */
-    private String code;
-
-    /** Type of the item. */
-    private String type;
-
     /** Picture URL of the item. */
     private String pictureUrl;
 
-    /** True if you purchase the item with warranty, false if not. */
-    private Boolean warranty;
-
-    /** Category Descriptor information */
-    private OrderCategoryDescriptorRequest categoryDescriptor;
 }

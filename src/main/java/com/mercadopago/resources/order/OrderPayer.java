@@ -18,24 +18,6 @@ public class OrderPayer {
     /** Payer's last name. */
     private String lastName;
 
-    /** Type of authentication. */
-    private String authenticationType;
-
-    /** Date of registration. */
-    private String registrationDate;
-
-    /** Date of last purchase. */
-    private String lastPurchase;
-
-    /** Payer's entity type. */
-    private String entityType;
-
-    /** If payer is prime user. */
-    private Boolean isPrimeUser;
-
-    /** If is first online purchase. */
-    private Boolean isFirstPurchaseOnline;
-
     /** Identification information. */
     private Identification identification;
 

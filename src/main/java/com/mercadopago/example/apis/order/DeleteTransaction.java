@@ -9,19 +9,22 @@ import com.mercadopago.exceptions.MPException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Mercado Pago Delete Order transaction.
+ *
+ * @see <a href="https://mercadopago.com/developers/en/reference/order/online-payments/delete-transaction/delete">Documentation</a>
+ */
 public class DeleteTransaction {
 
     public static void main(String[] args) {
         MercadoPagoConfig.setAccessToken("{{ACCESS_TOKEN}}");
-        String orderId = "{{order_id}}";
-        String transactionId = "{{transaction_id}}";
+        String orderId = "{{ORDER_ID}}";
+        String transactionId = "{{TRANSACTION_ID}}";
 
         OrderClient client = new OrderClient();
 
         Map<String, String> headers = new HashMap<>();
-        headers.put("X-Sandbox", "true");
-        headers.put("X-Idempotency-Key", "1234569999");
-        headers.put("X-Caller-SiteID", "MLB");
+        headers.put("X-Idempotency-Key", "{{IDEMPOTENCY_KEY}}");
 
         MPRequestOptions requestOptions = MPRequestOptions.builder()
                 .customHeaders(headers)

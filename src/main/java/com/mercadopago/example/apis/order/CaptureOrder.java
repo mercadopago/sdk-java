@@ -11,6 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Mercado Pago Capture Order.
+ *
+ * @see <a href="https://mercadopago.com/developers/en/reference/order/online-payments/capture/post">Documentation</a>
+ */
 public class CaptureOrder {
     public static void main(String[] args) {
         MercadoPagoConfig.setAccessToken("{{ACCESS_TOKEN}}");

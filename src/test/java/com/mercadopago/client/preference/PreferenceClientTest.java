@@ -237,8 +237,8 @@ class PreferenceClientTest extends BaseClientTest {
     assertEquals("custom", preference.getShipments().getMode());
     assertNull(preference.getShipments().getDefaultShippingMethod());
     assertEquals(BigDecimal.TEN, preference.getShipments().getCost());
-    assertEquals("06000000", preference.getShipments().getReceiverAddress().getZipCode());
     assertEquals("Street", preference.getShipments().getReceiverAddress().getStreetName());
+    assertEquals("06000000", preference.getShipments().getReceiverAddress().getZipCode());
     assertEquals("123", preference.getShipments().getReceiverAddress().getStreetNumber());
     assertEquals("12", preference.getShipments().getReceiverAddress().getFloor());
     assertEquals("120A", preference.getShipments().getReceiverAddress().getApartment());

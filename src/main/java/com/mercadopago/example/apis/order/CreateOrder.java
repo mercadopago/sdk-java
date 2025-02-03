@@ -2,14 +2,18 @@ package com.mercadopago.example.apis.order;
 
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.order.*;
-import com.mercadopago.core.MPRequestOptions;
+import com.mercadopago.exceptions.MPApiException;
+import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.order.Order;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+/**
+ * Mercado Pago Create Order transaction.
+ *
+ * @see <a href="https://mercadopago.com/developers/en/reference/order/online-payments/create/post">Documentation</a>.
+ */
 public class CreateOrder {
 
     public static void main(String[] args) {
@@ -34,25 +38,17 @@ public class CreateOrder {
                 .type("online")
                 .totalAmount("10.00")
                 .externalReference("ext_ref")
-                .payer(OrderPayerRequest.builder().email("test@email.com").build())
+                .payer(OrderPayerRequest.builder().email("{{EMAIL}}").build())
                 .transactions(OrderTransactionRequest.builder()
                         .payments(payments)
                         .build())
                 .build();
-
-        Map<String, String> headers = new HashMap<>();
-        headers.put("X-Sandbox", "true");
-        MPRequestOptions requestOptions = MPRequestOptions.builder()
-                .customHeaders(headers)
-                .build();
-
         try {
-            Order order = client.create(request, requestOptions);
+            Order order = client.create(request);
             System.out.println("Order created: " + order.getId());
-        } catch (Exception e) {
+        } catch (MPApiException | MPException e) {
             System.out.println("Error creating order: " + e.getMessage());
         }
-
     }
 
 }

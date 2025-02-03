@@ -7,17 +7,20 @@ import com.mercadopago.core.MPRequestOptions;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Mercado Pago Total Refund Order.
+ *
+ * @see <a href="https://mercadopago.com/developers/en/reference/order/online-payments/refund/post">Documentation</a>
+ */
 public class RefundTotal {
     public static void main(String[] args) {
         MercadoPagoConfig.setAccessToken("{{ACCESS_TOKEN}}");
-        String orderId = "{{order_id}}";
+        String orderId = "{{ORDER_ID}}";
 
         OrderClient client = new OrderClient();
 
         Map<String, String> headers = new HashMap<>();
-        headers.put("X-Sandbox", "true");
-        headers.put("X-Idempotency-Key", "{{idempotency_key}}");
-        headers.put("X-Caller-SiteID", "MLB");
+        headers.put("X-Idempotency-Key", "{{IDEMPOTENCY_KEY}}");
 
         MPRequestOptions requestOptions = MPRequestOptions.builder()
                 .customHeaders(headers)

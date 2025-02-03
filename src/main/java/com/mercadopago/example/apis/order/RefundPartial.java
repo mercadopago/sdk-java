@@ -8,16 +8,21 @@ import com.mercadopago.net.MPResponse;
 
 import java.util.*;
 
+/**
+ * Mercado Pago Partial Refund Order.
+ *
+ * @see <a href="https://mercadopago.com/developers/en/reference/order/online-payments/refund/post">Documentation</a>
+ */
 public class RefundPartial {
 
     public static void main(String[] args) {
         MercadoPagoConfig.setAccessToken("{{ACCESS_TOKEN}}");
-        String orderId = "{{order_id}}";
+        String orderId = "{{ORDER_ID}}";
 
         OrderClient client = new OrderClient();
 
         OrderRefundPaymentRequest refundRequest = OrderRefundPaymentRequest.builder()
-                .id("{{payment_id}}")
+                .id("{{PAYMENT_ID}}")
                 .amount("10.00")
                 .build();
 
@@ -29,8 +34,7 @@ public class RefundPartial {
                 .build();
 
         Map<String, String> headers = new HashMap<>();
-        headers.put("X-Sandbox", "true");
-        headers.put("X-Idempotency-Key", "{{idempotency_key}}");
+        headers.put("X-Idempotency-Key", "{{IDEMPOTENCY_KEY}}");
 
         MPRequestOptions requestOptions = MPRequestOptions.builder()
                 .customHeaders(headers)

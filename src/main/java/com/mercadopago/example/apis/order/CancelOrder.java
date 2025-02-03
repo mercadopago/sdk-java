@@ -10,6 +10,11 @@ import com.mercadopago.resources.order.Order;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Mercado Pago Cancel Order.
+ *
+ * @see <a href="https://mercadopago.com/developers/en/reference/order/online-payments/cancel-order/post">Documentation</a>.
+ */
 public class CancelOrder {
 
     public static void main(String[] args) {
@@ -18,24 +23,19 @@ public class CancelOrder {
         OrderClient client = new OrderClient();
 
         Map<String, String> headers =  new HashMap<>();
-        headers.put("X-Sandbox", "true");
-        headers.put("X-Idempotency-Key", "123456");
-        headers.put("X-Caller-SiteID", "MLB");
-
+        headers.put("X-Idempotency-Key", "{{IDEMPOTENCY_KEY}}");
 
         MPRequestOptions requestOptions = MPRequestOptions.builder()
                 .customHeaders(headers)
                 .build();
 
         try {
-            Order order = client.cancel("{{ORDERID}}", requestOptions);
+            Order order = client.cancel("{{ORDER_ID}}", requestOptions);
             System.out.println("Canceled order: " + order.getId());
             System.out.println("Status: " + order.getStatus());
         } catch (MPException | MPApiException e) {
             System.out.println("Error canceling order: " + e.getMessage());
             System.out.println("Cause: " + e.getCause());
         }
-
     }
-
 }
