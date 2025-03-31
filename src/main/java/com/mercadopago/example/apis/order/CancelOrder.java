@@ -18,7 +18,7 @@ import java.util.Map;
 public class CancelOrder {
 
     public static void main(String[] args) {
-        MercadoPagoConfig.setAccessToken("{{TOKEN}}}}");
+        MercadoPagoConfig.setAccessToken("{{ACCESS_TOKEN");
 
         OrderClient client = new OrderClient();
 
@@ -37,5 +37,7 @@ public class CancelOrder {
             System.out.println("Error canceling order: " + e.getMessage());
             System.out.println("Cause: " + e.getCause());
         }
+
     }
+
 }

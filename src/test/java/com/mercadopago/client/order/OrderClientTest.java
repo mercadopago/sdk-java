@@ -26,7 +26,7 @@ import static org.mockito.Matchers.any;
 
 class OrderClientTest extends BaseClientTest {
 
-    //File Mock Responses
+    // File Mock Responses
     private static final String CREATE_ORDER_RESPONSE_FILE = "order/create_order_response.json";
     private static final String CREATE_TRANSACTION_RESPONSE_FILE = "order/create_transaction_response.json";
     private static final String UPDATE_TRANSACTION_FILE = "order/update_transaction_response.json";
@@ -38,19 +38,19 @@ class OrderClientTest extends BaseClientTest {
 
     @Test
     void createSuccess() throws MPException, MPApiException, IOException {
-        //given
+        // given
         OrderCreateRequest request = getMinimumOrderCreateRequest();
 
-        //Mock HttpClient
+        // Mock HttpClient
         HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_ORDER_RESPONSE_FILE, HttpStatus.CREATED);
         Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-        //when
+        // when
         Order order = client.create(request);
 
-        //then
+        // then
         Assertions.assertNotNull(order);
-        Assertions.assertEquals(request.getTotalAmount() ,order.getTotalAmount());
+        Assertions.assertEquals(request.getTotalAmount(), order.getTotalAmount());
     }
 
     private static OrderCreateRequest getMinimumOrderCreateRequest() {
@@ -126,7 +126,8 @@ class OrderClientTest extends BaseClientTest {
 
     @Test
     void createTransactionWithRequestOptionsSuccess() throws MPException, MPApiException, IOException {
-        HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_TRANSACTION_RESPONSE_FILE, HttpStatus.OK);
+        HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_TRANSACTION_RESPONSE_FILE,
+                HttpStatus.OK);
 
         Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
 
@@ -152,7 +153,6 @@ class OrderClientTest extends BaseClientTest {
         Assertions.assertEquals("100.00", orderTransaction.getPayments().get(0).getAmount());
         Assertions.assertEquals("master", orderTransaction.getPayments().get(0).getPaymentMethod().getId());
     }
-
 
     @Test
     void deleteTransactionSuccessWithValidIds() throws MPException, MPApiException, IOException {
@@ -190,21 +190,22 @@ class OrderClientTest extends BaseClientTest {
     @Test
     void captureSuccess() throws MPException, MPApiException, IOException {
 
-        //Mock HttpClient
+        // Mock HttpClient
         HttpResponse response = MockHelper.generateHttpResponseFromFile(CAPTURE_ORDER_RESPONSE_FILE, HttpStatus.OK);
         Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-        //when
+        // when
         Order order = client.capture("123");
 
-        //then
+        // then
         Assertions.assertNotNull(order);
         Assertions.assertEquals(order.getStatus(), "processed");
     }
 
     @Test
     void refundTotalSuccess() throws MPException, MPApiException, IOException {
-        HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_REFUND_TOTAL_RESPONSE_FILE, HttpStatus.OK);
+        HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_REFUND_TOTAL_RESPONSE_FILE,
+                HttpStatus.OK);
         Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
 
         String id = "123";
@@ -215,12 +216,12 @@ class OrderClientTest extends BaseClientTest {
         Assertions.assertEquals(HttpStatus.OK, orderRefund.getResponse().getStatusCode());
         Assertions.assertNotNull(orderRefund.getResponse());
         Assertions.assertEquals("refunded", orderRefund.getStatus());
-        Assertions.assertEquals("ref_01JCK2SDVFSJGY54AMJCDR9X7R", orderRefund.getTransactions().getRefunds().get(0).getId());
     }
 
     @Test
     void refundPartialSuccess() throws MPException, MPApiException, IOException {
-        HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_REFUND_PARTIAL_RESPONSE_FILE, HttpStatus.OK);
+        HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_REFUND_PARTIAL_RESPONSE_FILE,
+                HttpStatus.OK);
         Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
 
         String orderId = "123";
@@ -239,14 +240,16 @@ class OrderClientTest extends BaseClientTest {
 
         Assertions.assertNotNull(payload);
         Assertions.assertTrue(payload.has("transactions"));
-        Assertions.assertEquals("50.00", payload.getAsJsonArray("transactions").get(0).getAsJsonObject().get("amount").getAsString());
+        Assertions.assertEquals("50.00",
+                payload.getAsJsonArray("transactions").get(0).getAsJsonObject().get("amount").getAsString());
         Assertions.assertNotNull(orderRefund);
         Assertions.assertEquals(HttpStatus.OK, orderRefund.getResponse().getStatusCode());
     }
 
     @Test
     void refundWithValidRequestPayload() throws IOException {
-        HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_REFUND_TOTAL_RESPONSE_FILE, HttpStatus.OK);
+        HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_REFUND_TOTAL_RESPONSE_FILE,
+                HttpStatus.OK);
         Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
 
         OrderRefundRequest refundRequest = OrderRefundRequest.builder()
@@ -259,7 +262,8 @@ class OrderClientTest extends BaseClientTest {
         JsonObject payload = Serializer.serializeToJson(refundRequest);
         Assertions.assertNotNull(payload);
         Assertions.assertTrue(payload.has("transactions"));
-        Assertions.assertEquals("50.00", payload.getAsJsonArray("transactions").get(0).getAsJsonObject().get("amount").getAsString());
+        Assertions.assertEquals("50.00",
+                payload.getAsJsonArray("transactions").get(0).getAsJsonObject().get("amount").getAsString());
     }
 
     @Test

@@ -2,11 +2,17 @@ package com.mercadopago.resources.order;
 
 import lombok.Getter;
 
-// API version: b950ae02-4f49-4686-9ad3-7929b21b6495
+// API version: d0494f1c-8d81-4c76-ae1d-0c65bb8ef6de
 
 /** OrderPayment class. */
 @Getter
 public class OrderPayment {
+
+    /** Payment amount. */
+    private String amount;
+
+    /** Payment method information. */
+    private OrderPaymentMethod paymentMethod;
 
     /** Payment ID. */
     private String id;
@@ -17,9 +23,21 @@ public class OrderPayment {
     /** Payment status. */
     private String status;
 
-    /** Payment amount. */
-    private String amount;
+    /** Payment status detail. */
+    private String statusDetail;
 
-    /** Payment method information. */
-    private OrderPaymentMethod paymentMethod;
+    /** Payment date of expiration. */
+    private String dateOfExpiration;
+
+    /** Payment Expiration Time. */
+    private String expirationTime;
+
+    /** Payment Paid Amount. */
+    private String paidAmount;
+
+    /** Payment Attempt Number. */
+    private Integer attemptNumber;
+
+    /** Payment Attempts. */
+    private OrderAttempts attempts;
 }

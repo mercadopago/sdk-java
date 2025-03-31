@@ -3,7 +3,7 @@ package com.mercadopago.resources.order;
 import com.mercadopago.net.MPResource;
 import lombok.Getter;
 
-// API version: b950ae02-4f49-4686-9ad3-7929b21b6495
+// API version: d0494f1c-8d81-4c76-ae1d-0c65bb8ef6de
 
 /**
  * OrderRefund class.
@@ -23,6 +23,12 @@ public class OrderRefund extends MPResource {
     /** Amount Refund. */
     private String amount;
 
-    /** Status Refund. */
+    /** Refund status. */
     private String status;
+
+    /** Refund status detail. */
+    private String statusDetail;
+    
+    /** Refund items. */
+    private OrderItem items;
 }

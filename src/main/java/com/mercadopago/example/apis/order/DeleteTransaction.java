@@ -2,36 +2,26 @@ package com.mercadopago.example.apis.order;
 
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.order.OrderClient;
-import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Mercado Pago Delete Order transaction.
  *
- * @see <a href="https://mercadopago.com/developers/en/reference/order/online-payments/delete-transaction/delete">Documentation</a>
+ * @see <a href=
+ *      "https://mercadopago.com/developers/en/reference/order/online-payments/delete-transaction/delete">Documentation</a>
  */
 public class DeleteTransaction {
 
     public static void main(String[] args) {
         MercadoPagoConfig.setAccessToken("{{ACCESS_TOKEN}}");
-        String orderId = "{{ORDER_ID}}";
-        String transactionId = "{{TRANSACTION_ID}}";
+        String orderId = "{{order_id}}";
+        String transactionId = "{{transaction_id}}";
 
         OrderClient client = new OrderClient();
 
-        Map<String, String> headers = new HashMap<>();
-        headers.put("X-Idempotency-Key", "{{IDEMPOTENCY_KEY}}");
-
-        MPRequestOptions requestOptions = MPRequestOptions.builder()
-                .customHeaders(headers)
-                .build();
-
         try {
-            client.deleteTransaction(orderId, transactionId, requestOptions);
+            client.deleteTransaction(orderId, transactionId);
             System.out.println("Transaction successfully deleted.");
         } catch (MPApiException e) {
             System.out.println("API error while deleting transaction: " + e.getMessage());

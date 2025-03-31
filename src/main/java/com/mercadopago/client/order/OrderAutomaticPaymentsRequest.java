@@ -3,22 +3,25 @@ package com.mercadopago.client.order;
 import lombok.Builder;
 import lombok.Getter;
 
-// API version: b950ae02-4f49-4686-9ad3-7929b21b6495
+// API version: 1ff4822a-2dfd-4393-800e-a562edb3fe32
 
 /** OrderAutomaticPaymentsRequest class. */
 @Getter
 @Builder
 public class OrderAutomaticPaymentsRequest {
 
+  /** Amount. */
+  private String amount;
+
   /** Payment Profile ID. */
-  private String paymentProfileId;
+  private OrderPaymentMethodRequest paymentMethod;
 
   /** Retries. */
-  private Integer retries;
+  private OrderAutomaticPayments automaticPayments;
 
   /** Schedule Date. */
-  private String scheduleDate;
+  private OrderStoredCredentialRequest scheduleDate;
 
   /** Due Date. */
-  private String dueDate;
+  private OrderSubscriptionDataRequest dueDate;
 }

@@ -11,6 +11,15 @@ public class PaymentMethod extends MPResource {
   /** Payment method ID. */
   private String id;
 
+  /** Payment method type. */
+  private String type;
+
+  /** Payment method card id. */
+  private String cardId;
+
+  /** Payment method installments. */
+  private Integer installments;
+
   /** Payment method name. */
   private String name;
 

@@ -3,7 +3,6 @@ package com.mercadopago.example.apis.order;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.order.*;
 import com.mercadopago.core.MPRequestOptions;
-import com.mercadopago.net.Headers;
 import com.mercadopago.resources.order.Order;
 
 import java.util.ArrayList;
@@ -17,18 +16,22 @@ import java.util.Map;
  * @see <a href="https://mercadopago.com/developers/en/reference/order/online-payments/capture/post">Documentation</a>
  */
 public class CaptureOrder {
+
     public static void main(String[] args) {
         MercadoPagoConfig.setAccessToken("{{ACCESS_TOKEN}}");
 
+        System.out.println("Initializing OrderClient...");
         OrderClient client = new OrderClient();
 
+        System.out.println("Creating OrderPaymentRequest...");
         OrderPaymentRequest payment = OrderPaymentRequest.builder()
-                .amount("10.00")
+                .amount("1000.00")
                 .paymentMethod(OrderPaymentMethodRequest.builder()
                         .id("master")
                         .type("credit_card")
                         .token("{{CARD_TOKEN}}")
                         .installments(1)
+                        .statementDescriptor("statement")
                         .build())
                 .build();
 
@@ -39,7 +42,7 @@ public class CaptureOrder {
                 .type("online")
                 .processingMode("automatic")
                 .captureMode("manual")
-                .totalAmount("10.00")
+                .totalAmount("1000.00")
                 .externalReference("ext_ref")
                 .payer(OrderPayerRequest.builder().email("{{PAYER_EMAIL}}").build())
                 .transactions(OrderTransactionRequest.builder()
@@ -48,25 +51,30 @@ public class CaptureOrder {
                 .build();
 
         Map<String, String> headers = new HashMap<>();
-        headers.put(Headers.IDEMPOTENCY_KEY, "{{IDEMPOTENCY_KEY}}");
+        headers.put("X-Idempotency-Key", "{{IDEMPOTENCY_KEY}}");
+
         MPRequestOptions requestOptions = MPRequestOptions.builder()
                 .customHeaders(headers)
-                .build();
-
-        // RequestOptions to capture the order's flow
-        Map<String, String> headersCapture = new HashMap<>();
-        headers.put(Headers.IDEMPOTENCY_KEY, "{{IDEMPOTENCY_KEY}}");
-        MPRequestOptions requestOptionsCapture = MPRequestOptions.builder()
-                .customHeaders(headersCapture)
                 .build();
 
         try {
             Order order = client.create(request, requestOptions);
             System.out.println("Order created: " + order.getId());
-            Order capturedOrder = client.capture(order.getId(), requestOptionsCapture);
+            System.out.println("Order status: " + order.getStatus());
+            System.out.println("Order status detail: " + order.getStatusDetail());
+
+            // Capture Order
+            Order capturedOrder = client.capture(order.getId(), requestOptions);
+            System.out.println("Captured order: " + capturedOrder.getId());
             System.out.println("Captured order status: " + capturedOrder.getStatus());
+            System.out.println("Captured order status detail: " + capturedOrder.getStatusDetail());
         } catch (Exception e) {
             System.out.println("Error creating order: " + e.getMessage());
+            System.out.println("Cause: " + e.getCause());
+            System.out.println("Stack Trace: " + e.getStackTrace());
+            System.out.println("Error cause: " + e.getCause());
         }
+
     }
+
 }

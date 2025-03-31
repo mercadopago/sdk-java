@@ -6,7 +6,7 @@ import lombok.Getter;
 
 import java.util.List;
 
-// API version: b950ae02-4f49-4686-9ad3-7929b21b6495
+// API version: 1ff4822a-2dfd-4393-800e-a562edb3fe32
 
 /** Order class. */
 @Builder
@@ -44,6 +44,12 @@ public class OrderCreateRequest extends MPResource {
 
     /** Items information. */
     private List<OrderItemRequest> items;
+
+    /** Order config. */
+    private OrderConfigRequest config;
+
+    /** Checkout available at. */
+    private String checkoutAvailableAt;
 
     /** Expiration time of the order. */
     private String expirationTime;

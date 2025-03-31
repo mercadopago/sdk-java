@@ -8,10 +8,7 @@ import com.mercadopago.client.order.OrderTransactionRequest;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.net.MPResponse;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Mercado Pago Create Order transaction.
@@ -22,20 +19,20 @@ public class CreateTransaction{
 
     public static void main(String[] args) {
         MercadoPagoConfig.setAccessToken("{{ACCESS_TOKEN}}");
-        String orderId = "{{ORDER_ID}}";
+        String orderId = "{{Order_id}}";
 
         OrderClient client = new OrderClient();
 
         OrderPaymentMethodRequest paymentMethodRequest = OrderPaymentMethodRequest.builder()
                 .id("master")
                 .type("credit_card")
-                .token("{{CARD_TOKEN}}")
+                .token("{{card_token}}")
                 .installments(1)
                 .statementDescriptor("statement")
                 .build();
 
         OrderPaymentRequest paymentRequest = OrderPaymentRequest.builder()
-                .amount("100.00")
+                .amount("500.00")
                 .paymentMethod(paymentMethodRequest)
                 .build();
 
@@ -47,7 +44,7 @@ public class CreateTransaction{
                 .build();
 
         Map<String, String> headers = new HashMap<>();
-        headers.put("X-Idempotency-Key", "{{IDEMPOTENCY_KEY}}");
+        headers.put("X-Idempotency-Key", "{{idempotency_key}}");
 
         MPRequestOptions requestOptions = MPRequestOptions.builder()
                 .customHeaders(headers)
@@ -55,9 +52,13 @@ public class CreateTransaction{
 
         try{
             MPResponse response = client.createTransaction(orderId, transactionRequest, requestOptions).getResponse();
+            System.out.println("Status Code: " + response.getStatusCode());
             System.out.println("Order transaction created: " + response.getContent());
         } catch (Exception e) {
             System.out.println("Error creating order transaction: " + e.getMessage());
+            System.out.println("Status: " + e.getCause());
+            System.out.println("Cause: " + Arrays.toString(e.getStackTrace()));
+
         }
     }
 }

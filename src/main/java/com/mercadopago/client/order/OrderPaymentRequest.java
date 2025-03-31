@@ -3,15 +3,18 @@ package com.mercadopago.client.order;
 import lombok.Builder;
 import lombok.Getter;
 
-// API version: b950ae02-4f49-4686-9ad3-7929b21b6495
+// API version: 1ff4822a-2dfd-4393-800e-a562edb3fe32
 
-/** OrderPaymentCreateRequest class. */
+/** OrderPaymentRequest class. */
 @Getter
 @Builder
 public class OrderPaymentRequest {
 
     /** Payment amount. */
     private String amount;
+
+    /** Payment expirationTime. */
+    private String expirationTime;
 
     /** Payment method information. */
     private OrderPaymentMethodRequest paymentMethod;

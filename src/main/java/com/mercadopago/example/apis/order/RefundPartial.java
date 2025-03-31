@@ -17,12 +17,12 @@ public class RefundPartial {
 
     public static void main(String[] args) {
         MercadoPagoConfig.setAccessToken("{{ACCESS_TOKEN}}");
-        String orderId = "{{ORDER_ID}}";
+        String orderId = "{{order_id}}";
 
         OrderClient client = new OrderClient();
 
         OrderRefundPaymentRequest refundRequest = OrderRefundPaymentRequest.builder()
-                .id("{{PAYMENT_ID}}")
+                .id("{{transaction_id}}")
                 .amount("10.00")
                 .build();
 
@@ -34,7 +34,7 @@ public class RefundPartial {
                 .build();
 
         Map<String, String> headers = new HashMap<>();
-        headers.put("X-Idempotency-Key", "{{IDEMPOTENCY_KEY}}");
+        headers.put("X-Idempotency-Key", "{{idempotency_key}}");
 
         MPRequestOptions requestOptions = MPRequestOptions.builder()
                 .customHeaders(headers)
