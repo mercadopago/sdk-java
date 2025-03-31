@@ -10,18 +10,15 @@ import lombok.Getter;
 @Builder
 public class OrderAutomaticPaymentsRequest {
 
-  /** Amount. */
-  private String amount;
-
-  /** Payment Profile ID. */
-  private OrderPaymentMethodRequest paymentMethod;
+  /** Payment profile ID. */
+  private String paymentProfileId;
 
   /** Retries. */
-  private OrderAutomaticPayments automaticPayments;
+  private Integer retries;
 
-  /** Schedule Date. */
-  private OrderStoredCredentialRequest scheduleDate;
+  /** Schedule date. */
+  private String scheduleDate;
 
-  /** Due Date. */
-  private OrderSubscriptionDataRequest dueDate;
+  /** Due date. */
+  private String dueDate;
 }

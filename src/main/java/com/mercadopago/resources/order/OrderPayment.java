@@ -40,4 +40,13 @@ public class OrderPayment {
 
     /** Payment Attempts. */
     private OrderAttempts attempts;
+
+    /** Automatic Payments information. */
+    private OrderAutomaticPayments automaticPayments;
+
+    /** Stored Credential information. */
+    private OrderStoredCredential storedCredential;
+
+    /** Subscription Data information. */
+    private OrderSubscriptionData subscriptionData;
 }

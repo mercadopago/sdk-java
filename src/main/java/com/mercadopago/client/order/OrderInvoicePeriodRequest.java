@@ -10,8 +10,10 @@ import lombok.Getter;
 @Builder
 public class OrderInvoicePeriodRequest {
 
+  /** Type. */
   private String type;
 
+  /** Period. */
   private Integer period;
 
 }
