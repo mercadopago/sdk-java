@@ -31,5 +31,5 @@
       }
     ]
   },
-  "capture_mode": "automatic"
+  "capture_mode": "automatic_async"
 }
