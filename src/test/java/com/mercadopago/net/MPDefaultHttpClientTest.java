@@ -4,7 +4,6 @@ import static com.mercadopago.helper.MockHelper.generateHttpResponseFromFile;
 import static com.mercadopago.net.HttpStatus.INTERNAL_SERVER_ERROR;
 import static com.mercadopago.net.HttpStatus.OK;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
@@ -37,8 +36,7 @@ class MPDefaultHttpClientTest extends BaseClientTest {
     Map<String, String> headers = new HashMap<>();
     headers.put("x-test", "test");
 
-    MPRequest request =
-        MPRequest.builder().method(HttpMethod.GET).uri("http://test.com").headers(headers).build();
+    MPRequest request = MPRequest.builder().method(HttpMethod.GET).uri("http://test.com").headers(headers).build();
 
     HttpResponse httpResponse = generateHttpResponseFromFile(responseGenericSuccessJson, OK);
     httpResponse.setHeader("x-test", "test");
@@ -60,15 +58,14 @@ class MPDefaultHttpClientTest extends BaseClientTest {
     headers.put("x-test", "test");
 
     int customTimeout = 2000;
-    MPRequest request =
-        MPRequest.builder()
-            .method(HttpMethod.GET)
-            .uri("http://test.com")
-            .headers(headers)
-            .socketTimeout(customTimeout)
-            .connectionRequestTimeout(customTimeout)
-            .connectionTimeout(customTimeout)
-            .build();
+    MPRequest request = MPRequest.builder()
+        .method(HttpMethod.GET)
+        .uri("http://test.com")
+        .headers(headers)
+        .socketTimeout(customTimeout)
+        .connectionRequestTimeout(customTimeout)
+        .connectionTimeout(customTimeout)
+        .build();
 
     HttpResponse httpResponse = generateHttpResponseFromFile(responseGenericSuccessJson, OK);
     httpResponse.setHeader("x-test", "test");
@@ -89,14 +86,13 @@ class MPDefaultHttpClientTest extends BaseClientTest {
     Map<String, String> headers = new HashMap<>();
     headers.put("x-test", "test");
 
-    MPRequest request =
-            MPRequest.builder().method(HttpMethod.GET).uri("http://test.com").headers(headers).build();
+    MPRequest request = MPRequest.builder().method(HttpMethod.GET).uri("http://test.com").headers(headers).build();
 
     HttpResponse httpResponse = generateHttpResponseFromFile(responseGenericSuccessJson, OK);
     httpResponse.setHeader("x-test", "test");
     doThrow(IOException.class)
-            .when(HTTP_CLIENT)
-            .execute(any(HttpRequestBase.class), any(HttpContext.class));
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
 
     try {
       mpDefaultHttpClient.send(request);

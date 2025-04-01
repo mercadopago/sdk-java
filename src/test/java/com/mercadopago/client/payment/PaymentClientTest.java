@@ -629,8 +629,7 @@ public class PaymentClientTest extends BaseClientTest {
     assertEquals("Nome", payment.getAdditionalInfo().getPayer().getFirstName());
     assertEquals("Sobrenome", payment.getAdditionalInfo().getPayer().getLastName());
     assertEquals(date, payment.getAdditionalInfo().getPayer().getRegistrationDate());
-    assertEquals(
-        "95630000", payment.getAdditionalInfo().getShipments().getReceiverAddress().getZipCode());
+    assertEquals("95630000", payment.getAdditionalInfo().getShipments().getReceiverAddress().getZipCode());
     assertEquals(
         "são Luiz",
         payment.getAdditionalInfo().getShipments().getReceiverAddress().getStreetName());

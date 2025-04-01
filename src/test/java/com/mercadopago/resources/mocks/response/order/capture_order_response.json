@@ -1,0 +1,14 @@
+{
+  "id": "123",
+  "status": "processed",
+  "transactions": {
+    "payments": [
+      {
+        "id": "id",
+        "amount": "10.00",
+        "status": "processed",
+        "reference_id": "id"
+      }
+    ]
+  }
+}

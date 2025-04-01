@@ -1,0 +1,11 @@
+{
+  "id": "pay_012345",
+  "amount": "100.00",
+  "payment_method": {
+    "id": "master",
+    "type": "credit_card",
+    "token": "card_token",
+    "statement_descriptor": "statement",
+    "installments": 1
+  }
+}

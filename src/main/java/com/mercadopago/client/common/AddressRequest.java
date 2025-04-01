@@ -15,4 +15,19 @@ public class AddressRequest {
 
   /** Street number. */
   private final String streetNumber;
+
+  /** Neighborhood. */
+  private final String neighborhood;
+
+  /** City. */
+  private final String city;
+
+  /** State. */
+  private final String state;
+
+  /** Complement. */
+  private final String complement;
+
+  /** Floor. */
+  private final String floor;
 }

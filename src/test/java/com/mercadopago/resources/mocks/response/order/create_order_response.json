@@ -1,0 +1,35 @@
+{
+  "id": "123",
+  "type": "online",
+  "processing_mode": "automatic",
+  "external_reference": "ext_ref",
+  "total_amount": "10.00",
+  "site_id": "MLB",
+  "status": "failed",
+  "created_date": "2024-10-18T19:25:38.972924264Z",
+  "last_updated_date": "2024-10-18T19:25:39.690267719Z",
+  "integration_data": {
+    "application_id": "id"
+  },
+  "payer": {
+    "email": "test@email.com"
+  },
+  "transactions": {
+    "payments": [
+      {
+        "id": "id",
+        "amount": "10.00",
+        "status": "failed",
+        "reference_id": "id",
+        "status_detail": "invalid_card_token",
+        "payment_method": {
+          "id": "master",
+          "type": "credit_card",
+          "token": "card_token",
+          "installments": 1
+        }
+      }
+    ]
+  },
+  "capture_mode": "automatic_async"
+}

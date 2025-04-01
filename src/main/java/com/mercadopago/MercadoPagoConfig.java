@@ -15,14 +15,13 @@ import org.apache.http.client.HttpRequestRetryHandler;
 /** Mercado Pago configuration class. */
 public class MercadoPagoConfig {
 
-  public static final String CURRENT_VERSION = "2.1.29";
+  public static final String CURRENT_VERSION = "2.2.0";
 
   public static final String PRODUCT_ID = "BC32A7VTRPP001U8NHJ0";
 
-  public static final String TRACKING_ID =
-      String.format(
-          "platform:%s,type:SDK%s,so;",
-          MercadoPagoConfig.getJavaVersion(), MercadoPagoConfig.CURRENT_VERSION);
+  public static final String TRACKING_ID = String.format(
+      "platform:%s,type:SDK%s,so;",
+      MercadoPagoConfig.getJavaVersion(), MercadoPagoConfig.CURRENT_VERSION);
 
   public static final String BASE_URL = "https://api.mercadopago.com";
 
@@ -38,36 +37,60 @@ public class MercadoPagoConfig {
 
   private static final Level DEFAULT_LOGGING_LEVEL = Level.OFF;
 
-  @Getter @Setter private static volatile String accessToken;
+  @Getter
+  @Setter
+  private static volatile String accessToken;
 
-  @Getter @Setter private static volatile String platformId;
+  @Getter
+  @Setter
+  private static volatile String platformId;
 
-  @Getter @Setter private static volatile String corporationId;
+  @Getter
+  @Setter
+  private static volatile String corporationId;
 
-  @Getter @Setter private static volatile String integratorId;
+  @Getter
+  @Setter
+  private static volatile String integratorId;
 
-  @Getter @Setter private static volatile StreamHandler loggingHandler;
+  @Getter
+  @Setter
+  private static volatile StreamHandler loggingHandler;
 
-  @Getter @Setter private static volatile String metricsScope = DEFAULT_METRICS_SCOPE;
+  @Getter
+  @Setter
+  private static volatile String metricsScope = DEFAULT_METRICS_SCOPE;
 
-  @Getter @Setter private static volatile Level loggingLevel = DEFAULT_LOGGING_LEVEL;
+  @Getter
+  @Setter
+  private static volatile Level loggingLevel = DEFAULT_LOGGING_LEVEL;
 
-  @Getter @Setter private static volatile int maxConnections = DEFAULT_MAX_CONNECTIONS;
+  @Getter
+  @Setter
+  private static volatile int maxConnections = DEFAULT_MAX_CONNECTIONS;
 
-  @Getter @Setter private static volatile int connectionTimeout = DEFAULT_CONNECTION_TIMEOUT_MS;
+  @Getter
+  @Setter
+  private static volatile int connectionTimeout = DEFAULT_CONNECTION_TIMEOUT_MS;
 
-  @Getter @Setter
+  @Getter
+  @Setter
   private static volatile int connectionRequestTimeout = DEFAULT_CONNECTION_REQUEST_TIMEOUT_MS;
 
-  @Getter @Setter private static volatile int socketTimeout = DEFAULT_SOCKET_TIMEOUT_MS;
+  @Getter
+  @Setter
+  private static volatile int socketTimeout = DEFAULT_SOCKET_TIMEOUT_MS;
 
-  @Setter private static volatile MPHttpClient httpClient;
+  @Setter
+  private static volatile MPHttpClient httpClient;
 
-  @Getter(onMethod_ = {@Synchronized})
-  @Setter(onMethod_ = {@Synchronized})
+  @Getter(onMethod_ = { @Synchronized })
+  @Setter(onMethod_ = { @Synchronized })
   private static HttpHost proxy;
 
-  @Getter @Setter private static HttpRequestRetryHandler retryHandler;
+  @Getter
+  @Setter
+  private static HttpRequestRetryHandler retryHandler;
 
   /**
    * Verifies which http client use.

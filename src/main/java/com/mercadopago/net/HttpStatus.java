@@ -6,6 +6,8 @@ public class HttpStatus {
 
   public static final int CREATED = 201;
 
+  public static final int NO_CONTENT = 204;
+
   public static final int BAD_REQUEST = 400;
 
   public static final int FORBIDDEN = 403;

@@ -51,7 +51,7 @@ public class CardTokenTestClient extends MercadoPagoClient {
     CardTokenTestCreateRequest request =
         CardTokenTestCreateRequest.builder()
             .cardNumber("5031433215406351")
-            .expirationYear(2025)
+            .expirationYear(2099)
             .expirationMonth(12)
             .securityCode("123")
             .cardholder(
