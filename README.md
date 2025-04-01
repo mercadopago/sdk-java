@@ -20,7 +20,7 @@ already.
 <dependency>
   <groupId>com.mercadopago</groupId>
   <artifactId>sdk-java</artifactId>
-  <version>2.1.29</version>
+  <version>2.2.0</version>
 </dependency>
 ```
 
@@ -117,7 +117,7 @@ public class Example {
             .socketTimeout(2000)
             .customHeaders(customHeaders)
             .build();
-    
+
     OrderCreateRequest createRequest = OrderCreateRequest.builder().build();
     try {
       Order order = client.create(createRequest, requestOptions);
