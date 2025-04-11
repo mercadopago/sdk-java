@@ -9,7 +9,7 @@ public class PreferenceItem {
   /** Item code. */
   private String id;
 
-  /** Nome do item. */
+  /** Item name. */
   private String title;
 
   /** Tipo do item. */

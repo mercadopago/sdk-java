@@ -67,7 +67,6 @@ public class Main {
                     .paymentMethodId("pix")
                     .payer(payer)
                     .additionalInfo(additional)
-                    .dateCreated(OffsetDateTime.of(2023, 10, 8, 10, 10, 0, 0, ZoneOffset.UTC))
                     .build();
 
             try {

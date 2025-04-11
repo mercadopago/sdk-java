@@ -5,7 +5,7 @@ import lombok.Getter;
 
 /** Payer's phone information. */
 @Getter
-
+@Builder
 public class PaymentPayerPhoneRequest {
   /** Area code. */
   private String areaCode;
