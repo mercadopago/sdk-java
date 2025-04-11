@@ -13,4 +13,5 @@ public class Address {
 
   /** Zip Code. */
   private String zipCode;
+
 }

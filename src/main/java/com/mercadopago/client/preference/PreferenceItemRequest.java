@@ -14,6 +14,9 @@ public class PreferenceItemRequest {
   /** Item name. */
   private final String title;
 
+  /** Type of the item. */
+  private final String type;
+
   /** Long item description. */
   private final String description;
 
@@ -23,15 +26,19 @@ public class PreferenceItemRequest {
   /** Category of the item. */
   private final String categoryId;
 
+  /** ID da moeda. Código ISO_4217. */
+  private final String currencyId;
+
   /** Item's quantity. */
   private final Integer quantity;
 
   /** Unit price. */
   private final BigDecimal unitPrice;
 
-  /** Currency ID. ISO_4217 code. */
-  private final String currencyId;
-
   /** Category descriptor*/
   private final PreferenceCategoryDescriptorRequest categoryDescriptor;
+
+  /** True if you purchase the item with warranty, false if not. */
+  private final boolean warranty;
 }
+

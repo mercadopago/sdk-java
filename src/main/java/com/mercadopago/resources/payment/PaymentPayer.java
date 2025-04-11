@@ -3,6 +3,8 @@ package com.mercadopago.resources.payment;
 import com.mercadopago.resources.common.Identification;
 import lombok.Getter;
 
+import java.util.Date;
+
 /** PaymentPayer class. */
 @Getter
 public class PaymentPayer {
@@ -26,4 +28,16 @@ public class PaymentPayer {
 
   /** Payer's entity type (only for bank transfers). */
   private String entityType;
+
+  /** Payer's authentication type. */
+  private String authenticationType;
+
+  /** Indicates if the payer is a prime user. */
+  private boolean isPrimeUser;
+
+  /** Indicates if this is the first purchase online for the payer. */
+  private boolean isFirstPurchaseOnline;
+
+  /** Registration date of the payer. */
+  private Date registrationDate;
 }

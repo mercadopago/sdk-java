@@ -4,6 +4,8 @@ import com.mercadopago.client.common.AddressRequest;
 import com.mercadopago.client.common.IdentificationRequest;
 import com.mercadopago.client.common.PhoneRequest;
 import java.time.OffsetDateTime;
+import java.util.Date;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -31,4 +33,19 @@ public class PreferencePayerRequest {
 
   /** Date of creation of the payer user. */
   private final OffsetDateTime dateCreated;
+
+  /** Payer's authentication type. */
+  private final String authenticationType;
+
+  /** Indicates if the payer is a prime user. */
+  private final boolean isPrimeUser;
+
+  /** Indicates if it's the payer's first purchase online. */
+  private final boolean isFirstPurchaseOnline;
+
+  /** Registration date of the payer. */
+  private final OffsetDateTime registrationDate;
+
+  /** Date of the last purchase made by the payer. */
+  private final OffsetDateTime lastPurchase;
 }

@@ -12,4 +12,6 @@ public class PaymentPayerPhoneRequest {
 
   /** Phone number. */
   private String number;
+
 }
+
