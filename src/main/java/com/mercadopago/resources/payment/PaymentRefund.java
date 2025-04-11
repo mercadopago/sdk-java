@@ -1,9 +1,11 @@
 package com.mercadopago.resources.payment;
 
-import com.mercadopago.net.MPResource;
 import com.mercadopago.resources.common.Source;
+import com.mercadopago.net.MPResource;
+
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+
 import lombok.Getter;
 
 /** PaymentRefund class. */

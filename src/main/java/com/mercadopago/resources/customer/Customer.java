@@ -1,11 +1,13 @@
 package com.mercadopago.resources.customer;
 
-import com.mercadopago.net.MPResource;
 import com.mercadopago.resources.common.Identification;
 import com.mercadopago.resources.common.Phone;
+import com.mercadopago.net.MPResource;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
+
 import lombok.Getter;
 
 /**

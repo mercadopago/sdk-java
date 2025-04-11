@@ -1,5 +1,6 @@
 package com.mercadopago.client.common;
 
+import com.mercadopago.client.payment.PaymentPayerPhoneRequest;
 import lombok.Builder;
 import lombok.Getter;
 

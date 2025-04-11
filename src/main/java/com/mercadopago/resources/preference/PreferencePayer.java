@@ -3,7 +3,10 @@ package com.mercadopago.resources.preference;
 import com.mercadopago.resources.common.Address;
 import com.mercadopago.resources.common.Identification;
 import com.mercadopago.resources.common.Phone;
+
 import java.time.OffsetDateTime;
+import java.util.Date;
+
 import lombok.Getter;
 
 /** Payer information from preference. */
@@ -32,4 +35,16 @@ public class PreferencePayer {
 
   /** Date of the last purchase. */
   private OffsetDateTime lastPurchase;
+
+  /** Type of authentication used by the payer. */
+  private String authenticationType;
+
+  /** Indicates if the payer is a prime user. */
+  private Boolean isPrimeUser;
+
+  /** Indicates if this is the payer's first purchase online. */
+  private Boolean isFirstPurchaseOnline;
+
+  /** Date of registration of the payer. */
+  private Date registrationDate;
 }
