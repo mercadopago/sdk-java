@@ -11,9 +11,8 @@ import java.util.Date;
 @Builder
 public class PaymentPayerRequest {
 
-  public enum AuthenticationType{
-    Gmail, Facebook, WebNativa, Outros;
-  }
+  /** Payer's authentication type. */
+  private final String authenticationType;
 
   /** Payer's name. */
   private final  String name;
@@ -47,9 +46,6 @@ public class PaymentPayerRequest {
 
   /** Payer's phone information. */
   private PaymentPayerPhoneRequest phone;
-
-  /** Payer's authentication type. */
-  private final AuthenticationType authenticationType;
 
   /** Indicates if the payer is a prime user. */
  private final boolean isPrimeUser;

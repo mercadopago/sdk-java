@@ -1,6 +1,5 @@
 package com.mercadopago.client.common;
 
-
 import lombok.Builder;
 import lombok.Getter;
 
