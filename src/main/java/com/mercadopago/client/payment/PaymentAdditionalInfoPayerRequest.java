@@ -1,6 +1,7 @@
 package com.mercadopago.client.payment;
 
 import com.mercadopago.client.common.AddressRequest;
+import com.mercadopago.client.common.IdentificationRequest;
 import com.mercadopago.client.common.PhoneRequest;
 import java.time.OffsetDateTime;
 import lombok.Builder;
@@ -9,7 +10,7 @@ import lombok.Getter;
 /** PaymentAdditionalInfoPayerRequest class. */
 @Getter
 @Builder
-public class PaymentAdditionalInfoPayerRequest {
+public class PaymentAdditionalInfoPayerRequest{
   /** Payer first name. */
   private final String firstName;
 
@@ -36,4 +37,7 @@ public class PaymentAdditionalInfoPayerRequest {
 
   /** Date of last purchase. */
   private final OffsetDateTime lastPurchase;
+
+  /** Payer's personal identification. */
+  private final IdentificationRequest identification;
 }

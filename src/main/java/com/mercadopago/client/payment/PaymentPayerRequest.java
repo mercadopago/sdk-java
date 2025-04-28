@@ -46,16 +46,4 @@ public class PaymentPayerRequest {
 
   /** Payer's phone information. */
   private PaymentPayerPhoneRequest phone;
-
-  /** Indicates if the payer is a prime user. */
- private final boolean isPrimeUser;
-
-  /** Indicates if it's the payer's first purchase online. */
- private final boolean isFirstPurchaseOnline;
-
-  /** Registration date of the payer. */
-  private final Date registrationDate;
-
-  /** Date of the last purchase made by the payer. */
-  private final String lastPurchase;
 }
