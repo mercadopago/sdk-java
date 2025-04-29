@@ -2,6 +2,7 @@ package com.mercadopago;
 
 import com.mercadopago.client.common.IdentificationRequest;
 import com.mercadopago.client.common.PhoneRequest;
+import com.mercadopago.client.common.SubMerchant;
 import com.mercadopago.client.payment.*;
 import com.mercadopago.resources.payment.Payment;
 import com.mercadopago.exceptions.MPApiException;
@@ -13,23 +14,42 @@ import java.util.*;
 
 public class Main {
         public static void main(String[] args) throws MPException, MPApiException {
-           MercadoPagoConfig.setAccessToken("APP_USR-8652481546071497-091414-f4e537ff9ae2d881a7788e2dfa9db2b6-249496763");
+           MercadoPagoConfig.setAccessToken("{{ACCESS_TOKEN}}");
 
             PaymentClient client = new PaymentClient();
             IdentificationRequest payeridentification = IdentificationRequest.builder()
                     .type("CPF")
-                    .number("19119119100")
+                    .number("{{DOC_NUMBER}}")
                     .build();
 
             PaymentPayerAddressRequest payeraddress = PaymentPayerAddressRequest.builder()
-                    .zipCode("12345678")
-                    .streetName("Rua A")
+                    .zipCode("{{CODE}}")
+                    .streetName("Rua AAAAA")
                     .streetNumber("123")
                     .build();
 
             PhoneRequest payerphone = PhoneRequest.builder()
-                    .areaCode("11")
-                    .number("912345678")
+                    .areaCode("{{CODE}}")
+                    .number("{{PHONE_NUMBER}}")
+                    .build();
+
+            PaymentPassengerRequest passenger = PaymentPassengerRequest.builder()
+                    .identification(payeridentification)
+                    .firstName("First Name")
+                    .lastName("Last Name")
+                    .build();
+
+            PaymentRouteRequest route = PaymentRouteRequest.builder()
+                    .departure("São Paulo")
+                    .destination("Rio de Janeiro")
+                    .departureDateTime(OffsetDateTime.parse("2020-08-06T09:25:04.000-03:00"))
+                    .arrivalDateTime(OffsetDateTime.parse("2020-08-06T09:25:04.000-03:00"))
+                    .company("Company")
+                    .build();
+
+            PaymentCategoryDescriptorRequest categoryDescriptor = PaymentCategoryDescriptorRequest.builder()
+                    .passenger(passenger)
+                    .route(route)
                     .build();
 
             PaymentAdditionalInfoPayerRequest additionalInfoPayerRequest =  PaymentAdditionalInfoPayerRequest.builder()
@@ -44,19 +64,16 @@ public class Main {
                     .lastPurchase(OffsetDateTime.parse("2020-08-06T09:25:04.000-03:00"))
                     .build();
 
-
             PaymentPayerRequest payer = PaymentPayerRequest.builder()
-                    .firstName("Anderson")
-                    .lastName("Santos")
-                    .email("anderson@example.com")
+                    .firstName("First Name")
+                    .lastName("Last Name")
+                    .email("{{PAYER_EMAIL}}")
                     .identification(payeridentification)
                     .address(payeraddress)
                     .build();
 
-            // Cria a lista de itens de pagamento
             List<PaymentItemRequest> itemsList = new ArrayList<>();
 
-            // Create Payment Item
             PaymentItemRequest item = PaymentItemRequest.builder()
                     .id("1941")
                     .title("title")
@@ -72,16 +89,61 @@ public class Main {
                     .build();
             itemsList.add(item);
 
+            PaymentReceiverAddressRequest receiverAddress = PaymentReceiverAddressRequest.builder()
+                    .zipCode("{{CODE}}")
+                    .streetName("Street Name")
+                    .streetNumber("1234")
+                    .floor("5")
+                    .apartment("12345")
+                    .stateName("DF")
+                    .cityName("Bogota")
+                    .build();
+
+            PaymentShipmentsRequest shipments = PaymentShipmentsRequest.builder()
+                    .localPickup(true)
+                    .expressShipment(true)
+                    .receiverAddress(receiverAddress)
+                    .build();
+
             PaymentAdditionalInfoRequest additional = PaymentAdditionalInfoRequest.builder()
                     .items(itemsList)
                     .payer(additionalInfoPayerRequest)
+                    .shipments(shipments)
                     .build();
-            
+
+            SubMerchant subMerchant = SubMerchant.builder()
+                    .subMerchantId("12345")
+                    .mcc("1234")
+                    .country("BRA")
+                    .addressDoorNumber(123)
+                    .zip("{{CODE}}")
+                    .documentNumber("{{DOC_NUMBER}}")
+                    .city("SÃO PAULO")
+                    .addressStreet("RUA A")
+                    .legalName("{{NAME}}")
+                    .regionCodeIso("BR-MG")
+                    .regionCode("BR")
+                    .documentType("CNPJ")
+                    .phone("{{PHONE_NUMBER}}")
+                    .url("{{URL}}")
+                    .build();
+
+            PaymentForwardDataRequest forwardData = PaymentForwardDataRequest.builder()
+                    .subMerchant(subMerchant)
+                    .build();
+
             PaymentCreateRequest createRequest = PaymentCreateRequest.builder()
                     .transactionAmount(new BigDecimal("1000"))
+                    .description("Title")
                     .paymentMethodId("pix")
+                    .binaryMode(true)
+                    .capture(true)
+                    .externalReference("external_reference")
+                    .statementDescriptor("Store 123")
+                    .notificationUrl("{{URL}}")
                     .payer(payer)
                     .additionalInfo(additional)
+                    .forwardData(forwardData)
                     .build();
 
             try {
