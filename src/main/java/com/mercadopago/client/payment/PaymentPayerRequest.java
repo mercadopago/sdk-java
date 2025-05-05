@@ -17,9 +17,6 @@ public class PaymentPayerRequest {
   /** Payer's name. */
   private final String name;
 
-  /** Payer's surname (last name) */
-  private final String surname;
-
   /** Payer's identification type (mandatory if the payer is a Customer). */
   private final String type;
 
