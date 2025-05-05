@@ -46,5 +46,5 @@ public class PreferencePayer {
   private Boolean isFirstPurchaseOnline;
 
   /** Date of registration of the payer. */
-  private Date registrationDate;
+  private OffsetDateTime registrationDate;
 }

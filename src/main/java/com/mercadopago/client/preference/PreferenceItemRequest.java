@@ -26,7 +26,7 @@ public class PreferenceItemRequest {
   /** Category of the item. */
   private final String categoryId;
 
-  /** ID da moeda. Código ISO_4217. */
+  /** Currency ID. Code ISO_4217. */
   private final String currencyId;
 
   /** Item's quantity. */

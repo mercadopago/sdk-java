@@ -3,6 +3,7 @@ package com.mercadopago.resources.payment;
 import com.mercadopago.resources.common.Identification;
 import lombok.Getter;
 
+import java.time.OffsetDateTime;
 import java.util.Date;
 
 /** PaymentPayer class. */
@@ -39,5 +40,5 @@ public class PaymentPayer {
   private boolean isFirstPurchaseOnline;
 
   /** Registration date of the payer. */
-  private Date registrationDate;
+  private OffsetDateTime registrationDate;
 }

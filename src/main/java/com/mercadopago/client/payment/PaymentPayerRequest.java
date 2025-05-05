@@ -15,7 +15,7 @@ public class PaymentPayerRequest {
   private final String authenticationType;
 
   /** Payer's name. */
-  private final  String name;
+  private final String name;
 
   /** Payer's surname (last name) */
   private final String surname;
