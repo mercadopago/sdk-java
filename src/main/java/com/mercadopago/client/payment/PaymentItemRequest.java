@@ -15,6 +15,9 @@ public class PaymentItemRequest {
   /** Item name. */
   private final String title;
 
+  /** Type of the item. */
+  private final String type;
+
   /** Long item description. */
   private final String description;
 
@@ -23,6 +26,9 @@ public class PaymentItemRequest {
 
   /** Category of the item. */
   private final String categoryId;
+
+  /** Currency of the unit price. */
+  private final String currencyId;
 
   /** Item's quantity. */
   private final Integer quantity;

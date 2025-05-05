@@ -12,6 +12,9 @@ public class PaymentItem {
   /** Item name. */
   private String title;
 
+  /** Type of the item. */
+  private String type;
+
   /** Long item description. */
   private String description;
 
@@ -21,9 +24,15 @@ public class PaymentItem {
   /** Category of the item. */
   private String categoryId;
 
+  /** Currency of the unit price. */
+  private String currencyId;
+
   /** Item's quantity. */
   private Integer quantity;
 
   /** Unit price. */
   private BigDecimal unitPrice;
+
+  /** True if the item has warranty, false if not. */
+  private boolean warranty;
 }
