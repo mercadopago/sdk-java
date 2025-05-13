@@ -92,14 +92,25 @@ public class CreateOrderWithIndustryFields {
         additionalInfo.put("platform.authentication", "2FA");
 
         // Travel info
-        additionalInfo.put("travel.passengers", new Object[] {
-                Map.of("first_name", "John", "last_name", "Doe", "identification",
-                        Map.of("type", "CPF", "number", "12345678900")),
-        });
-        additionalInfo.put("travel.routes", new Object[] {
-                Map.of("departure", "GRU", "destination", "CWB", "departure_date_time", "2024-12-01T12:00:00Z",
-                        "arrival_date_time", "2024-12-01T14:00:00Z", "company", "LATAM"),
-        });
+        Map<String, String> identification = new HashMap<>();
+        identification.put("type", "CPF");
+        identification.put("number", "12345678900");
+
+        Map<String, Object> passenger = new HashMap<>();
+        passenger.put("first_name", "John");
+        passenger.put("last_name", "Doe");
+        passenger.put("identification", identification);
+
+        additionalInfo.put("travel.passengers", new Object[] { passenger });
+
+        Map<String, Object> route = new HashMap<>();
+        route.put("departure", "GRU");
+        route.put("destination", "CWB");
+        route.put("departure_date_time", "2024-12-01T12:00:00Z");
+        route.put("arrival_date_time", "2024-12-01T14:00:00Z");
+        route.put("company", "LATAM");
+
+        additionalInfo.put("travel.routes", new Object[] { route });
 
         OrderCreateRequest request = OrderCreateRequest.builder()
                 .type("online")
