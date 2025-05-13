@@ -5,10 +5,10 @@ import lombok.Getter;
 
 // API version: acd67b14-97c4-4a4a-840d-0a018c09654f
 
-/** OrderPayerAddress class. */
+/** OrderPayerAddressRequest class. */
 @Getter
 @Builder
-public class OrderPayerAddress {
+public class OrderPayerAddressRequest {
     /** Street name. */
     private String streetName;
 

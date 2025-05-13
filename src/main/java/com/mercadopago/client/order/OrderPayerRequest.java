@@ -33,6 +33,6 @@ public class OrderPayerRequest {
     private Phone phone;
 
     /** Address information. */
-    private OrderPayerAddress address;
+    private OrderPayerAddressRequest address;
 
 }
