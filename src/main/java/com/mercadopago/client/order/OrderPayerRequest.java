@@ -1,17 +1,19 @@
 package com.mercadopago.client.order;
 
-import com.mercadopago.resources.common.Address;
 import com.mercadopago.resources.common.Identification;
 import com.mercadopago.resources.common.Phone;
 import lombok.Builder;
 import lombok.Getter;
 
-// API version: 1ff4822a-2dfd-4393-800e-a562edb3fe32
+// API version: acd67b14-97c4-4a4a-840d-0a018c09654f
 
 /** OrderPayerRequest class. */
 @Getter
 @Builder
 public class OrderPayerRequest {
+    /** Payer's entity type. */
+    private String entityType;
+
     /** Payer's email. */
     private String email;
 
@@ -31,6 +33,6 @@ public class OrderPayerRequest {
     private Phone phone;
 
     /** Address information. */
-    private Address address;
+    private OrderPayerAddress address;
 
 }
