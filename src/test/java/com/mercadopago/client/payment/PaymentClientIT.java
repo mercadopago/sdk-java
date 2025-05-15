@@ -145,6 +145,8 @@ public class PaymentClientIT extends BaseClientIT {
       PaymentCreateRequest paymentCreateRequest = newPayment("pending");
       Payment createdPayment = client.create(paymentCreateRequest);
 
+      Thread.sleep(5000);
+
       Payment payment = client.cancel(createdPayment.getId());
 
       assertNotNull(payment.getResponse());
@@ -154,6 +156,8 @@ public class PaymentClientIT extends BaseClientIT {
       fail(mpApiException.getApiResponse().getContent());
     } catch (MPException mpException) {
       fail(mpException.getMessage());
+    } catch (InterruptedException e) {
+        throw new RuntimeException(e);
     }
   }
 
@@ -162,6 +166,8 @@ public class PaymentClientIT extends BaseClientIT {
     try {
       PaymentCreateRequest paymentCreateRequest = newPayment("pending");
       Payment createdPayment = client.create(paymentCreateRequest);
+
+      Thread.sleep(3000);
 
       Payment paymentCancelled = client.cancel(createdPayment.getId(), buildRequestOptions());
 
@@ -172,6 +178,8 @@ public class PaymentClientIT extends BaseClientIT {
       fail(mpApiException.getApiResponse().getContent());
     } catch (MPException mpException) {
       fail(mpException.getMessage());
+    } catch (InterruptedException e) {
+        throw new RuntimeException(e);
     }
   }
 
@@ -251,6 +259,8 @@ public class PaymentClientIT extends BaseClientIT {
       PaymentCreateRequest paymentCreateRequest = newPayment("approved");
       Payment createdPayment = client.create(paymentCreateRequest);
 
+      Thread.sleep(3000);
+
       BigDecimal amount = new BigDecimal("50");
       PaymentRefund result = client.refund(createdPayment.getId(), amount);
 
@@ -260,6 +270,8 @@ public class PaymentClientIT extends BaseClientIT {
       fail(mpApiException.getApiResponse().getContent());
     } catch (MPException mpException) {
       fail(mpException.getMessage());
+    } catch (InterruptedException e) {
+        throw new RuntimeException(e);
     }
   }
 
@@ -270,6 +282,8 @@ public class PaymentClientIT extends BaseClientIT {
       PaymentCreateRequest paymentCreateRequest = newPayment("approved");
       Payment createdPayment = client.create(paymentCreateRequest);
 
+      Thread.sleep(3000);
+
       BigDecimal amount = new BigDecimal("50");
       PaymentRefund result = client.refund(createdPayment.getId(), amount, buildRequestOptions());
 
@@ -279,6 +293,8 @@ public class PaymentClientIT extends BaseClientIT {
       fail(mpApiException.getApiResponse().getContent());
     } catch (MPException mpException) {
       fail(mpException.getMessage());
+    } catch (InterruptedException e) {
+        throw new RuntimeException(e);
     }
   }
 
@@ -288,6 +304,8 @@ public class PaymentClientIT extends BaseClientIT {
       PaymentCreateRequest paymentCreateRequest = newPayment("approved");
       Payment createdPayment = client.create(paymentCreateRequest);
 
+      Thread.sleep(3000);
+
       PaymentRefund result = client.refund(createdPayment.getId());
 
       assertNotNull(result.getResponse());
@@ -296,6 +314,8 @@ public class PaymentClientIT extends BaseClientIT {
       fail(mpApiException.getApiResponse().getContent());
     } catch (MPException mpException) {
       fail(mpException.getMessage());
+    } catch (InterruptedException e) {
+        throw new RuntimeException(e);
     }
   }
 
@@ -306,6 +326,8 @@ public class PaymentClientIT extends BaseClientIT {
       PaymentCreateRequest paymentCreateRequest = newPayment("approved");
       Payment createdPayment = client.create(paymentCreateRequest);
 
+      Thread.sleep(5000);
+
       PaymentRefund result = client.refund(createdPayment.getId(), buildRequestOptions());
 
       assertNotNull(result.getResponse());
@@ -314,6 +336,8 @@ public class PaymentClientIT extends BaseClientIT {
       fail(mpApiException.getApiResponse().getContent());
     } catch (MPException mpException) {
       fail(mpException.getMessage());
+    } catch (InterruptedException e) {
+        throw new RuntimeException(e);
     }
   }
 
@@ -322,6 +346,8 @@ public class PaymentClientIT extends BaseClientIT {
     try {
       PaymentCreateRequest paymentCreateRequest = newPayment("approved");
       Payment createdPayment = client.create(paymentCreateRequest);
+
+      Thread.sleep(3000);
 
       PaymentRefund createdRefund = client.refund(createdPayment.getId());
 
@@ -333,6 +359,8 @@ public class PaymentClientIT extends BaseClientIT {
       fail(mpApiException.getApiResponse().getContent());
     } catch (MPException mpException) {
       fail(mpException.getMessage());
+    } catch (InterruptedException e) {
+        throw new RuntimeException(e);
     }
   }
 
@@ -342,6 +370,8 @@ public class PaymentClientIT extends BaseClientIT {
     try {
       PaymentCreateRequest paymentCreateRequest = newPayment("approved");
       Payment createdPayment = client.create(paymentCreateRequest);
+
+      Thread.sleep(3000);
 
       PaymentRefund createdRefund = client.refund(createdPayment.getId());
 
@@ -354,6 +384,8 @@ public class PaymentClientIT extends BaseClientIT {
       fail(mpApiException.getApiResponse().getContent());
     } catch (MPException mpException) {
       fail(mpException.getMessage());
+    } catch (InterruptedException e) {
+        throw new RuntimeException(e);
     }
   }
 
@@ -362,6 +394,8 @@ public class PaymentClientIT extends BaseClientIT {
     try {
       PaymentCreateRequest paymentCreateRequest = newPayment("approved");
       Payment createdPayment = client.create(paymentCreateRequest);
+
+      Thread.sleep(3000);
 
       client.refund(createdPayment.getId());
 
@@ -374,6 +408,8 @@ public class PaymentClientIT extends BaseClientIT {
       fail(mpApiException.getApiResponse().getContent());
     } catch (MPException mpException) {
       fail(mpException.getMessage());
+    } catch (InterruptedException e) {
+        throw new RuntimeException(e);
     }
   }
 
@@ -383,6 +419,8 @@ public class PaymentClientIT extends BaseClientIT {
     try {
       PaymentCreateRequest paymentCreateRequest = newPayment("approved");
       Payment createdPayment = client.create(paymentCreateRequest);
+
+      Thread.sleep(5000);
 
       client.refund(createdPayment.getId());
 
@@ -396,6 +434,8 @@ public class PaymentClientIT extends BaseClientIT {
       fail(mpApiException.getApiResponse().getContent());
     } catch (MPException mpException) {
       fail(mpException.getMessage());
+    } catch (InterruptedException e) {
+        throw new RuntimeException(e);
     }
   }
 
@@ -466,29 +506,6 @@ public class PaymentClientIT extends BaseClientIT {
             .ipAddress("127.0.0.1")
             .build();
 
-    PaymentFeeRequest fine =
-        PaymentFeeRequest.builder().type("percentage").value(new BigDecimal(2)).build();
-
-    PaymentFeeRequest interest =
-        PaymentFeeRequest.builder().type("percentage").value(new BigDecimal("0.03")).build();
-
-    PaymentDiscountRequest discount =
-        PaymentDiscountRequest.builder()
-            .type("fixed")
-            .value(new BigDecimal(5))
-            .limitDate(LocalDate.of(2022, 10, 25))
-            .build();
-
-    List<PaymentDiscountRequest> discounts = new ArrayList<>();
-    discounts.add(discount);
-
-    PaymentRulesRequest rules =
-        PaymentRulesRequest.builder().fine(fine).interest(interest).discounts(discounts).build();
-
-    PaymentDataRequest data = PaymentDataRequest.builder().rules(rules).build();
-
-    PaymentMethodRequest paymentMethod = PaymentMethodRequest.builder().data(data).build();
-
     PaymentPointOfInteractionRequest pointOfInteraction =
         PaymentPointOfInteractionRequest.builder().type("OPENPLATFORM").build();
 
@@ -502,7 +519,6 @@ public class PaymentClientIT extends BaseClientIT {
         .paymentMethodId("master")
         .additionalInfo(additionalInfo)
         .pointOfInteraction(pointOfInteraction)
-        .paymentMethod(paymentMethod)
         .build();
   }
 }
