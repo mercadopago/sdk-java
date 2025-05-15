@@ -2,7 +2,7 @@ package com.mercadopago.resources.order;
 
 import lombok.Getter;
 
-// API version: d0494f1c-8d81-4c76-ae1d-0c65bb8ef6de
+// API version: acd67b14-97c4-4a4a-840d-0a018c09654f
 
 /** OrderItem class. */
 @Getter
@@ -23,6 +23,9 @@ public class OrderItem {
     /** Category ID of the item. */
     private String categoryId;
 
+    /** Type of the item. */
+    private String type;
+
     /** Description of the item. */
     private String description;
 
@@ -32,4 +35,9 @@ public class OrderItem {
     /** External Code of the item. */
     private String externalCode;
 
+    /** Warranty of the item. */
+    private Boolean warranty;
+
+    /** Event date of the item. */
+    private String eventDate;
 }
