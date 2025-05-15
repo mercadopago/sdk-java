@@ -4,8 +4,9 @@ import com.mercadopago.net.MPResource;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.Map;
 
-/* API version: 1ff4822a-2dfd-4393-800e-a562edb3fe32 */
+/* API version: acd67b14-97c4-4a4a-840d-0a018c09654f */
 
 /** Order class. */
 @Getter
@@ -26,10 +27,16 @@ public class Order extends MPResource {
     /** Total Paid amount of the order. */
     private String totalPaidAmount;
 
-    /** Identifier of the site (country) to which the Mercado Pago application that created the Order belongs. */
+    /**
+     * Identifier of the site (country) to which the Mercado Pago application that
+     * created the Order belongs.
+     */
     private String countryCode;
 
-    /** Identifier of the user to which the Mercado Pago application that created the Order belongs. It is the person that will receive the payment. */
+    /**
+     * Identifier of the user to which the Mercado Pago application that created the
+     * Order belongs. It is the person that will receive the payment.
+     */
     private String userId;
 
     /** Status of Order. */
@@ -47,7 +54,10 @@ public class Order extends MPResource {
     /** Last modified date. */
     private String lastUpdatedDate;
 
-    /** Additional information that can be used to integrate with other systems, such as the identifier of the Order in the integrator's system. */
+    /**
+     * Additional information that can be used to integrate with other systems, such
+     * as the identifier of the Order in the integrator's system.
+     */
     private OrderIntegrationData integrationData;
 
     /** Configures which processing modes to use. */
@@ -71,7 +81,10 @@ public class Order extends MPResource {
     /** Date of expiration. */
     private String expirationTime;
 
-    /** Unique token that identifies your integration. You can get it in Your credentials. */
+    /**
+     * Unique token that identifies your integration. You can get it in Your
+     * credentials.
+     */
     private String clientToken;
 
     /** Items information. */
@@ -82,4 +95,7 @@ public class Order extends MPResource {
 
     /** Payer information. */
     private OrderPayer payer;
+
+    /** Additional info for the order. */
+    private Map<String, Object> additionalInfo;
 }
