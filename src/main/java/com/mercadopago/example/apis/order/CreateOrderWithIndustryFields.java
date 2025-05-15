@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Mercado Pago Create Order transaction.
+ * Mercado Pago Create Order with industry fields.
  *
  * @see <a href=
  *      "https://mercadopago.com/developers/en/reference/orders/online-payments/create/post">Documentation</a>.
