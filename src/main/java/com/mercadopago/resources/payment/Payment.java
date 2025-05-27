@@ -199,4 +199,7 @@ public class Payment extends MPResource {
    * merchant.
    */
   private Map<String, Object> internalMetadata;
+
+  /** Expanded information returned when using X-Expand-Response-Nodes header. */
+  private PaymentExpanded expanded;
 }
