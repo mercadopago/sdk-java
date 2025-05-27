@@ -11,4 +11,7 @@ public class PaymentForwardDataRequest  {
 
     /** ForwardData for SubMerchant */
     private final SubMerchant subMerchant;
+
+    /** Network transaction data for recurring payments with Visa/Master */
+    private final PaymentNetworkTransactionDataRequest networkTransactionData;
 }
