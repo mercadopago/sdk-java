@@ -199,4 +199,49 @@ public class Payment extends MPResource {
    * merchant.
    */
   private Map<String, Object> internalMetadata;
+
+  /** Money release status. */
+  private String moneyReleaseStatus;
+
+  /** Site ID. */
+  private String siteId;
+
+  /** Brand ID. */
+  private String brandId;
+
+  /** Build version. */
+  private String buildVersion;
+
+  /** Financing group. */
+  private String financingGroup;
+
+  /** Device identifier. */
+  private String deviceIdentifier;
+
+  /** Device ID. */
+  private String deviceId;
+
+  /** Application fee. */
+  private BigDecimal applicationFee;
+
+  /** Campaign ID. */
+  private String campaignId;
+
+  /** Acquirer reconciliation. */
+  private List<Map<String, Object>> acquirerReconciliation;
+
+  /** Accounts info. */
+  private Map<String, Object> accountsInfo;
+
+  /** Tags. */
+  private Map<String, Object> tags;
+
+  /** Charges details. */
+  private List<Map<String, Object>> chargesDetails;
+
+  /** Forward data information. */
+  private Map<String, Object> forwardData;
+
+  /** Expanded data information. */
+  private Map<String, Object> expanded;
 }
