@@ -17,7 +17,10 @@ public class OrderItem {
     /** Quantity of the item. */
     private Integer quantity;
 
-    /** ID of the item. */
+    /** 
+     * ID of the item.
+     * @deprecated This field is no longer used in the current API version
+     */
     private String id;
 
     /** Category ID of the item. */
@@ -35,9 +38,15 @@ public class OrderItem {
     /** External Code of the item. */
     private String externalCode;
 
-    /** Warranty of the item. */
+    /** 
+     * Warranty of the item.
+     * @deprecated This field is no longer used in the current API version
+     */
     private Boolean warranty;
 
-    /** Event date of the item. */
+    /** 
+     * Event date of the item.
+     * @deprecated This field is no longer used in the current API version
+     */
     private String eventDate;
 }
