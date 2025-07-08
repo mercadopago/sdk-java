@@ -1,0 +1,351 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Mercado Pago Java SDK - Cursor Rules
+
+## Visão Geral do Projeto
+Este é o SDK oficial do Mercado Pago para Java, uma biblioteca de processamento de pagamentos que segue as melhores práticas Java e convenções da comunidade. O SDK é distribuído como um pacote Maven e segue uma arquitetura modular com clara separação de responsabilidades.
+
+## Estrutura e Organização do Projeto
+
+### Estrutura de Diretórios Principal
+```
+src/
+├── main/
+│   └── java/com/mercadopago/
+│       ├── client/              # Clientes de API
+│       │   ├── base/           # Classes base
+│       │   └── resources/      # Clientes específicos
+│       ├── core/               # Funcionalidades principais
+│       │   ├── annotations/    # Anotações personalizadas
+│       │   └── configuration/  # Classes de configuração
+│       ├── exceptions/         # Exceções personalizadas
+│       ├── net/               # Manipulação de rede
+│       │   ├── HttpClient.java
+│       │   └── MPRestClient.java
+│       ├── resources/         # Modelos de recursos
+│       │   ├── Payment.java
+│       │   └── Preference.java
+│       └── utils/            # Utilitários
+└── test/
+    └── java/com/mercadopago/  # Testes unitários e de integração
+```
+
+## Convenções de Nomenclatura
+
+### Classes e Interfaces
+- **Clientes**: `{Resource}Client` (ex: `PaymentClient`, `PreferenceClient`)
+- **Recursos**: Nomes em PascalCase (ex: `Payment`, `Preference`)
+- **Interfaces**: Prefixo `I` ou descritivo (ex: `IHttpClient`, `PaymentService`)
+- **Exceções**: Sufixo `Exception` (ex: `MPException`, `ValidationException`)
+
+### Métodos e Variáveis
+- Métodos em camelCase
+- Variáveis em camelCase
+- Constantes em SCREAMING_SNAKE_CASE
+- Parâmetros em camelCase
+
+### Arquivos e Pacotes
+- Arquivos .java em PascalCase
+- Pacotes em minúsculas
+- Testes com sufixo Test
+- Recursos em resources/
+
+## Padrões de Código
+
+### Estilo Java
+```java
+public class PaymentClient extends MPClient<Payment> {
+    private static final String PATH = "/v1/payments";
+    
+    @Inject
+    public PaymentClient(MPRestClient restClient, Configuration config) {
+        super(restClient, config);
+    }
+    
+    public Payment create(PaymentCreateRequest request) throws MPException {
+        try {
+            return this.post(PATH, request, Payment.class);
+        } catch (Exception e) {
+            throw new MPException("Error creating payment", e);
+        }
+    }
+}
+```
+
+### Modelos
+```java
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Payment {
+    private String id;
+    private BigDecimal amount;
+    private String status;
+    private LocalDateTime dateCreated;
+    
+    @JsonProperty("external_reference")
+    private String externalReference;
+    
+    @Builder.Default
+    private Map<String, Object> metadata = new HashMap<>();
+}
+```
+
+### Configuração
+```java
+@Getter
+public class MPConfig {
+    private static final int DEFAULT_TIMEOUT = 5000;
+    
+    private final String accessToken;
+    private final int timeout;
+    private final String baseUrl;
+    
+    @Builder
+    public MPConfig(String accessToken, Integer timeout, String baseUrl) {
+        this.accessToken = requireNonNull(accessToken, "accessToken cannot be null");
+        this.timeout = timeout != null ? timeout : DEFAULT_TIMEOUT;
+        this.baseUrl = baseUrl != null ? baseUrl : "https://api.mercadopago.com";
+    }
+}
+```
+
+## Práticas de Desenvolvimento
+
+### Geral
+- Usar Lombok para redução de boilerplate
+- Implementar Builder pattern para objetos complexos
+- Usar injeção de dependência
+- Seguir princípios SOLID
+- Documentar com Javadoc
+
+### Tratamento de Erros
+```java
+public class MPException extends Exception {
+    private final String code;
+    private final int status;
+    private final Map<String, Object> details;
+    
+    public MPException(String message, String code, int status) {
+        super(message);
+        this.code = code;
+        this.status = status;
+        this.details = new HashMap<>();
+    }
+    
+    public MPException(String message, Throwable cause) {
+        super(message, cause);
+        this.code = "internal_error";
+        this.status = 500;
+        this.details = new HashMap<>();
+    }
+}
+```
+
+### Logging
+```java
+@Slf4j
+public class PaymentService {
+    public Payment processPayment(PaymentRequest request) {
+        log.info("Processing payment request: {}", request.getId());
+        try {
+            Payment payment = paymentClient.create(request);
+            log.info("Payment processed successfully: {}", payment.getId());
+            return payment;
+        } catch (Exception e) {
+            log.error("Error processing payment: {}", request.getId(), e);
+            throw new PaymentProcessingException("Failed to process payment", e);
+        }
+    }
+}
+```
+
+## Testes
+
+### JUnit
+```java
+@ExtendWith(MockitoExtension.class)
+class PaymentClientTest {
+    @Mock
+    private MPRestClient restClient;
+    
+    @InjectMocks
+    private PaymentClient client;
+    
+    @Test
+    void createPayment_Success() {
+        // Arrange
+        PaymentCreateRequest request = PaymentCreateRequest.builder()
+            .amount(BigDecimal.TEN)
+            .description("Test payment")
+            .build();
+            
+        Payment expected = Payment.builder()
+            .id("test-id")
+            .status("pending")
+            .build();
+            
+        when(restClient.post(anyString(), eq(request), eq(Payment.class)))
+            .thenReturn(expected);
+            
+        // Act
+        Payment result = client.create(request);
+        
+        // Assert
+        assertThat(result)
+            .isNotNull()
+            .extracting(Payment::getId, Payment::getStatus)
+            .containsExactly("test-id", "pending");
+    }
+}
+```
+
+## Documentação
+
+### Javadoc
+```java
+/**
+ * Processa um pagamento usando a API do Mercado Pago.
+ *
+ * @param request O objeto contendo os dados do pagamento
+ * @return O pagamento processado
+ * @throws PaymentProcessingException se houver erro no processamento
+ * @throws ValidationException se os dados forem inválidos
+ */
+public Payment processPayment(PaymentRequest request) throws PaymentProcessingException {
+    // Implementação
+}
+```
+
+## Gerenciamento de Dependências
+
+### Maven
+```xml
+<dependencies>
+    <!-- Core dependencies -->
+    <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson.version}</version>
+    </dependency>
+    
+    <!-- Testing -->
+    <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter</artifactId>
+        <version>${junit.version}</version>
+        <scope>test</scope>
+    </dependency>
+</dependencies>
+```
+
+## Segurança
+
+### Práticas
+- Validar todas as entradas
+- Usar HTTPS sempre
+- Implementar rate limiting
+- Seguir OWASP guidelines
+
+### Validação
+```java
+@Validated
+public class PaymentRequest {
+    @NotNull
+    @DecimalMin("0.01")
+    private BigDecimal amount;
+    
+    @NotBlank
+    @Size(max = 255)
+    private String description;
+    
+    @Valid
+    private PayerInfo payer;
+}
+```
+
+## Performance
+
+### Otimizações
+- Usar connection pooling
+- Implementar caching
+- Configurar timeouts
+- Usar async quando apropriado
+
+### Concorrência
+```java
+@Async
+public CompletableFuture<Payment> processPaymentAsync(PaymentRequest request) {
+    return CompletableFuture.supplyAsync(() -> {
+        return processPayment(request);
+    }, asyncExecutor);
+}
+```
+
+## Qualidade de Código
+
+### Ferramentas
+- Checkstyle para estilo
+- PMD para análise estática
+- JaCoCo para cobertura
+- SonarQube para qualidade
+
+### CI/CD
+- GitHub Actions
+- Maven build
+- Testes automatizados
+- Deploy para Maven Central
+
+## Configuração do IDE
+
+### Eclipse/IntelliJ
+```xml
+<eclipse-preferences>
+    <entry key="org.eclipse.jdt.core.formatter.lineSplit" value="120"/>
+    <entry key="org.eclipse.jdt.core.formatter.tabulation.char" value="space"/>
+    <entry key="org.eclipse.jdt.core.formatter.tabulation.size" value="4"/>
+</eclipse-preferences>
+```
+
+## Plugins Maven
+
+### pom.xml
+```xml
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>${maven-compiler.version}</version>
+            <configuration>
+                <source>${java.version}</source>
+                <target>${java.version}</target>
+            </configuration>
+        </plugin>
+        <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>${jacoco.version}</version>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>prepare-agent</goal>
+                    </goals>
+                </execution>
+                <execution>
+                    <id>report</id>
+                    <phase>test</phase>
+                    <goals>
+                        <goal>report</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+</build>
+``` 
