@@ -4,10 +4,19 @@ import com.mercadopago.client.common.IdentificationRequest;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.Date;
+
 /** PaymentPayerRequest class. */
 @Getter
 @Builder
 public class PaymentPayerRequest {
+
+  /** Payer's authentication type. */
+  private final String authenticationType;
+
+  /** Payer's name. */
+  private final String name;
+
   /** Payer's identification type (mandatory if the payer is a Customer). */
   private final String type;
 

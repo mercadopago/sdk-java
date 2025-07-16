@@ -21,7 +21,8 @@
       "category_id": "games",
       "quantity": 2,
       "unit_price": 4000,
-      "currency_id": "BRL"
+      "currency_id": "BRL",
+      "warranty": false
     }
   ],
   "marketplace": "marketplace",
@@ -32,6 +33,8 @@
     "name": "Test",
     "surname": "User",
     "email": "test_user_64585784@testuser.com",
+    "is_prime_user": false,
+    "is_first_purchase_online": false,
     "phone": {
       "area_code": "11",
       "number": "4444-4444"

@@ -5,8 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.Map;
 
-// API version: 1ff4822a-2dfd-4393-800e-a562edb3fe32
+// API version: acd67b14-97c4-4a4a-840d-0a018c09654f
 
 /** Order class. */
 @Builder
@@ -53,6 +54,7 @@ public class OrderCreateRequest extends MPResource {
 
     /** Expiration time of the order. */
     private String expirationTime;
+
 
     /** Additional information of the order. */
     private AdditionalInfoRequest additionalInfo;

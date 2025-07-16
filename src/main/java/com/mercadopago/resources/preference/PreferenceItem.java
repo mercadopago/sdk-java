@@ -12,6 +12,9 @@ public class PreferenceItem {
   /** Item name. */
   private String title;
 
+  /** Item type. */
+  private String type;
+
   /** Long item description. */
   private String description;
 
@@ -26,6 +29,9 @@ public class PreferenceItem {
 
   /** Unit price. */
   private BigDecimal unitPrice;
+
+  /** True if the item has warranty, false if not. */
+  private boolean warranty;
 
   /** Currency ID. ISO_4217 code. */
   private String currencyId;
