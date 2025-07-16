@@ -19,10 +19,12 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import static org.mockito.ArgumentMatchers.any;
 
-import static org.mockito.Matchers.any;
+
 
 class OrderClientTest extends BaseClientTest {
 
@@ -315,5 +317,162 @@ class OrderClientTest extends BaseClientTest {
             client.validateTransactionID(emptyId);
         });
         Assertions.assertEquals("Transaction id cannot be null or empty", exception.getMessage());
+    }
+
+
+    @Test
+    void captureModeIsAutomaticAsync() throws Exception {
+        OrderCreateRequest request = OrderCreateRequest.builder()
+                .type("online")
+                .totalAmount("100.00")
+                .externalReference("ext_ref")
+                .captureMode("automatic_async")
+                .payer(OrderPayerRequest.builder().email("test@email.com").build())
+                .transactions(OrderTransactionRequest.builder().build())
+                .build();
+
+        HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_ORDER_RESPONSE_FILE, HttpStatus.CREATED);
+        Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+        Order order = client.create(request);
+
+        Assertions.assertNotNull(order);
+
+        JsonObject payload = com.mercadopago.serialization.Serializer.serializeToJson(request);
+        Assertions.assertEquals("automatic_async", payload.get("capture_mode").getAsString());
+    }
+
+    @Test
+    void captureModeIsManual() throws Exception {
+        OrderCreateRequest request = OrderCreateRequest.builder()
+                .type("online")
+                .totalAmount("100.00")
+                .externalReference("ext_ref")
+                .captureMode("manual")
+                .payer(OrderPayerRequest.builder().email("test@email.com").build())
+                .transactions(OrderTransactionRequest.builder().build())
+                .build();
+
+        HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_ORDER_RESPONSE_FILE, HttpStatus.CREATED);
+        Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+        Order order = client.create(request);
+        Assertions.assertNotNull(order);
+
+        JsonObject payload = com.mercadopago.serialization.Serializer.serializeToJson(request);
+        Assertions.assertEquals("manual", payload.get("capture_mode").getAsString());
+    }
+
+    @Test
+    void orderHasAdditionalInfo() throws Exception {
+        AdditionalInfoRequest additionalInfo = AdditionalInfoRequest.builder()
+                .payerAuthenticationType("MFA")
+                .payerRegistrationDate("2025-09-15")
+                .payerIsPrimeUser(true)
+                .platformSellerEmail("loja@email.com")
+                .platformSellerAddressCountry("BR")
+                .build();
+
+        OrderCreateRequest request = OrderCreateRequest.builder()
+                .type("online")
+                .totalAmount("100.00")
+                .externalReference("ext_ref")
+                .additionalInfo(additionalInfo)
+                .payer(OrderPayerRequest.builder().email("test@email.com").build())
+                .transactions(OrderTransactionRequest.builder().build())
+                .build();
+
+
+        HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_ORDER_RESPONSE_FILE, HttpStatus.CREATED);
+        Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+        Order order = client.create(request);
+
+        Assertions.assertNotNull(order);
+        JsonObject additionalInfoJson = com.mercadopago.serialization.Serializer
+                .serializeToJson(request)
+                .getAsJsonObject("additional_info");
+        Assertions.assertNotNull(additionalInfoJson);
+
+        Assertions.assertEquals("MFA", additionalInfoJson.get("payer_authentication_type").getAsString());
+        Assertions.assertEquals("2025-09-15", additionalInfoJson.get("payer_registration_date").getAsString());
+        Assertions.assertTrue(additionalInfoJson.get("payer_is_prime_user").getAsBoolean());
+        Assertions.assertEquals("loja@email.com", additionalInfoJson.get("platform_seller_email").getAsString());
+        Assertions.assertEquals("BR", additionalInfoJson.get("platform_seller_address_country").getAsString());
+    }
+
+    @Test
+    void orderHasPaymentMethodIdBolbradesco() throws Exception {
+        OrderPaymentMethodRequest paymentMethod = OrderPaymentMethodRequest.builder()
+                .type("ticket")
+                .id("bolbradesco")
+                .build();
+
+        OrderPaymentRequest payment = OrderPaymentRequest.builder()
+                .amount("84.00")
+                .paymentMethod(paymentMethod)
+                .build();
+
+        OrderCreateRequest request = OrderCreateRequest.builder()
+                .type("ticket")
+                .totalAmount("84.00")
+                .transactions(OrderTransactionRequest.builder().payments(Arrays.asList(payment)).build())
+                .payer(OrderPayerRequest.builder().email("test@email.com").build())
+                .build();
+
+        HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_ORDER_RESPONSE_FILE, HttpStatus.CREATED);
+        Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+        Order order = client.create(request);
+        Assertions.assertNotNull(order);
+
+        JsonObject paymentMethodJson = com.mercadopago.serialization.Serializer
+                .serializeToJson(request)
+                .getAsJsonObject("transactions")
+                .getAsJsonArray("payments")
+                .get(0).getAsJsonObject()
+                .getAsJsonObject("payment_method");
+        Assertions.assertNotNull(paymentMethodJson);
+
+        Assertions.assertEquals("ticket", paymentMethodJson.get("type").getAsString());
+        Assertions.assertEquals("bolbradesco", paymentMethodJson.get("id").getAsString());
+    }
+
+
+    @Test
+    void orderHasPaymentMethodIdBoleto() throws Exception {
+        OrderPaymentMethodRequest paymentMethod = OrderPaymentMethodRequest.builder()
+                .type("ticket")
+                .id("boleto")
+                .build();
+
+        OrderPaymentRequest payment = OrderPaymentRequest.builder()
+                .amount("84.00")
+                .paymentMethod(paymentMethod)
+                .build();
+
+        OrderCreateRequest request = OrderCreateRequest.builder()
+                .type("ticket")
+                .totalAmount("84.00")
+                .transactions(OrderTransactionRequest.builder().payments(Arrays.asList(payment)).build())
+                .payer(OrderPayerRequest.builder().email("test@email.com").build())
+                .build();
+
+        HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_ORDER_RESPONSE_FILE, HttpStatus.CREATED);
+        Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+        Order order = client.create(request);
+        Assertions.assertNotNull(order);
+
+        JsonObject paymentMethodJson = com.mercadopago.serialization.Serializer
+                .serializeToJson(request)
+                .getAsJsonObject("transactions")
+                .getAsJsonArray("payments")
+                .get(0).getAsJsonObject()
+                .getAsJsonObject("payment_method");
+        Assertions.assertNotNull(paymentMethodJson);
+
+        Assertions.assertEquals("ticket", paymentMethodJson.get("type").getAsString());
+        Assertions.assertEquals("boleto", paymentMethodJson.get("id").getAsString());
     }
 }
