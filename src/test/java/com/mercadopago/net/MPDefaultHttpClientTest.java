@@ -5,10 +5,8 @@ import static com.mercadopago.net.HttpStatus.INTERNAL_SERVER_ERROR;
 import static com.mercadopago.net.HttpStatus.OK;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
-
 import com.mercadopago.BaseClientTest;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
@@ -19,6 +17,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.protocol.HttpContext;
 import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.any;
+
 
 class MPDefaultHttpClientTest extends BaseClientTest {
   private final String responseGenericSuccessJson = "/response_generic_success.json";

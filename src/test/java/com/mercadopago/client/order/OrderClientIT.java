@@ -177,7 +177,7 @@ public class OrderClientIT extends BaseClientIT {
                                         .type("online")
                                         .totalAmount("100.00")
                                         .processingMode("automatic")
-                                        .captureMode("manual")
+                                        .captureMode("automatic_async")
                                         .externalReference("ext_ref_1234")
                                         .payer(orderPayerRequest)
                                         .transactions(OrderTransactionRequest.builder()
