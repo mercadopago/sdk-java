@@ -65,7 +65,8 @@ public class Preference extends MPResource {
   private String additionalInfo;
 
   /**
-   * If specified, your buyers will be redirected back to your site immediately after completing the
+   * If specified, your buyers will be redirected back to your site immediately
+   * after completing the
    * purchase.
    */
   private String autoReturn;
@@ -80,7 +81,8 @@ public class Preference extends MPResource {
   private List<String> processingModes;
 
   /**
-   * When set to true, the payment can only be approved or rejected. Otherwise in_process status is
+   * When set to true, the payment can only be approved or rejected. Otherwise
+   * in_process status is
    * added.
    */
   private Boolean binaryMode;
@@ -92,7 +94,8 @@ public class Preference extends MPResource {
   private List<PreferenceTrack> tracks;
 
   /**
-   * Data that can be attached to the preference to record additional attributes of the merchant.
+   * Data that can be attached to the preference to record additional attributes
+   * of the merchant.
    */
   private Map<String, Object> metadata;
 
@@ -104,4 +107,10 @@ public class Preference extends MPResource {
 
   /** Date of creation. */
   private OffsetDateTime dateCreated;
+
+  /** Amounts. */
+  private PreferenceAmounts amounts;
+
+  /** Counter currency. */
+  private PreferenceCounterCurrency counterCurrency;
 }

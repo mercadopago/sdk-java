@@ -15,7 +15,8 @@ public class PreferenceRequest {
   private final String additionalInfo;
 
   /**
-   * If specified, your buyers will be redirected back to your site immediately after completing the
+   * If specified, your buyers will be redirected back to your site immediately
+   * after completing the
    * purchase.
    */
   private final String autoReturn;
@@ -24,7 +25,8 @@ public class PreferenceRequest {
   private final PreferenceBackUrlsRequest backUrls;
 
   /**
-   * When set to true, the payment can only be approved or rejected. Otherwise in_process status is
+   * When set to true, the payment can only be approved or rejected. Otherwise
+   * in_process status is
    * added.
    */
   private final Boolean binaryMode;
@@ -57,7 +59,8 @@ public class PreferenceRequest {
   private final BigDecimal marketplaceFee;
 
   /**
-   * Data that can be attached to the preference to record additional attributes of the merchant.
+   * Data that can be attached to the preference to record additional attributes
+   * of the merchant.
    */
   private final Map<String, Object> metadata;
 
@@ -90,4 +93,10 @@ public class PreferenceRequest {
 
   /** Tracks to be executed during the users interaction in the Checkout flow. */
   private final List<PreferenceTrackRequest> tracks;
+
+  /** Amounts. */
+  private final PreferenceAmountsRequest amounts;
+
+  /** Counter currency. */
+  private final PreferenceCounterCurrencyRequest counterCurrency;
 }
