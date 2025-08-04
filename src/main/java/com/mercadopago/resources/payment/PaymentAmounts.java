@@ -5,8 +5,8 @@ import lombok.Getter;
 @Getter
 public class PaymentAmounts {
     /** Payer amount. */
-    private PaymentUsersAmount payer;
+    private PaymentUsersAmountPayer payer;
 
     /** Collector amount. */
-    private PaymentUsersAmount collector;
+    private PaymentUsersAmountCollector collector;
 }
