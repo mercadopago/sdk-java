@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Arrays;
 
 /**
  * Mercado Pago Create Order with industry fields.
@@ -45,72 +46,79 @@ public class CreateOrderWithIndustryFields {
 
         System.out.println("Creating OrderCreateRequest...");
 
-        // Build additionalInfo map
-        Map<String, Object> additionalInfo = new HashMap<>();
-
-        // Payer info
-        additionalInfo.put("payer.authentication_type", "MOBILE");
-        additionalInfo.put("payer.registration_date", "2022-01-01T00:00:00Z");
-        additionalInfo.put("payer.is_prime_user", true);
-        additionalInfo.put("payer.is_first_purchase_online", false);
-        additionalInfo.put("payer.last_purchase", "2024-12-01T12:00:00Z");
-
-        // Shipment info
-        additionalInfo.put("shipment.express", true);
-        additionalInfo.put("shipment.local_pickup", false);
-
-        // Platform shipment
-        additionalInfo.put("platform.shipment.delivery_promise", "delivery_promise");
-        additionalInfo.put("platform.shipment.drop_shipping", "drop_shipping");
-        additionalInfo.put("platform.shipment.safety", "safety");
-        additionalInfo.put("platform.shipment.tracking.code", "TRACK123");
-        additionalInfo.put("platform.shipment.tracking.status", "status");
-        additionalInfo.put("platform.shipment.withdrawn", false);
-
-        // Platform seller
-        additionalInfo.put("platform.seller.id", "123456");
-        additionalInfo.put("platform.seller.name", "Seller name");
-        additionalInfo.put("platform.seller.email", "seller@example.com");
-        additionalInfo.put("platform.seller.status", "active");
-        additionalInfo.put("platform.seller.referral_url", "https://example.com");
-        additionalInfo.put("platform.seller.registration_date", "2020-05-01T00:00:00Z");
-        additionalInfo.put("platform.seller.hired_plan", "Premium");
-        additionalInfo.put("platform.seller.business_type", "E-commerce");
-        additionalInfo.put("platform.seller.address.zip_code", "01310000");
-        additionalInfo.put("platform.seller.address.street_name", "Av. Paulista");
-        additionalInfo.put("platform.seller.address.street_number", "100");
-        additionalInfo.put("platform.seller.address.city", "São Paulo");
-        additionalInfo.put("platform.seller.address.state", "SP");
-        additionalInfo.put("platform.seller.address.complement", "101");
-        additionalInfo.put("platform.seller.address.country", "Brasil");
-        additionalInfo.put("platform.seller.identification.type", "CNPJ");
-        additionalInfo.put("platform.seller.identification.number", "12.345.678/0001-99");
-        additionalInfo.put("platform.seller.phone.area_code", "11");
-        additionalInfo.put("platform.seller.phone.number", "999999999");
-
-        // Platform authentication
-        additionalInfo.put("platform.authentication", "2FA");
-
-        // Travel info
-        Map<String, String> identification = new HashMap<>();
-        identification.put("type", "CPF");
-        identification.put("number", "12345678900");
-
-        Map<String, Object> passenger = new HashMap<>();
-        passenger.put("first_name", "John");
-        passenger.put("last_name", "Doe");
-        passenger.put("identification", identification);
-
-        additionalInfo.put("travel.passengers", new Object[] { passenger });
-
-        Map<String, Object> route = new HashMap<>();
-        route.put("departure", "GRU");
-        route.put("destination", "CWB");
-        route.put("departure_date_time", "2024-12-01T12:00:00Z");
-        route.put("arrival_date_time", "2024-12-01T14:00:00Z");
-        route.put("company", "LATAM");
-
-        additionalInfo.put("travel.routes", new Object[] { route });
+        // Build typed AdditionalInfoRequest (aligned to Swagger)
+        AdditionalInfoRequest additionalInfo = AdditionalInfoRequest.builder()
+                .payer(PayerInfo.builder()
+                        .authenticationType("MOBILE")
+                        .registrationDate("2022-01-01T00:00:00Z")
+                        .isPrimeUser(true)
+                        .isFirstPurchaseOnline(false)
+                        .lastPurchase("2024-12-01T12:00:00Z")
+                        .build())
+                .shipment(ShipmentInfo.builder()
+                        .express(true)
+                        .localPickup(false)
+                        .build())
+                .platform(PlatformInfo.builder()
+                        .authentication("2FA")
+                        .shipment(PlatformShipment.builder()
+                                .deliveryPromise("delivery_promise")
+                                .dropShipping("drop_shipping")
+                                .safety("safety")
+                                .tracking(TrackingInfo.builder()
+                                        .code("TRACK123")
+                                        .status("status")
+                                        .build())
+                                .withdrawn(false)
+                                .build())
+                        .seller(SellerInfo.builder()
+                                .id("123456")
+                                .name("Seller name")
+                                .email("seller@example.com")
+                                .status("active")
+                                .referralUrl("https://example.com")
+                                .registrationDate("2020-05-01T00:00:00Z")
+                                .hiredPlan("Premium")
+                                .businessType("E-commerce")
+                                .address(SellerAddress.builder()
+                                        .zipCode("01310000")
+                                        .streetName("Av. Paulista")
+                                        .streetNumber("100")
+                                        .city("São Paulo")
+                                        .state("SP")
+                                        .complement("101")
+                                        .country("Brasil")
+                                        .build())
+                                .identification(SellerIdentification.builder()
+                                        .type("CNPJ")
+                                        .number("12.345.678/0001-99")
+                                        .build())
+                                .phone(SellerPhone.builder()
+                                        .areaCode("11")
+                                        .number("999999999")
+                                        .build())
+                                .build())
+                        .build())
+                .travel(TravelInfo.builder()
+                        .passengers(Arrays.asList(
+                                TravelPassengerRequest.builder()
+                                        .firstName("John")
+                                        .lastName("Doe")
+                                        .identification(PassengerIdentification.builder()
+                                                .type("CPF")
+                                                .number("12345678900")
+                                                .build())
+                                        .build()))
+                        .routes(Arrays.asList(
+                                TravelRouteRequest.builder()
+                                        .departure("GRU")
+                                        .destination("CWB")
+                                        .departureDateTime("2024-12-01T12:00:00Z")
+                                        .arrivalDateTime("2024-12-01T14:00:00Z")
+                                        .company("LATAM")
+                                        .build()))
+                        .build())
+                .build();
 
         OrderCreateRequest request = OrderCreateRequest.builder()
                 .type("online")

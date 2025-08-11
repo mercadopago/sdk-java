@@ -366,11 +366,17 @@ class OrderClientTest extends BaseClientTest {
     @Test
     void orderHasAdditionalInfo() throws Exception {
         AdditionalInfoRequest additionalInfo = AdditionalInfoRequest.builder()
-                .payerAuthenticationType("MFA")
-                .payerRegistrationDate("2025-09-15")
-                .payerIsPrimeUser(true)
-                .platformSellerEmail("loja@email.com")
-                .platformSellerAddressCountry("BR")
+                .payer(PayerInfo.builder()
+                        .authenticationType("MFA")
+                        .registrationDate("2025-09-15")
+                        .isPrimeUser(true)
+                        .build())
+                .platform(PlatformInfo.builder()
+                        .seller(SellerInfo.builder()
+                                .email("loja@email.com")
+                                .address(SellerAddress.builder().country("BR").build())
+                                .build())
+                        .build())
                 .build();
 
         OrderCreateRequest request = OrderCreateRequest.builder()
@@ -394,11 +400,22 @@ class OrderClientTest extends BaseClientTest {
                 .getAsJsonObject("additional_info");
         Assertions.assertNotNull(additionalInfoJson);
 
-        Assertions.assertEquals("MFA", additionalInfoJson.get("payer_authentication_type").getAsString());
-        Assertions.assertEquals("2025-09-15", additionalInfoJson.get("payer_registration_date").getAsString());
-        Assertions.assertTrue(additionalInfoJson.get("payer_is_prime_user").getAsBoolean());
-        Assertions.assertEquals("loja@email.com", additionalInfoJson.get("platform_seller_email").getAsString());
-        Assertions.assertEquals("BR", additionalInfoJson.get("platform_seller_address_country").getAsString());
+        Assertions.assertEquals(
+                "MFA",
+                additionalInfoJson.getAsJsonObject("payer").get("authentication_type").getAsString());
+        Assertions.assertEquals(
+                "2025-09-15",
+                additionalInfoJson.getAsJsonObject("payer").get("registration_date").getAsString());
+        Assertions.assertTrue(
+                additionalInfoJson.getAsJsonObject("payer").get("is_prime_user").getAsBoolean());
+
+        Assertions.assertEquals(
+                "loja@email.com",
+                additionalInfoJson.getAsJsonObject("platform").getAsJsonObject("seller").get("email").getAsString());
+        Assertions.assertEquals(
+                "BR",
+                additionalInfoJson.getAsJsonObject("platform").getAsJsonObject("seller")
+                        .getAsJsonObject("address").get("country").getAsString());
     }
 
     @Test
