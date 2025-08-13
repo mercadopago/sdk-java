@@ -41,7 +41,7 @@ public class CaptureOrder {
         OrderCreateRequest request = OrderCreateRequest.builder()
                 .type("online")
                 .processingMode("automatic")
-                .captureMode("manual")
+                .captureMode("automatic_async")
                 .totalAmount("1000.00")
                 .externalReference("ext_ref")
                 .payer(OrderPayerRequest.builder().email("{{PAYER_EMAIL}}").build())

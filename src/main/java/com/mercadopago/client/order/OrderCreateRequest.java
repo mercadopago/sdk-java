@@ -55,6 +55,7 @@ public class OrderCreateRequest extends MPResource {
     /** Expiration time of the order. */
     private String expirationTime;
 
-    /** Additional info for the order. */
-    private Map<String, Object> additionalInfo;
+
+    /** Additional information of the order. */
+    private AdditionalInfoRequest additionalInfo;
 }

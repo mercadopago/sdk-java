@@ -3,11 +3,9 @@ package com.mercadopago.client;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mercadopago.BaseClientTest;
@@ -32,6 +30,7 @@ import org.apache.http.protocol.HttpContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import static org.mockito.ArgumentMatchers.any;
 
 /** MercadoPagoClientTest class. */
 public class MercadoPagoClientTest extends BaseClientTest {
