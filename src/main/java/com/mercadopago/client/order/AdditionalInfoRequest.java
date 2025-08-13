@@ -10,7 +10,7 @@ import lombok.Getter;
 @Builder
 public class AdditionalInfoRequest {
     /** Information about the payer. */
-    private final PayerInfo payer; // ok 
+    private final PayerInfo payer;
 
     /** Information about the shipment. */
     private final ShipmentInfo shipment;

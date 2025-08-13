@@ -46,7 +46,6 @@ public class CreateOrderWithIndustryFields {
 
         System.out.println("Creating OrderCreateRequest...");
 
-        // Build typed AdditionalInfoRequest (aligned to Swagger)
         AdditionalInfoRequest additionalInfo = AdditionalInfoRequest.builder()
                 .payer(PayerInfo.builder()
                         .authenticationType("MOBILE")
