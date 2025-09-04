@@ -75,27 +75,43 @@ public class Order extends MPResource {
     /** Transactions information. */
     private OrderTransaction transactions;
 
-    /** Checkout available at */
+    /** 
+     * Checkout available at.
+     * @deprecated This field is no longer used in the current API version
+     */
     private String checkoutAvailableAt;
 
-    /** Date of expiration. */
+    /** 
+     * Date of expiration.
+     * @deprecated This field is no longer used in the current API version
+     */
     private String expirationTime;
 
     /**
      * Unique token that identifies your integration. You can get it in Your
      * credentials.
+     * @deprecated This field is no longer used in the current API version
      */
     private String clientToken;
 
     /** Items information. */
     private List<OrderItem> items;
 
-    /** Order config. */
+    /** 
+     * Order config.
+     * @deprecated This field is no longer used in the current API version
+     */
     private OrderConfig config;
 
-    /** Payer information. */
+    /** 
+     * Payer information.
+     * @deprecated This field is no longer used in the current API version
+     */
     private OrderPayer payer;
 
-    /** Additional info for the order. */
+    /** 
+     * Additional info for the order.
+     * @deprecated This field is no longer used in the current API version
+     */
     private Map<String, Object> additionalInfo;
 }

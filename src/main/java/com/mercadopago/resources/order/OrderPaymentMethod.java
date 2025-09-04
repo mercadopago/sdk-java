@@ -10,7 +10,10 @@ public class OrderPaymentMethod {
     /** Payment method ID. */
     private String id;
 
-    /** Card ID. */
+    /** 
+     * Card ID.
+     * @deprecated This field is no longer used in the current API version
+     */
     private String cardId;
 
     /** Payment method type. */
@@ -25,28 +28,51 @@ public class OrderPaymentMethod {
     /** How will look the payment in the card bill (e.g.: MERCADOPAGO).  */
     private String statementDescriptor;
 
-    /** Barcode Content. */
+    /** 
+     * Barcode Content.
+     * @deprecated This field is no longer used in the current API version
+     */
     private String barcodeContent;
 
-    /** Reference. */
+    /** 
+     * Reference.
+     * @deprecated This field is no longer used in the current API version
+     */
     private String reference;
 
-    /** Verification Code. */
+    /** 
+     * Verification Code.
+     * @deprecated This field is no longer used in the current API version
+     */
     private String verificationCode;
 
-    /** Financial Institution. */
+    /** 
+     * Financial Institution.
+     * @deprecated This field is no longer used in the current API version
+     */
     private String financialInstitution;
 
-    /** QR Code. */
+    /** 
+     * QR Code.
+     * @deprecated This field is no longer used in the current API version
+     */
     private String qrCode;
 
-    /** QR Code Base64. */
+    /** 
+     * QR Code Base64.
+     * @deprecated This field is no longer used in the current API version
+     */
     private String qrCodeBase64;
 
-    /** Digitable Line. */
+    /** 
+     * Digitable Line.
+     * @deprecated This field is no longer used in the current API version
+     */
     private String digitableLine;
 
-    /** Ticket Url. */
+    /** 
+     * Ticket Url.
+     * @deprecated This field is no longer used in the current API version
+     */
     private String ticketUrl;
-
 }

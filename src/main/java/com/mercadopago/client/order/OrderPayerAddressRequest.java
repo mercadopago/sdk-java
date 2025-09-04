@@ -26,4 +26,7 @@ public class OrderPayerAddressRequest {
 
     /** State. */
     private String state;
+
+    /** Complement. */
+    private String complement;
 }

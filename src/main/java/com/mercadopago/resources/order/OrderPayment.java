@@ -35,18 +35,33 @@ public class OrderPayment {
     /** Payment Paid Amount. */
     private String paidAmount;
 
-    /** Payment Attempt Number. */
+    /** 
+     * Payment Attempt Number.
+     * @deprecated This field is no longer used in the current API version
+     */
     private Integer attemptNumber;
 
-    /** Payment Attempts. */
+    /** 
+     * Payment Attempts.
+     * @deprecated This field is no longer used in the current API version
+     */
     private OrderAttempts attempts;
 
-    /** Automatic Payments information. */
+    /** 
+     * Automatic Payments information.
+     * @deprecated This field is no longer used in the current API version
+     */
     private OrderAutomaticPayments automaticPayments;
 
-    /** Stored Credential information. */
+    /** 
+     * Stored Credential information.
+     * @deprecated This field is no longer used in the current API version
+     */
     private OrderStoredCredential storedCredential;
 
-    /** Subscription Data information. */
+    /** 
+     * Subscription Data information.
+     * @deprecated This field is no longer used in the current API version
+     */
     private OrderSubscriptionData subscriptionData;
 }
