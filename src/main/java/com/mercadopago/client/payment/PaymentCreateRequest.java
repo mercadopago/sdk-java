@@ -12,7 +12,8 @@ import lombok.Getter;
 @Builder
 public class PaymentCreateRequest {
   /**
-   * Data that could improve fraud analysis and conversion rates. Try to send as much information as
+   * Data that could improve fraud analysis and conversion rates. Try to send as
+   * much information as
    * possible.
    */
   private final PaymentAdditionalInfoRequest additionalInfo;
@@ -21,7 +22,8 @@ public class PaymentCreateRequest {
   private final BigDecimal applicationFee;
 
   /**
-   * When set to true, the payment can only be approved or rejected. Otherwise in_process status is
+   * When set to true, the payment can only be approved or rejected. Otherwise
+   * in_process status is
    * added.
    */
   private final Boolean binaryMode;
@@ -32,7 +34,9 @@ public class PaymentCreateRequest {
   /** Discount campaign ID. */
   private final Long campaignId;
 
-  /** Determines if the payment should be captured (true) or just reserved (false). */
+  /**
+   * Determines if the payment should be captured (true) or just reserved (false).
+   */
   private final Boolean capture;
 
   /** Amount of the coupon discount. */
@@ -65,13 +69,19 @@ public class PaymentCreateRequest {
   /** Merchant services. */
   private final PaymentMerchantServicesRequest merchantServices;
 
-  /** Data that can be attached to the payment to record additional attributes of the merchant. */
+  /**
+   * Data that can be attached to the payment to record additional attributes of
+   * the merchant.
+   */
   private final Map<String, Object> metadata;
 
   /** Net amount. */
   private final BigDecimal netAmount;
 
-  /** URL where mercadopago will send notifications associated to changes in this payment. */
+  /**
+   * URL where mercadopago will send notifications associated to changes in this
+   * payment.
+   */
   private final String notificationUrl;
 
   /** Order identifier. */
@@ -118,4 +128,10 @@ public class PaymentCreateRequest {
 
   /** 3DS. */
   private final String threeDSecureMode;
+
+  /** Amounts. */
+  private final PaymentAmountsRequest amounts;
+
+  /** Counter currency. */
+  private final PaymentCounterCurrencyRequest counterCurrency;
 }

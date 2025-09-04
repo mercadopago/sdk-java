@@ -82,11 +82,15 @@ public class Payment extends MPResource {
   /** Payer information. */
   private PaymentPayer payer;
 
-  /** Data that can be attached to the payment to record additional attributes of the merchant. */
+  /**
+   * Data that can be attached to the payment to record additional attributes of
+   * the merchant.
+   */
   private Map<String, Object> metadata;
 
   /**
-   * Data that could improve fraud analysis and conversion rates. Try to send as much information as
+   * Data that could improve fraud analysis and conversion rates. Try to send as
+   * much information as
    * possible.
    */
   private PaymentAdditionalInfo additionalInfo;
@@ -122,7 +126,8 @@ public class Payment extends MPResource {
   private boolean captured;
 
   /**
-   * When set to true, the payment can only be approved or rejected. Otherwise in_process status is
+   * When set to true, the payment can only be approved or rejected. Otherwise
+   * in_process status is
    * added.
    */
   private boolean binaryMode;
@@ -136,7 +141,10 @@ public class Payment extends MPResource {
   /** Card used to pay. */
   private PaymentCard card;
 
-  /** URL where mercadopago will send notifications associated to changes in this payment. */
+  /**
+   * URL where mercadopago will send notifications associated to changes in this
+   * payment.
+   */
   private String notificationUrl;
 
   /** URL where mercadopago does the final redirect (only for bank transfers). */
@@ -167,7 +175,7 @@ public class Payment extends MPResource {
   private BigDecimal taxesAmount;
 
   /** Counter currency. */
-  private String counterCurrency;
+  private PaymentCounterCurrency counterCurrency;
 
   /** Shipping amount. */
   private BigDecimal shippingAmount;
@@ -195,11 +203,15 @@ public class Payment extends MPResource {
   private PaymentThreeDSInfo threeDSInfo;
 
   /**
-   * Internal data that can be attached to the payment to record additional attributes of the
+   * Internal data that can be attached to the payment to record additional
+   * attributes of the
    * merchant.
    */
   private Map<String, Object> internalMetadata;
 
   /** Expanded information returned when using X-Expand-Response-Nodes header. */
   private PaymentExpanded expanded;
+
+  /** Amounts. */
+  private PaymentAmounts amounts;
 }
