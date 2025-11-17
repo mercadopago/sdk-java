@@ -15,5 +15,8 @@ public class OrderConfig {
 
     /** Online config. */
     private OrderOnlineConfig online;
+
+    /** Point config. */
+    private OrderPointConfig point;
     
 }
