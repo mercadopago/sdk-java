@@ -10,7 +10,7 @@ public class OrderPointConfig {
     /** Terminal ID for Point integration. */
     private String terminalId;
 
-    /** Print on terminal option. Values: SELLER_TICKET, NO_TICKET */
+    /** Print on terminal option.*/
     private String printOnTerminal;
 
     /** Screen time in ISO 8601 duration format. */
