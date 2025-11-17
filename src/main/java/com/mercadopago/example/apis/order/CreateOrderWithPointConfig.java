@@ -24,11 +24,9 @@ public class CreateOrderWithPointConfig {
 
         // Configure Point settings
         OrderPointConfig pointConfig = OrderPointConfig.builder()
-                .terminalId("GERTEC_MP35P__12345678")
+                .terminalId("")
                 .printOnTerminal("seller_ticket")
-                .ticketNumber("ticket_01")
-                .screenTime("PT30S")
-                .congratsTime("PT30S")
+                .screenTime("")
                 .build();
 
         // Configure Order config with Point
@@ -65,7 +63,7 @@ public class CreateOrderWithPointConfig {
 
         System.out.println("Point Terminal ID: " + pointConfig.getTerminalId());
         System.out.println("Print on Terminal: " + pointConfig.getPrintOnTerminal());
-        System.out.println("Ticket Number: " + pointConfig.getTicketNumber());
+        System.out.println("Screen Time: " + pointConfig.getScreenTime());
 
         Map<String, String> headers = new HashMap<>();
         headers.put("X-Idempotency-Key", "{{IDEMPOTENCY_KEY}}");

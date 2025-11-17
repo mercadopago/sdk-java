@@ -15,12 +15,6 @@ public class OrderPointConfig {
     /** Print on terminal option. Values: seller_ticket, no_ticket. Default: seller_ticket */
     private String printOnTerminal;
 
-    /** Ticket number (1-20 characters). */
-    private String ticketNumber;
-
     /** Screen time in ISO 8601 duration format (e.g. 'PT30S' for 30 seconds). */
     private String screenTime;
-
-    /** Congratulations time in ISO 8601 duration format (e.g. 'PT30S' for 30 seconds). */
-    private String congratsTime;
 }

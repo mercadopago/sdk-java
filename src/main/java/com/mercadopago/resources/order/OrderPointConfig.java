@@ -13,12 +13,6 @@ public class OrderPointConfig {
     /** Print on terminal option. Values: SELLER_TICKET, NO_TICKET */
     private String printOnTerminal;
 
-    /** Ticket number. */
-    private String ticketNumber;
-
     /** Screen time in ISO 8601 duration format. */
     private String screenTime;
-
-    /** Congratulations time in ISO 8601 duration format. */
-    private String congratsTime;
 }
