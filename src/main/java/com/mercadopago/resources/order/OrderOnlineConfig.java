@@ -1,12 +1,12 @@
-package com.mercadopago.client.order;
+package com.mercadopago.resources.order;
 
-import lombok.Builder;
 import lombok.Getter;
 
-// API version: 1ff4822a-2dfd-4393-800e-a562edb3fe32
-/** OrderOnlineConfig class. */
+/**
+ * Order Online Configuration response.
+ * Contains configuration for online orders including 3DS transaction security.
+ */
 @Getter
-@Builder
 public class OrderOnlineConfig {
 
     /** Callback URL. */
