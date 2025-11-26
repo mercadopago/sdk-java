@@ -49,4 +49,7 @@ public class OrderPaymentMethod {
     /** Ticket Url. */
     private String ticketUrl;
 
+    /** Transaction security information for 3DS authentication. */
+    private OrderTransactionSecurity transactionSecurity;
+
 }
