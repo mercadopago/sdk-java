@@ -9,7 +9,7 @@ import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.*;
 import com.mercadopago.resources.order.*;
 import com.mercadopago.serialization.Serializer;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
