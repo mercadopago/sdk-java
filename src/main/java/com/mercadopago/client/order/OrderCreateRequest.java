@@ -58,4 +58,7 @@ public class OrderCreateRequest extends MPResource {
 
     /** Additional information of the order. */
     private AdditionalInfoRequest additionalInfo;
+
+    /** Shipment information. */
+    private OrderShipmentRequest shipment;
 }

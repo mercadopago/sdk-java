@@ -98,4 +98,16 @@ public class Order extends MPResource {
 
     /** Additional info for the order. */
     private Map<String, Object> additionalInfo;
+
+    /** Currency of the order. */
+    private String currency;
+
+    /** Taxes of the order. */
+    private List<OrderTax> taxes;
+
+    /** Discounts of the order. */
+    private OrderDiscounts discounts;
+
+    /** Type response of the order. */
+    private OrderTypeResponse typeResponse;
 }

@@ -16,4 +16,7 @@ public class OrderTransaction extends MPResource{
 
     /** Refunds information. */
     private List<OrderRefund> refunds;
+
+    /** Chargebacks information. */
+    private List<OrderChargeback> chargebacks;
 }

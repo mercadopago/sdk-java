@@ -1,5 +1,6 @@
 package com.mercadopago.client.order;
 
+import com.mercadopago.resources.order.OrderInstallments;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -25,4 +26,16 @@ public class OrderPaymentMethodConfig {
 
     /** Default installments. */
     private Integer defaultInstallments;
+
+    /** Default type. */
+    private String defaultType;
+
+    /** Installments cost. */
+    private String installmentsCost;
+
+    /** Installments. */
+    private OrderInstallments installments;
+
+    /** Min installments. */
+    private Integer minInstallments;
 }

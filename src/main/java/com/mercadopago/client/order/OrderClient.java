@@ -11,6 +11,8 @@ import com.mercadopago.resources.order.*;
 import com.mercadopago.serialization.Serializer;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 import static com.mercadopago.MercadoPagoConfig.getStreamHandler;
@@ -410,6 +412,78 @@ public class OrderClient extends MercadoPagoClient {
         Order order = Serializer.deserializeFromJson(Order.class, response.getContent());
         order.setResponse(response);
         return order;
+    }
+
+    /**
+     * Method responsible for searching orders without request options
+     *
+     * @param request search request parameters
+     * @return order search response
+     * @throws MPException an error if the request fails
+     * @throws MPApiException an error if the request fails
+     */
+    public OrderSearchResponse search(OrderSearchRequest request) throws MPException, MPApiException {
+        return this.search(request, null);
+    }
+
+    /**
+     * Method responsible for searching orders with request options
+     *
+     * @param request search request parameters
+     * @param requestOptions metadata to customize the request
+     * @return order search response
+     * @throws MPException an error if the request fails
+     * @throws MPApiException an error if the request fails
+     */
+    public OrderSearchResponse search(OrderSearchRequest request, MPRequestOptions requestOptions)
+            throws MPException, MPApiException {
+        LOGGER.info("Sending order search request");
+
+        Map<String, Object> queryParams = new HashMap<>();
+        if (request != null) {
+            if (request.getBeginDate() != null) {
+                queryParams.put("begin_date", request.getBeginDate());
+            }
+            if (request.getEndDate() != null) {
+                queryParams.put("end_date", request.getEndDate());
+            }
+            if (request.getExternalReference() != null) {
+                queryParams.put("external_reference", request.getExternalReference());
+            }
+            if (request.getType() != null) {
+                queryParams.put("type", request.getType());
+            }
+            if (request.getStatus() != null) {
+                queryParams.put("status", request.getStatus());
+            }
+            if (request.getStatusDetail() != null) {
+                queryParams.put("status_detail", request.getStatusDetail());
+            }
+            if (request.getPaymentMethodId() != null) {
+                queryParams.put("payment_method_id", request.getPaymentMethodId());
+            }
+            if (request.getPaymentMethodType() != null) {
+                queryParams.put("payment_method_type", request.getPaymentMethodType());
+            }
+            if (request.getPage() != null) {
+                queryParams.put("page", request.getPage());
+            }
+            if (request.getPageSize() != null) {
+                queryParams.put("page_size", request.getPageSize());
+            }
+            if (request.getSortBy() != null) {
+                queryParams.put("sort_by", request.getSortBy());
+            }
+            if (request.getSortOrder() != null) {
+                queryParams.put("sort_order", request.getSortOrder());
+            }
+        }
+
+        MPResponse response = send("/v1/orders", HttpMethod.GET, null, queryParams, requestOptions);
+        OrderSearchResponse result = Serializer.deserializeFromJson(OrderSearchResponse.class, response.getContent());
+        result.setResponse(response);
+
+        return result;
     }
 
     void validateOrderID(String id) {

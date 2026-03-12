@@ -31,4 +31,7 @@ public class OrderRefund extends MPResource {
     
     /** Refund items. */
     private OrderItem items;
+
+    /** End-to-end ID. */
+    private String e2eId;
 }
