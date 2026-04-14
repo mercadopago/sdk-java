@@ -1,11 +1,11 @@
 package com.mercadopago.example.apis.order;
 
 import com.mercadopago.MercadoPagoConfig;
-import com.mercadopago.client.common.IdentificationRequest;
 import com.mercadopago.client.order.*;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.order.Order;
+import com.mercadopago.resources.order.OrderPayment;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -79,14 +79,8 @@ public class CreateOrderWith3DS {
                 .build();
 
         // Configure payer information
-        IdentificationRequest identification = IdentificationRequest.builder()
-                .type(identificationType)
-                .number(identificationNumber)
-                .build();
-
         OrderPayerRequest payer = OrderPayerRequest.builder()
                 .email(payerEmail)
-                .identification(identification)
                 .build();
 
         // Create the order request
@@ -140,7 +134,7 @@ public class CreateOrderWith3DS {
                     order.getTransactions().getPayments() != null && 
                     !order.getTransactions().getPayments().isEmpty()) {
                     
-                    var payment = order.getTransactions().getPayments().get(0);
+                    OrderPayment payment = order.getTransactions().getPayments().get(0);
                     if (payment.getPaymentMethod() != null && 
                         payment.getPaymentMethod().getTransactionSecurity() != null) {
                         
