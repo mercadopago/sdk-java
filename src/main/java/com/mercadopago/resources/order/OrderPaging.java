@@ -6,15 +6,15 @@ import lombok.Getter;
 @Getter
 public class OrderPaging {
 
-    /** Total. */
-    private String total;
+  /** Total. */
+  private Integer total;
 
-    /** Total pages. */
-    private String totalPages;
+  /** Total pages. */
+  private Integer totalPages;
 
-    /** Offset. */
-    private String offset;
+  /** Offset. */
+  private Integer offset;
 
-    /** Limit. */
-    private String limit;
+  /** Limit. */
+  private Integer limit;
 }
