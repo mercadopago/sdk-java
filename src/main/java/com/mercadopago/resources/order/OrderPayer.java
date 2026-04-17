@@ -11,4 +11,6 @@ public class OrderPayer {
     /** Payer's Customer ID. */
     private String customerId;
 
+    /** Entity type. */
+    private String entityType;
 }

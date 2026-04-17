@@ -52,4 +52,9 @@ public class OrderPaymentMethod {
     /** Transaction security information for 3DS authentication. */
     private OrderTransactionSecurity transactionSecurity;
 
+    /** End-to-end ID. */
+    private String e2eId;
+
+    /** Redirect URL. */
+    private String redirectUrl;
 }

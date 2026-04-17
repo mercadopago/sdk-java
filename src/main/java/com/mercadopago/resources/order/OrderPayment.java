@@ -1,5 +1,6 @@
 package com.mercadopago.resources.order;
 
+import java.util.List;
 import lombok.Getter;
 
 // API version: d0494f1c-8d81-4c76-ae1d-0c65bb8ef6de
@@ -49,4 +50,13 @@ public class OrderPayment {
 
     /** Subscription Data information. */
     private OrderSubscriptionData subscriptionData;
+
+    /** Refunded amount. */
+    private String refundedAmount;
+
+    /** Provider. */
+    private String provider;
+
+    /** Discounts. */
+    private List<OrderPaymentDiscount> discounts;
 }

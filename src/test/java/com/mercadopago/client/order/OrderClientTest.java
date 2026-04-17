@@ -1,15 +1,25 @@
 package com.mercadopago.client.order;
 
+import static com.mercadopago.helper.MockHelper.generateHttpResponseFromFile;
+import static org.mockito.ArgumentMatchers.any;
+
 import com.google.gson.JsonObject;
 import com.mercadopago.BaseClientTest;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.helper.MockHelper;
 import com.mercadopago.net.HttpStatus;
+import com.mercadopago.net.MPSearchRequest;
 import com.mercadopago.resources.order.Order;
+import com.mercadopago.resources.order.OrderSearchResponse;
 import com.mercadopago.resources.order.OrderTransaction;
 import com.mercadopago.resources.order.UpdateOrderTransaction;
 import com.mercadopago.serialization.Serializer;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.protocol.HttpContext;
@@ -17,24 +27,20 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import static org.mockito.ArgumentMatchers.any;
-
 
 
 class OrderClientTest extends BaseClientTest {
 
-    // File Mock Responses
-    private static final String CREATE_ORDER_RESPONSE_FILE = "order/create_order_response.json";
-    private static final String CREATE_TRANSACTION_RESPONSE_FILE = "order/create_transaction_response.json";
-    private static final String UPDATE_TRANSACTION_FILE = "order/update_transaction_response.json";
-    private static final String CAPTURE_ORDER_RESPONSE_FILE = "order/capture_order_response.json";
-    private static final String CREATE_REFUND_TOTAL_RESPONSE_FILE = "order/create_refund_total_response.json";
-    private static final String CREATE_REFUND_PARTIAL_RESPONSE_FILE = "order/create_refund_partial_response.json";
+  private static final String CREATE_ORDER_RESPONSE_FILE = "order/create_order_response.json";
+  private static final String CREATE_TRANSACTION_RESPONSE_FILE =
+      "order/create_transaction_response.json";
+  private static final String UPDATE_TRANSACTION_FILE = "order/update_transaction_response.json";
+  private static final String CAPTURE_ORDER_RESPONSE_FILE = "order/capture_order_response.json";
+  private static final String CREATE_REFUND_TOTAL_RESPONSE_FILE =
+      "order/create_refund_total_response.json";
+  private static final String CREATE_REFUND_PARTIAL_RESPONSE_FILE =
+      "order/create_refund_partial_response.json";
+  private static final String ORDER_SEARCH_RESPONSE_FILE = "order/order_search_response.json";
 
     private final OrderClient client = new OrderClient();
 
@@ -492,4 +498,40 @@ class OrderClientTest extends BaseClientTest {
         Assertions.assertEquals("ticket", paymentMethodJson.get("type").getAsString());
         Assertions.assertEquals("boleto", paymentMethodJson.get("id").getAsString());
     }
+
+  @Test
+  void searchSuccess() throws MPException, MPApiException, IOException {
+    HttpResponse httpResponse =
+        generateHttpResponseFromFile(ORDER_SEARCH_RESPONSE_FILE, HttpStatus.OK);
+    Mockito.doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    MPSearchRequest request = MPSearchRequest.builder().limit(5).offset(0).build();
+    OrderSearchResponse result = client.search(request);
+
+    Assertions.assertEquals(HttpStatus.OK, result.getResponse().getStatusCode());
+    Assertions.assertEquals(10, result.getPaging().getTotal());
+    Assertions.assertEquals(2, result.getPaging().getTotalPages());
+    Assertions.assertEquals(5, result.getPaging().getLimit());
+    Assertions.assertEquals(0, result.getPaging().getOffset());
+    Assertions.assertEquals(1, result.getData().size());
+    Assertions.assertEquals("123", result.getData().get(0).getId());
+  }
+
+  @Test
+  void searchWithRequestOptionsSuccess() throws MPException, MPApiException, IOException {
+    HttpResponse httpResponse =
+        generateHttpResponseFromFile(ORDER_SEARCH_RESPONSE_FILE, HttpStatus.OK);
+    Mockito.doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    MPSearchRequest request = MPSearchRequest.builder().limit(5).offset(0).build();
+    OrderSearchResponse result = client.search(request, buildRequestOptions());
+
+    Assertions.assertEquals(HttpStatus.OK, result.getResponse().getStatusCode());
+    Assertions.assertEquals(10, result.getPaging().getTotal());
+    Assertions.assertEquals(1, result.getData().size());
+  }
 }

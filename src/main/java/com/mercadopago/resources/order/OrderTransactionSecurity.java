@@ -9,6 +9,9 @@ import lombok.Getter;
 @Getter
 public class OrderTransactionSecurity {
 
+    /** Transaction security ID. */
+    private String id;
+
     /**
      * Challenge URL for 3DS authentication.
      * This URL should be displayed in an iframe when challenge is required.
