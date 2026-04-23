@@ -32,7 +32,6 @@ jobs:
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
         run: |
-          mvn \
-            --no-transfer-progress \
-            --batch-mode \
-            clean deploy -P release
+          cat /home/runner/.m2/settings.xml
+          mvn --no-transfer-progress --batch-mode -e clean deploy
+
