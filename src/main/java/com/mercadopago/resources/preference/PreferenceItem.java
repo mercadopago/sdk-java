@@ -3,39 +3,47 @@ package com.mercadopago.resources.preference;
 import java.math.BigDecimal;
 import lombok.Getter;
 
-/** Purchased item. */
+/**
+ * Resource representing an item included in a checkout preference.
+ *
+ * <p>Describes a product or service the buyer is purchasing, including its title, price, quantity,
+ * and optional metadata such as category, image, and warranty information.
+ *
+ * @see Preference
+ * @see PreferenceCategoryDescriptor
+ */
 @Getter
 public class PreferenceItem {
-  /** Item code. */
+  /** Unique item code or SKU identifier. */
   private String id;
 
-  /** Item name. */
+  /** Display title or name of the item. */
   private String title;
 
-  /** Item type. */
+  /** Type classification of the item. */
   private String type;
 
-  /** Long item description. */
+  /** Detailed description of the item. */
   private String description;
 
-  /** Image URL. */
+  /** URL of the item's representative image. */
   private String pictureUrl;
 
-  /** Category of the item. */
+  /** MercadoPago category identifier for the item. */
   private String categoryId;
 
-  /** Item's quantity. */
+  /** Number of units of this item being purchased. */
   private int quantity;
 
-  /** Unit price. */
+  /** Price per unit in the specified currency. */
   private BigDecimal unitPrice;
 
-  /** True if the item has warranty, false if not. */
+  /** Whether the item includes a warranty. */
   private boolean warranty;
 
-  /** Currency ID. ISO_4217 code. */
+  /** ISO 4217 currency code for the item's price (e.g., ARS, BRL, USD). */
   private String currencyId;
 
-  /** Category Descriptor */
+  /** Category-specific descriptor with additional details (e.g., passenger and route for travel). */
   private PreferenceCategoryDescriptor categoryDescriptor;
 }

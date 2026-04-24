@@ -3,19 +3,23 @@ package com.mercadopago.client.payment;
 import lombok.Builder;
 import lombok.Getter;
 
-/** PaymentAdditionalInfoBarcodeRequest class. */
+/**
+ * Request object containing barcode information included in the additional-info
+ * section of a payment. Describes the encoding type, content, and display
+ * dimensions of a barcode associated with the payment.
+ */
 @Getter
 @Builder
 public class PaymentAdditionalInfoBarcodeRequest {
-  /** Barcode type. */
+  /** Barcode encoding type (e.g. "Code128", "QR"). */
   private final String type;
 
-  /** Barcode content. */
+  /** Encoded content of the barcode. */
   private final String content;
 
-  /** Barcode width. */
+  /** Display width of the barcode in pixels. */
   private final Double width;
 
-  /** Barcode height. */
+  /** Display height of the barcode in pixels. */
   private final Double height;
 }

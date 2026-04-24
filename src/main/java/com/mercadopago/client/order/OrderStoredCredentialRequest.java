@@ -5,20 +5,25 @@ import lombok.Getter;
 
 // API version: 1ff4822a-2dfd-4393-800e-a562edb3fe32
 
-/** OrderStoredCredentialRequest class. */
+/**
+ * Request object for stored credential (card-on-file) information in an order payment.
+ * Used to indicate whether the payment uses a previously stored card and the context
+ * of the transaction (merchant-initiated vs. cardholder-initiated), as required by
+ * card network regulations.
+ */
 @Getter
 @Builder
 public class OrderStoredCredentialRequest {
 
-  /** Payment Initiator. */
+  /** Who initiated the payment: "cardholder" or "merchant". */
   private String paymentInitiator;
 
-  /** Reason. */
+  /** Reason for storing the credential (e.g. "recurring", "installment", "unscheduled"). */
   private String reason;
 
-  /** Store Payment Method. */
+  /** Whether to store the payment method for future transactions. */
   private Boolean storePaymentMethod;
 
-  /** First Payment. */
+  /** Whether this is the first payment using this stored credential. */
   private Boolean firstPayment;
 }

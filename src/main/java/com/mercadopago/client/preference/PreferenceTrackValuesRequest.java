@@ -3,16 +3,21 @@ package com.mercadopago.client.preference;
 import lombok.Builder;
 import lombok.Getter;
 
-/** Values of tracks to be executed during the users interaction in the Checkout flow. */
+/**
+ * Tracking parameter values for advertising conversion tags used during the checkout flow.
+ * Supports Google Ads and Facebook Pixel identifiers.
+ *
+ * @see com.mercadopago.client.preference.PreferenceTrackRequest
+ */
 @Getter
 @Builder
 public class PreferenceTrackValuesRequest {
-  /** conversion_id for GTM Google Ads Conversion Tracking tag. */
+  /** Conversion ID for Google Ads (GTM) conversion tracking. */
   private final String conversionId;
 
-  /** conversion_label for GTM Google Ads Conversion Tracking tag. */
+  /** Conversion label for Google Ads (GTM) conversion tracking. */
   private final String conversionLabel;
 
-  /** pixel_id for Facebook Pixel. */
+  /** Pixel ID for Facebook Pixel tracking. */
   private final String pixelId;
 }

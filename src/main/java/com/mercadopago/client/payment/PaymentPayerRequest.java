@@ -6,41 +6,45 @@ import lombok.Getter;
 
 import java.util.Date;
 
-/** PaymentPayerRequest class. */
+/**
+ * Request object representing the payer in a payment creation request.
+ * Contains personal data such as name, email, identification document,
+ * address, and phone needed to identify the person making the payment.
+ */
 @Getter
 @Builder
 public class PaymentPayerRequest {
 
-  /** Payer's authentication type. */
+  /** Authentication type used by the payer (e.g. "gmail", "facebook", "native"). */
   private final String authenticationType;
 
-  /** Payer's name. */
+  /** Full name of the payer. */
   private final String name;
 
-  /** Payer's identification type (mandatory if the payer is a Customer). */
+  /** Payer type identifier; mandatory when the payer is a registered Customer. */
   private final String type;
 
-  /** Payer's ID. */
+  /** Unique payer identifier in the MercadoPago platform. */
   private final String id;
 
-  /** Email of the payer. */
+  /** Email address of the payer. */
   private final String email;
 
-  /** Payer's personal identification. */
+  /** Personal identification document of the payer (e.g. CPF, DNI). */
   private final IdentificationRequest identification;
 
-  /** Payer's first name. */
+  /** First name of the payer. */
   private final String firstName;
 
-  /** Payer's last name. */
+  /** Last name of the payer. */
   private final String lastName;
 
-  /** Payer's entity type (only for bank transfers). */
+  /** Entity type of the payer, applicable only for bank-transfer payments (e.g. "individual", "association"). */
   private final String entityType;
 
-  /** Payer's address information. */
+  /** Payer's address details. */
   private PaymentPayerAddressRequest address;
 
-  /** Payer's phone information. */
+  /** Payer's phone details. */
   private PaymentPayerPhoneRequest phone;
 }

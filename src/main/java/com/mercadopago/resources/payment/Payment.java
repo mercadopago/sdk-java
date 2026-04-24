@@ -9,209 +9,214 @@ import java.util.Map;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
-/** Payment class. */
+/**
+ * Resource that represents a MercadoPago payment.
+ *
+ * <p>This is the core resource of the Payments API. It contains all information related to a
+ * payment transaction, including the payer, the amount, the payment method, status, fees,
+ * refunds, and metadata. Payments can be created, searched, captured, cancelled, and refunded
+ * through the {@link com.mercadopago.client.payment.PaymentClient}.
+ *
+ * @see <a href="https://www.mercadopago.com.br/developers/en/reference/payments/_payments/post">Payments API reference</a>
+ */
 @Getter
 @EqualsAndHashCode(callSuper = true)
 public class Payment extends MPResource {
-  /** Payment ID. */
+  /** Unique payment identifier assigned by MercadoPago. */
   private Long id;
 
-  /** Creation date. */
+  /** Date and time when the payment was created. */
   private OffsetDateTime dateCreated;
 
-  /** Approval date. */
+  /** Date and time when the payment was approved. */
   private OffsetDateTime dateApproved;
 
-  /** Last modified date. */
+  /** Date and time of the last status change. */
   private OffsetDateTime dateLastUpdated;
 
-  /** Date of expiration. */
+  /** Expiration date for the payment, after which it can no longer be approved. */
   private OffsetDateTime dateOfExpiration;
 
-  /** Release date. */
+  /** Date and time when the funds become available to the collector. */
   private OffsetDateTime moneyReleaseDate;
 
-  /** Release schema. */
+  /** Schema that defines how and when the funds are released to the collector. */
   private String moneyReleaseSchema;
 
-  /** Operation type. */
+  /** Type of operation, such as regular_payment, money_transfer, or recurring_payment. */
   private String operationType;
 
-  /** Payment method issuer. */
+  /** Identifier of the issuer of the payment method (e.g. a specific bank). */
   private String issuerId;
 
-  /** Payment method chosen to do the payment. */
+  /** Identifier of the payment method chosen to process the payment (e.g. visa, master, pix). */
   private String paymentMethodId;
 
-  /** Payment type. */
+  /** Type of the payment method (e.g. credit_card, debit_card, ticket, bank_transfer). */
   private String paymentTypeId;
 
-  /** Status. */
+  /** Current status of the payment (e.g. approved, pending, rejected, cancelled). */
   private String status;
 
-  /** Status detail. */
+  /** Detailed explanation of the current payment status or rejection cause. */
   private String statusDetail;
 
-  /** Currency information. */
+  /** Currency identifier using ISO 4217 code (e.g. BRL, ARS, MXN). */
   private String currencyId;
 
-  /** Payment reason or item title. */
+  /** Short description of the payment reason, typically the item or service title. */
   private String description;
 
-  /** Live mode. */
+  /** Whether the payment was created in production mode ({@code true}) or sandbox mode ({@code false}). */
   private boolean liveMode;
 
-  /** Sponsor Identification. */
+  /** Identifier of the sponsor that originated the payment through the MercadoPago platform. */
   private Long sponsorId;
 
-  /** Authorization code. */
+  /** Authorization code returned by the card issuer. */
   private String authorizationCode;
 
-  /** Integrator identification. */
+  /** Identifier of the integrator who processes the payment through the platform. */
   private String integratorId;
 
-  /** Platform identification. */
+  /** Identifier of the platform that originated the payment. */
   private String platformId;
 
-  /** Corporation identification. */
+  /** Identifier of the corporation associated with the payment. */
   private String corporationId;
 
-  /** Collector ID. */
+  /** Identifier of the collector (seller) who receives the payment. */
   private Long collectorId;
 
-  /** Payer information. */
+  /** Information about the payer who is making the payment. */
   private PaymentPayer payer;
 
   /**
-   * Data that can be attached to the payment to record additional attributes of
-   * the merchant.
+   * Custom key-value metadata attached to the payment to record additional merchant-defined
+   * attributes.
    */
   private Map<String, Object> metadata;
 
   /**
-   * Data that could improve fraud analysis and conversion rates. Try to send as
-   * much information as
-   * possible.
+   * Additional information that can improve fraud analysis and conversion rates. Includes item
+   * details, payer information, and shipping data.
    */
   private PaymentAdditionalInfo additionalInfo;
 
-  /** Order identifier. */
+  /** Order associated with this payment, linking it to a purchase order. */
   private PaymentOrder order;
 
-  /** ID given by the merchant in their system. */
+  /** External reference identifier provided by the merchant in their own system. */
   private String externalReference;
 
-  /** Amount paid. */
+  /** Total amount to be paid by the buyer. */
   private BigDecimal transactionAmount;
 
-  /** Total refunded amount. */
+  /** Total amount that has been refunded for this payment. */
   private BigDecimal transactionAmountRefunded;
 
-  /** Amount of the coupon. */
+  /** Discount coupon amount applied to the payment. */
   private BigDecimal couponAmount;
 
-  /** Id of the scheme for the absorption of financing fee. */
+  /** Identifier of the differential pricing scheme used for financing fee absorption. */
   private String differentialPricingId;
 
-  /** Selected quantity of installments. */
+  /** Number of installments selected by the buyer for the payment. */
   private int installments;
 
-  /** Transaction details. */
+  /** Detailed transaction information including net received amount, total paid, and references. */
   private PaymentTransactionDetails transactionDetails;
 
-  /** Fee details. */
+  /** Breakdown of the fees charged for this payment (e.g. MercadoPago fee, financing fee). */
   private List<PaymentFeeDetail> feeDetails;
 
-  /** If the payment is captured (true) or just reserved (false). */
+  /** Whether the payment amount has been captured ({@code true}) or only reserved/authorized ({@code false}). */
   private boolean captured;
 
   /**
-   * When set to true, the payment can only be approved or rejected. Otherwise
-   * in_process status is
-   * added.
+   * When {@code true}, the payment can only be approved or rejected immediately. When
+   * {@code false}, the in_process status is also possible.
    */
   private boolean binaryMode;
 
-  /** Gives more detailed information on the current state or rejection cause. */
+  /** Identifier for the call-for-authorize flow, providing details on state or rejection cause. */
   private String callForAuthorizeId;
 
-  /** How will look the payment in the card bill. */
+  /** Description that will appear on the payer's card or account statement. */
   private String statementDescriptor;
 
-  /** Card used to pay. */
+  /** Card information used to process the payment, including last four digits and cardholder data. */
   private PaymentCard card;
 
   /**
-   * URL where mercadopago will send notifications associated to changes in this
-   * payment.
+   * URL where MercadoPago will send webhook notifications when the payment status changes.
    */
   private String notificationUrl;
 
-  /** URL where mercadopago does the final redirect (only for bank transfers). */
+  /** URL where MercadoPago redirects the user after completing a bank transfer payment. */
   private String callbackUrl;
 
-  /** Processing mode to define if an specific merchant id should be used. */
+  /** Processing mode that determines whether a specific merchant ID should be used (e.g. gateway or aggregator). */
   private String processingMode;
 
-  /** Merchant Id for complex payment cases. */
+  /** Merchant account identifier used in complex payment scenarios with multiple sub-merchants. */
   private String merchantAccountId;
 
-  /** Discount campaign ID. */
+  /** Merchant number associated with a discount campaign. */
   private String merchantNumber;
 
-  /** Discount campaign coupon code. */
+  /** Coupon code entered by the buyer to apply a discount campaign. */
   private String couponCode;
 
-  /** Payment net amount. */
+  /** Net amount received by the collector after deducting fees. */
   private BigDecimal netAmount;
 
-  /** Payment method option id. */
+  /** Identifier for the selected payment method option when multiple options exist. */
   private String paymentMethodOptionId;
 
-  /** Taxes for payments. */
+  /** List of taxes applied to this payment (e.g. IVA, ICMS). */
   private List<PaymentTax> taxes;
 
-  /** Taxes amount. */
+  /** Total amount of taxes applied to the payment. */
   private BigDecimal taxesAmount;
 
-  /** Counter currency. */
+  /** Counter-currency conversion details when the payment currency differs from the collector's currency. */
   private PaymentCounterCurrency counterCurrency;
 
-  /** Shipping amount. */
+  /** Shipping cost amount included in the payment. */
   private BigDecimal shippingAmount;
 
-  /** Pos id. */
+  /** Identifier of the Point of Sale device where the payment was originated. */
   private String posId;
 
-  /** Store id. */
+  /** Identifier of the physical store where the payment was originated. */
   private String storeId;
 
-  /** Deduction Schema. */
+  /** Schema that defines how deductions are applied to the payment. */
   private String deductionSchema;
 
-  /** Refunds. */
+  /** List of refunds that have been applied to this payment. */
   private List<PaymentRefund> refunds;
 
-  /** Point of interaction. */
+  /** Information about the point of interaction where the payment was initiated (e.g. QR, deep link). */
   private PaymentPointOfInteraction pointOfInteraction;
 
-  /** PaymentMethod. */
+  /** Payment method details including rules, references, and external resource URLs. */
   private PaymentMethod paymentMethod;
 
-  /** 3DS Info. */
+  /** 3D Secure authentication information associated with the payment. */
   @SerializedName("three_ds_info")
   private PaymentThreeDSInfo threeDSInfo;
 
   /**
-   * Internal data that can be attached to the payment to record additional
-   * attributes of the
-   * merchant.
+   * Internal key-value metadata used for recording additional merchant-specific attributes
+   * that are not exposed publicly.
    */
   private Map<String, Object> internalMetadata;
 
-  /** Expanded information returned when using X-Expand-Response-Nodes header. */
+  /** Expanded response data returned when using the {@code X-Expand-Response-Nodes} header. */
   private PaymentExpanded expanded;
 
-  /** Amounts. */
+  /** Breakdown of amounts for both payer and collector in their respective currencies. */
   private PaymentAmounts amounts;
 }

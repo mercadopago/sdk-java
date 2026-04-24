@@ -15,19 +15,38 @@ import com.mercadopago.serialization.Serializer;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 
-/** Client for retrieving the token for a card. */
+/**
+ * Client for the MercadoPago Card Tokens API.
+ *
+ * <p>Provides PCI-compliant card tokenization operations. Tokens represent card data securely
+ * and are used when creating payments or saving cards to a customer profile.
+ *
+ * <p>Usage example:
+ * <pre>{@code
+ * CardTokenClient client = new CardTokenClient();
+ * CardToken token = client.create(cardTokenRequest);
+ * // Use token.getId() when creating a payment
+ * }</pre>
+ *
+ * @see <a href="https://www.mercadopago.com/developers/en/reference/card_tokens/_card_tokens/post">
+ *     Card Tokens API reference</a>
+ */
 public class CardTokenClient extends MercadoPagoClient {
+
+  /** Class-level logger for card token operations. */
   private static final Logger LOGGER = Logger.getLogger(CardTokenClient.class.getName());
 
-  /** Default constructor. Uses http client provided by MercadoPagoConfig. */
+  /**
+   * Default constructor. Uses the default HTTP client provided by {@link MercadoPagoConfig}.
+   */
   public CardTokenClient() {
     this(MercadoPagoConfig.getHttpClient());
   }
 
   /**
-   * CardTokenClient constructor.
+   * Constructs a {@code CardTokenClient} with a custom HTTP client.
    *
-   * @param httpClient http client
+   * @param httpClient the {@link MPHttpClient} implementation used to execute HTTP requests
    */
   public CardTokenClient(MPHttpClient httpClient) {
     super(httpClient);
@@ -38,21 +57,26 @@ public class CardTokenClient extends MercadoPagoClient {
   }
 
   /**
-   * Get card token.
+   * Retrieves a card token by its unique identifier.
    *
-   * @param id card id
-   * @return card token information
+   * @param id the unique identifier of the card token
+   * @return the requested {@link CardToken}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public CardToken get(String id) throws MPException, MPApiException {
     return this.get(id, null);
   }
 
   /**
-   * Get card token.
+   * Retrieves a card token by its unique identifier with custom request options.
    *
-   * @param id card id
-   * @param requestOptions metadata to customize the request
-   * @return card token information
+   * @param id the unique identifier of the card token
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the requested {@link CardToken}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public CardToken get(String id, MPRequestOptions requestOptions)
       throws MPException, MPApiException {
@@ -64,23 +88,28 @@ public class CardTokenClient extends MercadoPagoClient {
   }
 
   /**
-   * Create token associated with a card.
+   * Creates a new card token from card data.
    *
-   * @param request attributes used to perform the request
-   * @return card token information
-   * @throws MPException an error if the request fails
+   * @param request the {@link CardTokenRequest} with card number, expiration, security code, and
+   *     cardholder details
+   * @return the created {@link CardToken} containing the token identifier
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public CardToken create(CardTokenRequest request) throws MPException, MPApiException {
     return this.create(request, null);
   }
 
   /**
-   * Create token associated with a card.
+   * Creates a new card token from card data with custom request options.
    *
-   * @param request attributes used to perform the request
-   * @param requestOptions metadata to customize the request
-   * @return card token information
-   * @throws MPException an error if the request fails
+   * @param request the {@link CardTokenRequest} with card number, expiration, security code, and
+   *     cardholder details
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the created {@link CardToken} containing the token identifier
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public CardToken create(CardTokenRequest request, MPRequestOptions requestOptions)
       throws MPException, MPApiException {

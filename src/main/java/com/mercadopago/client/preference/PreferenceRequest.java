@@ -7,96 +7,93 @@ import java.util.Map;
 import lombok.Builder;
 import lombok.Getter;
 
-/** Parameters to create/update a preference. */
+/**
+ * Main request object to create or update a MercadoPago checkout preference. Aggregates all
+ * checkout configuration including items, payer details, payment methods, shipping, tracking,
+ * and expiration settings.
+ *
+ * @see com.mercadopago.client.preference.PreferenceClient
+ * @see com.mercadopago.client.preference.PreferenceItemRequest
+ * @see com.mercadopago.client.preference.PreferencePayerRequest
+ */
 @Getter
 @Builder
 public class PreferenceRequest {
-  /** Additional info. */
+  /** Free-text additional information attached to the preference. */
   private final String additionalInfo;
 
-  /**
-   * If specified, your buyers will be redirected back to your site immediately
-   * after completing the
-   * purchase.
-   */
+  /** Auto-return mode that redirects buyers back to your site after completing the purchase. */
   private final String autoReturn;
 
-  /** URLs to return to the sellers website. */
+  /** Callback URLs for success, pending, and failure payment outcomes. */
   private final PreferenceBackUrlsRequest backUrls;
 
-  /**
-   * When set to true, the payment can only be approved or rejected. Otherwise
-   * in_process status is
-   * added.
-   */
+  /** When true, payments can only be approved or rejected (no in_process status). */
   private final Boolean binaryMode;
 
-  /** Expiration date of cash payment. */
+  /** Expiration date for cash-based payment methods. */
   private final OffsetDateTime dateOfExpiration;
 
-  /** Differential pricing configuration for this preference. */
+  /** Differential pricing rule applied to this preference. */
   private final PreferenceDifferentialPricingRequest differentialPricing;
 
-  /** Date since the preference will be active. */
+  /** Date from which the preference becomes active. */
   private final OffsetDateTime expirationDateFrom;
 
-  /** Date when the preference will be expired. */
+  /** Date when the preference expires and is no longer usable. */
   private final OffsetDateTime expirationDateTo;
 
-  /** True if a preference expires, false if not. */
+  /** Whether this preference has an expiration date. */
   private final Boolean expires;
 
-  /** Reference you can synchronize with your payment system. */
+  /** External reference to synchronize with your payment system. */
   private final String externalReference;
 
-  /** List of items to be paid. */
+  /** List of items included in the checkout. */
   private final List<PreferenceItemRequest> items;
 
-  /** Origin of the payment. Default value: NONE. */
+  /** Origin of the payment. Defaults to NONE. */
   private final String marketplace;
 
-  /** Marketplace's fee charged by application owner. */
+  /** Fee charged by the marketplace application owner. */
   private final BigDecimal marketplaceFee;
 
-  /**
-   * Data that can be attached to the preference to record additional attributes
-   * of the merchant.
-   */
+  /** Custom key-value metadata attached to the preference for merchant use. */
   private final Map<String, Object> metadata;
 
-  /** URL where you'd like to receive a payment notification. */
+  /** URL to receive payment status webhook notifications. */
   private final String notificationUrl;
 
-  /** Operation type. */
+  /** Type of operation for this preference. */
   private final String operationType;
 
-  /** Payer information. */
+  /** Buyer (payer) information for the checkout. */
   private final PreferencePayerRequest payer;
 
-  /** Set up payment methods. */
+  /** Payment method configuration including exclusions and installment settings. */
   private final PreferencePaymentMethodsRequest paymentMethods;
 
-  /** Configures which processing modes to use. */
+  /** Processing modes to use (e.g., aggregator, gateway). */
   private final List<String> processingModes;
 
-  /** Purpose of the Preference. */
+  /** Purpose of the preference (e.g., wallet_purchase). */
   private final String purpose;
 
-  /** Shipments information. */
+  /** Shipping configuration for the checkout. */
   private final PreferenceShipmentsRequest shipments;
 
-  /** How will look the payment in the card bill. */
+  /** Text that appears on the buyer's credit card statement. */
   private final String statementDescriptor;
 
-  /** Taxes for preferences. */
+  /** Tax items applied to this preference. */
   private final List<PreferenceTaxRequest> taxes;
 
-  /** Tracks to be executed during the users interaction in the Checkout flow. */
+  /** Tracking tags executed during the buyer's checkout interaction. */
   private final List<PreferenceTrackRequest> tracks;
 
-  /** Amounts. */
+  /** Amount breakdown with payer and collector details. */
   private final PreferenceAmountsRequest amounts;
 
-  /** Counter currency. */
+  /** Counter-currency configuration for cross-currency transactions. */
   private final PreferenceCounterCurrencyRequest counterCurrency;
 }

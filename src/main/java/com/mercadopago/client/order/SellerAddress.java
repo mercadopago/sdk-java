@@ -4,29 +4,30 @@ import lombok.Builder;
 import lombok.Getter;
 
 /**
- * Seller address information.
+ * Physical address of the seller, provided within the platform additional info section.
+ * Contains the full postal address used for logistics and compliance verification.
  */
 @Getter
 @Builder
 public class SellerAddress {
-    /** Zip code. */
+    /** Postal or zip code. */
     private final String zipCode;
 
-    /** Street name. */
+    /** Name of the street. */
     private final String streetName;
 
     /** Street number. */
     private final String streetNumber;
 
-    /** City. */
+    /** Name of the city. */
     private final String city;
 
-    /** State. */
+    /** Name of the state or province. */
     private final String state;
 
-    /** Complement. */
+    /** Address complement (e.g. suite, floor, building). */
     private final String complement;
 
-    /** Country. */
+    /** Country name or ISO country code. */
     private final String country;
 }

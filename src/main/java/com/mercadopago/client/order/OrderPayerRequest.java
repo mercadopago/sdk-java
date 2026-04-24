@@ -7,32 +7,35 @@ import lombok.Getter;
 
 // API version: acd67b14-97c4-4a4a-840d-0a018c09654f
 
-/** OrderPayerRequest class. */
+/**
+ * Request object containing the payer's personal information for an order. Includes contact
+ * details such as email and phone, identification documents, and address data.
+ */
 @Getter
 @Builder
 public class OrderPayerRequest {
-    /** Payer's entity type. */
+    /** Entity type of the payer (e.g. "individual", "association"). */
     private String entityType;
 
-    /** Payer's email. */
+    /** Email address of the payer. */
     private String email;
 
-    /** Payer's first name. */
+    /** First name of the payer. */
     private String firstName;
 
-    /** Customer ID. */
+    /** MercadoPago customer ID associated with the payer. */
     private String customerId;
 
-    /** Payer's last name. */
+    /** Last name of the payer. */
     private String lastName;
 
-    /** Identification information. */
+    /** Payer's identification document (type and number). */
     private IdentificationRequest identification;
 
-    /** Phone information. */
+    /** Payer's phone number details. */
     private Phone phone;
 
-    /** Address information. */
+    /** Payer's address information. */
     private OrderPayerAddressRequest address;
 
 }

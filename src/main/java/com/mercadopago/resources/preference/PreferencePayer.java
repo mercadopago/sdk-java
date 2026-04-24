@@ -9,42 +9,49 @@ import java.util.Date;
 
 import lombok.Getter;
 
-/** Payer information from preference. */
+/**
+ * Resource representing the buyer (payer) information in a checkout preference.
+ *
+ * <p>Contains the payer's personal details, contact information, address, and behavioral metadata
+ * used by MercadoPago to enhance the checkout experience and fraud prevention analysis.
+ *
+ * @see Preference
+ */
 @Getter
 public class PreferencePayer {
-  /** Payer's name. */
+  /** First name of the payer. */
   private String name;
 
-  /** Payer's surname. */
+  /** Last name (surname) of the payer. */
   private String surname;
 
-  /** Payer's email. */
+  /** Email address of the payer. */
   private String email;
 
-  /** Payer's phone. */
+  /** Phone contact information of the payer. */
   private Phone phone;
 
-  /** Payer's identification. */
+  /** Official identification document of the payer (type and number). */
   private Identification identification;
 
-  /** Payer's address. */
+  /** Residential or billing address of the payer. */
   private Address address;
 
-  /** Date of creation of the payer user. */
+  /** Timestamp when the payer's user account was created. */
   private OffsetDateTime dateCreated;
 
-  /** Date of the last purchase. */
+  /** Timestamp of the payer's most recent purchase. */
   private OffsetDateTime lastPurchase;
 
-  /** Type of authentication used by the payer. */
+  /** Authentication method used by the payer (e.g., gmail, facebook, native). */
   private String authenticationType;
 
-  /** Indicates if the payer is a prime user. */
+  /** Whether the payer is a MercadoLibre Nivel 6 / Prime subscriber. */
   private Boolean isPrimeUser;
 
-  /** Indicates if this is the payer's first purchase online. */
+  /** Whether this is the payer's first online purchase. */
   private Boolean isFirstPurchaseOnline;
 
-  /** Date of registration of the payer. */
+  /** Date when the payer registered on the platform. */
   private OffsetDateTime registrationDate;
 }

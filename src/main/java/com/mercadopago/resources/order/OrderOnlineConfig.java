@@ -3,30 +3,31 @@ package com.mercadopago.resources.order;
 import lombok.Getter;
 
 /**
- * Order Online Configuration response.
- * Contains configuration for online orders including 3DS transaction security.
+ * Resource representing the online checkout configuration of a MercadoPago Order.
+ * Defines redirect URLs for each payment outcome, differential pricing rules,
+ * and 3DS transaction security settings for card payments.
  */
 @Getter
 public class OrderOnlineConfig {
 
-    /** Callback URL. */
+    /** URL called by MercadoPago to notify the integrator about payment status changes. */
     private String callbackUrl;
 
-    /** Success URL. */
+    /** URL where the payer is redirected after a successful payment. */
     private String successUrl;
 
-    /** Pending URL. */
+    /** URL where the payer is redirected when the payment is pending approval. */
     private String pendingUrl;
 
-    /** Failure URL. */
+    /** URL where the payer is redirected after a failed payment. */
     private String failureUrl;
 
-    /** Auto return URL. */
+    /** URL for automatic redirection after the checkout process completes. */
     private String autoReturnUrl;
 
-    /** Differential pricing. */
+    /** Differential pricing configuration for applying custom pricing rules. */
     private OrderDifferentialPricing differentialPricing;
 
-    /** Transaction security configuration for 3DS authentication. */
+    /** Transaction security configuration for 3DS authentication on online payments. */
     private OrderTransactionSecurity transactionSecurity;
 }

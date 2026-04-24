@@ -5,17 +5,21 @@ import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;
 
-/** PaymentDiscountRequest class. */
+/**
+ * Request object representing a discount rule applied to a payment.
+ * Defines the type, value, and validity date of the discount, typically
+ * used for early-payment incentives on boleto or invoice payments.
+ */
 @Getter
 @Builder
 public class PaymentDiscountRequest {
 
-  /** Discount type. */
+  /** Discount type (e.g. "fixed" or "percentage"). */
   private String type;
 
-  /** Discount value. */
+  /** Discount value, interpreted as a fixed amount or percentage depending on type. */
   private BigDecimal value;
 
-  /** Discount Limit Date. */
+  /** Last date on which the discount is valid. */
   private LocalDate limitDate;
 }

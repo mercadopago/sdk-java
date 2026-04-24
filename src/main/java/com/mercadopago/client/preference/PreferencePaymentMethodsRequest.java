@@ -4,22 +4,29 @@ import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 
-/** Payment methods information from preference. */
+/**
+ * Configuration of allowed and excluded payment methods and types for a checkout preference,
+ * including installment settings.
+ *
+ * @see com.mercadopago.client.preference.PreferenceRequest
+ * @see com.mercadopago.client.preference.PreferencePaymentMethodRequest
+ * @see com.mercadopago.client.preference.PreferencePaymentTypeRequest
+ */
 @Getter
 @Builder
 public class PreferencePaymentMethodsRequest {
-  /** Payment methods not allowed in payment process (except account_money). */
+  /** Payment methods excluded from the checkout (except account_money). */
   private final List<PreferencePaymentMethodRequest> excludedPaymentMethods;
 
-  /** Payment types not allowed in payment process. */
+  /** Payment types excluded from the checkout. */
   private final List<PreferencePaymentTypeRequest> excludedPaymentTypes;
 
-  /** Payment method to be preferred on the payments methods list. */
+  /** Identifier of the payment method to pre-select in the checkout. */
   private final String defaultPaymentMethodId;
 
-  /** Maximum number of credit card installments to be accepted. */
+  /** Maximum number of credit card installments allowed. */
   private final Integer installments;
 
-  /** Preferred number of credit card installments. */
+  /** Default number of credit card installments pre-selected. */
   private final Integer defaultInstallments;
 }

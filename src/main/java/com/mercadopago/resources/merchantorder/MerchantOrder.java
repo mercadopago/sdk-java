@@ -6,75 +6,84 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.Getter;
 
-/** Merchant Order resource. */
+/**
+ * Represents a merchant order resource in the MercadoPago API.
+ *
+ * <p>A merchant order groups one or more payments, items, and shipments into a single commercial
+ * transaction. It tracks the overall status, amounts, and logistics of an order placed through
+ * MercadoPago payment preferences.
+ *
+ * @see <a href="https://www.mercadopago.com.br/developers/en/reference/merchant_orders/_merchant_orders/post">
+ *     Merchant Order API Reference</a>
+ */
 @Getter
 public class MerchantOrder extends MPResource {
-  /** Order ID. */
+  /** Unique identifier of the merchant order. */
   private Long id;
 
-  /** Payment preference identifier associated to the merchant order. */
+  /** Payment preference identifier associated with this merchant order. */
   private String preferenceId;
 
-  /** Application ID. */
+  /** Application identifier that created the order. */
   private String applicationId;
 
-  /** Show the current merchant order state. */
+  /** Current status of the merchant order (e.g., opened, closed). */
   private String status;
 
-  /** Country identifier that merchant order belongs to. */
+  /** Country site identifier where the merchant order was created (e.g., MLA, MLB). */
   private String siteId;
 
-  /** Payer information. */
+  /** Payer (buyer) information for this order. */
   private MerchantOrderPayer payer;
 
-  /** Seller information. */
+  /** Collector (seller) information for this order. */
   private MerchantOrderCollector collector;
 
-  /** Sponsor ID. */
+  /** Identifier of the sponsor associated with the order. */
   private String sponsorId;
 
-  /** Payments information. */
+  /** List of payments associated with this merchant order. */
   private List<MerchantOrderPayment> payments;
 
-  /** Amount paid in this order. */
+  /** Total amount already paid for this order. */
   private BigDecimal paidAmount;
 
-  /** Amount refunded in this Order. */
+  /** Total amount refunded for this order. */
   private BigDecimal refundedAmount;
 
-  /** Shipping fee. */
+  /** Shipping cost of the order. */
   private BigDecimal shippingCost;
 
-  /** Date of creation. */
+  /** Date and time when the order was created. */
   private OffsetDateTime dateCreated;
 
-  /** If the Order is expired (true) or not (false). */
+  /** Whether the order has been cancelled. */
   private boolean cancelled;
 
-  /** Items information. */
+  /** List of items included in this order. */
   private List<MerchantOrderItem> items;
 
-  /** Shipments information. */
+  /** List of shipments associated with this order. */
   private List<MerchantOrderShipment> shipments;
 
-  /** URL where you'd like to receive a payment notification. */
+  /** URL to receive payment notification webhooks. */
   private String notificationUrl;
 
-  /** Additional information. */
+  /** Additional information about the order. */
   private String additionalInfo;
 
-  /** Reference you can synchronize with your payment system. */
+  /** External reference to synchronize with the merchant's own system. */
   private String externalReference;
 
-  /** Origin of the payment. */
+  /** Marketplace origin of the payment. */
   private String marketplace;
 
-  /** Total amount of the order. */
+  /** Total amount of the order including all items. */
   private BigDecimal totalAmount;
 
-  /** Current merchant order status given the payments status. */
+  /** Computed order status based on the aggregate status of its payments. */
   private String orderStatus;
 
-  /** Last modified date. */
+  /** Date and time when the order was last updated. */
   private OffsetDateTime lastUpdated;
 }

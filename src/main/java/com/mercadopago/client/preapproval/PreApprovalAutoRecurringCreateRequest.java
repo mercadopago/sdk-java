@@ -5,25 +5,30 @@ import java.time.OffsetDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
-/** Recurring data. */
+/**
+ * Auto-recurring billing configuration used when creating a preapproval (subscription). Defines
+ * the currency, amount, frequency, and date range for recurring charges.
+ *
+ * @see com.mercadopago.client.preapproval.PreapprovalCreateRequest
+ */
 @Getter
 @Builder
 public class PreApprovalAutoRecurringCreateRequest {
-  /** Currency ID. */
+  /** Currency identifier (e.g., ARS, BRL, MXN). */
   private final String currencyId;
 
-  /** Recurring amount. */
+  /** Amount charged on each recurring cycle. */
   private final BigDecimal transactionAmount;
 
-  /** Recurring frequency. */
+  /** Number of time units between each charge. */
   private final Integer frequency;
 
-  /** Recurring frequency type (days or months). */
+  /** Time unit for the frequency ({@code days} or {@code months}). */
   private final String frequencyType;
 
-  /** Recurring start date. */
+  /** Date when the recurring billing starts. */
   private final OffsetDateTime startDate;
 
-  /** Recurring end date. */
+  /** Date when the recurring billing ends. */
   private final OffsetDateTime endDate;
 }

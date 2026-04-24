@@ -24,38 +24,66 @@ import com.mercadopago.serialization.Serializer;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 
-/** Client that use the Point APIs. */
+/**
+ * Client for the MercadoPago Point Integration API.
+ *
+ * <p>Provides operations for in-person payments via MercadoPago Point card readers, including
+ * creating, searching, cancelling, and tracking payment intents, as well as managing Point
+ * devices and their operating modes.
+ *
+ * <p>Usage example:
+ * <pre>{@code
+ * PointClient client = new PointClient();
+ * PointPaymentIntent intent = client.createPaymentIntent(deviceId, paymentIntentRequest);
+ * PointStatusPaymentIntent status = client.getPaymentIntentStatus(intent.getId());
+ * }</pre>
+ *
+ * @see <a
+ *     href="https://www.mercadopago.com/developers/en/reference/integrations_api_paymentintent_mlb/_point_integration-api_devices_deviceid_payment-intents/post">
+ *     Point Integration API reference</a>
+ */
 public class PointClient extends MercadoPagoClient {
+
+  /** Class-level logger for Point operations. */
   private static final Logger LOGGER = Logger.getLogger(PointClient.class.getName());
 
+  /** URL template for creating payment intents on a specific device. */
   private static final String PAYMENT_INTENT_URL =
       "/point/integration-api/devices/%s/payment-intents";
 
+  /** URL for listing payment intents with their final states. */
   private static final String PAYMENT_INTENT_LIST_URL =
       "/point/integration-api/payment-intents/events";
 
+  /** URL template for cancelling a specific payment intent on a device. */
   private static final String PAYMENT_INTENT_DELETE_URL =
       "point/integration-api/devices/%s/payment-intents/%s";
 
+  /** URL template for searching/retrieving a specific payment intent. */
   private static final String PAYMENT_INTENT_SEARCH_URL =
       "point/integration-api/payment-intents/%s";
 
+  /** URL template for retrieving the last status event of a payment intent. */
   private static final String PAYMENT_INTENT_STATUS_URL =
       "point/integration-api/payment-intents/%s/events";
 
+  /** URL for listing all Point devices. */
   private static final String DEVICES_URL = "point/integration-api/devices";
 
+  /** URL template for operating on a specific device by its identifier. */
   private static final String DEVICE_WITH_ID_URL = "point/integration-api/devices/%s";
 
-  /** Default constructor. Uses the default http client used by the SDK. */
+  /**
+   * Default constructor. Uses the default HTTP client provided by {@link MercadoPagoConfig}.
+   */
   public PointClient() {
     this(MercadoPagoConfig.getHttpClient());
   }
 
   /**
-   * Constructor used for providing a custom http client.
+   * Constructs a {@code PointClient} with a custom HTTP client.
    *
-   * @param httpClient httpClient
+   * @param httpClient the {@link MPHttpClient} implementation used to execute HTTP requests
    */
   public PointClient(MPHttpClient httpClient) {
     super(httpClient);
@@ -66,12 +94,14 @@ public class PointClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for creating a payment intent.
+   * Creates a payment intent on a specific Point device.
    *
-   * @param deviceId device id
-   * @param request attributes used to create a payment intent
-   * @return payment intent information
-   * @throws MPException an error if the request fails
+   * @param deviceId the unique identifier of the Point device
+   * @param request the {@link PointPaymentIntentRequest} with amount, description, and payment
+   *     details
+   * @return the created {@link PointPaymentIntent}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com/developers/pt/reference/integrations_api_paymentintent_mlb/_point_integration-api_devices_deviceid_payment-intents/post">api
    *     docs</a>
@@ -82,13 +112,16 @@ public class PointClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for creating payment intent with request options.
+   * Creates a payment intent on a specific Point device with custom request options.
    *
-   * @param deviceId device id
-   * @param request attributes used to create a payment intent
-   * @param requestOptions metadata to customize the request
-   * @return payment intent information
-   * @throws MPException an error if the request fails
+   * @param deviceId the unique identifier of the Point device
+   * @param request the {@link PointPaymentIntentRequest} with amount, description, and payment
+   *     details
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the created {@link PointPaymentIntent}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com/developers/pt/reference/integrations_api_paymentintent_mlb/_point_integration-api_devices_deviceid_payment-intents/post">api
    *     docs</a>
@@ -114,12 +147,12 @@ public class PointClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for getting a list of payment intents with their final states between a date
-   * range.
+   * Retrieves a list of payment intents with their final states within a date range.
    *
-   * @param request attributes used to set date range.
-   * @return list of payment intents.
-   * @throws MPException an error if the request fails
+   * @param request the {@link PointPaymentIntentListRequest} with start and end date filters
+   * @return a {@link PointPaymentIntentList} containing payment intents and their states
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_payment-intents_events/get">api
    *     docs</a>
@@ -130,13 +163,15 @@ public class PointClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for getting a list of payment intents with their final states between a date
-   * range with request options.
+   * Retrieves a list of payment intents with their final states within a date range with custom
+   * request options.
    *
-   * @param request attributes used to set date range.
-   * @param requestOptions metadata to customize the request
-   * @return list of payment intents.
-   * @throws MPException an error if the request fails
+   * @param request the {@link PointPaymentIntentListRequest} with start and end date filters
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return a {@link PointPaymentIntentList} containing payment intents and their states
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_payment-intents_events/get">api
    *     docs</a>
@@ -162,12 +197,13 @@ public class PointClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for cancelling a payment intent.
+   * Cancels a payment intent on a specific Point device.
    *
-   * @param deviceId device id
-   * @param paymentIntentId payment intent id
-   * @return cancelled payment intent id
-   * @throws MPException an error if the request fails
+   * @param deviceId the unique identifier of the Point device
+   * @param paymentIntentId the unique identifier of the payment intent to cancel
+   * @return a {@link PointCancelPaymentIntent} containing the cancelled payment intent identifier
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_devices_deviceid_payment-intents_paymentintentid/delete">api
    *     docs</a>
@@ -178,13 +214,15 @@ public class PointClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for cancelling a payment intent.
+   * Cancels a payment intent on a specific Point device with custom request options.
    *
-   * @param deviceId device id
-   * @param paymentIntentId payment intent id
-   * @param requestOptions metadata to customize the request
-   * @return cancelled payment intent id
-   * @throws MPException an error if the request fails
+   * @param deviceId the unique identifier of the Point device
+   * @param paymentIntentId the unique identifier of the payment intent to cancel
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return a {@link PointCancelPaymentIntent} containing the cancelled payment intent identifier
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_devices_deviceid_payment-intents_paymentintentid/delete">api
    *     docs</a>
@@ -209,11 +247,12 @@ public class PointClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for getting a payment intent.
+   * Retrieves a payment intent by its unique identifier.
    *
-   * @param paymentIntentId payment intent id
-   * @return payment intent
-   * @throws MPException an error if the request fails
+   * @param paymentIntentId the unique identifier of the payment intent
+   * @return the requested {@link PointSearchPaymentIntent}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_payment-intents_paymentintentid/get">api
    *     docs</a>
@@ -224,12 +263,14 @@ public class PointClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for getting a payment intent.
+   * Retrieves a payment intent by its unique identifier with custom request options.
    *
-   * @param paymentIntentId payment intent id
-   * @param requestOptions metadata to customize the request
-   * @return payment intent
-   * @throws MPException an error if the request fails
+   * @param paymentIntentId the unique identifier of the payment intent
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the requested {@link PointSearchPaymentIntent}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_payment-intents_paymentintentid/get">api
    *     docs</a>
@@ -253,11 +294,12 @@ public class PointClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for finding the last state of a payment intent.
+   * Retrieves the last status event for a payment intent.
    *
-   * @param paymentIntentId payment intent id
-   * @return payment intent status
-   * @throws MPException an error if the request fails
+   * @param paymentIntentId the unique identifier of the payment intent
+   * @return the {@link PointStatusPaymentIntent} with the most recent status event
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_payment-intents_paymentintentid_events/get">api
    *     docs</a>
@@ -268,12 +310,14 @@ public class PointClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for finding the last state of a payment intent.
+   * Retrieves the last status event for a payment intent with custom request options.
    *
-   * @param paymentIntentId payment intent id
-   * @param requestOptions metadata to customize the request
-   * @return payment intent status
-   * @throws MPException an error if the request fails
+   * @param paymentIntentId the unique identifier of the payment intent
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the {@link PointStatusPaymentIntent} with the most recent status event
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_payment-intents_paymentintentid_events/get">api
    *     docs</a>
@@ -297,11 +341,12 @@ public class PointClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for getting the devices. Devices can be filtered by pos and/or store.
+   * Retrieves Point devices, optionally filtered by POS and/or store.
    *
-   * @param request attributes used to set search params
-   * @return devices
-   * @throws MPException an error if the request fails
+   * @param request the {@link MPSearchRequest} with optional POS or store filter parameters
+   * @return the {@link PointDevices} containing the list of devices
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_devices/get">api
    *     docs</a>
@@ -311,13 +356,14 @@ public class PointClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for getting the devices. Devices can be filtered by pos and/or store with
-   * request options.
+   * Retrieves Point devices with custom request options, optionally filtered by POS and/or store.
    *
-   * @param request attributes used to set search params
-   * @param requestOptions metadata to customize the request
-   * @return devices
-   * @throws MPException an error if the request fails
+   * @param request the {@link MPSearchRequest} with optional POS or store filter parameters
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the {@link PointDevices} containing the list of devices
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_devices/get">api
    *     docs</a>
@@ -341,12 +387,13 @@ public class PointClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for change the device operating mode.
+   * Changes the operating mode of a Point device (e.g., PDV or standalone).
    *
-   * @param deviceId device id
-   * @param request request used to set operating mode
-   * @return device operating mode
-   * @throws MPException an error if the request fails
+   * @param deviceId the unique identifier of the Point device
+   * @param request the {@link PointDeviceOperatingModeRequest} with the desired operating mode
+   * @return the updated {@link PointDeviceOperatingMode}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_devices_device-id/patch">api
    *     docs</a>
@@ -357,13 +404,15 @@ public class PointClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for change the device operating mode with request options.
+   * Changes the operating mode of a Point device with custom request options.
    *
-   * @param deviceId device id
-   * @param request request used to set operating mode
-   * @param requestOptions metadata to customize the request
-   * @return device operating mode
-   * @throws MPException an error if the request fails
+   * @param deviceId the unique identifier of the Point device
+   * @param request the {@link PointDeviceOperatingModeRequest} with the desired operating mode
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the updated {@link PointDeviceOperatingMode}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com/developers/en/reference/integrations_api/_point_integration-api_devices_device-id/patch">api
    *     docs</a>

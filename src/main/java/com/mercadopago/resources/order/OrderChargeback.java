@@ -3,22 +3,26 @@ package com.mercadopago.resources.order;
 import java.util.List;
 import lombok.Getter;
 
-/** OrderChargeback class. */
+/**
+ * Resource representing a chargeback raised against a payment within a MercadoPago Order.
+ * Contains identifiers for the chargeback case, the disputed transaction, and the
+ * current dispute status.
+ */
 @Getter
 public class OrderChargeback {
 
-    /** Chargeback ID. */
+    /** Unique identifier of this chargeback. */
     private String id;
 
-    /** Transaction ID. */
+    /** Identifier of the original transaction that is being disputed. */
     private String transactionId;
 
-    /** Case ID. */
+    /** Identifier of the dispute case opened by the card issuer or payment network. */
     private String caseId;
 
-    /** Status. */
+    /** Current status of the chargeback dispute (e.g., "open", "closed"). */
     private String status;
 
-    /** References. */
+    /** List of reference identifiers associated with this chargeback. */
     private List<String> references;
 }

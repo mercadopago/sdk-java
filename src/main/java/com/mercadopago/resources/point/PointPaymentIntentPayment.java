@@ -2,27 +2,33 @@ package com.mercadopago.resources.point;
 
 import lombok.Getter;
 
-/** Properties of the payment intent. */
+/**
+ * Resource containing payment configuration details for a Point payment intent.
+ *
+ * <p>Defines how the payment should be processed, including the payment method type (credit card,
+ * debit card, or voucher), installment settings, and who bears the installment cost.
+ *
+ * @see PointPaymentIntent
+ */
 @Getter
 public class PointPaymentIntentPayment {
-  /** Payment ID. */
+  /** Unique identifier of the resulting payment, available after processing. */
   private String id;
 
   /**
-   * An integer value that must be between 1 and 72, this value can be set only if type field is
-   * equal to credit_card.
+   * Number of installments (1 to 72). Only applicable when {@code type} is {@code credit_card}.
    */
   private Integer installments;
 
   /**
-   * A string value that must be one of this (seller or buyer), this value can be set only if type
-   * field is equal to credit_card.
+   * Party responsible for the installment cost ({@code seller} or {@code buyer}). Only applicable
+   * when {@code type} is {@code credit_card}.
    */
   private String installmentsCost;
 
-  /** An alphanumeric value that must be credit_card, debit_card or voucher_card. */
+  /** Payment method type: {@code credit_card}, {@code debit_card}, or {@code voucher_card}. */
   private String type;
 
-  /** Voucher type. */
+  /** Specific voucher type when payment type is {@code voucher_card}. */
   private String voucherType;
 }

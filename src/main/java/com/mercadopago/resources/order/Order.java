@@ -8,106 +8,100 @@ import java.util.Map;
 
 /* API version: acd67b14-97c4-4a4a-840d-0a018c09654f */
 
-/** Order class. */
+/**
+ * Resource representing a MercadoPago Order.
+ * An Order is the top-level entity that groups one or more payment transactions, line items,
+ * payer information, and configuration options for online or point-of-sale checkout flows.
+ *
+ * @see <a href="https://www.mercadopago.com/developers/en/reference/order/online/post">Order API reference</a>
+ */
 @Getter
 public class Order extends MPResource {
 
-    /** Order ID. */
+    /** Unique identifier of the order. */
     private String id;
 
-    /** Type of Order. */
+    /** Type of the order (e.g., "online", "point"). */
     private String type;
 
-    /** External reference. */
+    /** External reference used to correlate this order with an identifier in the integrator's system. */
     private String externalReference;
 
-    /** Total amount of the order. */
+    /** Total amount of the order expressed as a decimal string. */
     private String totalAmount;
 
-    /** Total Paid amount of the order. */
+    /** Total amount already paid on this order expressed as a decimal string. */
     private String totalPaidAmount;
 
-    /**
-     * Identifier of the site (country) to which the Mercado Pago application that
-     * created the Order belongs.
-     */
+    /** Country code of the site to which the MercadoPago application that created the order belongs. */
     private String countryCode;
 
-    /**
-     * Identifier of the user to which the Mercado Pago application that created the
-     * Order belongs. It is the person that will receive the payment.
-     */
+    /** Identifier of the user (seller) who will receive the payment for this order. */
     private String userId;
 
-    /** Status of Order. */
+    /** Current status of the order (e.g., "created", "processed", "expired"). */
     private String status;
 
-    /** Status Detail of Order. */
+    /** Detailed sub-status providing additional context about the current order status. */
     private String statusDetail;
 
-    /** Order capture mode. */
+    /** Capture mode for the order's payments (e.g., "automatic", "manual"). */
     private String captureMode;
 
-    /** Date of creation. */
+    /** ISO 8601 date-time when the order was created. */
     private String createdDate;
 
-    /** Last modified date. */
+    /** ISO 8601 date-time when the order was last updated. */
     private String lastUpdatedDate;
 
-    /**
-     * Additional information that can be used to integrate with other systems, such
-     * as the identifier of the Order in the integrator's system.
-     */
+    /** Integration data containing identifiers for correlating the order with external systems. */
     private OrderIntegrationData integrationData;
 
-    /** Configures which processing modes to use. */
+    /** Processing mode that controls how payments are executed (e.g., "aggregator", "gateway"). */
     private String processingMode;
 
-    /** Description of Order. */
+    /** Free-text description of the order visible to the payer. */
     private String description;
 
-    /** Origin of the order. */
+    /** Marketplace identifier indicating the origin of the order. */
     private String marketplace;
 
-    /** Fee collected by a marketplace or MercadoPago Application. */
+    /** Fee collected by the marketplace or MercadoPago application, expressed as a decimal string. */
     private String marketplaceFee;
 
-    /** Transactions information. */
+    /** Transaction details including payments, refunds, and chargebacks associated with this order. */
     private OrderTransaction transactions;
 
-    /** Checkout available at */
+    /** ISO 8601 date-time from which the checkout becomes available for the payer. */
     private String checkoutAvailableAt;
 
-    /** Date of expiration. */
+    /** ISO 8601 date-time when the order expires if not completed. */
     private String expirationTime;
 
-    /**
-     * Unique token that identifies your integration. You can get it in Your
-     * credentials.
-     */
+    /** Unique client token that identifies the integrator's credentials for this order. */
     private String clientToken;
 
-    /** Items information. */
+    /** List of line items included in this order. */
     private List<OrderItem> items;
 
-    /** Order config. */
+    /** Configuration settings for payment methods, online checkout, and point-of-sale behavior. */
     private OrderConfig config;
 
-    /** Payer information. */
+    /** Information about the payer associated with this order. */
     private OrderPayer payer;
 
-    /** Additional info for the order. */
+    /** Additional key-value metadata attached to the order for integration purposes. */
     private Map<String, Object> additionalInfo;
 
-    /** Currency of the order. */
+    /** ISO 4217 currency code for the order (e.g., "BRL", "ARS", "MXN"). */
     private String currency;
 
-    /** Taxes of the order. */
+    /** List of taxes applied to the order. */
     private List<OrderTax> taxes;
 
-    /** Discounts of the order. */
+    /** Discount information applied to the order by payment method. */
     private OrderDiscounts discounts;
 
-    /** Type response of the order. */
+    /** Type-specific response data such as QR codes for in-store payments. */
     private OrderTypeResponse typeResponse;
 }

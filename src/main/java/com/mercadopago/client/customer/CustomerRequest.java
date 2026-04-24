@@ -7,11 +7,17 @@ import java.util.Map;
 import lombok.Builder;
 import lombok.Getter;
 
-/** Information used to create/update a customer. */
+/**
+ * Request DTO used to create or update a customer in Mercado Pago. Customers can be associated
+ * with saved cards, addresses, and identification documents to streamline recurring payments
+ * and checkout experiences.
+ *
+ * @see <a href="https://www.mercadopago.com.br/developers/en/reference/customers">Customers API Reference</a>
+ */
 @Getter
 @Builder
 public class CustomerRequest {
-  /** Customer's email. */
+  /** Customer's email address, used as a unique identifier for the customer. */
   private final String email;
 
   /** Customer's first name. */
@@ -20,27 +26,27 @@ public class CustomerRequest {
   /** Customer's last name. */
   private final String lastName;
 
-  /** Customer's phone. */
+  /** Customer's phone information including area code and number. */
   private final PhoneRequest phone;
 
-  /** Customer's identification. */
+  /** Customer's identification document (e.g., CPF, DNI). */
   private final IdentificationRequest identification;
 
-  /** Customer's default address. */
+  /** ID of the customer's default address from their address list. */
   private final String defaultAddress;
 
-  /** Default address information. */
+  /** Customer's address details for registration purposes. */
   private final CustomerAddressRequest address;
 
-  /** Customer's default card. */
+  /** ID of the customer's default saved card. */
   private final String defaultCard;
 
-  /** Customer's registration date. */
+  /** Date when the customer was registered in the merchant's system. */
   private final OffsetDateTime dateRegistred;
 
-  /** Customer's description. */
+  /** Free-text description or notes about the customer. */
   private final String description;
 
-  /** Metadata. */
+  /** Custom key-value metadata associated with the customer. */
   private final Map<String, Object> metadata;
 }
