@@ -1,0 +1,23 @@
+mp_ref_report.md
+  0810996d4ac20c7b 1-121
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "ce3036349a65a6ab2a500ebe7a373490764cf937",
+  "prompts": {
+    "0810996d4ac20c7b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f4c86897-3881-49f6-b4d1-ab32a2b9d9e1",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Daniel Alfaro",
+      "messages": [],
+      "total_additions": 121,
+      "total_deletions": 0,
+      "accepted_lines": 121,
+      "overriden_lines": 0
+    }
+  }
+}
