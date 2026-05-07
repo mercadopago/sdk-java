@@ -1,0 +1,47 @@
+src/main/java/com/mercadopago/example/apis/order/ProcessOrderById.java
+  s_129c4579cf332b::t_a9ab4332e9de81 12
+src/main/java/com/mercadopago/example/apis/order/CancelOrder.java
+  s_129c4579cf332b::t_5c7a8577e0f812 16
+src/main/java/com/mercadopago/example/apis/order/RefundTotal.java
+  s_129c4579cf332b::t_8fd44735449aa5 15
+src/main/java/com/mercadopago/example/apis/order/CreateOrderWithIndustryFields.java
+  s_129c4579cf332b::t_29ec244a293d6b 19
+src/main/java/com/mercadopago/example/apis/order/CreateTransaction.java
+  s_129c4579cf332b::t_d5b8023af6342f 16
+src/main/java/com/mercadopago/client/order/OrderClient.java
+  s_129c4579cf332b::t_35f40215aa1a41 40
+src/main/java/com/mercadopago/client/order/OrderCreateRequest.java
+  s_129c4579cf332b::t_a789d8192ec95e 17
+src/main/java/com/mercadopago/example/apis/order/RefundPartial.java
+  s_129c4579cf332b::t_9002c82d440052 14
+src/main/java/com/mercadopago/client/cardtoken/CardTokenClient.java
+  s_129c4579cf332b::t_c01462ee6e78b4 31
+src/main/java/com/mercadopago/example/apis/order/UpdateTransaction.java
+  s_129c4579cf332b::t_b393506393c60d 17
+src/main/java/com/mercadopago/resources/order/Order.java
+  s_129c4579cf332b::t_887a4f6a0b3491 16
+src/main/java/com/mercadopago/example/apis/order/GetOrderById.java
+  s_129c4579cf332b::t_aa3ed67f1a1198 12
+src/main/java/com/mercadopago/example/apis/order/CaptureOrder.java
+  s_129c4579cf332b::t_6dd1e39ef486e1 16
+src/main/java/com/mercadopago/example/apis/order/CreateOrder.java
+  s_129c4579cf332b::t_9d544f09783566 17
+src/main/java/com/mercadopago/example/apis/order/DeleteTransaction.java
+  s_129c4579cf332b::t_7024f88a320c07 12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "aef9b096fe8f1f78c084c29b317740a17fb4f3a4",
+  "prompts": {},
+  "sessions": {
+    "s_129c4579cf332b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6b60c14f-f6da-44b7-8cab-8a0a54598b86",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Daniel Alfaro <daniel.alfaro@mercadolibre.com.co>"
+    }
+  }
+}
