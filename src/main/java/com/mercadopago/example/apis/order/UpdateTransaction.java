@@ -14,7 +14,7 @@ import java.util.Map;
  * Mercado Pago Update Order transaction.
  *
  * @see <a href=
- *      "https://mercadopago.com/developers/en/reference/order/online-payments/update-transaction/put">Documentation</a>
+ *      "https://www.mercadopago.com/developers/en/reference/online-payments/checkout-api/update-transaction-order/put">Documentation</a>
  */
 public class UpdateTransaction {
 

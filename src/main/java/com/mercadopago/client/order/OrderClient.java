@@ -37,7 +37,7 @@ import org.apache.commons.lang3.StringUtils;
  * Order processed = client.process(order.getId());
  * }</pre>
  *
- * @see <a href="https://www.mercadopago.com/developers/en/reference/orders/resource/">Orders API
+ * @see <a href="https://www.mercadopago.com/developers/en/reference/online-payments/checkout-api/create-order/post">Orders API
  *     reference</a>
  */
 public class OrderClient extends MercadoPagoClient {

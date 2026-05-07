@@ -14,7 +14,7 @@ import java.util.Map;
  * information needed to create an order, including payer details, transaction data, items,
  * shipping, and configuration options.
  *
- * @see <a href="https://www.mercadopago.com/developers/en/reference/order/_merchant_orders/post">Orders API</a>
+ * @see <a href="https://www.mercadopago.com/developers/en/reference/online-payments/checkout-api/create-order/post">Orders API</a>
  */
 @Builder
 @Getter

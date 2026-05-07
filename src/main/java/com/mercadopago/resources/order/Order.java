@@ -13,7 +13,7 @@ import java.util.Map;
  * An Order is the top-level entity that groups one or more payment transactions, line items,
  * payer information, and configuration options for online or point-of-sale checkout flows.
  *
- * @see <a href="https://www.mercadopago.com/developers/en/reference/order/online/post">Order API reference</a>
+ * @see <a href="https://www.mercadopago.com/developers/en/reference/online-payments/checkout-api/create-order/post">Order API reference</a>
  */
 @Getter
 public class Order extends MPResource {

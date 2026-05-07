@@ -16,7 +16,7 @@ import java.util.Arrays;
  * Mercado Pago Create Order with industry fields.
  *
  * @see <a href=
- *      "https://mercadopago.com/developers/en/reference/orders/online-payments/create/post">Documentation</a>.
+ *      "https://www.mercadopago.com/developers/en/reference/online-payments/checkout-api/create-order/post">Documentation</a>.
  */
 public class CreateOrderWithIndustryFields {
     public static void main(String[] args) {

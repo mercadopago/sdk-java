@@ -28,8 +28,7 @@ import java.util.logging.StreamHandler;
  * // Use token.getId() when creating a payment
  * }</pre>
  *
- * @see <a href="https://www.mercadopago.com/developers/en/reference/card_tokens/_card_tokens/post">
- *     Card Tokens API reference</a>
+ * @see <a href="https://www.mercadopago.com/developers/en/reference">Card Tokens API reference</a>
  */
 public class CardTokenClient extends MercadoPagoClient {
 

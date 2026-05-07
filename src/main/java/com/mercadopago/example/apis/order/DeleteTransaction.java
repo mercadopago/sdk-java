@@ -9,7 +9,7 @@ import com.mercadopago.exceptions.MPException;
  * Mercado Pago Delete Order transaction.
  *
  * @see <a href=
- *      "https://mercadopago.com/developers/en/reference/order/online-payments/delete-transaction/delete">Documentation</a>
+ *      "https://www.mercadopago.com/developers/en/reference/online-payments/checkout-api/delete-transaction-order/delete">Documentation</a>
  */
 public class DeleteTransaction {
 

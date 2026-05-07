@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Mercado Pago Cancel Order.
  *
- * @see <a href="https://mercadopago.com/developers/en/reference/order/online-payments/cancel-order/post">Documentation</a>.
+ * @see <a href="https://www.mercadopago.com/developers/en/reference/online-payments/checkout-api/cancel-order/post">Documentation</a>.
  */
 public class CancelOrder {
 
