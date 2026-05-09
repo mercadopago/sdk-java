@@ -1,0 +1,19 @@
+pom.xml
+  s_3db28d0d1288e5::t_80b0b3438ca0fe 258
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "63120f975e47a697013d7a93c377519ca5ad9451",
+  "prompts": {},
+  "sessions": {
+    "s_3db28d0d1288e5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1efe60b6-79c1-4907-9782-0020c13d78b6",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Daniel Alfaro <daniel.alfaro@mercadolibre.com.co>"
+    }
+  }
+}
