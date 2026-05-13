@@ -1,0 +1,32 @@
+src/main/java/com/mercadopago/exceptions/MPInvalidWebhookSignatureException.java
+  s_1f89798e886786::t_100371c29ea572 1-33
+src/main/java/com/mercadopago/exceptions/SignatureFailureReason.java
+  s_1f89798e886786::t_5899b16f3a7f88 1-5
+src/test/java/com/mercadopago/webhook/WebhookSignatureValidatorTest.java
+  s_1f89798e886786::t_64e1740746d5ce 79,88,96,104,115,125,184
+  s_1f89798e886786::t_716961a24cd45a 7-8
+  s_1f89798e886786::t_b5446192221ae1 1-6,9-78,80-87,89-95,97-103,105-114,116-124,126-183,185-195
+src/main/java/com/mercadopago/webhook/WebhookSignatureValidator.java
+  s_1f89798e886786::t_5b3cead27a597d 74-75
+  s_1f89798e886786::t_687fb42090e99d 1-2,5-28,30-58,60-62,65-73,76-91,93-102,105-116,118-123,125-128,130-133,135-147,149-155,157-164,166-247
+  s_1f89798e886786::t_8c1aff08757ab2 103-104
+  s_1f89798e886786::t_b5ee3a0f34dbdc 63-64
+  s_1f89798e886786::t_0df620b163455d 29,59,92,117,124,129,134,148,156,165
+  s_1f89798e886786::t_505380fff72887 3-4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "f8ebc1f2525cea928debf59b5dbcb8cb0a20be28",
+  "prompts": {},
+  "sessions": {
+    "s_1f89798e886786": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1a03db55-28c1-4343-a817-4d847f934bfd",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Daniel Alfaro <daniel.alfaro@mercadolibre.com.co>"
+    }
+  }
+}
