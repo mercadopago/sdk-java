@@ -3,51 +3,59 @@ package com.mercadopago.resources.payment;
 import java.math.BigDecimal;
 import lombok.Getter;
 
-/** PaymentTransactionDetails class. */
+/**
+ * Resource that holds detailed transaction information for a MercadoPago payment.
+ *
+ * <p>Includes financial details such as the net received amount, total paid amount, installment
+ * breakdown, and references used by payment processors, acquirers, and financial institutions.
+ * Also contains barcode and digitable line data for ticket-based payment methods.
+ *
+ * @see Payment#getTransactionDetails()
+ */
 @Getter
 public class PaymentTransactionDetails {
-  /** External financial institution identifier. */
+  /** Name or identifier of the external financial institution that processed the payment. */
   private String financialInstitution;
 
-  /** Amount received by the seller. */
+  /** Net amount received by the seller after deducting all fees. */
   private BigDecimal netReceivedAmount;
 
-  /** Total amount paid by the buyer (includes fees). */
+  /** Total amount paid by the buyer, including fees and financing costs. */
   private BigDecimal totalPaidAmount;
 
-  /** Total installments amount. */
+  /** Amount of each installment when the payment is split into multiple installments. */
   private BigDecimal installmentAmount;
 
-  /** Amount overpaid (only for tickets). */
+  /** Amount overpaid by the buyer, applicable only for ticket-based payment methods. */
   private BigDecimal overpaidAmount;
 
-  /** Identifies the resource in the payment processor. */
+  /** URL of the external resource at the payment processor (e.g. ticket or voucher page). */
   private String externalResourceUrl;
 
   /**
-   * For credit card payments is the USN. For offline payment methods, is the reference to give to
-   * the cashier or to input into the ATM.
+   * Reference identifier at the payment method level. For credit cards this is the USN (Unique
+   * Sequence Number); for offline methods it is the code to provide at the cashier or ATM.
    */
   private String paymentMethodReferenceId;
 
-  /** Acquirer Reference. */
+  /** Reference identifier assigned by the payment acquirer. */
   private String acquirerReference;
 
-  /** BACEN identifier for Pix. */
+  /** BACEN (Brazilian Central Bank) end-to-end identifier for Pix transactions. */
   private String transactionId;
 
-  /** Barcode digitable line. */
+  /** Digitable line representation of the barcode for boleto or ticket payments. */
   private String digitableLine;
 
-  /** Verification code. */
+  /** Verification code used to validate the payment at certain financial institutions. */
   private String verificationCode;
 
-  /** Payable deferral period. */
+  /** Period during which the payment amount can be deferred before becoming payable. */
   private String payableDeferralPeriod;
 
-  /** Bank transfer id. */
+  /** Identifier of the bank transfer transaction. */
   private String bankTransferId;
 
-  /** Barcode data. */
+  /** Barcode data associated with ticket or boleto payment methods. */
   private PaymentBarcode barcode;
 }

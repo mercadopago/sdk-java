@@ -2,19 +2,26 @@ package com.mercadopago.resources.customer;
 
 import lombok.Getter;
 
-/** Default address details for customer. */
+/**
+ * Represents the default address of a customer in the MercadoPago API.
+ *
+ * <p>Contains a simplified set of address fields (zip code, street name, and street number) used
+ * as the customer's primary address for shipping and billing purposes.
+ *
+ * @see Customer
+ */
 @Getter
 public class CustomerDefaultAddress {
 
-  /** Address Id. */
+  /** Unique identifier of the default address. */
   private String id;
 
-  /** Address zip code. */
+  /** Postal or zip code of the address. */
   private String zipCode;
 
-  /** Street name. */
+  /** Street name of the address. */
   private String streetName;
 
-  /** Street number. */
+  /** Street number of the address. */
   private Integer streetNumber;
 }

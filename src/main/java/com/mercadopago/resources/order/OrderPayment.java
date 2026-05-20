@@ -5,58 +5,62 @@ import lombok.Getter;
 
 // API version: d0494f1c-8d81-4c76-ae1d-0c65bb8ef6de
 
-/** OrderPayment class. */
+/**
+ * Resource representing a single payment within a MercadoPago Order transaction.
+ * Contains the payment amount, method details, lifecycle status, and related data
+ * such as attempts, automatic payment configuration, and applied discounts.
+ */
 @Getter
 public class OrderPayment {
 
-    /** Payment amount. */
+    /** Payment amount expressed as a decimal string. */
     private String amount;
 
-    /** Payment method information. */
+    /** Payment method details including type, card, installments, and ticket information. */
     private OrderPaymentMethod paymentMethod;
 
-    /** Payment ID. */
+    /** Unique identifier of this payment. */
     private String id;
 
-    /** Reference ID. */
+    /** Reference identifier linking this payment to an external system. */
     private String referenceId;
 
-    /** Payment status. */
+    /** Current status of the payment (e.g., "approved", "pending", "rejected"). */
     private String status;
 
-    /** Payment status detail. */
+    /** Detailed sub-status providing additional context about the payment status. */
     private String statusDetail;
 
-    /** Payment date of expiration. */
+    /** ISO 8601 date-time when the payment expires if not completed. */
     private String dateOfExpiration;
 
-    /** Payment Expiration Time. */
+    /** Duration in ISO 8601 format after which the payment expires. */
     private String expirationTime;
 
-    /** Payment Paid Amount. */
+    /** Amount already paid on this payment, expressed as a decimal string. */
     private String paidAmount;
 
-    /** Payment Attempt Number. */
+    /** Sequential number of the current payment attempt. */
     private Integer attemptNumber;
 
-    /** Payment Attempts. */
+    /** Details of previous payment attempts made for this payment. */
     private OrderAttempts attempts;
 
-    /** Automatic Payments information. */
+    /** Configuration for automatic recurring payments. */
     private OrderAutomaticPayments automaticPayments;
 
-    /** Stored Credential information. */
+    /** Stored credential information for card-on-file transactions. */
     private OrderStoredCredential storedCredential;
 
-    /** Subscription Data information. */
+    /** Subscription data when this payment is part of a recurring billing cycle. */
     private OrderSubscriptionData subscriptionData;
 
-    /** Refunded amount. */
+    /** Total amount that has been refunded on this payment, expressed as a decimal string. */
     private String refundedAmount;
 
-    /** Provider. */
+    /** Payment provider or acquirer that processed this payment. */
     private String provider;
 
-    /** Discounts. */
+    /** List of discounts applied to this payment. */
     private List<OrderPaymentDiscount> discounts;
 }

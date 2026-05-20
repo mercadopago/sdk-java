@@ -4,41 +4,47 @@ import java.math.BigDecimal;
 import lombok.Builder;
 import lombok.Getter;
 
-/** Purchased item. */
+/**
+ * Represents an item to be purchased within a checkout preference. Each item includes pricing,
+ * quantity, and optional category and warranty details.
+ *
+ * @see com.mercadopago.client.preference.PreferenceRequest
+ * @see com.mercadopago.client.preference.PreferenceCategoryDescriptorRequest
+ */
 @Getter
 @Builder
 public class PreferenceItemRequest {
-  /** Item code. */
+  /** Unique item identifier or code in your system. */
   private final String id;
 
-  /** Item name. */
+  /** Display name of the item. */
   private final String title;
 
-  /** Type of the item. */
+  /** Type classification of the item. */
   private final String type;
 
-  /** Long item description. */
+  /** Detailed description of the item. */
   private final String description;
 
-  /** Image URL. */
+  /** URL of the item's image. */
   private final String pictureUrl;
 
-  /** Category of the item. */
+  /** Category identifier for the item. */
   private final String categoryId;
 
-  /** Currency ID. Code ISO_4217. */
+  /** Currency identifier in ISO 4217 format (e.g., ARS, BRL). */
   private final String currencyId;
 
-  /** Item's quantity. */
+  /** Number of units of this item. */
   private final Integer quantity;
 
-  /** Unit price. */
+  /** Price per unit of the item. */
   private final BigDecimal unitPrice;
 
-  /** Category descriptor*/
+  /** Category-specific descriptor with additional item metadata. */
   private final PreferenceCategoryDescriptorRequest categoryDescriptor;
 
-  /** True if you purchase the item with warranty, false if not. */
+  /** Whether the item includes a warranty. */
   private final boolean warranty;
 }
 

@@ -9,7 +9,7 @@ import com.mercadopago.net.MPResponse;
 /**
  * Mercado Pago Get Order.
  *
- * @see <a href="https://mercadopago.com/developers/en/reference/order/online-payments/get-order/get">Documentation</a>
+ * @see <a href="https://www.mercadopago.com/developers/en/reference/online-payments/checkout-api/get-order/get">Documentation</a>
  */
 public class GetOrderById {
 

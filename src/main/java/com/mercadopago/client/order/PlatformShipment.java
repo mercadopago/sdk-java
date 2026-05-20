@@ -4,24 +4,26 @@ import lombok.Builder;
 import lombok.Getter;
 
 /**
- * Platform shipment information (additional fields grouped under platform.shipment).
+ * Shipment information managed by the platform, provided within the additional info section.
+ * Contains logistics details such as delivery promises, drop-shipping flags, safety indicators,
+ * and package tracking data.
  */
 @Getter
 @Builder
 public class PlatformShipment {
-    /** Delivery promise. */
+    /** Expected delivery promise or estimated delivery date. */
     private final String deliveryPromise;
 
-    /** Drop shipping. */
+    /** Drop-shipping indicator or configuration. */
     private final String dropShipping;
 
-    /** Safety. */
+    /** Safety level or indicator for the shipment. */
     private final String safety;
 
-    /** Tracking information. */
+    /** Tracking information including code and status. */
     private final TrackingInfo tracking;
 
-    /** Withdrawn. */
+    /** Whether the shipment has been withdrawn by the buyer. */
     private final Boolean withdrawn;
 }
 

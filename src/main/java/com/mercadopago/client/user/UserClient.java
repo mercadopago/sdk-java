@@ -15,19 +15,36 @@ import com.mercadopago.serialization.Serializer;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 
-/** Client to get user information. */
+/**
+ * Client for the MercadoPago Users API.
+ *
+ * <p>Retrieves information about the authenticated MercadoPago user, including country, site,
+ * and account details. This client is used internally by {@link
+ * com.mercadopago.client.oauth.OauthClient} to build country-specific authorization URLs.
+ *
+ * <p>Usage example:
+ * <pre>{@code
+ * UserClient client = new UserClient();
+ * User user = client.get();
+ * String country = user.getCountryId();
+ * }</pre>
+ */
 public class UserClient extends MercadoPagoClient {
+
+  /** Class-level logger for user operations. */
   private static final Logger LOGGER = Logger.getLogger(UserClient.class.getName());
 
-  /** Default constructor. Uses the default http client used by the SDK */
+  /**
+   * Default constructor. Uses the default HTTP client provided by {@link MercadoPagoConfig}.
+   */
   public UserClient() {
     this(MercadoPagoConfig.getHttpClient());
   }
 
   /**
-   * Constructor used for providing a custom http client.
+   * Constructs a {@code UserClient} with a custom HTTP client.
    *
-   * @param httpClient Http Client
+   * @param httpClient the {@link MPHttpClient} implementation used to execute HTTP requests
    */
   public UserClient(MPHttpClient httpClient) {
     super(httpClient);
@@ -38,21 +55,24 @@ public class UserClient extends MercadoPagoClient {
   }
 
   /**
-   * Get user information.
+   * Retrieves information about the currently authenticated user.
    *
-   * @return user information
-   * @throws MPException an error if the request fails
+   * @return the authenticated {@link User} with account details and country information
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public User get() throws MPException, MPApiException {
     return this.get(null);
   }
 
   /**
-   * Get user information with custom attributes on request.
+   * Retrieves information about the currently authenticated user with custom request options.
    *
-   * @param requestOptions metadata to customize the request
-   * @return user information
-   * @throws MPException an error if the request fails
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the authenticated {@link User} with account details and country information
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public User get(MPRequestOptions requestOptions) throws MPException, MPApiException {
     LOGGER.info("Sending get user request");

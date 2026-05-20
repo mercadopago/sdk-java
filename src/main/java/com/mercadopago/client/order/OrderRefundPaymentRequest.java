@@ -3,15 +3,18 @@ package com.mercadopago.client.order;
 import lombok.Builder;
 import lombok.Getter;
 
-/** OrderRefundRequest class. */
+/**
+ * Request object representing a single payment to be refunded within an order refund operation.
+ * Specifies which payment to refund and the refund amount.
+ */
 @Builder
 @Getter
 public class OrderRefundPaymentRequest {
 
-    /** Payment ID. */
+    /** Identifier of the payment to refund. */
     private String id;
 
-    /** Refund amount. */
+    /** Amount to refund as a decimal string. Use {@code null} for a full refund. */
     private String amount;
 }
 

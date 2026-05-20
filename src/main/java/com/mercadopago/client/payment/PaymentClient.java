@@ -26,23 +26,49 @@ import java.util.HashMap;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 
-/** Client responsible for performing payment actions. */
+/**
+ * Client for the MercadoPago Payments API (v1).
+ *
+ * <p>Supports the full payment lifecycle: creation, retrieval, cancellation, capture (full and
+ * partial amounts), and search with pagination. Refund operations are delegated to an internal
+ * {@link PaymentRefundClient} and exposed via convenience methods on this class.
+ *
+ * <p>Usage example:
+ * <pre>{@code
+ * PaymentClient client = new PaymentClient();
+ * Payment payment = client.create(paymentCreateRequest);
+ * Payment captured = client.capture(payment.getId());
+ * PaymentRefund refund = client.refund(payment.getId());
+ * }</pre>
+ *
+ * @see PaymentRefundClient
+ * @see <a href="https://www.mercadopago.com/developers/en/reference/payments/_payments/post">
+ *     Payments API reference</a>
+ */
 public class PaymentClient extends MercadoPagoClient {
+
+  /** Class-level logger for payment operations. */
   private static final Logger LOGGER = Logger.getLogger(PaymentClient.class.getName());
 
+  /** URL template for single-payment endpoints (e.g. {@code /v1/payments/{id}}). */
   private static final String URL_WITH_ID = "/v1/payments/%s";
 
+  /** Internal client used to perform refund operations on behalf of this client. */
   private final PaymentRefundClient refundClient;
 
-  /** Default constructor. Uses the default http client used by the SDK. */
+  /**
+   * Default constructor. Uses the default HTTP client provided by {@link MercadoPagoConfig}.
+   */
   public PaymentClient() {
     this(MercadoPagoConfig.getHttpClient());
   }
 
   /**
-   * Constructor used for providing a custom http client.
+   * Constructs a {@code PaymentClient} with a custom HTTP client.
    *
-   * @param httpClient httpClient
+   * <p>Also initialises the internal {@link PaymentRefundClient} with the same HTTP client.
+   *
+   * @param httpClient the {@link MPHttpClient} implementation used to execute HTTP requests
    */
   public PaymentClient(MPHttpClient httpClient) {
     super(httpClient);
@@ -54,23 +80,26 @@ public class PaymentClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for getting payment.
+   * Retrieves a payment by its unique identifier.
    *
-   * @param id paymentId
-   * @return payment
-   * @throws MPException an error if the request fails
+   * @param id the unique identifier of the payment
+   * @return the requested {@link Payment}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public Payment get(Long id) throws MPException, MPApiException {
     return this.get(id, null);
   }
 
   /**
-   * Method responsible for getting payment.
+   * Retrieves a payment by its unique identifier with custom request options.
    *
-   * @param id paymentId
-   * @param requestOptions metadata to customize the request
-   * @return payment
-   * @throws MPException an error if the request fails
+   * @param id the unique identifier of the payment
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the requested {@link Payment}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public Payment get(Long id, MPRequestOptions requestOptions) throws MPException, MPApiException {
     LOGGER.info("Sending get payment request");
@@ -84,23 +113,28 @@ public class PaymentClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for creating payment.
+   * Creates a new payment.
    *
-   * @param request request
-   * @return payment response
-   * @throws MPException an error if the request fails
+   * @param request the {@link PaymentCreateRequest} with payment details (amount, payer, method,
+   *     etc.)
+   * @return the created {@link Payment}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public Payment create(PaymentCreateRequest request) throws MPException, MPApiException {
     return this.create(request, null);
   }
 
   /**
-   * Method responsible for creating payment with request options.
+   * Creates a new payment with custom request options.
    *
-   * @param request request
-   * @param requestOptions metadata to customize the request
-   * @return payment response
-   * @throws MPException an error if the request fails
+   * @param request the {@link PaymentCreateRequest} with payment details (amount, payer, method,
+   *     etc.)
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the created {@link Payment}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public Payment create(PaymentCreateRequest request, MPRequestOptions requestOptions)
       throws MPException, MPApiException {
@@ -121,23 +155,26 @@ public class PaymentClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for cancel payment.
+   * Cancels a pending payment by setting its status to {@code cancelled}.
    *
-   * @param id id
-   * @return Payment payment that was cancelled
-   * @throws MPException an error if the request fails
+   * @param id the unique identifier of the payment to cancel
+   * @return the cancelled {@link Payment} with updated status
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public Payment cancel(Long id) throws MPException, MPApiException {
     return this.cancel(id, null);
   }
 
   /**
-   * Method responsible for cancel payment with request options.
+   * Cancels a pending payment with custom request options.
    *
-   * @param id payment id
-   * @param requestOptions metadata to customize the request
-   * @return Payment payment that was cancelled
-   * @throws MPException an error if the request fails
+   * @param id the unique identifier of the payment to cancel
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the cancelled {@link Payment} with updated status
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public Payment cancel(Long id, MPRequestOptions requestOptions)
       throws MPException, MPApiException {
@@ -158,23 +195,26 @@ public class PaymentClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for capture payment.
+   * Captures a previously authorized payment for its full amount.
    *
-   * @param id id
-   * @return Payment payment that was captured
-   * @throws MPException an error if the request fails
+   * @param id the unique identifier of the payment to capture
+   * @return the captured {@link Payment} with updated status
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public Payment capture(Long id) throws MPException, MPApiException {
     return this.capture(id, null, null);
   }
 
   /**
-   * Method responsible for capture payment.
+   * Captures a previously authorized payment for its full amount with custom request options.
    *
-   * @param id id
-   * @param requestOptions metadata to customize the request
-   * @return Payment payment that was captured
-   * @throws MPException an error if the request fails
+   * @param id the unique identifier of the payment to capture
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the captured {@link Payment} with updated status
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public Payment capture(Long id, MPRequestOptions requestOptions)
       throws MPException, MPApiException {
@@ -182,25 +222,31 @@ public class PaymentClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for capture payment.
+   * Captures a previously authorized payment for the specified amount (partial capture).
    *
-   * @param id id
-   * @param amount amount to be captured
-   * @return Payment payment that was captured
-   * @throws MPException an error if the request fails
+   * @param id the unique identifier of the payment to capture
+   * @param amount the amount to capture; if {@code null}, the full authorized amount is captured
+   * @return the captured {@link Payment} with updated status
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public Payment capture(Long id, BigDecimal amount) throws MPException, MPApiException {
     return this.capture(id, amount, null);
   }
 
   /**
-   * Method responsible for capture payment.
+   * Captures a previously authorized payment for the specified amount with custom request options.
    *
-   * @param id paymentId
-   * @param amount amount to be captured
-   * @param requestOptions metadata to customize the request
-   * @return Payment payment that was captured
-   * @throws MPException an error if the request fails
+   * <p>If {@code amount} is {@code null}, the full authorized amount is captured (full capture).
+   * Otherwise, a partial capture is performed for the given amount.
+   *
+   * @param id the unique identifier of the payment to capture
+   * @param amount the amount to capture, or {@code null} for the full authorized amount
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the captured {@link Payment} with updated status
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public Payment capture(Long id, BigDecimal amount, MPRequestOptions requestOptions)
       throws MPException, MPApiException {
@@ -223,11 +269,13 @@ public class PaymentClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for search payments.
+   * Searches for payments matching the specified criteria.
    *
-   * @param request search request information
-   * @return list of results
-   * @throws MPException an error if the request fails
+   * @param request the {@link MPSearchRequest} containing search filters and pagination parameters
+   * @return an {@link MPResultsResourcesPage} of {@link Payment} with the matching results and
+   *     pagination metadata
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public MPResultsResourcesPage<Payment> search(MPSearchRequest request)
       throws MPException, MPApiException {
@@ -235,12 +283,15 @@ public class PaymentClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for search payments.
+   * Searches for payments matching the specified criteria with custom request options.
    *
-   * @param request search request information
-   * @param requestOptions metadata to customize the request
-   * @return list of results
-   * @throws MPException an error if the request fails
+   * @param request the {@link MPSearchRequest} containing search filters and pagination parameters
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return an {@link MPResultsResourcesPage} of {@link Payment} with the matching results and
+   *     pagination metadata
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public MPResultsResourcesPage<Payment> search(
       MPSearchRequest request, MPRequestOptions requestOptions) throws MPException, MPApiException {
@@ -256,23 +307,30 @@ public class PaymentClient extends MercadoPagoClient {
   }
 
   /**
-   * Creates a total refund for payment.
+   * Creates a total refund for a payment, returning the full amount to the payer.
    *
-   * @param paymentId payment id
-   * @return PaymentRefund refund information
-   * @throws MPException an error if the request fails
+   * <p>Delegates to the internal {@link PaymentRefundClient}.
+   *
+   * @param paymentId the unique identifier of the payment to refund
+   * @return the {@link PaymentRefund} with refund details
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public PaymentRefund refund(Long paymentId) throws MPException, MPApiException {
     return this.refund(paymentId, null, null);
   }
 
   /**
-   * Creates a total refund for payment.
+   * Creates a total refund for a payment with custom request options.
    *
-   * @param paymentId payment id
-   * @param requestOptions metadata to customize the request
-   * @return PaymentRefund refund information
-   * @throws MPException an error if the request fails
+   * <p>Delegates to the internal {@link PaymentRefundClient}.
+   *
+   * @param paymentId the unique identifier of the payment to refund
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the {@link PaymentRefund} with refund details
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public PaymentRefund refund(Long paymentId, MPRequestOptions requestOptions)
       throws MPException, MPApiException {
@@ -280,12 +338,15 @@ public class PaymentClient extends MercadoPagoClient {
   }
 
   /**
-   * Creates a refund for payment.
+   * Creates a partial refund for a payment, returning the specified amount to the payer.
    *
-   * @param paymentId payment id
-   * @param amount refund amount
-   * @return PaymentRefund refund information
-   * @throws MPException an error if the request fails
+   * <p>Delegates to the internal {@link PaymentRefundClient}.
+   *
+   * @param paymentId the unique identifier of the payment to refund
+   * @param amount the amount to refund; if {@code null}, a total refund is performed
+   * @return the {@link PaymentRefund} with refund details
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public PaymentRefund refund(Long paymentId, BigDecimal amount)
       throws MPException, MPApiException {
@@ -293,13 +354,18 @@ public class PaymentClient extends MercadoPagoClient {
   }
 
   /**
-   * Creates a refund for payment.
+   * Creates a total or partial refund for a payment with custom request options.
    *
-   * @param paymentId payment id
-   * @param amount refund amount
-   * @param requestOptions metadata to customize the request
-   * @return PaymentRefund refund information
-   * @throws MPException an error if the request fails
+   * <p>If {@code amount} is {@code null}, a total refund is performed. Otherwise, the specified
+   * amount is refunded (partial refund). Delegates to the internal {@link PaymentRefundClient}.
+   *
+   * @param paymentId the unique identifier of the payment to refund
+   * @param amount the amount to refund, or {@code null} for a total refund
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the {@link PaymentRefund} with refund details
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public PaymentRefund refund(Long paymentId, BigDecimal amount, MPRequestOptions requestOptions)
       throws MPException, MPApiException {
@@ -307,25 +373,32 @@ public class PaymentClient extends MercadoPagoClient {
   }
 
   /**
-   * Gets a refund by id from the payment.
+   * Retrieves a specific refund associated with a payment.
    *
-   * @param paymentId payment id
-   * @param refundId refund id
-   * @return PaymentRefund refund information
-   * @throws MPException an error if the request fails
+   * <p>Delegates to the internal {@link PaymentRefundClient}.
+   *
+   * @param paymentId the unique identifier of the payment
+   * @param refundId the unique identifier of the refund
+   * @return the {@link PaymentRefund} with refund details
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public PaymentRefund getRefund(Long paymentId, Long refundId) throws MPException, MPApiException {
     return this.getRefund(paymentId, refundId, null);
   }
 
   /**
-   * Gets a refund by id from the payment.
+   * Retrieves a specific refund associated with a payment with custom request options.
    *
-   * @param paymentId payment id
-   * @param refundId refund id
-   * @param requestOptions metadata to customize the request
-   * @return PaymentRefund refund information
-   * @throws MPException an error if the request fails
+   * <p>Delegates to the internal {@link PaymentRefundClient}.
+   *
+   * @param paymentId the unique identifier of the payment
+   * @param refundId the unique identifier of the refund
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the {@link PaymentRefund} with refund details
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public PaymentRefund getRefund(Long paymentId, Long refundId, MPRequestOptions requestOptions)
       throws MPException, MPApiException {
@@ -333,11 +406,14 @@ public class PaymentClient extends MercadoPagoClient {
   }
 
   /**
-   * Lists the refunds of the payment.
+   * Lists all refunds associated with a payment.
    *
-   * @param paymentId payment id
-   * @return list of PaymentRefund
-   * @throws MPException an error if the request fails
+   * <p>Delegates to the internal {@link PaymentRefundClient}.
+   *
+   * @param paymentId the unique identifier of the payment
+   * @return an {@link MPResourceList} of {@link PaymentRefund} for the given payment
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public MPResourceList<PaymentRefund> listRefunds(Long paymentId)
       throws MPException, MPApiException {
@@ -345,12 +421,16 @@ public class PaymentClient extends MercadoPagoClient {
   }
 
   /**
-   * Lists the refunds of the payment.
+   * Lists all refunds associated with a payment with custom request options.
    *
-   * @param paymentId payment id
-   * @param requestOptions metadata to customize the request
-   * @return list of PaymentRefund
-   * @throws MPException an error if the request fails
+   * <p>Delegates to the internal {@link PaymentRefundClient}.
+   *
+   * @param paymentId the unique identifier of the payment
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return an {@link MPResourceList} of {@link PaymentRefund} for the given payment
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public MPResourceList<PaymentRefund> listRefunds(Long paymentId, MPRequestOptions requestOptions)
       throws MPException, MPApiException {

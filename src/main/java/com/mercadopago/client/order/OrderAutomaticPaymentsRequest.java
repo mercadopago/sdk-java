@@ -5,20 +5,23 @@ import lombok.Getter;
 
 // API version: 1ff4822a-2dfd-4393-800e-a562edb3fe32
 
-/** OrderAutomaticPaymentsRequest class. */
+/**
+ * Request object for configuring automatic recurring payments within an order. Defines the
+ * payment profile, retry policy, and scheduling dates for automated charge processing.
+ */
 @Getter
 @Builder
 public class OrderAutomaticPaymentsRequest {
 
-  /** Payment profile ID. */
+  /** Identifier of the payment profile used for automatic charges. */
   private String paymentProfileId;
 
-  /** Retries. */
+  /** Number of retry attempts if the automatic payment fails. */
   private Integer retries;
 
-  /** Schedule date. */
+  /** Scheduled date for the automatic payment, in ISO 8601 format. */
   private String scheduleDate;
 
-  /** Due date. */
+  /** Due date for the payment, in ISO 8601 format. */
   private String dueDate;
 }

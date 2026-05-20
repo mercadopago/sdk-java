@@ -4,42 +4,44 @@ import lombok.Builder;
 import lombok.Getter;
 
 /**
- * Seller information for additional info platform object.
+ * Seller information within the platform section of additional info. Provides details about the
+ * merchant or seller on the platform, including contact information, business profile, and
+ * registration data used for risk assessment and compliance purposes.
  */
 @Getter
 @Builder
 public class SellerInfo {
-    /** Seller id. */
+    /** Unique identifier of the seller on the platform. */
     private final String id;
 
-    /** Seller name. */
+    /** Business or display name of the seller. */
     private final String name;
 
-    /** Seller email. */
+    /** Email address of the seller. */
     private final String email;
 
-    /** Seller status. */
+    /** Current status of the seller account (e.g. "active", "inactive"). */
     private final String status;
 
-    /** Seller referral url. */
+    /** Referral URL associated with the seller. */
     private final String referralUrl;
 
-    /** Seller registration date. */
+    /** Date when the seller registered on the platform, in ISO 8601 format. */
     private final String registrationDate;
 
-    /** Seller hired plan. */
+    /** Plan hired by the seller on the platform. */
     private final String hiredPlan;
 
-    /** Seller business type. */
+    /** Type of business operated by the seller. */
     private final String businessType;
 
-    /** Seller address. */
+    /** Physical address of the seller. */
     private final SellerAddress address;
 
-    /** Seller identification. */
+    /** Identification document of the seller. */
     private final SellerIdentification identification;
 
-    /** Seller phone. */
+    /** Phone contact information for the seller. */
     private final SellerPhone phone;
 }
 

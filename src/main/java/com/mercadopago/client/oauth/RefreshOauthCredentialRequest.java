@@ -4,27 +4,29 @@ import lombok.Builder;
 import lombok.Getter;
 
 /**
- * Credential information to perform a refresh credential request. Go to <a
- * href="https://www.mercadopago.com.br/developers/en/guides/security/oauth">this page</a> to learn
- * more.
+ * Request DTO used to refresh an expired OAuth access token using a previously obtained refresh
+ * token. This avoids requiring the seller to re-authorize the application and ensures
+ * uninterrupted API access.
+ *
+ * @see <a href="https://www.mercadopago.com.br/developers/en/guides/security/oauth">OAuth Guide</a>
  */
 @Getter
 @Builder
 public class RefreshOauthCredentialRequest {
   /**
-   * Type of operation to perform to get your credentials. This is a fixed parameter with a
-   * refresh_token value.
+   * Grant type for the OAuth token request. Fixed as {@code "refresh_token"} for the token
+   * refresh flow.
    */
   private final String grantType = "refresh_token";
   /**
-   * Private key to be used in some plugins to generate payments. You can get it in Your
-   * credentials.
+   * Application secret key (client_secret) used to authenticate the refresh request. Obtained
+   * from the Mercado Pago developer credentials panel.
    */
   private final String clientSecret;
   /**
-   * Unique ID that identifies your integration. You can get it in your Mercado Pago credentials.
+   * Application ID (client_id) that uniquely identifies your integration in Mercado Pago.
    */
   private final String clientId;
-  /** Value received with your seller's data. */
+  /** Refresh token obtained from the initial OAuth authorization code exchange. */
   private final String refreshToken;
 }

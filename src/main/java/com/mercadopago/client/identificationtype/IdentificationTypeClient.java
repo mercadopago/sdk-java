@@ -16,19 +16,38 @@ import com.mercadopago.resources.identificationtype.IdentificationType;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 
-/** Client with methods of Identification Type APIs. */
+/**
+ * Client for the MercadoPago Identification Types API.
+ *
+ * <p>Retrieves the list of identification document types available for the country associated
+ * with the authenticated user's credentials (e.g., CPF for Brazil, DNI for Argentina).
+ *
+ * <p>Usage example:
+ * <pre>{@code
+ * IdentificationTypeClient client = new IdentificationTypeClient();
+ * MPResourceList<IdentificationType> types = client.list();
+ * }</pre>
+ *
+ * @see <a
+ *     href="https://www.mercadopago.com.br/developers/en/reference/identification_types/_identification_types/get">
+ *     Identification Types API reference</a>
+ */
 public class IdentificationTypeClient extends MercadoPagoClient {
+
+  /** Class-level logger for identification type operations. */
   private static final Logger LOGGER = Logger.getLogger(IdentificationTypeClient.class.getName());
 
-  /** Default constructor. Uses the default http client used by the SDK. */
+  /**
+   * Default constructor. Uses the default HTTP client provided by {@link MercadoPagoConfig}.
+   */
   public IdentificationTypeClient() {
     this(MercadoPagoConfig.getHttpClient());
   }
 
   /**
-   * Constructor used for providing a custom http client.
+   * Constructs an {@code IdentificationTypeClient} with a custom HTTP client.
    *
-   * @param httpClient httpClient
+   * @param httpClient the {@link MPHttpClient} implementation used to execute HTTP requests
    */
   public IdentificationTypeClient(MPHttpClient httpClient) {
     super(httpClient);
@@ -39,10 +58,11 @@ public class IdentificationTypeClient extends MercadoPagoClient {
   }
 
   /**
-   * List all identification types.
+   * Lists all available identification types for the authenticated user's country.
    *
-   * @return list of identification types
-   * @throws MPException an error if the request fails
+   * @return an {@link MPResourceList} of {@link IdentificationType} (e.g., CPF, DNI, CURP)
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/identification_types/_identification_types/get">api
    *     docs</a>
@@ -52,11 +72,13 @@ public class IdentificationTypeClient extends MercadoPagoClient {
   }
 
   /**
-   * List all identification types.
+   * Lists all available identification types with custom request options.
    *
-   * @param requestOptions metadata to customize the request
-   * @return list of identification types
-   * @throws MPException an error if the request fails
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return an {@link MPResourceList} of {@link IdentificationType} (e.g., CPF, DNI, CURP)
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/identification_types/_identification_types/get">api
    *     docs</a>

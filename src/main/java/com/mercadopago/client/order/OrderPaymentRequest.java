@@ -5,26 +5,30 @@ import lombok.Getter;
 
 // API version: 1ff4822a-2dfd-4393-800e-a562edb3fe32
 
-/** OrderPaymentRequest class. */
+/**
+ * Request object representing a single payment within an order transaction. Defines the payment
+ * amount, method, and optional recurring payment settings such as automatic payments,
+ * stored credentials, and subscription data.
+ */
 @Getter
 @Builder
 public class OrderPaymentRequest {
 
-    /** Payment amount. */
+    /** Payment amount as a decimal string. */
     private String amount;
 
-    /** Payment expirationTime. */
+    /** ISO 8601 duration or date-time indicating when this payment expires. */
     private String expirationTime;
 
-    /** Payment method information. */
+    /** Payment method details including type, token, and installments. */
     private OrderPaymentMethodRequest paymentMethod;
 
-    /** Automatic Payments information. */
+    /** Configuration for automatic recurring payments. */
     private OrderAutomaticPaymentsRequest automaticPayments;
 
-    /** Stored Credential information. */
+    /** Stored credential information for card-on-file transactions. */
     private OrderStoredCredentialRequest storedCredential;
 
-    /** Subscription Data information. */
+    /** Subscription data for recurring billing scenarios. */
     private OrderSubscriptionDataRequest subscriptionData;
 }

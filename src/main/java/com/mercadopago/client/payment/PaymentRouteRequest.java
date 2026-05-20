@@ -4,22 +4,26 @@ import java.time.OffsetDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
-/** PaymentRouteRequest class. */
+/**
+ * Request object describing a travel route associated with a purchased item.
+ * Used within the category descriptor to provide flight or trip details
+ * that support fraud-prevention analysis for travel-related transactions.
+ */
 @Getter
 @Builder
 public class PaymentRouteRequest {
-  /** Departure. */
+  /** Departure location (e.g. airport IATA code or city name). */
   private final String departure;
 
-  /** Destination. */
+  /** Destination location (e.g. airport IATA code or city name). */
   private final String destination;
 
-  /** Departure date time. */
+  /** Scheduled departure date and time. */
   private final OffsetDateTime departureDateTime;
 
-  /** Arrival date time. */
+  /** Scheduled arrival date and time. */
   private final OffsetDateTime arrivalDateTime;
 
-  /** Company. */
+  /** Name of the transportation company or airline. */
   private final String company;
 }

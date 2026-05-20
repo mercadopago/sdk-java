@@ -19,22 +19,54 @@ import com.mercadopago.net.UrlFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Mercado Pago client class. */
+/**
+ * Abstract base client for all MercadoPago API interactions.
+ *
+ * <p>This class provides the foundation for every specialized API client in the SDK. It handles
+ * HTTP request execution, default and custom header management (including authorization via Bearer
+ * tokens), timeout resolution with a three-level priority (request options, request object, global
+ * config), and automatic idempotency key generation for {@code POST}, {@code PUT}, and
+ * {@code PATCH} requests.
+ *
+ * <p>Subclasses should use the protected {@code send()}, {@code search()}, and {@code list()}
+ * helper methods to communicate with the MercadoPago REST API.
+ *
+ * @see com.mercadopago.MercadoPagoConfig
+ * @see MPHttpClient
+ * @see MPRequestOptions
+ */
 public abstract class MercadoPagoClient {
+
+  /** Default value for the {@code Accept} HTTP header. */
   private static final String ACCEPT_HEADER_VALUE = "application/json";
 
+  /** Default value for the {@code Content-Type} HTTP header, including UTF-8 charset. */
   private static final String CONTENT_TYPE_HEADER_VALUE = "application/json; charset=UTF-8";
+
+  /** Format string used to build the {@code Authorization: Bearer} header value. */
   private static final String BEARER = "Bearer %s";
+
+  /** Path segment used to detect OAuth token requests and skip the Bearer header. */
   private static final String OAUTH_TOKEN = "/oauth/token";
 
+  /** HTTP client used to execute every request dispatched by this client instance. */
   protected final MPHttpClient httpClient;
 
+  /**
+   * Default HTTP headers sent with every request. Populated during construction with
+   * {@code Accept}, {@code Content-Type}, {@code User-Agent}, {@code Product-Id}, and
+   * {@code Tracking-Id}.
+   */
   protected Map<String, String> defaultHeaders;
 
   /**
-   * MercadoPagoClient constructor.
+   * Constructs a new {@code MercadoPagoClient} with the given HTTP client.
    *
-   * @param httpClient http client
+   * <p>Initialises the default headers map with {@code Accept}, {@code Content-Type},
+   * {@code User-Agent}, {@code Product-Id}, and {@code Tracking-Id} values taken from
+   * {@link MercadoPagoConfig}.
+   *
+   * @param httpClient the {@link MPHttpClient} implementation used to execute HTTP requests
    */
   public MercadoPagoClient(MPHttpClient httpClient) {
     this.httpClient = httpClient;
@@ -49,23 +81,37 @@ public abstract class MercadoPagoClient {
   }
 
   /**
-   * Method used directly or by other methods to make requests.
+   * Sends an HTTP request using the pre-built {@link MPRequest} object with default configuration.
    *
-   * @param request request data
-   * @return MPResponse response object
-   * @throws MPException exception
+   * <p>This is a convenience overload that delegates to {@link #send(MPRequest, MPRequestOptions)}
+   * with {@code null} request options, meaning global configuration from
+   * {@link MercadoPagoConfig} is used for timeouts and access tokens.
+   *
+   * @param request the {@link MPRequest} containing URI, HTTP method, payload, and query parameters
+   * @return the {@link MPResponse} with status code, headers, and body returned by the API
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   protected MPResponse send(MPRequest request) throws MPException, MPApiException {
     return this.send(request, null);
   }
 
   /**
-   * Method used directly or by other methods to make requests with request options.
+   * Sends an HTTP request using the pre-built {@link MPRequest} object, applying optional
+   * per-request overrides.
    *
-   * @param request request
-   * @param requestOptions requestOptions
-   * @return MPResponse response
-   * @throws MPException exception
+   * <p>This method resolves the final URL (formatting query parameters), selects the access token
+   * (preferring {@code requestOptions} over global config), merges default and custom headers,
+   * and resolves timeouts with a three-level priority: request options &gt; request object &gt;
+   * {@link MercadoPagoConfig} defaults. An idempotency key is automatically generated for
+   * {@code POST}, {@code PUT}, and {@code PATCH} methods unless one is already present.
+   *
+   * @param request the {@link MPRequest} containing URI, HTTP method, payload, and query parameters
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the {@link MPResponse} with status code, headers, and body returned by the API
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   protected MPResponse send(MPRequest request, MPRequestOptions requestOptions)
       throws MPException, MPApiException {
@@ -85,14 +131,19 @@ public abstract class MercadoPagoClient {
   }
 
   /**
-   * Method used directly or by other methods to make requests.
+   * Builds and sends an HTTP request from individual components with default configuration.
    *
-   * @param path path of request url
-   * @param method http method used in the request
-   * @param payload request body
-   * @param queryParams query string params
-   * @return MPResponse response data
-   * @throws MPException exception
+   * <p>This is a convenience overload that delegates to
+   * {@link #send(String, HttpMethod, JsonObject, Map, MPRequestOptions)} with {@code null}
+   * request options.
+   *
+   * @param path the relative API path (e.g. {@code "/v1/payments"})
+   * @param method the {@link HttpMethod} to use (GET, POST, PUT, DELETE, PATCH)
+   * @param payload the JSON request body, or {@code null} for body-less requests
+   * @param queryParams a map of query-string parameters, or {@code null} if none
+   * @return the {@link MPResponse} with status code, headers, and body returned by the API
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   protected MPResponse send(
       String path, HttpMethod method, JsonObject payload, Map<String, Object> queryParams)
@@ -101,16 +152,22 @@ public abstract class MercadoPagoClient {
   }
 
   /**
-   * Method used directly or by other methods to make requests.
+   * Builds and sends an HTTP request from individual components, applying optional per-request
+   * overrides.
    *
-   * @param path path of request url
-   * @param method http method used in the request
-   * @param payload request body
-   * @param queryParams query string params
-   * @param requestOptions extra data used to override configuration passed to MercadoPagoConfig for
-   *     a single request
-   * @return response data
-   * @throws MPException exception
+   * <p>Internally constructs an {@link MPRequest} via {@code buildRequest()}, then delegates to
+   * {@link #send(MPRequest)}. This is the most flexible {@code send()} variant and is the
+   * ultimate target of all other convenience overloads.
+   *
+   * @param path the relative API path (e.g. {@code "/v1/payments"})
+   * @param method the {@link HttpMethod} to use (GET, POST, PUT, DELETE, PATCH)
+   * @param payload the JSON request body, or {@code null} for body-less requests
+   * @param queryParams a map of query-string parameters, or {@code null} if none
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the {@link MPResponse} with status code, headers, and body returned by the API
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   protected MPResponse send(
       String path,
@@ -124,12 +181,17 @@ public abstract class MercadoPagoClient {
   }
 
   /**
-   * Convenience method to perform searches.
+   * Performs a search request against the given API path using default configuration.
    *
-   * @param path path of request url
-   * @param request parameters for performing search request
-   * @return response data
-   * @throws MPException exception
+   * <p>Delegates to {@link #search(String, MPSearchRequest, MPRequestOptions)} with {@code null}
+   * request options.
+   *
+   * @param path the relative API path for the search endpoint (e.g. {@code "/v1/payments/search"})
+   * @param request the {@link MPSearchRequest} containing search/filter/pagination parameters, or
+   *     {@code null} for an unfiltered search
+   * @return the {@link MPResponse} with the search results returned by the API
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   protected MPResponse search(String path, MPSearchRequest request)
       throws MPException, MPApiException {
@@ -137,14 +199,20 @@ public abstract class MercadoPagoClient {
   }
 
   /**
-   * Convenience method to perform searches.
+   * Performs a search request against the given API path, applying optional per-request overrides.
    *
-   * @param path path of searchRequest url
-   * @param searchRequest parameters for performing search searchRequest
-   * @param requestOptions extra data used to override configuration passed to MercadoPagoConfig for
-   *     a single searchRequest
-   * @return response data
-   * @throws MPException exception
+   * <p>Extracts query parameters from the {@link MPSearchRequest} and issues an HTTP {@code GET}
+   * via the underlying {@code send()} method. If {@code searchRequest} is {@code null}, no
+   * query parameters are appended.
+   *
+   * @param path the relative API path for the search endpoint (e.g. {@code "/v1/payments/search"})
+   * @param searchRequest the {@link MPSearchRequest} containing search/filter/pagination
+   *     parameters, or {@code null} for an unfiltered search
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the {@link MPResponse} with the search results returned by the API
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   protected MPResponse search(
       String path, MPSearchRequest searchRequest, MPRequestOptions requestOptions)
@@ -156,13 +224,19 @@ public abstract class MercadoPagoClient {
   }
 
   /**
-   * Convenience method to perform requests that returns lists of results.
+   * Performs an HTTP {@code GET} request that returns a list of resources from the given API path.
    *
-   * @param path path of request url
-   * @param requestOptions extra data used to override configuration passed to MercadoPagoConfig for
-   *     a single request
-   * @return response data
-   * @throws MPException exception
+   * <p>This is a convenience overload that delegates to
+   * {@link #list(String, HttpMethod, JsonObject, Map, MPRequestOptions)} using {@code GET} with
+   * no payload or query parameters.
+   *
+   * @param path the relative API path for the list endpoint
+   *     (e.g. {@code "/v1/customers/123/cards"})
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the {@link MPResponse} containing the list of resources returned by the API
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   protected MPResponse list(String path, MPRequestOptions requestOptions)
       throws MPException, MPApiException {
@@ -170,16 +244,22 @@ public abstract class MercadoPagoClient {
   }
 
   /**
-   * Convenience method to perform requests that returns lists of results.
+   * Performs an HTTP request that returns a list of resources, with full control over all request
+   * parameters.
    *
-   * @param path path of request url
-   * @param method http method used in the request
-   * @param payload request body
-   * @param queryParams query string params
-   * @param requestOptions extra data used to override configuration passed to MercadoPagoConfig for
-   *     a single request
-   * @return response data
-   * @throws MPException exception
+   * <p>This method is functionally identical to
+   * {@link #send(String, HttpMethod, JsonObject, Map, MPRequestOptions)} and exists as a
+   * semantic alias to improve readability in subclasses that list resources.
+   *
+   * @param path the relative API path for the list endpoint
+   * @param method the {@link HttpMethod} to use (typically {@code GET})
+   * @param payload the JSON request body, or {@code null} for body-less requests
+   * @param queryParams a map of query-string parameters, or {@code null} if none
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the {@link MPResponse} containing the list of resources returned by the API
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   protected MPResponse list(
       String path,

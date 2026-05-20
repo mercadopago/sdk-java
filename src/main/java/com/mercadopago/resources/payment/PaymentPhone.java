@@ -2,12 +2,18 @@ package com.mercadopago.resources.payment;
 
 import lombok.Getter;
 
-/** PaymentPhone class. */
+/**
+ * Resource that represents a phone number associated with a MercadoPago payment payer.
+ *
+ * <p>Contains the area code and phone number, used for contact and fraud prevention purposes.
+ *
+ * @see PaymentAdditionalInfoPayer#getPhone()
+ */
 @Getter
 public class PaymentPhone {
-  /** Area code. */
+  /** Area code of the phone number (e.g. 11, 21, 55). */
   private String areaCode;
 
-  /** Phone number. */
+  /** Phone number without the area code. */
   private String number;
 }
