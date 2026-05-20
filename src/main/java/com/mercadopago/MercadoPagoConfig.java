@@ -35,8 +35,7 @@ import org.apache.http.client.HttpRequestRetryHandler;
  */
 public class MercadoPagoConfig {
 
-  /** Current version of the MercadoPago Java SDK (used in tracking headers). */
-  public static final String CURRENT_VERSION = "2.9.2";
+  public static final String CURRENT_VERSION = "3.0.1";
 
   /** Internal MercadoPago product identifier sent in every API request for analytics. */
   public static final String PRODUCT_ID = "BC32A7VTRPP001U8NHJ0";
