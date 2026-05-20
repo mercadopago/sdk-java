@@ -1,0 +1,18 @@
+README.md
+  h_04a99bed328080 23
+src/main/java/com/mercadopago/MercadoPagoConfig.java
+  h_04a99bed328080 18
+pom.xml
+  h_04a99bed328080 7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "85734f39b04d0123aede524428f025908331a372",
+  "prompts": {},
+  "humans": {
+    "h_04a99bed328080": {
+      "author": "Daniel Alfaro <daniel.alfaro@mercadolibre.com.co>"
+    }
+  }
+}
