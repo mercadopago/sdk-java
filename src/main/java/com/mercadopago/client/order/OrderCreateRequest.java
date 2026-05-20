@@ -55,6 +55,8 @@ public class OrderCreateRequest extends MPResource {
     /** Expiration time of the order. */
     private String expirationTime;
 
+    /** Currency code of the order (e.g. "COP" for Colombia, required for PSE). */
+    private String currency;
 
     /** Additional information of the order. */
     private AdditionalInfoRequest additionalInfo;

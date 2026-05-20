@@ -23,6 +23,9 @@ public class PayerInfo {
 
     /** Date of last purchase. */
     private final String lastPurchase;
+
+    /** Payer's IP address (required by risk engine for PSE in Colombia). */
+    private final String ipAddress;
 }
 
 

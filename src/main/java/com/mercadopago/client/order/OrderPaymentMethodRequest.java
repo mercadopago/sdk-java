@@ -24,4 +24,7 @@ public class OrderPaymentMethodRequest {
 
     /** How will look the payment in the card bill (e.g.: MERCADOPAGO).  */
     private String statementDescriptor;
+
+    /** Financial institution code (required for PSE in Colombia, e.g. "1007" Bancolombia). */
+    private String financialInstitution;
 }
