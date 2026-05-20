@@ -1,0 +1,26 @@
+src/main/java/com/mercadopago/client/order/PayerInfo.java
+  s_69fabdbcb9c498::t_347fa04954121a 26-28
+src/main/java/com/mercadopago/client/order/OrderPaymentMethodRequest.java
+  s_69fabdbcb9c498::t_abdf558a709502 27-29
+src/main/java/com/mercadopago/client/order/OrderCreateRequest.java
+  s_69fabdbcb9c498::t_3094e65aa4b999 58-59
+src/main/java/com/mercadopago/example/apis/order/CreateOrderPSE.java
+  s_69fabdbcb9c498::t_37a61877dd280c 87
+  s_69fabdbcb9c498::t_4728181e89be90 1-86,88-125
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "ca623fb9954ae0f4a5a0e4f9bc663d5b011e7402",
+  "prompts": {},
+  "sessions": {
+    "s_69fabdbcb9c498": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6841e5d1-e091-4d60-b9db-cbe4c995446d",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Daniel Alfaro <daniel.alfaro@mercadolibre.com.co>"
+    }
+  }
+}
