@@ -1,0 +1,9 @@
+pom.xml
+  ai_agent 7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "510176700ded1ef532de9efbc47858041e9bafe0",
+  "prompts": {}
+}
