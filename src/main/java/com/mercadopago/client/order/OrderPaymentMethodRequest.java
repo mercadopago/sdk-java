@@ -28,4 +28,7 @@ public class OrderPaymentMethodRequest {
 
     /** Text that will appear on the cardholder's billing statement (e.g. "MERCADOPAGO"). */
     private String statementDescriptor;
+
+    /** Financial institution code (required for PSE in Colombia, e.g. "1007" Bancolombia). */
+    private String financialInstitution;
 }
