@@ -20,7 +20,7 @@ already.
 <dependency>
   <groupId>com.mercadopago</groupId>
   <artifactId>sdk-java</artifactId>
-  <version>3.0.2</version>
+  <version>3.1.0</version>
 </dependency>
 ```
 
