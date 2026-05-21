@@ -4,21 +4,28 @@ import com.mercadopago.resources.common.Address;
 import java.time.OffsetDateTime;
 import lombok.Getter;
 
-/** PaymentAdditionalInfoPayer class. */
+/**
+ * Resource that holds extended payer information within the additional info of a MercadoPago payment.
+ *
+ * <p>Provides the payer's name, phone, address, and registration date on the merchant's platform.
+ * This data supplements the primary {@link PaymentPayer} and helps improve fraud detection.
+ *
+ * @see PaymentAdditionalInfo#getPayer()
+ */
 @Getter
 public class PaymentAdditionalInfoPayer {
-  /** Payer's name. */
+  /** First name of the payer as registered on the merchant's platform. */
   private String firstName;
 
-  /** Payer's last name. */
+  /** Last name of the payer as registered on the merchant's platform. */
   private String lastName;
 
-  /** Payer's phone. */
+  /** Phone contact information of the payer. */
   private PaymentPhone phone;
 
-  /** Payer's address. */
+  /** Residential or billing address of the payer. */
   private Address address;
 
-  /** Date of registration of the payer on your site. */
+  /** Date and time when the payer registered on the merchant's site. */
   private OffsetDateTime registrationDate;
 }

@@ -3,36 +3,44 @@ package com.mercadopago.resources.payment;
 import java.math.BigDecimal;
 import lombok.Getter;
 
-/** PaymentItem class. */
+/**
+ * Resource that represents a single item being purchased in a MercadoPago payment.
+ *
+ * <p>Contains details about the product or service such as title, description, quantity,
+ * unit price, and category. Item information is included in the additional info and helps
+ * with fraud prevention and purchase tracking.
+ *
+ * @see PaymentAdditionalInfo#getItems()
+ */
 @Getter
 public class PaymentItem {
-  /** Item code. */
+  /** Unique item code or SKU provided by the merchant. */
   private String id;
 
-  /** Item name. */
+  /** Display name of the item. */
   private String title;
 
-  /** Type of the item. */
+  /** Type classification of the item. */
   private String type;
 
-  /** Long item description. */
+  /** Detailed description of the item. */
   private String description;
 
-  /** Image URL. */
+  /** URL of the item's image for display purposes. */
   private String pictureUrl;
 
-  /** Category of the item. */
+  /** Category identifier that classifies the item (e.g. electronics, clothing). */
   private String categoryId;
 
-  /** Currency of the unit price. */
+  /** ISO 4217 currency code of the unit price. */
   private String currencyId;
 
-  /** Item's quantity. */
+  /** Number of units of this item being purchased. */
   private Integer quantity;
 
-  /** Unit price. */
+  /** Price per unit of the item. */
   private BigDecimal unitPrice;
 
-  /** True if the item has warranty, false if not. */
+  /** Whether the item includes a warranty ({@code true}) or not ({@code false}). */
   private boolean warranty;
 }

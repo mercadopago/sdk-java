@@ -4,24 +4,26 @@ import lombok.Builder;
 import lombok.Getter;
 
 /**
- * Payer information inside additional_info.
+ * Additional payer information provided within the {@code additional_info} section of an order.
+ * Contains risk-assessment data such as authentication type, account age, and purchase history
+ * to improve fraud detection and payment approval rates.
  */
 @Getter
 @Builder
 public class PayerInfo {
-    /** Payer authentication type. */
+    /** Type of authentication used by the payer (e.g. "Gmail", "Facebook", "native"). */
     private final String authenticationType;
 
-    /** Payer registration date. */
+    /** Date when the payer registered on the platform, in ISO 8601 format. */
     private final String registrationDate;
 
-    /** If payer is prime user. */
+    /** Whether the payer is a prime or premium user. */
     private final Boolean isPrimeUser;
 
-    /** If is first online purchase. */
+    /** Whether this is the payer's first online purchase. */
     private final Boolean isFirstPurchaseOnline;
 
-    /** Date of last purchase. */
+    /** Date of the payer's last purchase, in ISO 8601 format. */
     private final String lastPurchase;
 
     /** Payer's IP address (required by risk engine for PSE in Colombia). */

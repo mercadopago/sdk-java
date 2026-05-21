@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Mercado Pago Capture Order.
  *
- * @see <a href="https://mercadopago.com/developers/en/reference/order/online-payments/capture/post">Documentation</a>
+ * @see <a href="https://www.mercadopago.com/developers/en/reference/online-payments/checkout-api/capture-order/post">Documentation</a>
  */
 public class CaptureOrder {
 

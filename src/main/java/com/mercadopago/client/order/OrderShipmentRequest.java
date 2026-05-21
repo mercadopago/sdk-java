@@ -2,22 +2,25 @@ package com.mercadopago.client.order;
 
 import lombok.Getter;
 
-/** OrderShipmentRequest class. */
+/**
+ * Request object containing shipment details for an order. Includes the receiver's address,
+ * package dimensions, and shipping options such as express delivery and seller pickup.
+ */
 @Getter
 public class OrderShipmentRequest {
 
-    /** Receiver address information. */
+    /** Destination address where the shipment will be delivered. */
     private OrderReceiverAddressRequest receiverAddress;
 
-    /** Weight of the package. */
+    /** Width of the package in centimeters. */
     private float width;
 
-    /** Height of the package. */
+    /** Height of the package in centimeters. */
     private float height;
 
-    /** If the shipment is express. */
+    /** Whether the shipment uses express delivery. */
     private Boolean expressShipment;
 
-    /** If to pick up on seller. */
+    /** Whether the buyer will pick up the order at the seller's location. */
     private Boolean pickUpOnSeller;
 }

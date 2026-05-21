@@ -2,45 +2,53 @@ package com.mercadopago.resources.payment;
 
 import lombok.Getter;
 
-/** PaymentTransactionData class. */
+/**
+ * Resource that holds transaction-level data from the point of interaction for a MercadoPago payment.
+ *
+ * <p>Contains QR code information for Pix payments, bank transfer details, ticket URLs for
+ * offline payment methods, and subscription-related data for recurring payments. This data
+ * is typically provided within the {@link PaymentPointOfInteraction} resource.
+ *
+ * @see PaymentPointOfInteraction#getTransactionData()
+ */
 @Getter
 public class PaymentTransactionData {
-  /** QR code. */
+  /** QR code string content used for Pix or other QR-based payment methods. */
   private String qrCode;
 
-  /** QR code image in Base 64. */
+  /** Base64-encoded image of the QR code for rendering in client applications. */
   private String qrCodeBase64;
 
-  /** BACEN identifier for Pix. */
+  /** BACEN (Brazilian Central Bank) end-to-end identifier for Pix transactions. */
   private String transactionId;
 
-  /** Bank transfer ID. */
+  /** Identifier of the bank transfer transaction. */
   private Long bankTransferId;
 
-  /** Financial institution. */
+  /** Identifier of the financial institution that processed the transaction. */
   private Long financialInstitution;
 
-  /** Bank info. */
+  /** Banking information for both the payer and the collector involved in the transaction. */
   private PaymentBankInfo bankInfo;
 
-  /** Ticket Url. */
+  /** URL of the payment ticket or voucher for offline payment methods. */
   private String ticketUrl;
 
-  /** First time use. */
+  /** Whether this is the first time the payment method is being used by the payer. */
   private boolean firstTimeUse;
 
-  /** Subscription sequence. */
+  /** Sequence information for subscription-based recurring payments. */
   private PaymentSubscriptionSequence subscriptionSequence;
 
-  /** Subscription id. */
+  /** Identifier of the subscription associated with this recurring payment. */
   private String subscriptionId;
 
-  /** Invoice period. */
+  /** Invoice period details for subscription or recurring billing payments. */
   private PaymentInvoicePeriod invoicePeriod;
 
-  /** Payment reference. */
+  /** Reference to a related payment in the context of recurring or linked transactions. */
   private PaymentPaymentReference paymentReference;
 
-  /** Billing date. */
+  /** Billing date for subscription or recurring payment invoices. */
   private String billingDate;
 }

@@ -5,25 +5,28 @@ import lombok.Getter;
 
 // API version: acd67b14-97c4-4a4a-840d-0a018c09654f
 
-/** OrderPayerAddressRequest class. */
+/**
+ * Request object representing the payer's address. Contains street-level address details
+ * used for billing, fraud verification, and delivery purposes.
+ */
 @Getter
 @Builder
 public class OrderPayerAddressRequest {
-    /** Street name. */
+    /** Name of the street. */
     private String streetName;
 
     /** Street number. */
     private String streetNumber;
 
-    /** Zip code. */
+    /** Postal or zip code. */
     private String zipCode;
 
-    /** Neighborhood. */
+    /** Name of the neighborhood or district. */
     private String neighborhood;
 
-    /** City. */
+    /** Name of the city. */
     private String city;
 
-    /** State. */
+    /** Name of the state or province. */
     private String state;
 }

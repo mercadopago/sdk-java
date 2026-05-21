@@ -3,12 +3,19 @@ package com.mercadopago.resources.payment;
 import java.math.BigInteger;
 import lombok.Getter;
 
-/** PaymentBankInfoCollector class. */
+/**
+ * Resource that holds the bank account information of the collector (seller) in a MercadoPago payment.
+ *
+ * <p>Identifies the collector's bank account used to receive funds from bank transfer or
+ * Pix-based payments.
+ *
+ * @see PaymentBankInfo#getCollector()
+ */
 @Getter
 public class PaymentBankInfoCollector {
-  /** Account ID. */
+  /** Unique identifier of the collector's bank account. */
   private BigInteger accountId;
 
-  /** Account long name. */
+  /** Full display name of the collector's bank account. */
   private String longName;
 }

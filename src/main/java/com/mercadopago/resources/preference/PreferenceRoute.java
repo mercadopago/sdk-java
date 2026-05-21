@@ -3,21 +3,28 @@ package com.mercadopago.resources.preference;
 import java.time.OffsetDateTime;
 import lombok.Getter;
 
-/** Flight information. */
+/**
+ * Resource representing flight route information for travel-related preference items.
+ *
+ * <p>Contains departure and arrival details for a flight segment, including airport codes,
+ * scheduled times, and the operating airline. Used within the category descriptor of travel items.
+ *
+ * @see PreferenceCategoryDescriptor
+ */
 @Getter
 public class PreferenceRoute {
-  /** Departure. */
+  /** Departure airport code or city name. */
   private String departure;
 
-  /** Destination. */
+  /** Destination airport code or city name. */
   private String destination;
 
-  /** Departure date. */
+  /** Scheduled departure date and time. */
   private OffsetDateTime departureDateTime;
 
-  /** Arrival date. */
+  /** Scheduled arrival date and time. */
   private OffsetDateTime arrivalDateTime;
 
-  /** Company. */
+  /** Name of the airline or transportation company. */
   private String company;
 }

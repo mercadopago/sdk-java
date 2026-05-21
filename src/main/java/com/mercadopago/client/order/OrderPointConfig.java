@@ -4,17 +4,20 @@ import lombok.Builder;
 import lombok.Getter;
 
 // API version: 1ff4822a-2dfd-4393-800e-a562edb3fe32
-/** OrderPointConfig class. */
+/**
+ * Configuration for Point-of-Sale (POS) terminal integration within an order. Controls terminal
+ * selection, receipt printing behavior, and display timeout for in-person payment scenarios.
+ */
 @Getter
 @Builder
 public class OrderPointConfig {
 
-    /** Terminal ID for Point integration.*/
+    /** Identifier of the Point terminal device to process the payment. */
     private String terminalId;
 
-    /** Print on terminal option. */
+    /** Whether to print a receipt on the terminal after payment. */
     private String printOnTerminal;
 
-    /** Screen time in ISO 8601 duration format*/
+    /** Duration the payment screen is displayed on the terminal, in ISO 8601 duration format. */
     private String screenTime;
 }

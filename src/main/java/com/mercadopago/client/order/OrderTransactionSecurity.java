@@ -4,27 +4,17 @@ import lombok.Builder;
 import lombok.Getter;
 
 /**
- * Transaction Security configuration for 3DS authentication.
- * Used in Order requests to configure 3D Secure validation.
+ * Configuration for 3D Secure (3DS) transaction security in an order. Controls whether 3DS
+ * authentication is required and how liability shift is handled in case of chargebacks.
+ * Used within {@link OrderOnlineConfig} to enforce security policies on online payments.
  */
 @Getter
 @Builder
 public class OrderTransactionSecurity {
 
-    /**
-     * Validation mode for 3DS authentication.
-     * Possible values:
-     * - "always": Always require 3DS authentication
-     * - "on_fraud_risk": Require 3DS based on fraud risk assessment (recommended)
-     * - "never": Never require 3DS authentication (default)
-     */
+    /** Validation mode for 3DS authentication ("always", "on_fraud_risk", or "never"). */
     private String validation;
 
-    /**
-     * Liability shift configuration.
-     * Possible values:
-     * - "required": Financial liability in case of chargeback is with the card brand
-     * - "preferred": Preferred liability shift
-     */
+    /** Liability shift policy for chargebacks ("required" or "preferred"). */
     private String liabilityShift;
 }

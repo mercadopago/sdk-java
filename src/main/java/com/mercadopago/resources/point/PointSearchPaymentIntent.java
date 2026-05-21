@@ -4,27 +4,38 @@ import com.mercadopago.net.MPResource;
 import java.math.BigDecimal;
 import lombok.Getter;
 
-/** Point Payment Intent resource. */
+/**
+ * Resource representing the result of searching for a specific payment intent on a Point device.
+ *
+ * <p>Extends the standard payment intent data with an additional {@code state} field that indicates
+ * the current lifecycle state of the intent. This resource is returned when querying for a
+ * previously created payment intent by its identifier.
+ *
+ * @see PointPaymentIntent
+ * @see PointPaymentIntentAdditionalInfo
+ * @see PointPaymentIntentPayment
+ * @see com.mercadopago.client.point.PointClient#searchPaymentIntent(String, String)
+ */
 @Getter
 public class PointSearchPaymentIntent extends MPResource {
-  /** Payment intent identifier. */
+  /** Unique identifier of the payment intent. */
   private String id;
 
-  /** Payment intent description. */
+  /** Short description of the payment intent shown on the device. */
   private String description;
 
-  /** Identifier of the device that have a payment intent queued. */
+  /** Identifier of the Point device where this payment intent is queued. */
   private String deviceId;
 
-  /** Payment intent amount. */
+  /** Total amount to be charged for this payment intent. */
   private BigDecimal amount;
 
-  /** Payment intent additional info. */
+  /** Additional metadata such as external reference, ticket number, and print settings. */
   private PointPaymentIntentAdditionalInfo additionalInfo;
 
-  /** Properties of the payment intent. */
+  /** Payment configuration including type, installments, and cost allocation. */
   private PointPaymentIntentPayment payment;
 
-  /** Actual state of payment intent. */
+  /** Current lifecycle state of the payment intent (e.g., OPEN, FINISHED, CANCELED, ERROR). */
   private String state;
 }

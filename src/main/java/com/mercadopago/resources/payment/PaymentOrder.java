@@ -2,12 +2,19 @@ package com.mercadopago.resources.payment;
 
 import lombok.Getter;
 
-/** PaymentOrder class. */
+/**
+ * Resource that represents the purchase order associated with a MercadoPago payment.
+ *
+ * <p>Links the payment to an order in the MercadoPago or MercadoLibre ecosystem,
+ * allowing tracking and reconciliation between payments and orders.
+ *
+ * @see Payment#getOrder()
+ */
 @Getter
 public class PaymentOrder {
-  /** Id of the associated purchase order. */
+  /** Unique identifier of the associated purchase order. */
   private Long id;
 
-  /** Order type. */
+  /** Type of the order (e.g. mercadolibre, mercadopago). */
   private String type;
 }

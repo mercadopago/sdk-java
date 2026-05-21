@@ -2,21 +2,28 @@ package com.mercadopago.resources.customer;
 
 import lombok.Getter;
 
-/** Payment method details related to a customer card. */
+/**
+ * Represents the payment method associated with a customer's saved card in the MercadoPago API.
+ *
+ * <p>Contains details about the payment method type, name, and thumbnail images that correspond
+ * to the card brand (e.g., Visa, Mastercard).
+ *
+ * @see CustomerCard
+ */
 @Getter
 public class CustomerCardPaymentMethod {
-  /** Id of the payment method. */
+  /** Unique identifier of the payment method. */
   private String id;
 
-  /** Name of payment method. */
+  /** Display name of the payment method (e.g., Visa, Mastercard). */
   private String name;
 
-  /** Type of payment method. */
+  /** Type identifier of the payment method (e.g., credit_card, debit_card). */
   private String paymentTypeId;
 
-  /** Thumbnail of payment method. */
+  /** URL of the payment method thumbnail image. */
   private String thumbnail;
 
-  /** Thumbnail of payment method from a secure source. */
+  /** URL of the payment method thumbnail image served over HTTPS. */
   private String secureThumbnail;
 }

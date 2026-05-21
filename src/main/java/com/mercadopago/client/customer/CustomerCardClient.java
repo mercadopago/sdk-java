@@ -18,19 +18,37 @@ import com.mercadopago.serialization.Serializer;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 
-/** Client responsible for performing customer card actions. */
+/**
+ * Client for the MercadoPago Customer Cards API.
+ *
+ * <p>Provides operations to get, create, delete, and list cards associated with a customer.
+ * Cards are stored securely and can be reused for future payments without requiring the payer
+ * to re-enter card details.
+ *
+ * <p>This client is typically used internally by {@link CustomerClient}, but can also be
+ * instantiated directly.
+ *
+ * @see CustomerClient
+ * @see <a
+ *     href="https://www.mercadopago.com.br/developers/en/reference/cards/_customers_customer_id_cards/get">
+ *     Customer Cards API reference</a>
+ */
 public class CustomerCardClient extends MercadoPagoClient {
+
+  /** Class-level logger for customer card operations. */
   private static final Logger LOGGER = Logger.getLogger(CustomerCardClient.class.getName());
 
-  /** Default constructor. Uses the default http client used by the SDK */
+  /**
+   * Default constructor. Uses the default HTTP client provided by {@link MercadoPagoConfig}.
+   */
   public CustomerCardClient() {
     this(MercadoPagoConfig.getHttpClient());
   }
 
   /**
-   * Constructor used for providing a custom http client.
+   * Constructs a {@code CustomerCardClient} with a custom HTTP client.
    *
-   * @param httpClient http client used for performing requests
+   * @param httpClient the {@link MPHttpClient} implementation used to execute HTTP requests
    */
   public CustomerCardClient(MPHttpClient httpClient) {
     super(httpClient);
@@ -41,25 +59,28 @@ public class CustomerCardClient extends MercadoPagoClient {
   }
 
   /**
-   * Get card of customer.
+   * Retrieves a specific card belonging to a customer.
    *
-   * @param customerId id of the customer to which the card belongs
-   * @param cardId id of the card being requested
-   * @return the requested customer card
-   * @throws MPException any error retrieving the customer card
+   * @param customerId the unique identifier of the customer who owns the card
+   * @param cardId the unique identifier of the card to retrieve
+   * @return the requested {@link CustomerCard}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public CustomerCard get(String customerId, String cardId) throws MPException, MPApiException {
     return this.get(customerId, cardId, null);
   }
 
   /**
-   * Get card of customer.
+   * Retrieves a specific card belonging to a customer with custom request options.
    *
-   * @param customerId id of the customer
-   * @param cardId id of the card being retrieved
-   * @param requestOptions metadata to customize the request
-   * @return customer card retrieved
-   * @throws MPException any error retrieving the customer card
+   * @param customerId the unique identifier of the customer who owns the card
+   * @param cardId the unique identifier of the card to retrieve
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the requested {@link CustomerCard}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public CustomerCard get(String customerId, String cardId, MPRequestOptions requestOptions)
       throws MPException, MPApiException {
@@ -77,12 +98,13 @@ public class CustomerCardClient extends MercadoPagoClient {
   }
 
   /**
-   * Add card for customer.
+   * Creates and associates a new card with a customer.
    *
-   * @param customerId id of the customer
-   * @param request attributes used to perform the request
-   * @return the customer card just added
-   * @throws MPException any error creating the customer card
+   * @param customerId the unique identifier of the customer
+   * @param request the {@link CustomerCardCreateRequest} with the card token and other details
+   * @return the newly created {@link CustomerCard}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public CustomerCard create(String customerId, CustomerCardCreateRequest request)
       throws MPException, MPApiException {
@@ -90,13 +112,15 @@ public class CustomerCardClient extends MercadoPagoClient {
   }
 
   /**
-   * Add card for customer.
+   * Creates and associates a new card with a customer with custom request options.
    *
-   * @param customerId id of the customer
-   * @param request attributes used to perform the request
-   * @param requestOptions metadata to customize the request
-   * @return the customer card just added
-   * @throws MPException any error creating the customer card
+   * @param customerId the unique identifier of the customer
+   * @param request the {@link CustomerCardCreateRequest} with the card token and other details
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the newly created {@link CustomerCard}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public CustomerCard create(
       String customerId, CustomerCardCreateRequest request, MPRequestOptions requestOptions)
@@ -118,25 +142,28 @@ public class CustomerCardClient extends MercadoPagoClient {
   }
 
   /**
-   * Remove card for customer.
+   * Removes a card from a customer.
    *
-   * @param customerId id of the customer
-   * @param cardId id of the card being removed
-   * @return the customer card just removed
-   * @throws MPException any error removing the customer card
+   * @param customerId the unique identifier of the customer
+   * @param cardId the unique identifier of the card to remove
+   * @return the removed {@link CustomerCard}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public CustomerCard delete(String customerId, String cardId) throws MPException, MPApiException {
     return this.delete(customerId, cardId, null);
   }
 
   /**
-   * Remove card for customer.
+   * Removes a card from a customer with custom request options.
    *
-   * @param customerId id of the customer
-   * @param cardId id of the card being retrieved
-   * @param requestOptions metadata to customize the request
-   * @return the customer card just removed
-   * @throws MPException any error removing the customer card
+   * @param customerId the unique identifier of the customer
+   * @param cardId the unique identifier of the card to remove
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the removed {@link CustomerCard}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public CustomerCard delete(String customerId, String cardId, MPRequestOptions requestOptions)
       throws MPException, MPApiException {
@@ -156,11 +183,12 @@ public class CustomerCardClient extends MercadoPagoClient {
   }
 
   /**
-   * List all cards of customer.
+   * Lists all cards belonging to a customer.
    *
-   * @param customerId id of the customer
-   * @return list of customer cards retrieved
-   * @throws MPException any error listing customer cards
+   * @param customerId the unique identifier of the customer
+   * @return an {@link MPResourceList} of {@link CustomerCard} for the given customer
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public MPResourceList<CustomerCard> listAll(String customerId)
       throws MPException, MPApiException {
@@ -168,12 +196,14 @@ public class CustomerCardClient extends MercadoPagoClient {
   }
 
   /**
-   * List all cards of customer.
+   * Lists all cards belonging to a customer with custom request options.
    *
-   * @param customerId id of the customer
-   * @param requestOptions metadata to customize the request
-   * @return list of customer cards retrieved
-   * @throws MPException any error listing customer cards
+   * @param customerId the unique identifier of the customer
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return an {@link MPResourceList} of {@link CustomerCard} for the given customer
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public MPResourceList<CustomerCard> listAll(String customerId, MPRequestOptions requestOptions)
       throws MPException, MPApiException {

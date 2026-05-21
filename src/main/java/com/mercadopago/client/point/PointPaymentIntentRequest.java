@@ -4,19 +4,25 @@ import java.math.BigDecimal;
 import lombok.Builder;
 import lombok.Getter;
 
-/** Parameters to create a Point Payment Intent request. */
+/**
+ * Request object to create a payment intent on a MercadoPago Point device.
+ *
+ * @see com.mercadopago.client.point.PointPaymentIntentPaymentRequest
+ * @see com.mercadopago.client.point.PointPaymentIntentAdditionalInfoRequest
+ * @see com.mercadopago.client.point.PointClient
+ */
 @Getter
 @Builder
 public class PointPaymentIntentRequest {
-  /** A positive value representing how much to charge. */
+  /** Positive amount to charge for this payment intent. */
   private final BigDecimal amount;
 
-  /** Payment intent description. */
+  /** Description displayed for this payment intent. */
   private final String description;
 
-  /** Properties of the payment intent. */
+  /** Payment configuration including type and installments. */
   private final PointPaymentIntentPaymentRequest payment;
 
-  /** Payment intent additional info. */
+  /** Additional information such as external references and printing options. */
   private final PointPaymentIntentAdditionalInfoRequest additionalInfo;
 }

@@ -4,14 +4,16 @@ import lombok.Builder;
 import lombok.Getter;
 
 /**
- * Seller identification information.
+ * Identification document of the seller, provided within the platform additional info section.
+ * Contains the document type (e.g. CNPJ, CPF, CUIT) and its number for tax and compliance
+ * verification.
  */
 @Getter
 @Builder
 public class SellerIdentification {
-    /** Identification type. */
+    /** Type of the identification document (e.g. "CNPJ", "CPF", "CUIT"). */
     private final String type;
 
-    /** Identification number. */
+    /** Number of the identification document. */
     private final String number;
 }

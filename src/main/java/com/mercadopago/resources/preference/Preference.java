@@ -7,110 +7,119 @@ import java.util.List;
 import java.util.Map;
 import lombok.Getter;
 
-/** Preference resource. */
+/**
+ * Resource representing a MercadoPago checkout preference.
+ *
+ * <p>A preference defines the payment experience for the buyer, including which items are being
+ * purchased, accepted payment methods, shipping options, redirect URLs, and expiration rules.
+ * After creation, the {@code initPoint} URL is used to redirect buyers to the MercadoPago
+ * Checkout flow.
+ *
+ * @see PreferenceItem
+ * @see PreferencePayer
+ * @see PreferencePaymentMethods
+ * @see PreferenceBackUrls
+ * @see PreferenceShipments
+ * @see com.mercadopago.client.preference.PreferenceClient
+ */
 @Getter
 public class Preference extends MPResource {
-  /** Preference ID. */
+  /** Unique identifier of the preference. */
   private String id;
 
-  /** List of items to be paid. */
+  /** Collection of items included in this checkout preference. */
   private List<PreferenceItem> items;
 
-  /** Payer information. */
+  /** Information about the buyer who will pay for the items. */
   private PreferencePayer payer;
 
-  /** Client ID. */
+  /** Identifier of the OAuth application client that created this preference. */
   private String clientId;
 
-  /** Set up payment methods. */
+  /** Configuration of accepted and excluded payment methods for this preference. */
   private PreferencePaymentMethods paymentMethods;
 
-  /** URLs to return to the sellers website. */
+  /** Redirect URLs for success, pending, and failure payment outcomes. */
   private PreferenceBackUrls backUrls;
 
-  /** Shipments information. */
+  /** Shipping configuration including mode, cost, and delivery address. */
   private PreferenceShipments shipments;
 
-  /** URL where you'd like to receive a payment notification. */
+  /** Webhook URL where payment notifications (IPN) will be sent. */
   private String notificationUrl;
 
-  /** How the payment will be specified in the card bill. */
+  /** Descriptor that appears on the buyer's card or bank statement. */
   private String statementDescriptor;
 
-  /** Reference you can synchronize with your payment system. */
+  /** External reference for correlating this preference with the integrator's system. */
   private String externalReference;
 
-  /** True if a preference expires, false if not. */
+  /** Whether this preference has an expiration window. */
   private Boolean expires;
 
-  /** Expiration date of cash payment. */
+  /** Expiration date for cash-based payment methods. */
   private OffsetDateTime dateOfExpiration;
 
-  /** Date when the preference will be active. */
+  /** Start date from which the preference becomes active. */
   private OffsetDateTime expirationDateFrom;
 
-  /** Date when the preference will be expired. */
+  /** End date after which the preference is no longer valid. */
   private OffsetDateTime expirationDateTo;
 
-  /** Collector ID. */
+  /** Identifier of the seller (collector) who receives the payment. */
   private Long collectorId;
 
-  /** Origin of the payment. Default value: NONE. */
+  /** Marketplace origin identifier. Default value: NONE. */
   private String marketplace;
 
-  /** Marketplace's fee charged by application owner. */
+  /** Fee amount charged by the marketplace application owner. */
   private BigDecimal marketplaceFee;
 
-  /** Additional info. */
+  /** Free-form additional information attached to the preference. */
   private String additionalInfo;
 
   /**
-   * If specified, your buyers will be redirected back to your site immediately
-   * after completing the
-   * purchase.
+   * Auto-return mode. When specified, buyers are redirected back to the seller's site immediately
+   * after completing the purchase (e.g., {@code approved}, {@code all}).
    */
   private String autoReturn;
 
-  /** Operation type. */
+  /** Type of operation (e.g., regular_payment, money_transfer). */
   private String operationType;
 
-  /** Differential pricing configuration for this preference. */
+  /** Differential pricing configuration that applies special pricing rules. */
   private PreferenceDifferentialPricing differentialPricing;
 
-  /** Configures which processing modes to use. */
+  /** List of processing modes to use (e.g., aggregator, gateway). */
   private List<String> processingModes;
 
   /**
-   * When set to true, the payment can only be approved or rejected. Otherwise
-   * in_process status is
-   * added.
+   * When {@code true}, payments can only be approved or rejected immediately; the
+   * {@code in_process} intermediate status is not used.
    */
   private Boolean binaryMode;
 
-  /** Taxes for preferences. */
+  /** List of applicable taxes for this preference. */
   private List<PreferenceTax> taxes;
 
-  /** Tracks to be executed during the users interaction in the Checkout flow. */
+  /** Tracking tags executed during the buyer's interaction in the Checkout flow. */
   private List<PreferenceTrack> tracks;
 
-  /**
-   * Data that can be attached to the preference to record additional attributes
-   * of the merchant.
-   */
+  /** Arbitrary key-value metadata attached to the preference for merchant use. */
   private Map<String, Object> metadata;
 
-  /** Checkout URL from preference. */
+  /** Production checkout URL that initiates the payment flow for this preference. */
   private String initPoint;
 
-  /** Sandbox checkout URL from preference. */
+  /** Sandbox checkout URL for testing the payment flow. */
   private String sandboxInitPoint;
 
-  /** Date of creation. */
+  /** Timestamp when the preference was created. */
   private OffsetDateTime dateCreated;
 
-  /** Amounts. */
+  /** Breakdown of amounts for the payer and collector. */
   private PreferenceAmounts amounts;
 
-  /** Counter currency. */
+  /** Counter currency configuration for cross-currency payments. */
   private PreferenceCounterCurrency counterCurrency;
 }
