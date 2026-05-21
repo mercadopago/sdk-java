@@ -4,22 +4,27 @@ import java.time.OffsetDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
-/** Flight information. */
+/**
+ * Flight or route information associated with a travel-related preference item, including origin,
+ * destination, schedule, and carrier details.
+ *
+ * @see com.mercadopago.client.preference.PreferenceCategoryDescriptorRequest
+ */
 @Getter
 @Builder
 public class PreferenceRouteRequest {
-  /** Departure. */
+  /** Departure location (airport code or city). */
   private final String departure;
 
-  /** Destination. */
+  /** Destination location (airport code or city). */
   private final String destination;
 
-  /** Departure date. */
+  /** Scheduled departure date and time. */
   private final OffsetDateTime departureDateTime;
 
-  /** Arrival date. */
+  /** Scheduled arrival date and time. */
   private final OffsetDateTime arrivalDateTime;
 
-  /** Company. */
+  /** Name of the airline or transport company. */
   private final String company;
 }

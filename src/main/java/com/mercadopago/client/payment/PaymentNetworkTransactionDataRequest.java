@@ -3,10 +3,14 @@ package com.mercadopago.client.payment;
 import lombok.Builder;
 import lombok.Getter;
 
-/** PaymentNetworkTransactionDataRequest class. */
+/**
+ * Request object containing network transaction data for recurring payments.
+ * Carries the card-brand network transaction identifier used to link
+ * subsequent recurring charges to the original authorization.
+ */
 @Getter
 @Builder
 public class PaymentNetworkTransactionDataRequest {
-  /** Network transaction ID associated with the card brand identifier. */
+  /** Network transaction identifier assigned by the card brand (Visa/Mastercard). */
   private final String networkTransactionId;
 } 

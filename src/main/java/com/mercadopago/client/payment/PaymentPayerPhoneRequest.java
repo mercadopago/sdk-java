@@ -3,13 +3,16 @@ package com.mercadopago.client.payment;
 import lombok.Builder;
 import lombok.Getter;
 
-/** Payer's phone information. */
+/**
+ * Request object representing the payer's phone information in a payment request.
+ * Contains the area code and phone number for contacting the payer.
+ */
 @Getter
 @Builder
 public class PaymentPayerPhoneRequest {
-  /** Area code. */
+  /** Telephone area code (e.g. "11", "21"). */
   private String areaCode;
 
-  /** Phone number. */
+  /** Telephone number without the area code. */
   private String number;
 }

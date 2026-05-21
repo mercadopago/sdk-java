@@ -23,21 +23,43 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 
-/** Client that use the Preferences APIs. */
+/**
+ * Client for the MercadoPago Checkout Preferences API.
+ *
+ * <p>Provides operations to create, retrieve, update, and search checkout preferences. A
+ * preference defines the payment experience for the buyer, including items, payment methods,
+ * redirect URLs, and expiration settings.
+ *
+ * <p>Usage example:
+ * <pre>{@code
+ * PreferenceClient client = new PreferenceClient();
+ * Preference preference = client.create(preferenceRequest);
+ * String initPoint = preference.getInitPoint();
+ * }</pre>
+ *
+ * @see <a
+ *     href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences/post">
+ *     Checkout Preferences API reference</a>
+ */
 public class PreferenceClient extends MercadoPagoClient {
+
+  /** Class-level logger for preference operations. */
   private static final Logger LOGGER = Logger.getLogger(PreferenceClient.class.getName());
 
+  /** URL template for single-preference endpoints (e.g. {@code /checkout/preferences/{id}}). */
   private static final String URL_WITH_ID = "/checkout/preferences/%s";
 
-  /** Default constructor. Uses the default http client used by the SDK. */
+  /**
+   * Default constructor. Uses the default HTTP client provided by {@link MercadoPagoConfig}.
+   */
   public PreferenceClient() {
     this(MercadoPagoConfig.getHttpClient());
   }
 
   /**
-   * Constructor used for providing a custom http client.
+   * Constructs a {@code PreferenceClient} with a custom HTTP client.
    *
-   * @param httpClient httpClient
+   * @param httpClient the {@link MPHttpClient} implementation used to execute HTTP requests
    */
   public PreferenceClient(MPHttpClient httpClient) {
     super(httpClient);
@@ -48,11 +70,12 @@ public class PreferenceClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for getting preference.
+   * Retrieves a checkout preference by its unique identifier.
    *
-   * @param id preference id
-   * @return preference information
-   * @throws MPException an error if the request fails
+   * @param id the unique identifier of the preference
+   * @return the requested {@link Preference}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences_id/get">api
    *     docs</a>
@@ -62,12 +85,14 @@ public class PreferenceClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for getting preference.
+   * Retrieves a checkout preference by its unique identifier with custom request options.
    *
-   * @param id preference id
-   * @param requestOptions metadata to customize the request
-   * @return preference information
-   * @throws MPException an error if the request fails
+   * @param id the unique identifier of the preference
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the requested {@link Preference}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences_id/get">api
    *     docs</a>
@@ -85,11 +110,13 @@ public class PreferenceClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for creating preference.
+   * Creates a new checkout preference.
    *
-   * @param request attributes used to create a preference
-   * @return preference information
-   * @throws MPException an error if the request fails
+   * @param request the {@link PreferenceRequest} with items, payer info, payment methods, and
+   *     other preference attributes
+   * @return the created {@link Preference} including its {@code initPoint} URL
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences/post">api
    *     docs</a>
@@ -99,12 +126,15 @@ public class PreferenceClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for creating preference with request options.
+   * Creates a new checkout preference with custom request options.
    *
-   * @param request attributes used to create a preference
-   * @param requestOptions metadata to customize the request
-   * @return preference information
-   * @throws MPException an error if the request fails
+   * @param request the {@link PreferenceRequest} with items, payer info, payment methods, and
+   *     other preference attributes
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the created {@link Preference} including its {@code initPoint} URL
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences/post">api
    *     docs</a>
@@ -128,12 +158,13 @@ public class PreferenceClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for updating preference.
+   * Updates an existing checkout preference.
    *
-   * @param id preference id
-   * @param request attributes used to create a preference
-   * @return preference information
-   * @throws MPException an error if the request fails
+   * @param id the unique identifier of the preference to update
+   * @param request the {@link PreferenceRequest} with the updated preference attributes
+   * @return the updated {@link Preference}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences_id/put">api
    *     docs</a>
@@ -144,13 +175,15 @@ public class PreferenceClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for updating preference with request options.
+   * Updates an existing checkout preference with custom request options.
    *
-   * @param id preference id
-   * @param request attributes used to create a preference
-   * @param requestOptions metadata to customize the request
-   * @return preference information
-   * @throws MPException an error if the request fails
+   * @param id the unique identifier of the preference to update
+   * @param request the {@link PreferenceRequest} with the updated preference attributes
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the updated {@link Preference}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences_id/put">api
    *     docs</a>
@@ -174,11 +207,13 @@ public class PreferenceClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for search preference.
+   * Searches for checkout preferences matching the specified criteria.
    *
-   * @param request attributes used to create a preference
-   * @return list of results
-   * @throws MPException an error if the request fails
+   * @param request the {@link MPSearchRequest} containing search filters and pagination parameters
+   * @return an {@link MPElementsResourcesPage} of {@link PreferenceSearch} with matching results
+   *     and pagination metadata
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences_search/get">api
    *     docs</a>
@@ -189,12 +224,15 @@ public class PreferenceClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for search preference.
+   * Searches for checkout preferences matching the specified criteria with custom request options.
    *
-   * @param request attributes used to create a preference
-   * @param requestOptions metadata to customize the request
-   * @return list of results
-   * @throws MPException an error if the request fails
+   * @param request the {@link MPSearchRequest} containing search filters and pagination parameters
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return an {@link MPElementsResourcesPage} of {@link PreferenceSearch} with matching results
+   *     and pagination metadata
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/preferences/_checkout_preferences_search/get">api
    *     docs</a>

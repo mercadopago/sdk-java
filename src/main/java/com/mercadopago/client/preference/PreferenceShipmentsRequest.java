@@ -5,34 +5,40 @@ import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 
-/** Shipments information. */
+/**
+ * Shipping configuration for a checkout preference, supporting MercadoEnvios ({@code me2}),
+ * custom, and express shipment modes.
+ *
+ * @see com.mercadopago.client.preference.PreferenceRequest
+ * @see com.mercadopago.client.preference.PreferenceReceiverAddressRequest
+ */
 @Getter
 @Builder
 public class PreferenceShipmentsRequest {
-  /** Shipment mode. */
+  /** Shipment mode (e.g., {@code custom}, {@code me2}, {@code not_specified}). */
   private final String mode;
 
-  /** The payer have the option to pick up the shipment in your store (mode:me2 only). */
+  /** Whether the buyer can pick up the shipment at the seller's store ({@code me2} mode only). */
   private final Boolean localPickup;
 
-  /** Dimensions of the shipment in cm x cm x cm, gr (mode:me2 only). */
+  /** Package dimensions in format {@code cm x cm x cm, gr} ({@code me2} mode only). */
   private final String dimensions;
 
-  /** Select default shipping method in checkout (mode:me2 only). */
+  /** Default shipping method pre-selected in checkout ({@code me2} mode only). */
   private final String defaultShippingMethod;
 
-  /** Offer a shipping method as free shipping (mode:me2 only). */
+  /** Shipping methods offered for free ({@code me2} mode only). */
   private final List<PreferenceFreeMethodRequest> freeMethods;
 
-  /** Shipment cost (mode:custom only). */
+  /** Fixed shipment cost ({@code custom} mode only). */
   private final BigDecimal cost;
 
-  /** Free shipping for mode:custom. */
+  /** Whether shipping is free ({@code custom} mode only). */
   private final Boolean freeShipping;
 
-  /** Shipping address. */
+  /** Receiver's delivery address. */
   private final PreferenceReceiverAddressRequest receiverAddress;
 
-  /** If use express shipment. */
+  /** Whether to use express shipment. */
   private final Boolean expressShipment;
 }

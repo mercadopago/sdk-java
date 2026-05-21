@@ -4,31 +4,36 @@ import java.math.BigDecimal;
 import lombok.Builder;
 import lombok.Getter;
 
-/** Item information. */
+/**
+ * Request DTO representing an item within a Merchant Order. Each item describes a product or
+ * service being sold, including its price, quantity, and descriptive information.
+ *
+ * @see <a href="https://www.mercadopago.com.br/developers/en/reference/merchant_orders">Merchant Orders API Reference</a>
+ */
 @Getter
 @Builder
 public class MerchantOrderItemRequest {
-  /** Item code. */
+  /** Unique item code or SKU identifier. */
   private final String id;
 
-  /** Item name. */
+  /** Display title or name of the item. */
   private final String title;
 
-  /** Item description. */
+  /** Detailed description of the item. */
   private final String description;
 
-  /** Image URL. */
+  /** URL of the item's image for display purposes. */
   private final String pictureUrl;
 
-  /** Category of the item. */
+  /** Category identifier for the item (e.g., "electronics", "clothing"). */
   private final String categoryId;
 
-  /** Item's quantity. */
+  /** Number of units of this item in the order. */
   private final int quantity;
 
-  /** Unit price. */
+  /** Price per unit of the item. */
   private final BigDecimal unitPrice;
 
-  /** Currency ID. ISO_4217 code. */
+  /** ISO 4217 currency code for the unit price (e.g., "BRL", "ARS", "USD"). */
   private final String currencyId;
 }

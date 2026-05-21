@@ -49,29 +49,83 @@ import org.apache.http.message.BasicStatusLine;
 import org.apache.http.ssl.SSLContexts;
 import org.apache.http.util.EntityUtils;
 
-/** Mercado Pago default Http Client class. */
+/**
+ * Default {@link MPHttpClient} implementation backed by Apache HttpClient 4.x.
+ *
+ * <p>This client is configured with the following defaults:
+ * <ul>
+ *   <li><strong>TLS 1.2</strong> -- only TLSv1.2 is enabled for HTTPS connections.</li>
+ *   <li><strong>Connection pooling</strong> -- uses a
+ *       {@link PoolingHttpClientConnectionManager} whose maximum total and per-route connections
+ *       are governed by {@link MercadoPagoConfig#getMaxConnections()}.</li>
+ *   <li><strong>Keep-alive</strong> -- the {@link KeepAliveStrategy} parses the server's
+ *       {@code Keep-Alive} header and defaults to 10 seconds.</li>
+ *   <li><strong>Automatic retries</strong> -- failed requests are retried up to
+ *       {@value #DEFAULT_RETRIES} times (non-idempotent requests are <em>not</em> retried)
+ *       unless a custom {@link org.apache.http.client.HttpRequestRetryHandler} is configured via
+ *       {@link MercadoPagoConfig#setRetryHandler(org.apache.http.client.HttpRequestRetryHandler)}.</li>
+ *   <li><strong>Proxy support</strong> -- an HTTP proxy can be configured via
+ *       {@link MercadoPagoConfig#setProxy(org.apache.http.HttpHost)}.</li>
+ *   <li><strong>Connection validation</strong> -- stale connections are validated after
+ *       {@value #VALIDATE_INACTIVITY_INTERVAL_MS} ms of inactivity.</li>
+ * </ul>
+ *
+ * <p>Cookies and automatic redirects are disabled.
+ *
+ * @see MPHttpClient
+ * @see KeepAliveStrategy
+ * @see MercadoPagoConfig
+ */
 public class MPDefaultHttpClient implements MPHttpClient {
+
+  /**
+   * Interval in milliseconds after which idle connections are validated before reuse.
+   * Value: {@value} ms.
+   */
   private static final int VALIDATE_INACTIVITY_INTERVAL_MS = 30000;
 
+  /**
+   * Default number of automatic retries for failed HTTP requests.
+   * Value: {@value}.
+   */
   private static final int DEFAULT_RETRIES = 3;
 
+  /** Character encoding used for request and response bodies. */
   private static final String UTF_8 = "UTF-8";
 
+  /** Error message returned when a payload is attached to a GET or DELETE request. */
   private static final String PAYLOAD_NOT_SUPPORTED_MESSAGE =
       "Payload not supported for this method.";
 
+  /** Log format pattern for HTTP header key-value pairs. */
   private static final String HEADER_LOG_FORMAT = "%s: %s%s";
 
+  /** Logger instance for this class. */
   private static final Logger LOGGER = Logger.getLogger(MPDefaultHttpClient.class.getName());
 
+  /** The underlying Apache {@link HttpClient} used to execute HTTP requests. */
   private final HttpClient httpClient;
 
-  /** MPDefaultHttpClient constructor. */
+  /**
+   * Constructs a new {@code MPDefaultHttpClient} with default settings.
+   *
+   * <p>Internally creates an Apache {@link HttpClient} configured with TLS 1.2, connection
+   * pooling, keep-alive strategy, retry handling, and optional proxy support as described in the
+   * class-level documentation.
+   */
   public MPDefaultHttpClient() {
     this(null);
   }
 
-  /** MPDefaultHttpClient constructor for testing only. */
+  /**
+   * Constructs an {@code MPDefaultHttpClient} using the provided Apache {@link HttpClient}.
+   *
+   * <p>This constructor is intended for testing purposes. If the given {@code httpClient} is
+   * {@code null}, a default client is created via {@link #createHttpClient()}.
+   *
+   * @param httpClient the Apache {@link HttpClient} to use, or {@code null} to create a default
+   *                   client
+   */
   protected MPDefaultHttpClient(HttpClient httpClient) {
     StreamHandler streamHandler = getStreamHandler();
     streamHandler.setLevel(MercadoPagoConfig.getLoggingLevel());
@@ -126,6 +180,28 @@ public class MPDefaultHttpClient implements MPHttpClient {
     return httpClientBuilder.build();
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * <p>Translates the given {@link MPRequest} into an Apache {@link HttpRequestBase}, executes it,
+   * and converts the raw response into an {@link MPResponse}. If the response status code is
+   * greater than 299, an {@link MPApiException} is thrown containing the full response details.
+   *
+   * <p>Transport-level exceptions are mapped as follows:
+   * <ul>
+   *   <li>{@link org.apache.http.client.ClientProtocolException} returns status
+   *       {@link HttpStatus#BAD_REQUEST 400}</li>
+   *   <li>{@link javax.net.ssl.SSLPeerUnverifiedException} returns status
+   *       {@link HttpStatus#FORBIDDEN 403}</li>
+   *   <li>{@link java.io.IOException} returns status
+   *       {@link HttpStatus#INTERNAL_SERVER_ERROR 500}</li>
+   * </ul>
+   *
+   * @param mpRequest the {@link MPRequest} to send
+   * @return an {@link MPResponse} with status code, headers, and body
+   * @throws MPException    if an unexpected transport-level error occurs
+   * @throws MPApiException if the API returns a non-success status code (greater than 299)
+   */
   @Override
   public MPResponse send(MPRequest mpRequest) throws MPException, MPApiException {
     try {

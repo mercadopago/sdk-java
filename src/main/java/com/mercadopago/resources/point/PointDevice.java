@@ -2,12 +2,20 @@ package com.mercadopago.resources.point;
 
 import lombok.Getter;
 
-/** Point device resource. */
+/**
+ * Resource representing a MercadoPago Point device.
+ *
+ * <p>Contains basic identifying information about a physical Point device, including its unique
+ * identifier and current operating mode (e.g., PDV or STANDALONE).
+ *
+ * @see PointDevices
+ * @see OperatingMode
+ */
 @Getter
 public class PointDevice {
-  /** Device ID. */
+  /** Unique identifier of the Point device. */
   private String id;
 
-  /** Device operating mode. */
+  /** Current operating mode of the device (e.g., PDV or STANDALONE). */
   private String operatingMode;
 }

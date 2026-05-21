@@ -16,19 +16,38 @@ import com.mercadopago.resources.paymentmethod.PaymentMethod;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 
-/** Client with methods of Payment Method APIs. */
+/**
+ * Client for the MercadoPago Payment Methods API.
+ *
+ * <p>Retrieves the list of payment methods available for the country associated with the
+ * authenticated user's credentials (e.g., credit cards, debit cards, bank transfers, cash).
+ *
+ * <p>Usage example:
+ * <pre>{@code
+ * PaymentMethodClient client = new PaymentMethodClient();
+ * MPResourceList<PaymentMethod> methods = client.list();
+ * }</pre>
+ *
+ * @see <a
+ *     href="https://www.mercadopago.com.br/developers/en/reference/payment_methods/_payment_methods/get">
+ *     Payment Methods API reference</a>
+ */
 public class PaymentMethodClient extends MercadoPagoClient {
+
+  /** Class-level logger for payment method operations. */
   private static final Logger LOGGER = Logger.getLogger(PaymentMethodClient.class.getName());
 
-  /** Default constructor. Uses the default http client used by the SDK. */
+  /**
+   * Default constructor. Uses the default HTTP client provided by {@link MercadoPagoConfig}.
+   */
   public PaymentMethodClient() {
     this(MercadoPagoConfig.getHttpClient());
   }
 
   /**
-   * Constructor used for providing a custom http client.
+   * Constructs a {@code PaymentMethodClient} with a custom HTTP client.
    *
-   * @param httpClient httpClient
+   * @param httpClient the {@link MPHttpClient} implementation used to execute HTTP requests
    */
   public PaymentMethodClient(MPHttpClient httpClient) {
     super(httpClient);
@@ -39,10 +58,11 @@ public class PaymentMethodClient extends MercadoPagoClient {
   }
 
   /**
-   * List all payment methods.
+   * Lists all available payment methods for the authenticated user's country.
    *
-   * @return list of payment methods
-   * @throws MPException an error if the request fails
+   * @return an {@link MPResourceList} of {@link PaymentMethod} (credit, debit, cash, etc.)
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/payment_methods/_payment_methods/get">api
    *     docs</a>
@@ -52,11 +72,13 @@ public class PaymentMethodClient extends MercadoPagoClient {
   }
 
   /**
-   * List all payment methods.
+   * Lists all available payment methods with custom request options.
    *
-   * @param requestOptions metadata to customize the request
-   * @return list of payment methods
-   * @throws MPException an error if the request fails
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return an {@link MPResourceList} of {@link PaymentMethod} (credit, debit, cash, etc.)
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/payment_methods/_payment_methods/get">api
    *     docs</a>

@@ -4,21 +4,23 @@ import lombok.Builder;
 import lombok.Getter;
 
 /**
- * Additional information for the order (request-only fields).
+ * Request object containing supplementary information for an order. Provides extra context
+ * about the payer, shipment, platform, and travel details to improve fraud prevention
+ * and payment approval rates.
  */
 @Getter
 @Builder
 public class AdditionalInfoRequest {
-    /** Information about the payer. */
+    /** Additional payer details such as authentication type and registration date. */
     private final PayerInfo payer;
 
-    /** Information about the shipment. */
+    /** Additional shipment details such as express shipping and local pickup flags. */
     private final ShipmentInfo shipment;
 
-    /** Platform information. */
+    /** Platform-level information including seller data and shipment tracking. */
     private final PlatformInfo platform;
 
-    /** Travel information. */
+    /** Travel-related information including passenger and route details. */
     private final TravelInfo travel;
 }
 

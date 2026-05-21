@@ -2,12 +2,18 @@ package com.mercadopago.resources.merchantorder;
 
 import lombok.Getter;
 
-/** Payer information of Merchant Order. */
+/**
+ * Represents the payer (buyer) of a merchant order in the MercadoPago API.
+ *
+ * <p>Contains the buyer's identifier and nickname, identifying the customer who placed the order.
+ *
+ * @see MerchantOrder
+ */
 @Getter
 public class MerchantOrderPayer {
-  /** Payer ID. */
+  /** Unique identifier of the payer (buyer). */
   private Long id;
 
-  /** Payer nickname. */
+  /** Display nickname of the payer (buyer). */
   private String nickname;
 }

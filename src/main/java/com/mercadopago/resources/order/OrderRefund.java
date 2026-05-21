@@ -6,32 +6,34 @@ import lombok.Getter;
 // API version: d0494f1c-8d81-4c76-ae1d-0c65bb8ef6de
 
 /**
- * OrderRefund class.
+ * Resource representing a refund issued against a payment within a MercadoPago Order.
+ * Contains the refund amount, its current processing status, and references to
+ * the originating transaction and associated items.
  */
 @Getter
 public class OrderRefund extends MPResource {
 
-    /** Refund id. */
+    /** Unique identifier of this refund. */
     private String id;
 
-    /** Transaction id. */
+    /** Identifier of the original transaction that was refunded. */
     private String transactionId;
 
-    /** Reference id. */
+    /** External reference identifier for correlating this refund with the integrator's system. */
     private String referenceId;
 
-    /** Amount Refund. */
+    /** Refund amount expressed as a decimal string. */
     private String amount;
 
-    /** Refund status. */
+    /** Current processing status of the refund (e.g., "approved", "pending"). */
     private String status;
 
-    /** Refund status detail. */
+    /** Detailed sub-status providing additional context about the refund status. */
     private String statusDetail;
-    
-    /** Refund items. */
+
+    /** Items associated with this refund. */
     private OrderItem items;
 
-    /** End-to-end ID. */
+    /** End-to-end identifier for tracking the refund across payment systems. */
     private String e2eId;
 }

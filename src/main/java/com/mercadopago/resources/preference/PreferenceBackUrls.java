@@ -2,15 +2,22 @@ package com.mercadopago.resources.preference;
 
 import lombok.Getter;
 
-/** Back URLs from preference. */
+/**
+ * Resource representing the redirect URLs configured in a checkout preference.
+ *
+ * <p>Defines the URLs where the buyer is redirected after completing the checkout flow, depending
+ * on the payment outcome: approved, pending, or failed.
+ *
+ * @see Preference
+ */
 @Getter
 public class PreferenceBackUrls {
-  /** URL to return when the payment succeed. */
+  /** URL to redirect the buyer when the payment is approved. */
   private String success;
 
-  /** URL to return when the payment is pending. */
+  /** URL to redirect the buyer when the payment is pending review or processing. */
   private String pending;
 
-  /** URL to return when the payment fail. */
+  /** URL to redirect the buyer when the payment is rejected or fails. */
   private String failure;
 }

@@ -5,20 +5,23 @@ import lombok.Getter;
 
 // API version: 1ff4822a-2dfd-4393-800e-a562edb3fe32
 
-/** OrderAutomaticPayments class. */
+/**
+ * Resource representing automatic (recurring) payment configuration for a MercadoPago Order.
+ * Defines the payment profile, retry policy, and scheduling dates for automated billing cycles.
+ */
 @Getter
 @Builder
 public class OrderAutomaticPayments {
 
-    /** Payment profile ID. */
+    /** Identifier of the payment profile used for automatic charges. */
     private String paymentProfileId;
 
-    /** Retries. */
+    /** Number of retry attempts allowed if the automatic payment fails. */
     private Integer retries;
 
-    /** Schedule date. */
+    /** ISO 8601 date-time when the automatic payment is scheduled to be processed. */
     private String scheduleDate;
 
-    /** Due date. */
+    /** ISO 8601 date-time by which the automatic payment must be completed. */
     private String dueDate;
 }

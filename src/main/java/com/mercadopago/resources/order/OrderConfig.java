@@ -6,17 +6,21 @@ import lombok.Getter;
 
 // API version: 1ff4822a-2dfd-4393-800e-a562edb3fe32
 
-/** OrderConfig class. */
+/**
+ * Resource representing the configuration of a MercadoPago Order.
+ * Groups together payment method restrictions, online checkout settings,
+ * and point-of-sale terminal configuration.
+ */
 @Getter
 public class OrderConfig {
 
-    /** Payment method config. */
+    /** Payment method configuration defining accepted methods and installment rules. */
     private OrderPaymentMethodConfig paymentMethod;
 
-    /** Online config. */
+    /** Online checkout configuration including redirect URLs and 3DS settings. */
     private OrderOnlineConfig online;
 
-    /** Point config. */
+    /** Point-of-sale terminal configuration for in-store payments. */
     private OrderPointConfig point;
-    
+
 }

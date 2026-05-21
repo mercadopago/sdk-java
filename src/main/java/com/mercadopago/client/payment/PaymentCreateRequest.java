@@ -7,131 +7,121 @@ import java.util.Map;
 import lombok.Builder;
 import lombok.Getter;
 
-/** PaymentCreateRequest class. */
+/**
+ * Request object used to create a new payment through the MercadoPago Payments API.
+ * Contains all the parameters needed to describe a payment, including the transaction
+ * amount, payment method, payer details, and additional fraud-prevention information.
+ *
+ * @see <a href="https://www.mercadopago.com/developers/en/reference/payments/_payments/post">Payments API reference</a>
+ */
 @Getter
 @Builder
 public class PaymentCreateRequest {
-  /**
-   * Data that could improve fraud analysis and conversion rates. Try to send as
-   * much information as
-   * possible.
-   */
+  /** Additional data that improves fraud analysis and conversion rates. */
   private final PaymentAdditionalInfoRequest additionalInfo;
 
-  /** Fee collected by a marketplace or MercadoPago Application. */
+  /** Fee collected by a marketplace or MercadoPago application. */
   private final BigDecimal applicationFee;
 
-  /**
-   * When set to true, the payment can only be approved or rejected. Otherwise
-   * in_process status is
-   * added.
-   */
+  /** When {@code true}, the payment can only be approved or rejected; otherwise an in-process status is possible. */
   private final Boolean binaryMode;
 
-  /** URL where mercadopago does the final redirect (only for bank transfers). */
+  /** URL where MercadoPago performs the final redirect (used for bank transfers). */
   private final String callbackUrl;
 
-  /** Discount campaign ID. */
+  /** Discount campaign identifier. */
   private final Long campaignId;
 
-  /**
-   * Determines if the payment should be captured (true) or just reserved (false).
-   */
+  /** Whether the payment should be captured immediately ({@code true}) or only reserved ({@code false}). */
   private final Boolean capture;
 
-  /** Amount of the coupon discount. */
+  /** Amount of the coupon discount applied to the payment. */
   private final BigDecimal couponAmount;
 
-  /** Discount campaign with a specific code. */
+  /** Discount campaign code. */
   private final String couponCode;
 
-  /** Date of expiration. */
+  /** Payment expiration date and time. */
   private final OffsetDateTime dateOfExpiration;
 
-  /** Payment reason or item title. */
+  /** Payment reason or item title shown to the payer. */
   private final String description;
 
-  /** Id of the scheme for the absorption of financing fee. */
+  /** Identifier of the differential pricing scheme for financing-fee absorption. */
   private final Long differentialPricingId;
 
-  /** ID given by the merchant in their system. */
+  /** External reference identifier provided by the merchant in their own system. */
   private final String externalReference;
 
-  /** Selected quantity of installments. */
+  /** Number of installments selected by the payer. */
   private final Integer installments;
 
-  /** Payment method issuer. */
+  /** Identifier of the payment method issuer (e.g. bank or card issuer). */
   private final String issuerId;
 
-  /** Merchant Id for complex payment cases. */
+  /** Merchant account identifier used in complex payment scenarios. */
   private final String merchantAccountId;
 
-  /** Merchant services. */
+  /** Configuration for merchant anti-fraud services. */
   private final PaymentMerchantServicesRequest merchantServices;
 
-  /**
-   * Data that can be attached to the payment to record additional attributes of
-   * the merchant.
-   */
+  /** Custom key-value metadata attached to the payment by the merchant. */
   private final Map<String, Object> metadata;
 
-  /** Net amount. */
+  /** Net amount received by the seller after fees. */
   private final BigDecimal netAmount;
 
-  /**
-   * URL where mercadopago will send notifications associated to changes in this
-   * payment.
-   */
+  /** Webhook URL where MercadoPago sends notifications about payment status changes. */
   private final String notificationUrl;
 
-  /** Order identifier. */
+  /** Associated purchase order information. */
   private final PaymentOrderRequest order;
 
-  /** Payer information. */
+  /** Payer information (email, identification, address, etc.). */
   private final PaymentPayerRequest payer;
 
-  /** Forward Data information. */
+  /** Forward data for Payment Facilitator or recurring-payment integrations. */
   private final PaymentForwardDataRequest forwardData;
 
-  /** Payment method chosen to do the payment. */
+  /** Identifier of the payment method chosen by the payer (e.g. "visa", "pix"). */
   private final String paymentMethodId;
 
-  /** Payment method option id. */
+  /** Payment method option identifier for specific payment flows. */
   private final String paymentMethodOptionId;
 
-  /** Processing mode to define if an specific merchannt id should be used. */
+  /** Processing mode that determines whether a specific merchant account is used. */
   private final String processingMode;
 
-  /** Card token ID. */
+  /** Tokenized card identifier generated by MercadoPago's card-tokenization flow. */
   private final String token;
 
-  /** Amount paid. */
+  /** Total transaction amount to be charged. */
   private final BigDecimal transactionAmount;
 
-  /** Transaction details. */
+  /** Additional transaction details such as the financial institution. */
   private final PaymentTransactionDetailsRequest transactionDetails;
 
-  /** Point of interaction. */
+  /** Point-of-interaction data describing the context of the payment origin. */
   private final PaymentPointOfInteractionRequest pointOfInteraction;
 
-  /** Sponsor Identification. */
+  /** Sponsor (platform) identifier for marketplace payments. */
   private final Long sponsorId;
 
-  /** How will look the payment in the card bill (e.g.: MERCADOPAGO). */
+  /** Description that appears on the payer's card or bank statement (e.g. "MERCADOPAGO"). */
   private final String statementDescriptor;
 
-  /** Taxes for payments. */
+  /** List of taxes applied to this payment. */
   private final List<PaymentTaxRequest> taxes;
 
-  /** Payment Method. */
+  /** Payment method details including type, rules, and authentication. */
   private final PaymentMethodRequest paymentMethod;
 
-  /** 3DS. */
+  /** 3-D Secure mode for the payment (e.g. "optional", "mandatory", "not_supported"). */
   private final String threeDSecureMode;
 
-  /** Amounts. */
+  /** Payer and collector amount details for cross-currency payments. */
   private final PaymentAmountsRequest amounts;
 
-  /** Counter currency. */
+  /** Counter-currency information for cross-border payments. */
   private final PaymentCounterCurrencyRequest counterCurrency;
 }

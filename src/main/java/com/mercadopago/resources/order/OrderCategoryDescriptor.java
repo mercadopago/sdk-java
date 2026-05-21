@@ -2,15 +2,19 @@ package com.mercadopago.resources.order;
 
 import lombok.Getter;
 
-/** OrderCategoryDescriptor class. */
+/**
+ * Resource representing category-specific descriptors for a MercadoPago Order item.
+ * Used for travel and event categories to provide additional details such as
+ * event dates, passenger identity, and route information.
+ */
 @Getter
 public class OrderCategoryDescriptor {
-    /** Event date. */
+    /** ISO 8601 date of the event associated with this item. */
     private String eventDate;
 
-    /** Passenger information. */
+    /** Passenger details for travel-related order items. */
     private OrderPassenger passenger;
 
-    /** Route information. */
+    /** Route details including departure, destination, and travel dates. */
     private OrderRoute route;
 }

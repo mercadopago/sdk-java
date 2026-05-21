@@ -3,13 +3,18 @@ package com.mercadopago.client.merchantorder;
 import lombok.Builder;
 import lombok.Getter;
 
-/** State information. */
+/**
+ * Request DTO representing state or province information within a Merchant Order receiver address.
+ * Used as part of the structured address breakdown for shipping destinations.
+ *
+ * @see <a href="https://www.mercadopago.com.br/developers/en/reference/merchant_orders">Merchant Orders API Reference</a>
+ */
 @Getter
 @Builder
 public class MerchantOrderReceiverAddressStateRequest {
-  /** State ID. */
+  /** Unique identifier of the state or province. */
   private final String id;
 
-  /** State name. */
+  /** Display name of the state or province. */
   private final String name;
 }

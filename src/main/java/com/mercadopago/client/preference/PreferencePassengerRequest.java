@@ -4,16 +4,21 @@ import com.mercadopago.client.common.IdentificationRequest;
 import lombok.Builder;
 import lombok.Getter;
 
-/** Passenger info. */
+/**
+ * Passenger information associated with a travel-related preference item, including name and
+ * identification details.
+ *
+ * @see com.mercadopago.client.preference.PreferenceCategoryDescriptorRequest
+ */
 @Getter
 @Builder
 public class PreferencePassengerRequest {
-  /** First name. */
+  /** Passenger's first name. */
   private final String firstName;
 
-  /** Last name. */
+  /** Passenger's last name. */
   private final String lastName;
 
-  /** Identification. */
+  /** Passenger's identification document details. */
   private final IdentificationRequest identification;
 }

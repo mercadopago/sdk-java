@@ -2,7 +2,15 @@ package com.mercadopago.resources.point;
 
 import lombok.Getter;
 
-/** Payment intent additional info. */
+/**
+ * Resource containing additional metadata for a Point payment intent.
+ *
+ * <p>Holds supplementary information that enriches the payment intent, including an external
+ * reference for integration with external systems, ticket printing preferences, and a ticket
+ * number for invoice tracking.
+ *
+ * @see PointPaymentIntent
+ */
 @Getter
 public class PointPaymentIntentAdditionalInfo {
   /**
