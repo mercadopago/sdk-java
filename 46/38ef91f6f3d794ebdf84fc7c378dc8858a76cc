@@ -1,0 +1,70 @@
+src/main/java/com/mercadopago/resources/chargeback/Chargeback.java
+  s_ca33c7d96b2139::t_b738db08b4c6e2 1-45
+src/main/java/com/mercadopago/client/advancedpayment/AdvancedPaymentPayerRequest.java
+  s_ca33c7d96b2139::t_a95969397df7bd 1-29
+src/main/java/com/mercadopago/client/preapprovalplan/PreApprovalPlanAutoRecurringUpdateRequest.java
+  s_ca33c7d96b2139::t_e46b20ff32a154 1-30
+src/main/java/com/mercadopago/client/disbursementrefund/DisbursementRefundClient.java
+  s_ca33c7d96b2139::t_cb07a8d4d0c418 1-140
+src/main/java/com/mercadopago/resources/preapprovalplan/PreApprovalPlanAutoRecurring.java
+  s_ca33c7d96b2139::t_24a8b773885f6a 1-28
+src/main/java/com/mercadopago/client/advancedpayment/AdvancedPaymentCancelRequest.java
+  s_ca33c7d96b2139::t_588f110d41af92 1-9
+src/main/java/com/mercadopago/client/advancedpayment/AdvancedPaymentDisbursementRequest.java
+  s_ca33c7d96b2139::t_de28ed903f8895 1-30
+src/main/java/com/mercadopago/client/preapprovalplan/PreApprovalPlanClient.java
+  s_ca33c7d96b2139::t_52ca17bd7c5338 1-205
+src/main/java/com/mercadopago/client/invoice/InvoiceClient.java
+  s_ca33c7d96b2139::t_3bf0ec54e8e93e 1-131
+src/main/java/com/mercadopago/resources/invoice/Invoice.java
+  s_ca33c7d96b2139::t_76be889f0e3a6e 1-66
+src/main/java/com/mercadopago/client/preapprovalplan/PreApprovalPlanUpdateRequest.java
+  s_ca33c7d96b2139::t_fd871e4b6606b2 1-26
+src/main/java/com/mercadopago/client/advancedpayment/AdvancedPaymentCaptureRequest.java
+  s_ca33c7d96b2139::t_0caae6021c2a3c 1-11
+src/main/java/com/mercadopago/client/advancedpayment/AdvancedPaymentCreateRequest.java
+  s_ca33c7d96b2139::t_690e1efa479aef 1-39
+src/main/java/com/mercadopago/client/chargeback/ChargebackClient.java
+  s_ca33c7d96b2139::t_20fc8eac2efa26 1-131
+src/main/java/com/mercadopago/resources/preapprovalplan/PreApprovalPlan.java
+  s_ca33c7d96b2139::t_e4db3f6181d20d 1-53
+src/main/java/com/mercadopago/client/advancedpayment/AdvancedPaymentClient.java
+  s_ca33c7d96b2139::t_3b9a502e84bbb3 1-164,167-197,200-232,235,238-277
+  s_ca33c7d96b2139::t_c105c4e65404f2 165-166
+  s_ca33c7d96b2139::t_db019daac31472 198-199
+  s_ca33c7d96b2139::t_d903a087d2866a 233-234,236-237
+src/main/java/com/mercadopago/resources/advancedpayment/AdvancedPaymentDisbursement.java
+  s_ca33c7d96b2139::t_7d2256703b22c5 1-37
+src/main/java/com/mercadopago/resources/advancedpayment/AdvancedPayment.java
+  s_ca33c7d96b2139::t_e699b32432fe15 1-49
+src/main/java/com/mercadopago/client/advancedpayment/AdvancedPaymentUpdateReleaseDateRequest.java
+  s_ca33c7d96b2139::t_f1762eb779f5f3 1-13
+src/main/java/com/mercadopago/resources/invoice/InvoicePayment.java
+  s_ca33c7d96b2139::t_ab90e8a253cfd5 1-21
+src/main/java/com/mercadopago/client/advancedpayment/AdvancedPaymentPaymentRequest.java
+  s_ca33c7d96b2139::t_8ab04cf05e51be 1-45
+src/main/java/com/mercadopago/client/preapprovalplan/PreApprovalPlanAutoRecurringCreateRequest.java
+  s_ca33c7d96b2139::t_bfa43d1ba4439c 1-30
+src/main/java/com/mercadopago/resources/disbursementrefund/DisbursementRefund.java
+  s_ca33c7d96b2139::t_afc5826eefa2bf 1-33
+src/main/java/com/mercadopago/client/disbursementrefund/DisbursementRefundCreateRequest.java
+  s_ca33c7d96b2139::t_622125251ac2ac 1-18
+src/main/java/com/mercadopago/client/preapprovalplan/PreApprovalPlanCreateRequest.java
+  s_ca33c7d96b2139::t_d01ab4cc838f7b 1-26
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.12",
+  "base_commit_sha": "4638ef91f6f3d794ebdf84fc7c378dc8858a76cc",
+  "prompts": {},
+  "sessions": {
+    "s_ca33c7d96b2139": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "31d8d73a-8320-4e75-89be-a5971fd08efd",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Daniel Alfaro <daniel.alfaro@mercadolibre.com.co>"
+    }
+  }
+}
