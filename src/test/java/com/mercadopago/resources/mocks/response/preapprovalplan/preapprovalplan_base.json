@@ -1,0 +1,18 @@
+{
+  "id": "plan-abc-123",
+  "reason": "Monthly yoga subscription",
+  "external_reference": "PLAN-REF-001",
+  "status": "active",
+  "back_url": "https://example.com/back",
+  "collector_id": 823549964,
+  "application_id": "6245132082630004",
+  "date_created": "2022-01-10T10:10:10.000-00:00",
+  "last_modified": "2022-01-10T10:10:10.000-00:00",
+  "init_point": "https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=plan-abc-123",
+  "auto_recurring": {
+    "frequency": 1,
+    "frequency_type": "months",
+    "currency_id": "BRL",
+    "transaction_amount": 49.90
+  }
+}
