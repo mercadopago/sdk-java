@@ -30,6 +30,9 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN_V2 }}
           PUBLIC_KEY: ${{ secrets.PUBLIC_KEY }}
 
+      - name: Dependency audit (OWASP)
+        run: mvn org.owasp:dependency-check-maven:check -DfailBuildOnCVSS=7 --no-transfer-progress
+
       # Upload coverage result
      # - name: Upload Coverage
       #  uses: codecov/codecov-action@v1
