@@ -30,8 +30,10 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN_V2 }}
           PUBLIC_KEY: ${{ secrets.PUBLIC_KEY }}
 
-      - name: Dependency audit (OWASP)
-        run: mvn org.owasp:dependency-check-maven:check -DfailBuildOnCVSS=7 --no-transfer-progress
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: high
 
       # Upload coverage result
      # - name: Upload Coverage
