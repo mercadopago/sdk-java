@@ -1,0 +1,31 @@
+src/main/java/com/mercadopago/example/apis/preapprovalplan/CreatePreApprovalPlan.java
+  s_ca33c7d96b2139::t_109f58a1723956 1-33
+src/main/java/com/mercadopago/example/apis/advancedpayment/CreateAdvancedPayment.java
+  s_ca33c7d96b2139::t_7d54b84b2ceca8 1-47
+src/main/java/com/mercadopago/example/apis/invoice/GetInvoice.java
+  s_ca33c7d96b2139::t_89830bf8e5ad59 5
+  s_ca33c7d96b2139::t_3796bbbf785f4e 26
+  s_ca33c7d96b2139::t_38296b0b747003 1-4,6-25,27-29
+src/main/java/com/mercadopago/example/apis/chargeback/SearchChargeback.java
+  s_ca33c7d96b2139::t_272c6b6ee64023 22
+  s_ca33c7d96b2139::t_079f409393298d 5
+  s_ca33c7d96b2139::t_726d4478a03aca 1-4,6-21,23-25
+src/main/java/com/mercadopago/example/apis/disbursementrefund/CreateDisbursementRefund.java
+  s_ca33c7d96b2139::t_f8d62952e57d6b 1-24
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.12",
+  "base_commit_sha": "3798c169d8339aa3531ee95865532208cb7e0ff3",
+  "prompts": {},
+  "sessions": {
+    "s_ca33c7d96b2139": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "31d8d73a-8320-4e75-89be-a5971fd08efd",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Daniel Alfaro <daniel.alfaro@mercadolibre.com.co>"
+    }
+  }
+}
