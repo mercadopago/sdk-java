@@ -1,0 +1,41 @@
+src/test/java/com/mercadopago/client/preapprovalplan/PreApprovalPlanClientTest.java
+  s_ca33c7d96b2139::t_19835ac444000e 1-86
+src/test/java/com/mercadopago/client/chargeback/ChargebackClientTest.java
+  s_ca33c7d96b2139::t_b2b1ea9b7e9acc 1-59
+src/test/java/com/mercadopago/client/advancedpayment/AdvancedPaymentClientTest.java
+  s_ca33c7d96b2139::t_733b9915f13d02 1-88
+src/test/java/com/mercadopago/resources/mocks/response/invoice/invoice_base.json
+  s_ca33c7d96b2139::t_528e9fb2364976 1-20
+src/test/java/com/mercadopago/resources/mocks/response/chargeback/chargeback_list.json
+  s_ca33c7d96b2139::t_8e67225423bfe8 1-12
+src/test/java/com/mercadopago/resources/mocks/response/chargeback/chargeback_base.json
+  s_ca33c7d96b2139::t_311a5de55d3a37 1-11
+src/test/java/com/mercadopago/resources/mocks/response/invoice/invoice_list.json
+  s_ca33c7d96b2139::t_4d3b37bd0c339c 1-11
+src/test/java/com/mercadopago/client/invoice/InvoiceClientTest.java
+  s_ca33c7d96b2139::t_ce81ab3a29f21a 1-60
+src/test/java/com/mercadopago/resources/mocks/response/preapprovalplan/preapprovalplan_list.json
+  s_ca33c7d96b2139::t_4b8934be05415d 1-10
+src/test/java/com/mercadopago/client/disbursementrefund/DisbursementRefundClientTest.java
+  s_ca33c7d96b2139::t_7061c518956eac 1-60
+src/test/java/com/mercadopago/resources/mocks/response/preapprovalplan/preapprovalplan_base.json
+  s_ca33c7d96b2139::t_537cddae94187e 1-18
+src/test/java/com/mercadopago/resources/mocks/response/disbursementrefund/disbursementrefund_base.json
+  s_ca33c7d96b2139::t_3aa52342bdb253 1-8
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.12",
+  "base_commit_sha": "395f6ec3ebf1af0daed276404afe77827ab1ded1",
+  "prompts": {},
+  "sessions": {
+    "s_ca33c7d96b2139": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "31d8d73a-8320-4e75-89be-a5971fd08efd",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Daniel Alfaro <daniel.alfaro@mercadolibre.com.co>"
+    }
+  }
+}
