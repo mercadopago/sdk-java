@@ -1,0 +1,29 @@
+src/main/java/com/mercadopago/client/order/OrderStoredCredentialRequest.java
+  s_9d868b010fbbae::t_17c5b2a1e96e79 29-35
+src/main/java/com/mercadopago/client/order/OrderIntegrationDataRequest.java
+  s_9d868b010fbbae::t_026311474cd62b 1-28
+src/main/java/com/mercadopago/client/order/OrderPayerAddressRequest.java
+  s_9d868b010fbbae::t_c5400ef436ba3c 32-34
+src/main/java/com/mercadopago/client/order/OrderCreateRequest.java
+  s_9d868b010fbbae::t_dfee8b732248b4 72-74
+src/main/java/com/mercadopago/client/order/OrderPaymentRequest.java
+  s_9d868b010fbbae::t_e361c5165d4420 23-29
+src/main/java/com/mercadopago/client/order/OrderSponsorRequest.java
+  s_9d868b010fbbae::t_a0c3051107f554 1-18
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.12",
+  "base_commit_sha": "f5bbf83dfe9c24bb42524e9116910155288c1892",
+  "prompts": {},
+  "sessions": {
+    "s_9d868b010fbbae": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "cfad13d2-c7f9-4497-aca9-b81634739146",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Daniel Alfaro <daniel.alfaro@mercadolibre.com.co>"
+    }
+  }
+}
