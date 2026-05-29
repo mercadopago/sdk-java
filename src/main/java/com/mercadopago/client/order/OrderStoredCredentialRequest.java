@@ -26,4 +26,11 @@ public class OrderStoredCredentialRequest {
 
   /** Whether this is the first payment using this stored credential. */
   private Boolean firstPayment;
+
+  /**
+   * Reference to the previous transaction in a recurring series. Required from the second charge
+   * onwards to link this payment to the original card-network authorization.
+   * Type: String (transaction ID).
+   */
+  private String prevTransactionRef;
 }

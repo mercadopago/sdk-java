@@ -29,4 +29,7 @@ public class OrderPayerAddressRequest {
 
     /** Name of the state or province. */
     private String state;
+
+    /** Apartment number, floor, or other additional address information. Type: String. */
+    private String complement;
 }
