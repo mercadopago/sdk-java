@@ -20,6 +20,13 @@ public class OrderPaymentRequest {
     /** ISO 8601 duration or date-time indicating when this payment expires. */
     private String expirationTime;
 
+    /**
+     * Absolute date and time (ISO 8601) after which this payment can no longer be collected.
+     * Distinct from expirationTime, which is a relative duration or TTL.
+     * Type: String (ISO 8601, e.g. "2026-06-01T00:00:00.000-04:00").
+     */
+    private String dateOfExpiration;
+
     /** Payment method details including type, token, and installments. */
     private OrderPaymentMethodRequest paymentMethod;
 

@@ -69,4 +69,7 @@ public class OrderCreateRequest extends MPResource {
 
     /** Shipment details for the order, including receiver address and package dimensions. */
     private OrderShipmentRequest shipment;
+
+    /** Integration metadata identifying the integrator, platform, corporation, and sponsor. */
+    private OrderIntegrationDataRequest integrationData;
 }
