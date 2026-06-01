@@ -1,0 +1,14 @@
+src/main/java/com/mercadopago/MercadoPagoConfig.java
+  h_04a99bed328080 38
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.12",
+  "base_commit_sha": "03347f39492a8f25d3f709070fd46137b5c93563",
+  "prompts": {},
+  "humans": {
+    "h_04a99bed328080": {
+      "author": "Daniel Alfaro <daniel.alfaro@mercadolibre.com.co>"
+    }
+  }
+}
