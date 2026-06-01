@@ -24,8 +24,8 @@ import org.junit.jupiter.api.Test;
 
 class AdvancedPaymentClientTest extends BaseClientTest {
 
-  private static final String paymentBaseJson = "advancedpayment/advancedpayment_base.json";
-  private static final String paymentListJson = "advancedpayment/advancedpayment_list.json";
+  private static final String paymentBaseJson = "advancedPayment/advancedpayment_base.json";
+  private static final String paymentListJson = "advancedPayment/advancedpayment_list.json";
   private final AdvancedPaymentClient client = new AdvancedPaymentClient();
 
   @Test
