@@ -1,0 +1,21 @@
+src/test/java/com/mercadopago/resources/mocks/response/advancedPayment/advancedpayment_base.json
+  s_c0ac03a899f946::t_04df0001a079dc 1-21
+src/test/java/com/mercadopago/resources/mocks/response/advancedPayment/advancedpayment_list.json
+  s_c0ac03a899f946::t_296f99e0c8f668 1-23
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.12",
+  "base_commit_sha": "43e31a3a1abb7142b6d7f02917e9c9c8f8df233c",
+  "prompts": {},
+  "sessions": {
+    "s_c0ac03a899f946": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "4b2df7e3-7c68-43ec-8a6f-05d40ddbb651",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Daniel Alfaro <daniel.alfaro@mercadolibre.com.co>"
+    }
+  }
+}
