@@ -499,6 +499,38 @@ class OrderClientTest extends BaseClientTest {
         Assertions.assertEquals("boleto", paymentMethodJson.get("id").getAsString());
     }
 
+    @Test
+    void orderPixPaymentMethodDoesNotIncludeInstallments() throws Exception {
+        OrderPaymentMethodRequest paymentMethod = OrderPaymentMethodRequest.builder()
+                .type("bank_transfer")
+                .id("pix")
+                .build();
+
+        OrderPaymentRequest payment = OrderPaymentRequest.builder()
+                .amount("10.50")
+                .paymentMethod(paymentMethod)
+                .build();
+
+        OrderCreateRequest request = OrderCreateRequest.builder()
+                .type("online")
+                .totalAmount("10.50")
+                .transactions(OrderTransactionRequest.builder().payments(Arrays.asList(payment)).build())
+                .payer(OrderPayerRequest.builder().email("test@email.com").build())
+                .build();
+
+        JsonObject paymentMethodJson = Serializer
+                .serializeToJson(request)
+                .getAsJsonObject("transactions")
+                .getAsJsonArray("payments")
+                .get(0).getAsJsonObject()
+                .getAsJsonObject("payment_method");
+
+        Assertions.assertEquals("bank_transfer", paymentMethodJson.get("type").getAsString());
+        Assertions.assertEquals("pix", paymentMethodJson.get("id").getAsString());
+        Assertions.assertFalse(paymentMethodJson.has("installments"),
+                "installments must not be present in the JSON for bank_transfer payment methods");
+    }
+
   @Test
   void searchSuccess() throws MPException, MPApiException, IOException {
     HttpResponse httpResponse =

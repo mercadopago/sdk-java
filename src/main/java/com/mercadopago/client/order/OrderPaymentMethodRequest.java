@@ -24,7 +24,7 @@ public class OrderPaymentMethodRequest {
     private String token;
 
     /** Number of installments selected for the payment. */
-    private int installments;
+    private Integer installments;
 
     /** Text that will appear on the cardholder's billing statement (e.g. "MERCADOPAGO"). */
     private String statementDescriptor;
