@@ -1,0 +1,21 @@
+src/main/java/com/mercadopago/client/order/OrderPaymentMethodRequest.java
+  s_010fb1bc0c5d49::t_0267e8f2218278 27
+src/test/java/com/mercadopago/client/order/OrderClientTest.java
+  s_010fb1bc0c5d49::t_d2a242df091e88 502-533
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "ad9e51b9a3f5529ba4625bd5a9f7d3786cdaeb90",
+  "prompts": {},
+  "sessions": {
+    "s_010fb1bc0c5d49": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "995c6fd6-be51-4111-a1b7-4f5a6f811ff1",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Luis Sanchez <luismiguel.sanchezgarcia@mercadolibre.com.co>"
+    }
+  }
+}
