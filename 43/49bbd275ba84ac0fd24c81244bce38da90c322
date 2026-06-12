@@ -1,0 +1,27 @@
+src/main/java/com/mercadopago/resources/order/OrderShipment.java
+  s_5fdf4ed1da0b67::t_1a652a32e00dde 7,12-13
+src/main/java/com/mercadopago/resources/order/OrderPointConfig.java
+  s_5fdf4ed1da0b67::t_be01e70646189f 21-23
+src/main/java/com/mercadopago/resources/order/OrderConfig.java
+  s_5fdf4ed1da0b67::t_4522b2a23ee5d4 26-27
+src/main/java/com/mercadopago/resources/order/OrderShipmentAddress.java
+  s_5fdf4ed1da0b67::t_0a838bf8af3409 1-29
+src/main/java/com/mercadopago/resources/order/OrderQrConfig.java
+  s_5fdf4ed1da0b67::t_4a950bc6c7d137 1-17
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "4349bbd275ba84ac0fd24c81244bce38da90c322",
+  "prompts": {},
+  "sessions": {
+    "s_5fdf4ed1da0b67": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2c44a824-72f5-457b-9a43-0dbfe5cec3a2",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Luis Sanchez <luismiguel.sanchezgarcia@mercadolibre.com.co>"
+    }
+  }
+}
