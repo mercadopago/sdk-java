@@ -27,7 +27,7 @@ class WebhookSignatureValidatorTest {
     try {
       StringBuilder mb = new StringBuilder();
       if (dataId != null && !dataId.isEmpty()) {
-        mb.append("id:").append(dataId.toLowerCase()).append(';');
+        mb.append("id:").append(dataId).append(';');
       }
       if (requestId != null && !requestId.isEmpty()) {
         mb.append("request-id:").append(requestId).append(';');
@@ -68,9 +68,10 @@ class WebhookSignatureValidatorTest {
 
   // case 2
   @Test
-  void uppercaseDataIdIsLowercased() {
+  void uppercaseDataIdIsPreserved() {
+    String upperHash = computeHash(DATA_ID_RAW, REQUEST_ID, TS, SECRET);
     assertDoesNotThrow(() ->
-        WebhookSignatureValidator.validate(buildHeader(validHash()), REQUEST_ID, DATA_ID_RAW, SECRET));
+        WebhookSignatureValidator.validate(buildHeader(upperHash), REQUEST_ID, DATA_ID_RAW, SECRET));
   }
 
   // case 3
