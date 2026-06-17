@@ -53,7 +53,7 @@ public final class WebhookSignatureValidator {
    *                   manifest before computing the HMAC
    * @param dataId     value of the {@code data.id} query parameter; may be {@code null} or
    *                   blank, in which case the {@code id:} pair is omitted. When present,
-   *                   it is lowercased before being included in the manifest
+   *                   it is included in the manifest exactly as received
    * @param secret     secret signature configured for the application in Tus Integraciones,
    *                   used as the HMAC key
    * @throws MPInvalidWebhookSignatureException when the signature is missing, malformed, or
@@ -201,7 +201,7 @@ public final class WebhookSignatureValidator {
   private static String buildManifest(String dataId, String requestId, String timestamp) {
     StringBuilder sb = new StringBuilder();
     if (dataId != null) {
-      sb.append("id:").append(dataId.toLowerCase()).append(';');
+      sb.append("id:").append(dataId).append(';');
     }
     if (requestId != null) {
       sb.append("request-id:").append(requestId).append(';');
