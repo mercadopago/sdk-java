@@ -1,0 +1,14 @@
+src/main/java/com/mercadopago/MercadoPagoConfig.java
+  h_4077232c5ab963 38
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "55670318318ed70e4c89dadb884d19396bc3d63f",
+  "prompts": {},
+  "humans": {
+    "h_4077232c5ab963": {
+      "author": "Luis Sanchez <luismiguel.sanchezgarcia@mercadolibre.com.co>"
+    }
+  }
+}
