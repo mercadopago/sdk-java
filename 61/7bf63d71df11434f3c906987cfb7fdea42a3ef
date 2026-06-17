@@ -1,0 +1,20 @@
+src/test/java/com/mercadopago/webhook/WebhookSignatureValidatorTest.java
+  s_b32531bfe47118::t_db28fcade2eaaa 71-72,74
+  s_b32531bfe47118::t_fe0905f3bf28d3 30
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "617bf63d71df11434f3c906987cfb7fdea42a3ef",
+  "prompts": {},
+  "sessions": {
+    "s_b32531bfe47118": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "4d9a17f2-528e-498d-8c77-35da94054ad3",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Daniel Alfaro <daniel.alfaro@mercadolibre.com.co>"
+    }
+  }
+}
