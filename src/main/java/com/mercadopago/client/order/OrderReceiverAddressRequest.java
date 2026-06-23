@@ -1,5 +1,6 @@
 package com.mercadopago.client.order;
 
+import lombok.Builder;
 import lombok.Getter;
 
 /**
@@ -7,6 +8,7 @@ import lombok.Getter;
  * full street address, city, state, zip code, and optional floor/apartment details.
  */
 @Getter
+@Builder
 public class OrderReceiverAddressRequest {
 
     /** Name of the street. */
@@ -17,6 +19,9 @@ public class OrderReceiverAddressRequest {
 
     /** Postal or zip code. */
     private String zipCode;
+
+    /** Name of the neighborhood or district. */
+    private String neighborhood;
 
     /** Name of the city. */
     private String cityName;

@@ -25,6 +25,15 @@ public class OrderOnlineConfig {
     /** URL for automatic redirection after the checkout process completes. */
     private String autoReturnUrl;
 
+    /**
+     * Controls automatic redirect after payment. "approved" redirects to success_url on approval;
+     * "all" redirects on any outcome.
+     */
+    private String autoReturn;
+
+    /** ISO 8601 date-time from which the Order is available for payment. */
+    private String availableFrom;
+
     /** Differential pricing configuration for applying custom pricing rules. */
     private OrderDifferentialPricing differentialPricing;
 

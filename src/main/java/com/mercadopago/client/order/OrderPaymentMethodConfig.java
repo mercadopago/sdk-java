@@ -1,6 +1,5 @@
 package com.mercadopago.client.order;
 
-import com.mercadopago.resources.order.OrderInstallments;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -37,8 +36,8 @@ public class OrderPaymentMethodConfig {
     /** Who absorbs the installment cost ("buyer" or "seller"). */
     private String installmentsCost;
 
-    /** Detailed installment configuration options. */
-    private OrderInstallments installments;
+    /** Installment configuration including interest-free rules. */
+    private OrderInstallmentsRequest installments;
 
     /** Minimum number of installments allowed for this order. */
     private Integer minInstallments;

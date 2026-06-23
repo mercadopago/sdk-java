@@ -12,6 +12,18 @@ import lombok.Getter;
 @Builder
 public class OrderConfigRequest {
 
+    /**
+     * Text shown on the buyer's credit card statement. Approximately 10 characters max
+     * depending on the card issuer.
+     */
+    private String statementDescriptor;
+
+    /**
+     * Offline payment expiration duration in ISO 8601 format. "P1D" means the transaction
+     * is available for payment for 1 day.
+     */
+    private String defaultPaymentDueDate;
+
     /** Payment method configuration including allowed types, installment limits, and defaults. */
     private OrderPaymentMethodConfig paymentMethod;
 
