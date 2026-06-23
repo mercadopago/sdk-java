@@ -1,0 +1,61 @@
+src/main/java/com/mercadopago/resources/order/OrderOnlineConfig.java
+  s_e90e4de6eba42c::t_634aa68c8d4bfc 28-36
+src/main/java/com/mercadopago/client/order/OrderPaymentMethodConfig.java
+  s_e90e4de6eba42c::t_5d5311640035fc 39-40
+src/test/java/com/mercadopago/client/order/OrderClientCheckoutProTest.java
+  s_e90e4de6eba42c::t_9e4a9b865e8da5 94
+  s_e90e4de6eba42c::t_d9064e65d4b427 1-93,97-306
+  s_e90e4de6eba42c::t_73b27b49207e3f 95-96
+src/main/java/com/mercadopago/client/order/OrderFreeShippingMethodRequest.java
+  s_e90e4de6eba42c::t_4b30b854e23542 1-15
+src/main/java/com/mercadopago/example/apis/order/CreateOrderCheckoutPro.java
+  s_e90e4de6eba42c::t_86af7872b7a5a1 1-42,44-136
+src/main/java/com/mercadopago/client/order/OrderConfigRequest.java
+  s_e90e4de6eba42c::t_926c7b4ef5d068 15-26
+src/test/java/com/mercadopago/resources/mocks/response/order/create_order_checkout_pro_response.json
+  s_e90e4de6eba42c::t_4791fee9211483 1-70
+src/main/java/com/mercadopago/client/order/OrderInstallmentsRequest.java
+  s_e90e4de6eba42c::t_e36c78a35b920d 7
+  s_e90e4de6eba42c::t_e3cb26b24e67ea 1-6,8-15
+src/main/java/com/mercadopago/client/order/OrderTrackRequest.java
+  s_e90e4de6eba42c::t_2d1694e69cc16f 1-8,10-27
+  s_e90e4de6eba42c::t_f1898d327f46cb 9
+src/main/java/com/mercadopago/client/order/OrderOnlineConfig.java
+  s_e90e4de6eba42c::t_92ce4045ad0f30 6-7,32-51
+  s_e90e4de6eba42c::t_86b3403a43aba3 53-55
+src/main/java/com/mercadopago/client/order/OrderItemRequest.java
+  s_e90e4de6eba42c::t_03932703654921 3,13
+src/main/java/com/mercadopago/client/order/OrderReceiverAddressRequest.java
+  s_e90e4de6eba42c::t_8b32b4cf898847 3,11
+  s_e90e4de6eba42c::t_892c49171c5be7 23-25
+src/main/java/com/mercadopago/client/order/OrderRetriesConfig.java
+  s_e90e4de6eba42c::t_06c51d7ac8730a 1
+  s_e90e4de6eba42c::t_a2d547ee2c8b90 6
+src/main/java/com/mercadopago/client/order/OrderInstallmentsInterestFreeRequest.java
+  s_e90e4de6eba42c::t_f89a4ff20cce2b 9
+  s_e90e4de6eba42c::t_25bc0ee9224507 1-8,10-28
+pom.xml
+  s_e90e4de6eba42c::t_a93ab7b33589da 7
+src/main/java/com/mercadopago/client/order/OrderShipmentRequest.java
+  s_e90e4de6eba42c::t_e8d9472ff8282b 9
+  s_e90e4de6eba42c::t_0511d4a6b1da9b 3,6-7,10,13,16-36,40,43,48
+src/main/java/com/mercadopago/resources/order/Order.java
+  s_e90e4de6eba42c::t_5aebfebc243081 84
+  s_e90e4de6eba42c::t_f571e7a2766497 85-86
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "e1009a20d69737646acb45abc3abb912e52f262a",
+  "prompts": {},
+  "sessions": {
+    "s_e90e4de6eba42c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "fe562457-a163-438b-9751-813f4b440114",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Luis Sanchez <luismiguel.sanchezgarcia@mercadolibre.com.co>"
+    }
+  }
+}
