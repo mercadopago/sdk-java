@@ -1,0 +1,19 @@
+.github/workflows/maven-publish-snapshot.yml
+  s_914c6642183caa::t_d002ccf9e207c6 24-25,28-29,34-36,38
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "f1fd2fd4cf4b4b2d80bb53683cbf6398dd904b41",
+  "prompts": {},
+  "sessions": {
+    "s_914c6642183caa": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ef6ea-0a35-7e42-a1af-c837cdd3fb57",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Luis Sanchez <luismiguel.sanchezgarcia@mercadolibre.com.co>"
+    }
+  }
+}
