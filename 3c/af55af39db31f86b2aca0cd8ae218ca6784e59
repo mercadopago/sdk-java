@@ -1,0 +1,19 @@
+pom.xml
+  s_914c6642183caa::t_16617803299483 7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "3caf55af39db31f86b2aca0cd8ae218ca6784e59",
+  "prompts": {},
+  "sessions": {
+    "s_914c6642183caa": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ef6ea-0a35-7e42-a1af-c837cdd3fb57",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Luis Sanchez <luismiguel.sanchezgarcia@mercadolibre.com.co>"
+    }
+  }
+}
