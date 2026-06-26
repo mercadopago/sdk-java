@@ -112,7 +112,6 @@ public class CreateOrderCheckoutPro {
             System.out.println("Order created: " + order.getId());
             System.out.println("Checkout URL: " + order.getCheckoutUrl());
             System.out.println("Status: " + order.getStatus());
-            System.out.println("Client token: " + order.getClientToken());
         } catch (MPApiException mpApiException) {
             System.out.println("API error: " + mpApiException.getMessage());
             System.out.println("Status code: " + mpApiException.getStatusCode());

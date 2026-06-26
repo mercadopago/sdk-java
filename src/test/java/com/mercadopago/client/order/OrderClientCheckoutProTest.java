@@ -6,10 +6,12 @@ import static org.mockito.ArgumentMatchers.any;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mercadopago.BaseClientTest;
+import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.common.IdentificationRequest;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.helper.MockHelper;
+import com.mercadopago.net.Headers;
 import com.mercadopago.net.HttpStatus;
 import com.mercadopago.resources.order.Order;
 import com.mercadopago.serialization.Serializer;
@@ -23,6 +25,7 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.protocol.HttpContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 class OrderClientCheckoutProTest extends BaseClientTest {
@@ -122,7 +125,33 @@ class OrderClientCheckoutProTest extends BaseClientTest {
         Assertions.assertNotNull(online);
         Assertions.assertEquals("approved", online.get("auto_return").getAsString());
         Assertions.assertEquals("https://example.com/success", online.get("success_url").getAsString());
+        Assertions.assertEquals("https://example.com/failure", online.get("failure_url").getAsString());
+        Assertions.assertEquals("https://example.com/pending", online.get("pending_url").getAsString());
         Assertions.assertEquals("2026-01-01T00:00:00Z", online.get("available_from").getAsString());
+    }
+
+    @Test
+    void checkoutProRequestSerializesCreateContractFields() {
+        OrderCreateRequest request = buildCheckoutProRequest();
+        JsonObject payload = Serializer.serializeToJson(request);
+
+        Assertions.assertEquals("online", payload.get("type").getAsString());
+        Assertions.assertEquals("manual", payload.get("processing_mode").getAsString());
+        Assertions.assertEquals("500.00", payload.get("total_amount").getAsString());
+
+        JsonArray items = payload.getAsJsonArray("items");
+        Assertions.assertEquals("450.00",
+                items.get(0).getAsJsonObject().get("unit_price").getAsString());
+        Assertions.assertEquals("50.00",
+                items.get(1).getAsJsonObject().get("unit_price").getAsString());
+    }
+
+    @Test
+    void orderWritesSendProductHeader()
+            throws MPException, MPApiException, IOException {
+        assertProductHeader(() -> client.create(buildCheckoutProRequest()));
+        assertProductHeader(() -> client.cancel("ORDTST01KS5AJ6HTK2HRQ3XJ3C2JCKP9"));
+        assertProductHeader(() -> client.refund("ORDTST01KS5AJ6HTK2HRQ3XJ3C2JCKP9"));
     }
 
     @Test
@@ -302,5 +331,26 @@ class OrderClientCheckoutProTest extends BaseClientTest {
                                 .build())
                         .build())
                 .build();
+    }
+
+    private void assertProductHeader(RequestCall requestCall) throws MPException, MPApiException, IOException {
+        HttpResponse response = generateHttpResponseFromFile(CHECKOUT_PRO_RESPONSE_FILE, HttpStatus.OK);
+        Mockito.doReturn(response)
+                .when(HTTP_CLIENT)
+                .execute(any(HttpRequestBase.class), any(HttpContext.class));
+        Mockito.clearInvocations(HTTP_CLIENT);
+
+        requestCall.execute();
+
+        ArgumentCaptor<HttpRequestBase> requestCaptor = ArgumentCaptor.forClass(HttpRequestBase.class);
+        Mockito.verify(HTTP_CLIENT).execute(requestCaptor.capture(), any(HttpContext.class));
+
+        HttpRequestBase httpRequest = requestCaptor.getValue();
+        Assertions.assertEquals(MercadoPagoConfig.PRODUCT_ID,
+                httpRequest.getFirstHeader(Headers.PRODUCT_ID).getValue());
+    }
+
+    private interface RequestCall {
+        void execute() throws MPException, MPApiException;
     }
 }
