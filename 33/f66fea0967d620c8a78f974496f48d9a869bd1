@@ -1,0 +1,21 @@
+src/test/java/com/mercadopago/client/order/OrderClientCheckoutProTest.java
+  s_914c6642183caa::t_50372a249d4f3a 150,152-154,336
+  s_914c6642183caa::t_ee0f497f0af1f8 14,28,128-129,133-149,151,155-156,335,337-354
+  s_914c6642183caa::t_ffa639088b8f54 9
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "33f66fea0967d620c8a78f974496f48d9a869bd1",
+  "prompts": {},
+  "sessions": {
+    "s_914c6642183caa": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ef6ea-0a35-7e42-a1af-c837cdd3fb57",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Luis Sanchez <luismiguel.sanchezgarcia@mercadolibre.com.co>"
+    }
+  }
+}
