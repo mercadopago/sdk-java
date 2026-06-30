@@ -1,5 +1,6 @@
 package com.mercadopago.client.order;
 
+import lombok.Builder;
 import lombok.Getter;
 
 // API version: acd67b14-97c4-4a4a-840d-0a018c09654f
@@ -9,6 +10,7 @@ import lombok.Getter;
  * such as title, price, quantity, and optional metadata like category, picture, and warranty.
  */
 @Getter
+@Builder
 public class OrderItemRequest {
 
     /** Display title of the item. */

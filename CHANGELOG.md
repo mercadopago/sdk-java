@@ -5,6 +5,49 @@ All notable changes to this project will be documented in this file.
 This project follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.3.0] - 2026-06-30
+
+### Added
+
+- **Checkout PRO orders**: extended `OrderClient` with full Checkout PRO support via the Orders API.
+  New request types enable configuring redirect URLs, auto-return behavior, availability windows,
+  user-type restrictions, tracking pixels (Google Ads / Facebook Ads), shipment details, and
+  interest-free installment rules.
+
+- **`Order.checkoutUrl`**: new field on the `Order` resource returning the redirect URL generated
+  at order creation to send the buyer into the Checkout PRO flow.
+
+- **`OrderOnlineConfig` fields**: `autoReturn` and `availableFrom` added to both the request and
+  resource models.
+
+- **`OrderConfigRequest` fields**: `statementDescriptor` and `defaultPaymentDueDate` for
+  customising the card statement text and offline payment expiry.
+
+- **`OrderShipmentRequest` fields**: `mode`, `localPickup`, `cost`, `freeShipping`, `freeMethods`,
+  and `address` — plus `@Builder` support on `OrderShipmentRequest`, `OrderReceiverAddressRequest`,
+  and `OrderItemRequest`.
+
+- **`OrderTrackRequest`**: new request class for conversion-tracking pixels (Google Ads /
+  Facebook Ads).
+
+- **`OrderFreeShippingMethodRequest`**: new request class for free shipping method IDs.
+
+- **`OrderInstallmentsRequest` / `OrderInstallmentsInterestFreeRequest`**: new request classes
+  replacing `OrderInstallments` in `OrderPaymentMethodConfig` — enables "range" and "list"
+  interest-free installment rules.
+
+- **`OrderRetriesConfig`**: new class exposing the payment-retry `allowed` flag returned in order
+  responses.
+
+- **`CreateOrderCheckoutPro` example**: reference implementation showing a full Checkout PRO
+  order creation flow.
+
+### Fixed
+
+- **`WebhookSignatureValidator`**: `data.id` is now lowercased before being included in the HMAC
+  manifest, matching the behaviour documented by Mercado Pago and preventing signature
+  verification failures caused by mixed-case IDs.
+
 ## [3.2.0] - 2026-05-27
 
 ### Added

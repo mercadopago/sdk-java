@@ -81,6 +81,9 @@ public class Order extends MPResource {
     /** Unique client token that identifies the integrator's credentials for this order. */
     private String clientToken;
 
+    /** URL to redirect the buyer to the checkout flow. Generated at creation. */
+    private String checkoutUrl;
+
     /** List of line items included in this order. */
     private List<OrderItem> items;
 
