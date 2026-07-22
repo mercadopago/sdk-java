@@ -107,7 +107,7 @@ public class CustomerClient extends MercadoPagoClient {
 
     MPResponse response =
         send(
-            String.format("/v1/customers/%s", customerId),
+            String.format("/v1/customers/%s", encodePathParam(customerId)),
             HttpMethod.GET,
             null,
             null,
@@ -199,7 +199,7 @@ public class CustomerClient extends MercadoPagoClient {
     JsonObject payload = Serializer.serializeToJson(request);
     MPRequest mpRequest =
         MPRequest.buildRequest(
-            String.format("/v1/customers/%s", customerId),
+            String.format("/v1/customers/%s", encodePathParam(customerId)),
             HttpMethod.PUT,
             payload,
             null,
@@ -239,7 +239,7 @@ public class CustomerClient extends MercadoPagoClient {
 
     MPRequest mpRequest =
         MPRequest.buildRequest(
-            String.format("/v1/customers/%s", customerId),
+            String.format("/v1/customers/%s", encodePathParam(customerId)),
             HttpMethod.DELETE,
             null,
             null,

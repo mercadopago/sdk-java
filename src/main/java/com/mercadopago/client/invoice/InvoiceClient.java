@@ -88,7 +88,7 @@ public class InvoiceClient extends MercadoPagoClient {
       throws MPException, MPApiException {
     LOGGER.info("Sending get invoice request");
     MPResponse response =
-        send(String.format(URL_WITH_ID, id), HttpMethod.GET, null, null, requestOptions);
+        send(String.format(URL_WITH_ID, encodePathParam(id)), HttpMethod.GET, null, null, requestOptions);
 
     Invoice result = deserializeFromJson(Invoice.class, response.getContent());
     result.setResponse(response);

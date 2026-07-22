@@ -101,7 +101,7 @@ public class PreferenceClient extends MercadoPagoClient {
       throws MPException, MPApiException {
     LOGGER.info("Sending get preference request");
     MPResponse response =
-        send(String.format(URL_WITH_ID, id), HttpMethod.GET, null, null, requestOptions);
+        send(String.format(URL_WITH_ID, encodePathParam(id)), HttpMethod.GET, null, null, requestOptions);
 
     Preference result = deserializeFromJson(Preference.class, response.getContent());
     result.setResponse(response);
@@ -194,7 +194,7 @@ public class PreferenceClient extends MercadoPagoClient {
 
     MPRequest mpRequest =
         MPRequest.builder()
-            .uri(String.format(URL_WITH_ID, id))
+            .uri(String.format(URL_WITH_ID, encodePathParam(id)))
             .method(HttpMethod.PUT)
             .payload(Serializer.serializeToJson(request))
             .build();

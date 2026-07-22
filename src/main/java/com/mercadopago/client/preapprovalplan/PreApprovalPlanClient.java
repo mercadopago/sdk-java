@@ -93,7 +93,7 @@ public class PreApprovalPlanClient extends MercadoPagoClient {
       throws MPException, MPApiException {
     LOGGER.info("Sending get preapproval plan request");
     MPResponse response =
-        send(String.format(URL_WITH_ID, id), HttpMethod.GET, null, null, requestOptions);
+        send(String.format(URL_WITH_ID, encodePathParam(id)), HttpMethod.GET, null, null, requestOptions);
 
     PreApprovalPlan result = deserializeFromJson(PreApprovalPlan.class, response.getContent());
     result.setResponse(response);
@@ -161,7 +161,7 @@ public class PreApprovalPlanClient extends MercadoPagoClient {
       MPRequestOptions requestOptions) throws MPException, MPApiException {
     LOGGER.info("Sending update preapproval plan request");
     MPResponse response =
-        send(String.format(URL_WITH_ID, id), HttpMethod.PUT, serializeToJson(request), null,
+        send(String.format(URL_WITH_ID, encodePathParam(id)), HttpMethod.PUT, serializeToJson(request), null,
             requestOptions);
 
     PreApprovalPlan result = deserializeFromJson(PreApprovalPlan.class, response.getContent());

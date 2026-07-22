@@ -68,7 +68,7 @@ public class CustomerCardClient extends MercadoPagoClient {
    * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public CustomerCard get(String customerId, String cardId) throws MPException, MPApiException {
-    return this.get(customerId, cardId, null);
+    return this.get(customerId, encodePathParam(cardId), null);
   }
 
   /**
@@ -86,7 +86,7 @@ public class CustomerCardClient extends MercadoPagoClient {
       throws MPException, MPApiException {
     MPResponse response =
         send(
-            String.format("/v1/customers/%s/cards/%s", customerId, cardId),
+            String.format("/v1/customers/%s/cards/%s", encodePathParam(customerId), encodePathParam(cardId)),
             HttpMethod.GET,
             null,
             null,
@@ -129,7 +129,7 @@ public class CustomerCardClient extends MercadoPagoClient {
     JsonObject payload = Serializer.serializeToJson(request);
     MPRequest mpRequest =
         MPRequest.buildRequest(
-            String.format("/v1/customers/%s/cards", customerId),
+            String.format("/v1/customers/%s/cards", encodePathParam(customerId)),
             HttpMethod.POST,
             payload,
             null,
@@ -151,7 +151,7 @@ public class CustomerCardClient extends MercadoPagoClient {
    * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public CustomerCard delete(String customerId, String cardId) throws MPException, MPApiException {
-    return this.delete(customerId, cardId, null);
+    return this.delete(customerId, encodePathParam(cardId), null);
   }
 
   /**
@@ -171,7 +171,7 @@ public class CustomerCardClient extends MercadoPagoClient {
 
     MPResponse response =
         send(
-            String.format("/v1/customers/%s/cards/%s", customerId, cardId),
+            String.format("/v1/customers/%s/cards/%s", encodePathParam(customerId), encodePathParam(cardId)),
             HttpMethod.DELETE,
             null,
             null,
@@ -210,7 +210,7 @@ public class CustomerCardClient extends MercadoPagoClient {
     LOGGER.info("Sending list all customer cards request");
     MPResponse response =
         list(
-            String.format("/v1/customers/%s/cards", customerId),
+            String.format("/v1/customers/%s/cards", encodePathParam(customerId)),
             HttpMethod.GET,
             null,
             null,
