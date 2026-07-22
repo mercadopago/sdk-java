@@ -1,6 +1,7 @@
 package com.mercadopago.client.preference;
 
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -46,5 +47,8 @@ public class PreferenceItemRequest {
 
   /** Whether the item includes a warranty. */
   private final boolean warranty;
+
+  /** Date of the event related to the item. */
+  private final OffsetDateTime eventDate;
 }
 
