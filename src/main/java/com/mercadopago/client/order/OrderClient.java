@@ -154,7 +154,7 @@ public class OrderClient extends MercadoPagoClient {
 
     validateOrderID(id);
 
-    String url = String.format(URL_WITH_ID, id);
+    String url = String.format(URL_WITH_ID, encodePathParam(id));
     MPResponse response = send(url, HttpMethod.GET, null, null, requestOptions);
 
     Order result = deserializeFromJson(Order.class, response.getContent());
@@ -193,7 +193,7 @@ public class OrderClient extends MercadoPagoClient {
 
     validateOrderID(id);
 
-    String url = String.format(URL_PROCESS, id);
+    String url = String.format(URL_PROCESS, encodePathParam(id));
     MPResponse response = send(url, HttpMethod.POST, null, null, requestOptions);
 
     Order result = deserializeFromJson(Order.class, response.getContent());
@@ -234,7 +234,7 @@ public class OrderClient extends MercadoPagoClient {
 
     MPRequest mpRequest =
         MPRequest.builder()
-            .uri(String.format(URL_TRANSACTION, orderId))
+            .uri(String.format(URL_TRANSACTION, encodePathParam(orderId)))
             .method(HttpMethod.POST)
             .payload(Serializer.serializeToJson(request))
             .build();
@@ -259,7 +259,7 @@ public class OrderClient extends MercadoPagoClient {
   public UpdateOrderTransaction updateTransaction(
       String orderId, String transactionId, OrderPaymentRequest request)
       throws MPException, MPApiException {
-    return this.updateTransaction(orderId, transactionId, request, null);
+    return this.updateTransaction(orderId, encodePathParam(transactionId), request, null);
   }
 
   /**
@@ -289,7 +289,7 @@ public class OrderClient extends MercadoPagoClient {
 
     MPRequest mpRequest =
         MPRequest.builder()
-            .uri(String.format(URL_TRANSACTION_WITH_ID, orderId, transactionId))
+            .uri(String.format(URL_TRANSACTION_WITH_ID, encodePathParam(orderId), encodePathParam(transactionId)))
             .method(HttpMethod.PUT)
             .payload(Serializer.serializeToJson(request))
             .build();
@@ -331,7 +331,7 @@ public class OrderClient extends MercadoPagoClient {
 
     validateOrderID(orderId);
 
-    String url = String.format(URL_CANCEL, orderId);
+    String url = String.format(URL_CANCEL, encodePathParam(orderId));
     MPResponse response = send(url, HttpMethod.POST, null, null, requestOptions);
 
     Order result = deserializeFromJson(Order.class, response.getContent());
@@ -369,7 +369,7 @@ public class OrderClient extends MercadoPagoClient {
 
     validateOrderID(orderId);
 
-    String url = String.format(URL_CAPTURE, orderId);
+    String url = String.format(URL_CAPTURE, encodePathParam(orderId));
     MPResponse response = send(url, HttpMethod.POST, null, null, requestOptions);
 
     Order result = deserializeFromJson(Order.class, response.getContent());
@@ -389,7 +389,7 @@ public class OrderClient extends MercadoPagoClient {
    */
   public OrderTransaction deleteTransaction(String orderId, String transactionId)
       throws MPException, MPApiException {
-    return this.deleteTransaction(orderId, transactionId, null);
+    return this.deleteTransaction(orderId, encodePathParam(transactionId), null);
   }
 
   /**
@@ -413,7 +413,7 @@ public class OrderClient extends MercadoPagoClient {
     validateOrderID(orderId);
     validateTransactionID(transactionId);
 
-    String url = String.format(URL_TRANSACTION_WITH_ID, orderId, transactionId);
+    String url = String.format(URL_TRANSACTION_WITH_ID, encodePathParam(orderId), encodePathParam(transactionId));
     MPResponse response = send(url, HttpMethod.DELETE, null, null, requestOptions);
 
     OrderTransaction result = new OrderTransaction();
@@ -489,7 +489,7 @@ public class OrderClient extends MercadoPagoClient {
 
     MPRequest mpRequest =
         MPRequest.builder()
-            .uri(String.format(URL_REFUND, orderId))
+            .uri(String.format(URL_REFUND, encodePathParam(orderId)))
             .method(HttpMethod.POST)
             .payload(payload)
             .build();

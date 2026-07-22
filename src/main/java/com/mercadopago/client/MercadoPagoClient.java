@@ -16,6 +16,8 @@ import com.mercadopago.net.MPRequest;
 import com.mercadopago.net.MPResponse;
 import com.mercadopago.net.MPSearchRequest;
 import com.mercadopago.net.UrlFormatter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -78,6 +80,20 @@ public abstract class MercadoPagoClient {
         String.format("MercadoPago Java SDK/%s", MercadoPagoConfig.CURRENT_VERSION));
     defaultHeaders.put(Headers.TRACKING_ID, MercadoPagoConfig.TRACKING_ID);
     defaultHeaders.put(Headers.CONTENT_TYPE, CONTENT_TYPE_HEADER_VALUE);
+  }
+
+  /**
+   * Encodes a dynamic URL path segment before it is interpolated into an endpoint path.
+   *
+   * @param value path parameter value
+   * @return encoded path segment
+   */
+  protected static String encodePathParam(Object value) {
+    try {
+      return URLEncoder.encode(String.valueOf(value), "UTF-8").replace("+", "%20");
+    } catch (UnsupportedEncodingException e) {
+      throw new IllegalStateException("UTF-8 encoding is not supported", e);
+    }
   }
 
   /**

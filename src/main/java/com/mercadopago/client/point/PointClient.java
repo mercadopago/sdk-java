@@ -133,7 +133,7 @@ public class PointClient extends MercadoPagoClient {
 
     MPRequest mpRequest =
         MPRequest.builder()
-            .uri(String.format(PAYMENT_INTENT_URL, deviceId))
+            .uri(String.format(PAYMENT_INTENT_URL, encodePathParam(deviceId)))
             .method(HttpMethod.POST)
             .payload(Serializer.serializeToJson(request))
             .build();
@@ -210,7 +210,7 @@ public class PointClient extends MercadoPagoClient {
    */
   public PointCancelPaymentIntent cancelPaymentIntent(String deviceId, String paymentIntentId)
       throws MPException, MPApiException {
-    return this.cancelPaymentIntent(deviceId, paymentIntentId, null);
+    return this.cancelPaymentIntent(deviceId, encodePathParam(paymentIntentId), null);
   }
 
   /**
@@ -234,7 +234,7 @@ public class PointClient extends MercadoPagoClient {
 
     MPRequest mpRequest =
         MPRequest.builder()
-            .uri(String.format(PAYMENT_INTENT_DELETE_URL, deviceId, paymentIntentId))
+            .uri(String.format(PAYMENT_INTENT_DELETE_URL, encodePathParam(deviceId), encodePathParam(paymentIntentId)))
             .method(HttpMethod.DELETE)
             .build();
 
@@ -281,7 +281,7 @@ public class PointClient extends MercadoPagoClient {
 
     MPRequest mpRequest =
         MPRequest.builder()
-            .uri(String.format(PAYMENT_INTENT_SEARCH_URL, paymentIntentId))
+            .uri(String.format(PAYMENT_INTENT_SEARCH_URL, encodePathParam(paymentIntentId)))
             .method(HttpMethod.GET)
             .build();
 
@@ -328,7 +328,7 @@ public class PointClient extends MercadoPagoClient {
 
     MPRequest mpRequest =
         MPRequest.builder()
-            .uri(String.format(PAYMENT_INTENT_STATUS_URL, paymentIntentId))
+            .uri(String.format(PAYMENT_INTENT_STATUS_URL, encodePathParam(paymentIntentId)))
             .method(HttpMethod.GET)
             .build();
 
@@ -424,7 +424,7 @@ public class PointClient extends MercadoPagoClient {
 
     MPRequest mpRequest =
         MPRequest.builder()
-            .uri(String.format(DEVICE_WITH_ID_URL, deviceId))
+            .uri(String.format(DEVICE_WITH_ID_URL, encodePathParam(deviceId)))
             .method(HttpMethod.PATCH)
             .payload(Serializer.serializeToJson(request))
             .build();

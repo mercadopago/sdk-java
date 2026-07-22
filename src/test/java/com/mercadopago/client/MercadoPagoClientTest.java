@@ -291,6 +291,13 @@ public class MercadoPagoClientTest extends BaseClientTest {
     assertEquals(200, (int) mpResponse.getStatusCode());
   }
 
+  @Test
+  public void encodePathParamEscapesPathTraversal() {
+    assertEquals(
+        "..%2F..%2Fapplications%2F123",
+        testClient.encodePathParamRequest("../../applications/123"));
+  }
+
   private static class TestClient extends MercadoPagoClient {
 
     /**
@@ -329,6 +336,10 @@ public class MercadoPagoClientTest extends BaseClientTest {
         MPRequestOptions requestOptions)
         throws MPException, MPApiException {
       return list(path, method, payload, queryParams, requestOptions);
+    }
+
+    public String encodePathParamRequest(String value) {
+      return encodePathParam(value);
     }
   }
 }

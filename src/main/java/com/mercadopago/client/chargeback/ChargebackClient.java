@@ -88,7 +88,7 @@ public class ChargebackClient extends MercadoPagoClient {
       throws MPException, MPApiException {
     LOGGER.info("Sending get chargeback request");
     MPResponse response =
-        send(String.format(URL_WITH_ID, id), HttpMethod.GET, null, null, requestOptions);
+        send(String.format(URL_WITH_ID, encodePathParam(id)), HttpMethod.GET, null, null, requestOptions);
 
     Chargeback result = deserializeFromJson(Chargeback.class, response.getContent());
     result.setResponse(response);
