@@ -21,4 +21,7 @@ public class OrderStoredCredentialRequest {
 
   /** First Payment. */
   private Boolean firstPayment;
+
+  /** Previous Transaction Reference. */
+  private String prevTransactionRef;
 }

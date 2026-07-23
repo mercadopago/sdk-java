@@ -28,6 +28,9 @@ public class OrderCreateRequest extends MPResource {
     /** Total amount of the order. */
     private String totalAmount;
 
+    /** Currency of the order. */
+    private String currency;
+
     /** Capture mode. */
     private String captureMode;
 
@@ -57,4 +60,7 @@ public class OrderCreateRequest extends MPResource {
 
     /** Additional info for the order. */
     private Map<String, Object> additionalInfo;
+
+    /** Integration data for the order. */
+    private OrderIntegrationDataRequest integrationData;
 }

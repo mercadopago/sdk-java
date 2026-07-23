@@ -26,4 +26,7 @@ public class OrderOnlineConfig {
 
     /** Differential pricing. */
     private OrderDifferentialPricing differentialPricing;
+
+    /** Transaction security. */
+    private OrderTransactionSecurityRequest transactionSecurity;
 }
