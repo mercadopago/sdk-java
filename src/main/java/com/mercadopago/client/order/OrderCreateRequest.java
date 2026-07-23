@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
-import java.util.Map;
 
 // API version: acd67b14-97c4-4a4a-840d-0a018c09654f
 
@@ -34,6 +33,9 @@ public class OrderCreateRequest extends MPResource {
     /** Total amount of the order as a decimal string. */
     private String totalAmount;
 
+    /** Currency of the order (e.g. "COP" for Colombia, required for PSE). */
+    private String currency;
+
     /** Capture mode for the payment (e.g. "automatic", "manual"). */
     private String captureMode;
 
@@ -60,9 +62,6 @@ public class OrderCreateRequest extends MPResource {
 
     /** ISO 8601 duration or date-time indicating when the order expires. */
     private String expirationTime;
-
-    /** Currency code of the order (e.g. "COP" for Colombia, required for PSE). */
-    private String currency;
 
     /** Additional information about the order such as payer, shipment, platform, and travel data. */
     private AdditionalInfoRequest additionalInfo;
