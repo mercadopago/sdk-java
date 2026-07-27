@@ -5,8 +5,8 @@ import lombok.Getter;
 
 /**
  * Request object containing transaction data associated with the point of interaction.
- * Carries subscription and recurring-payment details such as sequence, billing
- * period, and payment references.
+ * Carries subscription, recurring-payment, and credential-on-file details such as
+ * sequence, billing period, and payment references.
  */
 @Getter
 @Builder
@@ -23,4 +23,25 @@ public class PaymentTransactionDataRequest {
   private PaymentPaymentReferenceRequest paymentReference;
   /** Billing date for the current invoice period (e.g. "2023-01-15"). */
   private String billingDate;
+  /**
+   * Whether this is the first transaction for a CREDENTIAL_ON_FILE payment.
+   * Replaces the legacy {@code firstTimeUse} field in new integrations.
+   */
+  private boolean firstTransaction;
+  /**
+   * Storage mode for the credential in a CREDENTIAL_ON_FILE flow.
+   * Accepted values: {@code "store"} (storing a new credential) or
+   * {@code "stored"} (using an already stored credential).
+   */
+  private String storage;
+  /**
+   * Indicates who initiated the transaction in a CREDENTIAL_ON_FILE flow.
+   * Accepted values: {@code "customer"} or {@code "merchant"}.
+   */
+  private String transactionInitiator;
+  /**
+   * Reference to the stored credential used in a CREDENTIAL_ON_FILE flow.
+   * Contains the identifier of the credential being referenced.
+   */
+  private PaymentReferenceRequest reference;
 }
