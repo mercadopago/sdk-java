@@ -6,8 +6,9 @@ import lombok.Getter;
  * Resource that holds transaction-level data from the point of interaction for a MercadoPago payment.
  *
  * <p>Contains QR code information for Pix payments, bank transfer details, ticket URLs for
- * offline payment methods, and subscription-related data for recurring payments. This data
- * is typically provided within the {@link PaymentPointOfInteraction} resource.
+ * offline payment methods, subscription-related data for recurring payments, and
+ * credential-on-file fields for CREDENTIAL_ON_FILE flows. This data is typically provided
+ * within the {@link PaymentPointOfInteraction} resource.
  *
  * @see PaymentPointOfInteraction#getTransactionData()
  */
@@ -51,4 +52,29 @@ public class PaymentTransactionData {
 
   /** Billing date for subscription or recurring payment invoices. */
   private String billingDate;
+
+  /**
+   * Whether this is the first transaction for a CREDENTIAL_ON_FILE payment.
+   * Replaces the legacy {@code firstTimeUse} field in new integrations.
+   */
+  private boolean firstTransaction;
+
+  /**
+   * Storage mode for the credential in a CREDENTIAL_ON_FILE flow.
+   * Possible values: {@code "store"} (storing a new credential) or
+   * {@code "stored"} (using an already stored credential).
+   */
+  private String storage;
+
+  /**
+   * Indicates who initiated the transaction in a CREDENTIAL_ON_FILE flow.
+   * Possible values: {@code "customer"} or {@code "merchant"}.
+   */
+  private String transactionInitiator;
+
+  /**
+   * Reference to the stored credential used in a CREDENTIAL_ON_FILE flow.
+   * Contains the identifier of the credential being referenced.
+   */
+  private PaymentReference reference;
 }
