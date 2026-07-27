@@ -76,7 +76,7 @@ class OrderCreateRequestSerializationTest {
                                                 OrderOnlineConfig.builder()
                                                         .callbackUrl("https://example.com/callback")
                                                         .transactionSecurity(
-                                                                OrderTransactionSecurityRequest.builder()
+                                                                OrderTransactionSecurity.builder()
                                                                         .validation("complete")
                                                                         .liabilityShift("issuer")
                                                                         .build())
