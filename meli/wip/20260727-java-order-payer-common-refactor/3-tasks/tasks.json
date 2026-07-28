@@ -1,0 +1,153 @@
+{
+  "feature": "java-order-payer-common-refactor",
+  "execution_strategy": "batched",
+  "local_config": {
+    "mysql": null,
+    "kvs": null,
+    "bigqueue": null
+  },
+  "stats": {
+    "total": 5,
+    "done": 5,
+    "by_layer": {
+      "1": 3,
+      "2": 0,
+      "3": 2
+    }
+  },
+  "tasks": [
+    {
+      "id": "TASK-001",
+      "title": "Add country field to client/common/AddressRequest",
+      "description": "Add a `country` String field to client/common/AddressRequest.java, keeping the @SuperBuilder pattern and final fields. This is the only additive change to the shared class.",
+      "status": "completed",
+      "layer": 1,
+      "depends_on": [],
+      "files": [
+        "src/main/java/com/mercadopago/client/common/AddressRequest.java"
+      ],
+      "acceptance_criteria": [
+        "AC-1: AddressRequest has a `country` field of type String with Javadoc",
+        "AC-2: Existing fields (zipCode, streetName, streetNumber, neighborhood, city, state, complement, floor) are unchanged",
+        "GATE: mvn compile passes"
+      ],
+      "references": [
+        "US-1"
+      ],
+      "design_decisions": [
+        "DD-1"
+      ]
+    },
+    {
+      "id": "TASK-002",
+      "title": "Refactor OrderPayerRequest to use client/common types and delete OrderPayerAddressRequest",
+      "description": "Change OrderPayerRequest.identification to client.common.IdentificationRequest, .phone to client.common.PhoneRequest, and .address to client.common.AddressRequest. Then delete OrderPayerAddressRequest.java (only consumer was OrderPayerRequest).",
+      "status": "completed",
+      "layer": 1,
+      "depends_on": [
+        "TASK-001"
+      ],
+      "files": [
+        "src/main/java/com/mercadopago/client/order/OrderPayerRequest.java",
+        "src/main/java/com/mercadopago/client/order/OrderPayerAddressRequest.java"
+      ],
+      "acceptance_criteria": [
+        "AC-1: OrderPayerRequest imports IdentificationRequest, PhoneRequest, AddressRequest from client.common",
+        "AC-2: OrderPayerRequest no longer imports from resources.common",
+        "AC-3: OrderPayerAddressRequest.java is deleted with no remaining references",
+        "GATE: mvn compile passes with no unresolved references"
+      ],
+      "references": [
+        "US-2"
+      ],
+      "design_decisions": [
+        "DD-1",
+        "DD-2"
+      ]
+    },
+    {
+      "id": "TASK-003",
+      "title": "Add OrderPayerRequestSerializationTest",
+      "description": "Add a unit test verifying OrderPayerRequest with IdentificationRequest, PhoneRequest and AddressRequest (including country) serializes to correct snake_case JSON with null fields omitted. Confirm existing field keys are unchanged.",
+      "status": "completed",
+      "layer": 1,
+      "depends_on": [
+        "TASK-002"
+      ],
+      "files": [
+        "src/test/java/com/mercadopago/client/order/OrderPayerRequestSerializationTest.java"
+      ],
+      "acceptance_criteria": [
+        "AC-1: Test asserts identification, phone, address serialize with snake_case keys",
+        "AC-2: Test asserts country is present when set and absent when null",
+        "AC-3: Existing tests (OrderClientTest, OrderCreateRequestSerializationTest) still pass",
+        "GATE: mvn test passes"
+      ],
+      "references": [
+        "US-1",
+        "US-2"
+      ],
+      "design_decisions": [
+        "DD-2"
+      ]
+    },
+    {
+      "id": "TASK-004",
+      "title": "Code Review",
+      "description": "Run code review on the refactor to confirm layer consistency, no leftover references, and no serialization regressions.",
+      "status": "completed",
+      "layer": 3,
+      "depends_on": [
+        "TASK-003"
+      ],
+      "files": [],
+      "acceptance_criteria": [
+        "AC-1: No references to OrderPayerAddressRequest remain",
+        "AC-2: No behavioral change in serialized JSON for existing fields",
+        "GATE: meli-code-reviewer passes"
+      ],
+      "references": [
+        "US-2"
+      ],
+      "design_decisions": []
+    },
+    {
+      "id": "TASK-005",
+      "title": "Security Review",
+      "description": "Run security review. Refactor introduces no new data handling, secrets, or auth changes; confirm no vulnerabilities introduced.",
+      "status": "completed",
+      "layer": 3,
+      "depends_on": [
+        "TASK-003"
+      ],
+      "files": [],
+      "acceptance_criteria": [
+        "AC-1: No new sensitive-data handling introduced",
+        "GATE: meli-security-expert passes"
+      ],
+      "references": [],
+      "design_decisions": []
+    }
+  ],
+  "dependency_graph": {
+    "by_layer": {
+      "1": {
+        "level_0": [
+          "TASK-001"
+        ],
+        "level_1": [
+          "TASK-002"
+        ],
+        "level_2": [
+          "TASK-003"
+        ]
+      },
+      "3": {
+        "level_0": [
+          "TASK-004",
+          "TASK-005"
+        ]
+      }
+    }
+  }
+}
