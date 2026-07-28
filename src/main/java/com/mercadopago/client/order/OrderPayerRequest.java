@@ -1,7 +1,8 @@
 package com.mercadopago.client.order;
 
+import com.mercadopago.client.common.AddressRequest;
 import com.mercadopago.client.common.IdentificationRequest;
-import com.mercadopago.resources.common.Phone;
+import com.mercadopago.client.common.PhoneRequest;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -33,9 +34,9 @@ public class OrderPayerRequest {
     private IdentificationRequest identification;
 
     /** Payer's phone number details. */
-    private Phone phone;
+    private PhoneRequest phone;
 
     /** Payer's address information. */
-    private OrderPayerAddressRequest address;
+    private AddressRequest address;
 
 }

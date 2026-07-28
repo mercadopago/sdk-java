@@ -35,4 +35,7 @@ public class AddressRequest {
 
   /** Floor number in the building, if applicable. */
   private final String floor;
+
+  /** Country name or ISO country code (e.g., "BR", "AR"). */
+  private final String country;
 }
