@@ -61,8 +61,8 @@ class OrderCreateRequestSerializationTest {
 
         JsonObject json = Serializer.serializeToJson(request);
 
-        Assertions.assertTrue(json.has("prev_transaction_ref"));
-        Assertions.assertEquals("prev-tx-123", json.get("prev_transaction_ref").getAsString());
+        Assertions.assertTrue(json.has("previous_transaction_reference"));
+        Assertions.assertEquals("prev-tx-123", json.get("previous_transaction_reference").getAsString());
         Assertions.assertEquals("cardholder", json.get("payment_initiator").getAsString());
     }
 

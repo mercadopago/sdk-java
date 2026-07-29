@@ -1,5 +1,6 @@
 package com.mercadopago.client.order;
 
+import com.google.gson.annotations.SerializedName;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -32,5 +33,6 @@ public class OrderStoredCredentialRequest {
    * onwards to link this payment to the original card-network authorization.
    * Type: String (transaction ID).
    */
+  @SerializedName("previous_transaction_reference")
   private String prevTransactionRef;
 }
