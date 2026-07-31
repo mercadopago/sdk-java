@@ -204,6 +204,42 @@ public class AdvancedPaymentClient extends MercadoPagoClient {
   }
 
   /**
+   * Updates an advanced payment.
+   *
+   * @param id the unique identifier of the advanced payment
+   * @param request the {@link AdvancedPaymentUpdateRequest} with the fields to update
+   * @return the updated {@link AdvancedPayment}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
+   */
+  public AdvancedPayment update(Long id, AdvancedPaymentUpdateRequest request)
+      throws MPException, MPApiException {
+    return this.update(id, request, null);
+  }
+
+  /**
+   * Updates an advanced payment with custom request options.
+   *
+   * @param id the unique identifier of the advanced payment
+   * @param request the {@link AdvancedPaymentUpdateRequest} with the fields to update
+   * @param requestOptions optional {@link MPRequestOptions}; may be {@code null}
+   * @return the updated {@link AdvancedPayment}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
+   */
+  public AdvancedPayment update(Long id, AdvancedPaymentUpdateRequest request,
+      MPRequestOptions requestOptions) throws MPException, MPApiException {
+    LOGGER.info("Sending update advanced payment request");
+    MPResponse response =
+        send(String.format(URL_WITH_ID, id), HttpMethod.PUT,
+            serializeToJson(request), null, requestOptions);
+
+    AdvancedPayment result = deserializeFromJson(AdvancedPayment.class, response.getContent());
+    result.setResponse(response);
+    return result;
+  }
+
+  /**
    * Changes the money release date for all disbursements of an advanced payment.
    *
    * @param id the unique identifier of the advanced payment

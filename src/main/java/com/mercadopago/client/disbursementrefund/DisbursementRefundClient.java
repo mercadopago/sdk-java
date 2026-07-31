@@ -2,6 +2,7 @@ package com.mercadopago.client.disbursementrefund;
 
 import static com.mercadopago.MercadoPagoConfig.getStreamHandler;
 import static com.mercadopago.serialization.Serializer.deserializeFromJson;
+import static com.mercadopago.serialization.Serializer.deserializeListFromJson;
 import static com.mercadopago.serialization.Serializer.serializeToJson;
 
 import com.mercadopago.MercadoPagoConfig;
@@ -11,6 +12,7 @@ import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
 import com.mercadopago.net.MPHttpClient;
+import com.mercadopago.net.MPResourceList;
 import com.mercadopago.net.MPResponse;
 import com.mercadopago.resources.disbursementrefund.DisbursementRefund;
 import java.util.logging.Logger;
@@ -58,6 +60,41 @@ public class DisbursementRefundClient extends MercadoPagoClient {
     streamHandler.setLevel(MercadoPagoConfig.getLoggingLevel());
     LOGGER.addHandler(streamHandler);
     LOGGER.setLevel(MercadoPagoConfig.getLoggingLevel());
+  }
+
+  /**
+   * Lists all refunds of an advanced payment.
+   *
+   * @param advancedPaymentId the unique identifier of the advanced payment
+   * @return an {@link MPResourceList} of {@link DisbursementRefund} for the given advanced payment
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
+   */
+  public MPResourceList<DisbursementRefund> list(Long advancedPaymentId)
+      throws MPException, MPApiException {
+    return this.list(advancedPaymentId, null);
+  }
+
+  /**
+   * Lists all refunds of an advanced payment with custom request options.
+   *
+   * @param advancedPaymentId the unique identifier of the advanced payment
+   * @param requestOptions optional {@link MPRequestOptions}; may be {@code null}
+   * @return an {@link MPResourceList} of {@link DisbursementRefund} for the given advanced payment
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
+   */
+  public MPResourceList<DisbursementRefund> list(Long advancedPaymentId,
+      MPRequestOptions requestOptions) throws MPException, MPApiException {
+    LOGGER.info("Sending list disbursement refund request");
+    MPResponse response = send(
+        String.format(URL_REFUNDS, advancedPaymentId),
+        HttpMethod.GET, null, null, requestOptions);
+
+    MPResourceList<DisbursementRefund> result =
+        deserializeListFromJson(DisbursementRefund.class, response.getContent());
+    result.setResponse(response);
+    return result;
   }
 
   /**
