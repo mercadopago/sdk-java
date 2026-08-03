@@ -1,7 +1,7 @@
 package com.mercadopago.net;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 
 import com.mercadopago.BaseClientTest;
