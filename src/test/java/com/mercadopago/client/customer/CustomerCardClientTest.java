@@ -98,6 +98,37 @@ public class CustomerCardClientTest extends BaseClientTest {
   }
 
   @Test
+  public void updateCardSuccess() throws IOException, MPException, MPApiException {
+    HttpResponse httpResponse =
+        MockHelper.generateHttpResponseFromFile(responseFileSingleCard, HttpStatus.OK);
+    httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
+
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+    CustomerCard card = cardClient.update(customerId, cardId, buildCustomerCardCreateRequest());
+
+    assertNotNull(card);
+    assertCustomerCardFields(card);
+  }
+
+  @Test
+  public void updateCardWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
+    HttpResponse httpResponse =
+        MockHelper.generateHttpResponseFromFile(responseFileSingleCard, HttpStatus.OK);
+    httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
+
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+    CustomerCard card =
+        cardClient.update(customerId, cardId, buildCustomerCardCreateRequest(), buildRequestOptions());
+
+    assertNotNull(card);
+    assertCustomerCardFields(card);
+  }
+
+  @Test
   public void deleteCardSuccess() throws MPException, MPApiException, IOException {
     HttpResponse httpResponse =
         MockHelper.generateHttpResponseFromFile(responseFileSingleCard, HttpStatus.OK);

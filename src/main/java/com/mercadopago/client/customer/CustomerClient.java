@@ -376,6 +376,47 @@ public class CustomerClient extends MercadoPagoClient {
   }
 
   /**
+   * Updates a card associated with a customer.
+   *
+   * <p>Delegates to the internal {@link CustomerCardClient}.
+   *
+   * @param customerId the unique identifier of the customer
+   * @param cardId the unique identifier of the card to update
+   * @param request the {@link CustomerCardCreateRequest} with updated card details
+   * @return the updated {@link CustomerCard}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
+   */
+  public CustomerCard updateCard(
+      String customerId, String cardId, CustomerCardCreateRequest request)
+      throws MPException, MPApiException {
+    return this.updateCard(customerId, cardId, request, null);
+  }
+
+  /**
+   * Updates a card associated with a customer with custom request options.
+   *
+   * <p>Delegates to the internal {@link CustomerCardClient}.
+   *
+   * @param customerId the unique identifier of the customer
+   * @param cardId the unique identifier of the card to update
+   * @param request the {@link CustomerCardCreateRequest} with updated card details
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the updated {@link CustomerCard}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
+   */
+  public CustomerCard updateCard(
+      String customerId,
+      String cardId,
+      CustomerCardCreateRequest request,
+      MPRequestOptions requestOptions)
+      throws MPException, MPApiException {
+    return cardClient.update(customerId, cardId, request, requestOptions);
+  }
+
+  /**
    * Removes a card from a customer.
    *
    * <p>Delegates to the internal {@link CustomerCardClient}.
