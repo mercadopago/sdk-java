@@ -4,11 +4,15 @@ import com.mercadopago.client.common.AddressRequest;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
-/** Payer's address information. */
+/**
+ * Request object representing the payer's address in a payment request.
+ * Extends {@link AddressRequest} with a federal-unit field for regions
+ * that require state or province identification.
+ */
 @Getter
 @SuperBuilder
 public class PaymentPayerAddressRequest extends AddressRequest {
 
-  /** Federal Unit (e.g. state or province). */
+  /** Federal unit such as state or province (e.g. "SP", "BA"). */
   private String federalUnit;
 }

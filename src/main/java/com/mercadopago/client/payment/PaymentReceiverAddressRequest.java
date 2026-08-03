@@ -3,28 +3,31 @@ package com.mercadopago.client.payment;
 import lombok.Builder;
 import lombok.Getter;
 
-/** PaymentReceiverAddressRequest class. */
+/**
+ * Request object representing the receiver's address for a shipment associated with a payment.
+ * Contains the full postal address where purchased goods will be delivered.
+ */
 @Getter
 @Builder
 public class PaymentReceiverAddressRequest {
-  /** State. */
+  /** State or province name. */
   private final String stateName;
 
-  /** City. */
+  /** City name. */
   private final String cityName;
 
-  /** Floor. */
+  /** Floor number or identifier within a building. */
   private final String floor;
 
-  /** Apartment. */
+  /** Apartment or unit number within a building. */
   private final String apartment;
 
-  /** Zip code. */
+  /** Postal or ZIP code. */
   private final String zipCode;
 
-  /** Street name. */
+  /** Street name of the delivery address. */
   private final String streetName;
 
-  /** Street number. */
+  /** Street number of the delivery address. */
   private final String streetNumber;
 }

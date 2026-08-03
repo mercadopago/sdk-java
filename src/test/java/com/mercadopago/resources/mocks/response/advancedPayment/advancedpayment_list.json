@@ -1,0 +1,23 @@
+{
+  "paging": {
+    "total": 1,
+    "limit": 30,
+    "offset": 0
+  },
+  "results": [
+    {
+      "id": 20458724,
+      "application_id": "59441713004005",
+      "external_reference": "ADV-REF-001",
+      "status": "approved",
+      "capture": false,
+      "disbursements": [
+        {
+          "id": 17070479752,
+          "amount": 80.00,
+          "collector_id": 488656838
+        }
+      ]
+    }
+  ]
+}

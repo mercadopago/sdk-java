@@ -4,33 +4,43 @@ import java.math.BigDecimal;
 import java.util.List;
 import lombok.Getter;
 
-/** Shipments information from preference. */
+/**
+ * Resource representing the shipment configuration of a checkout preference.
+ *
+ * <p>Defines how purchased items are delivered to the buyer, including the shipping mode, cost,
+ * dimensions, available free methods, and the receiver's delivery address. Supports both
+ * MercadoEnvios ({@code me2}) and custom shipping modes.
+ *
+ * @see Preference
+ * @see PreferenceFreeMethod
+ * @see PreferenceReceiverAddress
+ */
 @Getter
 public class PreferenceShipments {
-  /** Shipment mode. */
+  /** Shipping mode (e.g., custom, me2, not_specified). */
   private String mode;
 
-  /** The payer have the option to pick up the shipment in your store (mode:me2 only). */
+  /** Whether the buyer can pick up the shipment at the seller's store (me2 mode only). */
   private Boolean localPickup;
 
-  /** Dimensions of the shipment in cm x cm x cm, gr (mode:me2 only). */
+  /** Package dimensions in the format "height x width x length, weight" (me2 mode only). */
   private String dimensions;
 
-  /** Select default shipping method in checkout (mode:me2 only). */
+  /** Identifier of the default shipping method pre-selected in checkout (me2 mode only). */
   private String defaultShippingMethod;
 
-  /** Offer a shipping method as free shipping (mode:me2 only). */
+  /** List of shipping methods offered at no cost to the buyer (me2 mode only). */
   private List<PreferenceFreeMethod> freeMethods;
 
-  /** Shipment cost (mode:custom only). */
+  /** Fixed shipping cost charged to the buyer (custom mode only). */
   private BigDecimal cost;
 
-  /** Free shipping for mode:custom. */
+  /** Whether shipping is free of charge (custom mode only). */
   private Boolean freeShipping;
 
-  /** Shipping address. */
+  /** Delivery address where the shipment will be sent. */
   private PreferenceReceiverAddress receiverAddress;
 
-  /** If use express shipment. */
+  /** Whether express (expedited) shipment is enabled. */
   private Boolean expressShipment;
 }

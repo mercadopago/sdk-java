@@ -2,19 +2,23 @@ package com.mercadopago.resources.order;
 
 import lombok.Getter;
 
-/** OrderPassenger class. */
+/**
+ * Resource representing passenger information for travel-related MercadoPago Order items.
+ * Contains the traveler's personal identification data required by airlines and
+ * travel operators for anti-fraud and regulatory compliance.
+ */
 @Getter
 public class OrderPassenger {
 
-    /** Passenger first name. */
+    /** First name of the passenger as it appears on the travel document. */
     private String firstName;
 
-    /** Passenger last name. */
+    /** Last name of the passenger as it appears on the travel document. */
     private String lastName;
 
-    /** Passenger identification type. */
+    /** Type of identification document (e.g., "CPF", "DNI", "passport"). */
     private String identificationType;
 
-    /** Passenger identification number. */
+    /** Identification document number of the passenger. */
     private String identificationNumber;
 }

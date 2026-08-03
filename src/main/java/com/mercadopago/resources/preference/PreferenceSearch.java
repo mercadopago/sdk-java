@@ -5,72 +5,81 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.Getter;
 
-/** Preference resource. */
+/**
+ * Resource representing a lightweight preference summary returned from search results.
+ *
+ * <p>Contains a subset of preference attributes optimized for listing and filtering, including
+ * identifiers, dates, payer information, and operational metadata. Unlike {@link Preference}, this
+ * resource does not include the full item details or nested configuration objects.
+ *
+ * @see Preference
+ * @see com.mercadopago.client.preference.PreferenceClient#search(com.mercadopago.client.preference.PreferenceSearchRequest)
+ */
 @Getter
 public class PreferenceSearch extends MPResource {
-  /** Preference ID. */
+  /** Unique identifier of the preference. */
   private String id;
 
-  /** Client ID. */
+  /** Identifier of the OAuth application client that created this preference. */
   private String clientId;
 
-  /** Collector ID. */
+  /** Identifier of the seller (collector) who receives the payment. */
   private Long collectorId;
 
-  /** Created date of cash payment. */
+  /** Timestamp when the preference was created. */
   private OffsetDateTime dateCreated;
 
-  /** Date when the preference will be active. */
+  /** Start date from which the preference becomes active. */
   private OffsetDateTime expirationDateFrom;
 
-  /** Date when the preference will be expired. */
+  /** End date after which the preference is no longer valid. */
   private OffsetDateTime expirationDateTo;
 
-  /** True if a preference expires, false if not. */
+  /** Whether this preference has an expiration window. */
   private Boolean expires;
 
-  /** Reference you can synchronize with your payment system. */
+  /** External reference for correlating this preference with the integrator's system. */
   private String externalReference;
 
-  /** List of items to be paid. */
+  /** List of item identifiers included in this preference. */
   private List<String> items;
 
-  /** Last updated. */
+  /** Timestamp when the preference was last updated. */
   private OffsetDateTime lastUpdated;
 
-  /** Live mode. */
+  /** Whether the preference was created in production (live) mode. */
   private Boolean liveMode;
 
-  /** Origin of the payment. Default value: NONE. */
+  /** Marketplace origin identifier. Default value: NONE. */
   private String marketplace;
 
-  /** Operation type. */
+  /** Type of operation (e.g., regular_payment, money_transfer). */
   private String operationType;
 
-  /** Payer email. */
+  /** Email address of the payer. */
   private String payerEmail;
 
-  /** Payer id. */
+  /** Identifier of the payer. */
   private String payerId;
 
-  /** Platform id. */
+  /** Identifier of the platform that originated this preference. */
   private String platformId;
 
-  /** Configures which processing modes to use. */
+  /** List of processing modes used (e.g., aggregator, gateway). */
   private List<String> processingModes;
 
-  /** Product id. */
+  /** Identifier of the product associated with this preference. */
   private String productId;
 
-  /** Purpose. */
+  /** Purpose of the preference (e.g., wallet_purchase). */
   private String purpose;
 
-  /** Site id. */
+  /** MercadoPago site identifier (e.g., MLA, MLB, MLM). */
   private String siteId;
 
-  /** Sponsor id. */
+  /** Identifier of the sponsoring account, if applicable. */
   private Long sponsorId;
 
-  /** Shipping mode. */
+  /** Shipping mode configured for this preference. */
   private String shippingMode;
 }

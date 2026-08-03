@@ -9,61 +9,66 @@ import java.util.Map;
 import lombok.Getter;
 
 /**
- * This class allows you to store customers data safely to improve the shopping experience. This
- * will allow your customer to complete their purchases much faster and easily when used in
- * conjunction with the Cards class.
+ * Represents a customer resource in the MercadoPago API.
+ *
+ * <p>Stores customer data such as email, name, phone, identification, addresses, and saved cards
+ * to improve the shopping experience. When used with the Cards resource, customers can complete
+ * purchases faster without re-entering payment information.
+ *
+ * @see <a href="https://www.mercadopago.com.br/developers/en/reference/customers/_customers/post">
+ *     Customer API Reference</a>
  */
 @Getter
 public class Customer extends MPResource {
 
-  /** Customer ID. */
+  /** Unique identifier of the customer. */
   private String id;
 
-  /** Customer's email. */
+  /** Email address of the customer. */
   private String email;
 
-  /** Customer's first name. */
+  /** First name of the customer. */
   private String firstName;
 
-  /** Customer's last name. */
+  /** Last name of the customer. */
   private String lastName;
 
-  /** Customer's phone information. */
+  /** Phone information of the customer. */
   private Phone phone;
 
-  /** Customer's identification information. */
+  /** Identification document information of the customer. */
   private Identification identification;
 
-  /** Customer's default address. */
+  /** Identifier of the customer's default address. */
   private String defaultAddress;
 
-  /** Customer's address. */
+  /** Default address details of the customer. */
   private CustomerDefaultAddress address;
 
-  /** Customer's date registered. */
+  /** Date when the customer registered on the merchant's site. */
   private OffsetDateTime dateRegistered;
 
-  /** Customer's description. */
+  /** Free-text description or notes about the customer. */
   private String description;
 
-  /** Customer's date created. */
+  /** Date and time when the customer record was created in MercadoPago. */
   private OffsetDateTime dateCreated;
 
-  /** Customer's date last update. */
+  /** Date and time when the customer record was last updated. */
   private OffsetDateTime dateLastUpdated;
 
-  /** Metadata. */
+  /** Custom metadata as key-value pairs associated with the customer. */
   private Map<String, Object> metadata;
 
-  /** Default card. */
+  /** Identifier of the customer's default card. */
   private String defaultCard;
 
-  /** List of cards. */
+  /** List of saved cards associated with the customer. */
   private List<CustomerCard> cards;
 
-  /** Addresses. */
+  /** List of addresses registered for the customer. */
   private List<CustomerAddress> addresses;
 
-  /** Live mode. */
+  /** Whether the customer was created in production (live) mode. */
   private Boolean liveMode;
 }

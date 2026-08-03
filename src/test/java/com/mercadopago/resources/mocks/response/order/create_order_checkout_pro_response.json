@@ -1,0 +1,70 @@
+{
+  "id": "ORDTST01KS5AJ6HTK2HRQ3XJ3C2JCKP9",
+  "type": "online",
+  "processing_mode": "manual",
+  "external_reference": "ext_ref_checkout_pro_001",
+  "marketplace_fee": "5.00",
+  "total_amount": "500.00",
+  "checkout_url": "https://www.mercadopago.com/checkout/v1/redirect?order_id=ORDTST01KS5AJ6HTK2HRQ3XJ3C2JCKP9",
+  "expiration_time": "P1D",
+  "country_code": "BRA",
+  "user_id": "1858095454",
+  "status": "created",
+  "capture_mode": "automatic_async",
+  "client_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.test",
+  "currency": "BRL",
+  "created_date": "2026-05-21T13:10:56.845Z",
+  "last_updated_date": "2026-05-21T13:10:56.845Z",
+  "description": "Travel package SAO-RIO with insurance",
+  "integration_data": {
+    "application_id": "8772548647196351"
+  },
+  "payer": {
+    "email": "buyer@testuser.com",
+    "first_name": "John",
+    "last_name": "Smith"
+  },
+  "config": {
+    "online": {
+      "callback_url": "https://www.mercadopago.com.br/",
+      "success_url": "https://example.com/success",
+      "pending_url": "https://example.com/pending",
+      "failure_url": "https://example.com/failure",
+      "available_from": "2026-01-01T00:00:00Z",
+      "auto_return": "approved",
+      "retries": { "allowed": false }
+    },
+    "payment_method": {
+      "max_installments": 12,
+      "not_allowed_ids": ["amex"],
+      "not_allowed_types": ["ticket"],
+      "installments": {
+        "interest_free": { "type": "range", "values": [2, 6] }
+      }
+    }
+  },
+  "items": [
+    {
+      "type": "travel",
+      "title": "Flight SAO-RIO",
+      "unit_price": "450.00",
+      "external_code": "ITEM-001",
+      "quantity": 1,
+      "description": "Round trip, economy class",
+      "category_id": "travels",
+      "picture_url": "https://example.com/img.jpg",
+      "warranty": false
+    },
+    {
+      "type": "travel",
+      "title": "Travel insurance",
+      "unit_price": "50.00",
+      "external_code": "ITEM-002",
+      "quantity": 1,
+      "description": "Basic coverage during trip",
+      "category_id": "travels",
+      "picture_url": "https://example.com/insurance.jpg",
+      "warranty": false
+    }
+  ]
+}

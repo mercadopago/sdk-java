@@ -30,15 +30,48 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Serializer class, responsible for objects serialization and deserialization. */
+/**
+ * Central JSON serialization and deserialization utility for the MercadoPago Java SDK.
+ *
+ * <p>This class wraps Google Gson and provides static helper methods to convert between
+ * Java objects (extending {@link MPResource}) and their JSON representations. Key behaviors:
+ * <ul>
+ *   <li><b>Field naming:</b> Java camelCase fields are mapped to JSON snake_case
+ *       via {@link FieldNamingPolicy#LOWER_CASE_WITH_UNDERSCORES}.</li>
+ *   <li><b>Date handling:</b> {@link OffsetDateTime} and {@link LocalDate} are serialized
+ *       as ISO 8601 strings. Deserialization attempts multiple ISO 8601 format variants
+ *       (see {@link #ISO8601_DATETIME_FORMATTERS}) to handle responses from different
+ *       API versions.</li>
+ *   <li><b>Validation:</b> JSON strings are validated before deserialization via
+ *       {@link #isJsonValid(String)} to provide clearer error messages.</li>
+ * </ul>
+ *
+ * @see MPResource
+ * @see MPJsonParseException
+ */
 public class Serializer {
 
+  /**
+   * ISO 8601 extended date-time formatter for deserialization.
+   * Pattern: {@code yyyy-MM-dd'T'HH:mm:ss[.SSS][XXX][XX][X]} -- supports optional
+   * milliseconds and various offset formats.
+   */
   private static final DateTimeFormatter DESERIALIZE_DATE_FORMAT_ISO8601_EXTENDED =
       DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss[.SSS][XXX][XX][X]");
 
+  /**
+   * ISO 8601 basic (compact) date-time formatter for deserialization.
+   * Pattern: {@code yyyyMMdd'T'HHmmss[.SSS][XXX][XX][X]} -- no hyphens or colons in
+   * the date/time portion.
+   */
   private static final DateTimeFormatter DESERIALIZE_DATE_FORMAT_ISO8601_BASIC =
       DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss[.SSS][XXX][XX][X]");
 
+  /**
+   * Ordered array of date-time formatters tried during deserialization. The first
+   * formatter that successfully parses the input wins. Order:
+   * {@link DateTimeFormatter#ISO_DATE_TIME}, extended ISO 8601, basic ISO 8601.
+   */
   private static final DateTimeFormatter[] ISO8601_DATETIME_FORMATTERS =
       new DateTimeFormatter[] {
         DateTimeFormatter.ISO_DATE_TIME,
@@ -46,8 +79,21 @@ public class Serializer {
         DESERIALIZE_DATE_FORMAT_ISO8601_BASIC,
       };
 
+  /**
+   * ISO 8601 date-time pattern used for <b>serialization</b> of {@link OffsetDateTime}
+   * values. Always includes milliseconds and a full timezone offset
+   * (e.g., {@code 2023-10-15T14:30:00.000-03:00}).
+   */
   private static final String SERIALIZE_DATE_FORMAT_ISO8601 = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
 
+  /**
+   * Attempts to parse a JSON element as an {@link OffsetDateTime} by trying each formatter
+   * in {@link #ISO8601_DATETIME_FORMATTERS} in order.
+   *
+   * @param json the JSON element containing a date-time string
+   * @return the parsed {@link OffsetDateTime}, or {@code null} if the element is null/empty
+   * @throws DateTimeParseException if none of the known formatters can parse the value
+   */
   private static OffsetDateTime parseDateTime(JsonElement json) {
     if (json == null || json.getAsString().isEmpty()) {
       return null;
@@ -66,6 +112,14 @@ public class Serializer {
     return null;
   }
 
+  /**
+   * Pre-configured Gson instance shared by all serialization methods. Configured with:
+   * <ul>
+   *   <li>{@link FieldNamingPolicy#LOWER_CASE_WITH_UNDERSCORES} for snake_case JSON mapping</li>
+   *   <li>Custom {@link OffsetDateTime} serializer/deserializer using ISO 8601 formats</li>
+   *   <li>Custom {@link LocalDate} serializer/deserializer using {@link DateTimeFormatter#ISO_LOCAL_DATE}</li>
+   * </ul>
+   */
   private static final Gson GSON =
       new GsonBuilder()
           .registerTypeAdapter(
@@ -91,13 +145,16 @@ public class Serializer {
           .create();
 
   /**
-   * Method responsible for deserialize objects.
+   * Deserializes a JSON string into a single {@link MPResource} instance.
    *
-   * @param clazz class.
-   * @param jsonObject json object.
-   * @param <T> class type.
-   * @return object.
-   * @throws MPJsonParseException if json cannot be deserialized to an MPResource
+   * <p>The JSON is first validated with {@link #isJsonValid(String)}, then converted
+   * using the pre-configured Gson instance (snake_case mapping, ISO 8601 dates).
+   *
+   * @param clazz      the target class to deserialize into
+   * @param jsonObject the raw JSON string returned by the API
+   * @param <T>        a type extending {@link MPResource}
+   * @return the deserialized resource instance
+   * @throws MPJsonParseException if the JSON is malformed or cannot be mapped to the target class
    */
   public static <T extends MPResource> T deserializeFromJson(Class<T> clazz, String jsonObject)
       throws MPJsonParseException {
@@ -113,13 +170,16 @@ public class Serializer {
   }
 
   /**
-   * Method responsible for deserialize json to ResultsResources.
+   * Deserializes a JSON string into an {@link MPResultsResourcesPage}, which represents
+   * a paginated API response whose items are nested under a {@code "results"} key.
    *
-   * @param type type
-   * @param jsonObject jsonObject
-   * @param <T> generic type
-   * @return MPResultsResourcesPage deserialized MPResource
-   * @throws MPJsonParseException if json cannot be parsed to ResultsResourcesPage
+   * @param type       the parameterized type token (e.g.,
+   *                   {@code new TypeToken<MPResultsResourcesPage<Payment>>(){}.getType()})
+   * @param jsonObject the raw JSON string containing the paginated response
+   * @param <T>        a type extending {@link MPResource}
+   * @return the deserialized page containing a list of results and paging metadata
+   * @throws MPJsonParseException if the JSON is malformed or cannot be mapped to the target type
+   * @see MPResultsResourcesPage
    */
   public static <T extends MPResource>
       MPResultsResourcesPage<T> deserializeResultsResourcesPageFromJson(
@@ -136,13 +196,16 @@ public class Serializer {
   }
 
   /**
-   * Method responsible for deserialize json to ElementsResources.
+   * Deserializes a JSON string into an {@link MPElementsResourcesPage}, which represents
+   * a paginated API response whose items are nested under an {@code "elements"} key.
    *
-   * @param type type
-   * @param jsonObject jsonObject
-   * @param <T> generic type
-   * @return MPElementsResourcesPage
-   * @throws MPJsonParseException if json cannot be parsed to MPElementsResourcesPage
+   * @param type       the parameterized type token (e.g.,
+   *                   {@code new TypeToken<MPElementsResourcesPage<Refund>>(){}.getType()})
+   * @param jsonObject the raw JSON string containing the paginated response
+   * @param <T>        a type extending {@link MPResource}
+   * @return the deserialized page containing a list of elements and paging metadata
+   * @throws MPJsonParseException if the JSON is malformed or cannot be mapped to the target type
+   * @see MPElementsResourcesPage
    */
   public static <T extends MPResource>
       MPElementsResourcesPage<T> deserializeElementsResourcesPageFromJson(
@@ -159,13 +222,19 @@ public class Serializer {
   }
 
   /**
-   * Method responsible for deserialize objects.
+   * Deserializes a JSON array string into an {@link MPResourceList} containing individual
+   * resource instances.
    *
-   * @param clazz clazz
-   * @param jsonObject jsonObject
-   * @param <T> type
-   * @return MPResourceList
-   * @throws MPJsonParseException if json cannot be parsed to ResultsResourcesPage
+   * <p>This method handles API responses that return a top-level JSON array (as opposed
+   * to a paginated wrapper object). Each element of the array is deserialized independently
+   * and collected into the returned list.
+   *
+   * @param clazz      the class of each element in the JSON array
+   * @param jsonObject the raw JSON array string (e.g., {@code [{"id":1}, {"id":2}]})
+   * @param <T>        a type extending {@link MPResource}
+   * @return an {@link MPResourceList} containing the deserialized resources
+   * @throws MPJsonParseException if the JSON is malformed or an element cannot be deserialized
+   * @see MPResourceList
    */
   public static <T extends MPResource> MPResourceList<T> deserializeListFromJson(
       Class<T> clazz, String jsonObject) throws MPJsonParseException {
@@ -190,22 +259,31 @@ public class Serializer {
   }
 
   /**
-   * Method responsible for serialize objects.
+   * Serializes a Java object into a Gson {@link JsonObject} suitable for use as an
+   * API request body.
    *
-   * @param resource resource.
-   * @param <T> class type.
-   * @return JsonObject.
+   * <p>Fields are converted to snake_case and dates are formatted as ISO 8601 strings
+   * per the SDK's Gson configuration.
+   *
+   * @param resource the object to serialize (typically an API request DTO)
+   * @param <T>      the type of the object
+   * @return a {@link JsonObject} representation of the resource
    */
   public static <T> JsonObject serializeToJson(T resource) {
     return (JsonObject) GSON.toJsonTree(resource);
   }
 
   /**
-   * Verify if json is valid.
+   * Validates whether the given string is syntactically correct JSON.
    *
-   * @param json json
-   * @return boolean
-   * @throws IOException exception
+   * <p>The method uses a streaming {@link JsonReader} to walk the entire token structure
+   * without materializing objects, making it efficient for large payloads. It returns
+   * {@code false} for malformed JSON and {@code true} for valid JSON objects, arrays,
+   * or primitive values.
+   *
+   * @param json the raw string to validate
+   * @return {@code true} if the string is valid JSON, {@code false} otherwise
+   * @throws IOException if an I/O error occurs while reading the string
    */
   public static boolean isJsonValid(String json) throws IOException {
     try {

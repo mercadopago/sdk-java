@@ -1,0 +1,21 @@
+{
+  "id": 20458724,
+  "application_id": "59441713004005",
+  "external_reference": "ADV-REF-001",
+  "description": "Advanced payment description",
+  "status": "approved",
+  "capture": false,
+  "binary_mode": false,
+  "date_created": "2022-07-01T08:00:00.000-04:00",
+  "date_last_updated": "2022-07-01T08:01:00.000-04:00",
+  "disbursements": [
+    {
+      "id": 17070479752,
+      "amount": 80.00,
+      "collector_id": 488656838,
+      "external_reference": "DISB-REF-001",
+      "application_fee": 1.0,
+      "money_release_days": 30
+    }
+  ]
+}

@@ -19,22 +19,39 @@ import java.math.BigDecimal;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 
-/** Client that use the Payment Refunds APIs. */
+/**
+ * Client for the MercadoPago Payment Refunds API.
+ *
+ * <p>Provides operations to create total or partial refunds for a payment, retrieve a specific
+ * refund by its identifier, and list all refunds associated with a payment.
+ *
+ * <p>This client is typically used internally by {@link PaymentClient}, but can also be
+ * instantiated directly for standalone refund management.
+ *
+ * @see PaymentClient
+ * @see <a
+ *     href="https://www.mercadopago.com.br/developers/en/reference/chargebacks/_payments_id_refunds/post">
+ *     Payment Refunds API reference</a>
+ */
 public class PaymentRefundClient extends MercadoPagoClient {
 
+  /** Class-level logger for refund operations. */
   private static final Logger LOGGER = Logger.getLogger(PaymentRefundClient.class.getName());
 
+  /** URL template for refund endpoints scoped to a payment (e.g. {@code /v1/payments/{id}/refunds}). */
   private static final String URL_WITH_PAYMENT_ID = "/v1/payments/%s/refunds";
 
-  /** Default constructor. Uses the default http client used by the SDK. */
+  /**
+   * Default constructor. Uses the default HTTP client provided by {@link MercadoPagoConfig}.
+   */
   public PaymentRefundClient() {
     this(MercadoPagoConfig.getHttpClient());
   }
 
   /**
-   * Constructor used for providing a custom http client.
+   * Constructs a {@code PaymentRefundClient} with a custom HTTP client.
    *
-   * @param httpClient httpClient
+   * @param httpClient the {@link MPHttpClient} implementation used to execute HTTP requests
    */
   public PaymentRefundClient(MPHttpClient httpClient) {
     super(httpClient);
@@ -45,11 +62,12 @@ public class PaymentRefundClient extends MercadoPagoClient {
   }
 
   /**
-   * Creates a refund for payment.
+   * Creates a total refund for a payment, returning the full amount to the payer.
    *
-   * @param paymentId payment id
-   * @return PaymentRefund
-   * @throws MPException an error if the request fails
+   * @param paymentId the unique identifier of the payment to refund
+   * @return the created {@link PaymentRefund} with refund details
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/chargebacks/_payments_id_refunds/post">api
    *     docs</a>
@@ -59,12 +77,14 @@ public class PaymentRefundClient extends MercadoPagoClient {
   }
 
   /**
-   * Creates a refund for payment.
+   * Creates a total refund for a payment with custom request options.
    *
-   * @param paymentId payment id
-   * @param requestOptions metadata to customize the request
-   * @return PaymentRefund
-   * @throws MPException an error if the request fails
+   * @param paymentId the unique identifier of the payment to refund
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the created {@link PaymentRefund} with refund details
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/chargebacks/_payments_id_refunds/post">api
    *     docs</a>
@@ -75,12 +95,13 @@ public class PaymentRefundClient extends MercadoPagoClient {
   }
 
   /**
-   * Creates a refund for payment.
+   * Creates a partial refund for a payment, returning the specified amount to the payer.
    *
-   * @param paymentId payment id
-   * @param amount refund amount
-   * @return PaymentRefund
-   * @throws MPException an error if the request fails
+   * @param paymentId the unique identifier of the payment to refund
+   * @param amount the amount to refund; if {@code null}, a total refund is performed
+   * @return the created {@link PaymentRefund} with refund details
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/chargebacks/_payments_id_refunds/post">api
    *     docs</a>
@@ -91,13 +112,18 @@ public class PaymentRefundClient extends MercadoPagoClient {
   }
 
   /**
-   * Creates a refund for payment.
+   * Creates a total or partial refund for a payment with custom request options.
    *
-   * @param paymentId payment id
-   * @param amount refund amount
-   * @param requestOptions metadata to customize the request
-   * @return PaymentRefund
-   * @throws MPException an error if the request fails
+   * <p>If {@code amount} is {@code null}, a total refund is performed. Otherwise, the specified
+   * amount is refunded (partial refund).
+   *
+   * @param paymentId the unique identifier of the payment to refund
+   * @param amount the amount to refund, or {@code null} for a total refund
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the created {@link PaymentRefund} with refund details
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/chargebacks/_payments_id_refunds/post">api
    *     docs</a>
@@ -122,12 +148,13 @@ public class PaymentRefundClient extends MercadoPagoClient {
   }
 
   /**
-   * Gets refund information by id from the payment.
+   * Retrieves a specific refund by its identifier from a payment.
    *
-   * @param paymentId payment id
-   * @param refundId refund id
-   * @return PaymentRefund
-   * @throws MPException an error if the request fails
+   * @param paymentId the unique identifier of the payment
+   * @param refundId the unique identifier of the refund to retrieve
+   * @return the requested {@link PaymentRefund} with refund details
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/chargebacks/_payments_id_refunds_refund_id/get">api
    *     docs</a>
@@ -137,13 +164,15 @@ public class PaymentRefundClient extends MercadoPagoClient {
   }
 
   /**
-   * Gets refund information by id from the payment.
+   * Retrieves a specific refund by its identifier from a payment with custom request options.
    *
-   * @param paymentId payment id
-   * @param refundId refund id
-   * @param requestOptions metadata to customize the request
-   * @return PaymentRefund
-   * @throws MPException an error if the request fails
+   * @param paymentId the unique identifier of the payment
+   * @param refundId the unique identifier of the refund to retrieve
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the requested {@link PaymentRefund} with refund details
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/chargebacks/_payments_id_refunds_refund_id/get">api
    *     docs</a>
@@ -165,11 +194,12 @@ public class PaymentRefundClient extends MercadoPagoClient {
   }
 
   /**
-   * Lists the refunds of the payment.
+   * Lists all refunds associated with a payment.
    *
-   * @param paymentId payment id
-   * @return list of PaymentRefund
-   * @throws MPException an error if the request fails
+   * @param paymentId the unique identifier of the payment
+   * @return an {@link MPResourceList} of {@link PaymentRefund} for the given payment
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/chargebacks/_payments_id_refunds/get">api
    *     docs</a>
@@ -179,12 +209,14 @@ public class PaymentRefundClient extends MercadoPagoClient {
   }
 
   /**
-   * Lists the refunds of the payment.
+   * Lists all refunds associated with a payment with custom request options.
    *
-   * @param paymentId payment id
-   * @param requestOptions metadata to customize the request
-   * @return list of PaymentRefund
-   * @throws MPException an error if the request fails
+   * @param paymentId the unique identifier of the payment
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return an {@link MPResourceList} of {@link PaymentRefund} for the given payment
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/chargebacks/_payments_id_refunds/get">api
    *     docs</a>

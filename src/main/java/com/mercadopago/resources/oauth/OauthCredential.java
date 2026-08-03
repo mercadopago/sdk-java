@@ -3,21 +3,27 @@ package com.mercadopago.resources.oauth;
 import com.mercadopago.net.MPResource;
 import lombok.Getter;
 
-/** Credential information for an Oauth authorization. */
+/**
+ * Base resource representing credential information obtained from an OAuth authorization flow.
+ * Contains the access token, its type and expiration, the granted scope, and a refresh token
+ * that can be used to renew the credential without repeating the authorization process.
+ *
+ * @see <a href="https://www.mercadopago.com/developers/en/reference/oauth/_oauth_token/post">OAuth API reference</a>
+ */
 @Getter
 public class OauthCredential extends MPResource {
-  /** Access token of the user. */
+  /** OAuth access token used to authenticate API requests on behalf of the user. */
   private String accessToken;
 
-  /** Type of token. */
+  /** Token type indicating the authentication scheme, typically "Bearer". */
   private String tokenType;
 
-  /** Expiration date of the token. */
+  /** Number of seconds until the access token expires. */
   private Long expiresIn;
 
-  /** The Oauth scope associated to the token. */
+  /** OAuth scope that defines the permissions granted by this credential. */
   private String scope;
 
-  /** Token used to renew Oauth credential. */
+  /** Refresh token used to obtain a new access token when the current one expires. */
   private String refreshToken;
 }

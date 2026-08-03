@@ -3,15 +3,23 @@ package com.mercadopago.resources.payment;
 import java.math.BigDecimal;
 import lombok.Getter;
 
-/** PaymentFeeDetail class. */
+/**
+ * Resource that represents a single fee charged on a MercadoPago payment.
+ *
+ * <p>Each payment may have multiple fee details, such as the MercadoPago marketplace fee,
+ * financing costs, or shipping fees. This resource identifies the type, who absorbs the
+ * cost, and the monetary amount of each fee.
+ *
+ * @see Payment#getFeeDetails()
+ */
 @Getter
 public class PaymentFeeDetail {
-  /** Fee type. */
+  /** Type of fee (e.g. mercadopago_fee, coupon_fee, financing_fee). */
   private String type;
 
-  /** Who absorbs the cost. */
+  /** Party that absorbs this fee cost (e.g. collector, payer). */
   private String feePayer;
 
-  /** Fee amount. */
+  /** Monetary amount of the fee. */
   private BigDecimal amount;
 }

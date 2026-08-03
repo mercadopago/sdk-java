@@ -3,21 +3,29 @@ package com.mercadopago.resources.preference;
 import com.mercadopago.resources.common.Address;
 import lombok.Getter;
 
-/** Shipping address. */
+/**
+ * Resource representing the shipping receiver's address in a checkout preference.
+ *
+ * <p>Extends the base {@link Address} with additional location details such as country name,
+ * state name, city, floor, and apartment. Used to specify where the shipment should be delivered.
+ *
+ * @see PreferenceShipments
+ * @see Address
+ */
 @Getter
 public class PreferenceReceiverAddress extends Address {
-  /** Country. */
+  /** Full name of the country for the delivery address. */
   private String countryName;
 
-  /** State. */
+  /** Full name of the state or province for the delivery address. */
   private String stateName;
 
-  /** Floor. */
+  /** Floor number within the building. */
   private String floor;
 
-  /** Apartment. */
+  /** Apartment or unit identifier within the building. */
   private String apartment;
 
-  /** City name. */
+  /** Full name of the city for the delivery address. */
   private String cityName;
 }

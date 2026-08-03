@@ -273,9 +273,9 @@ class MerchantOrderClientIT extends BaseClientIT {
         .autoReturn("all")
         .backUrls(
             PreferenceBackUrlsRequest.builder()
-                .success("http://test.com/success")
-                .failure("http://test.com/failure")
-                .pending("http://test.com/pending")
+                .success("https://test.com/success")
+                .failure("https://test.com/failure")
+                .pending("https://test.com/pending")
                 .build())
         .binaryMode(true)
         .expires(false)

@@ -7,37 +7,41 @@ import java.time.OffsetDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
-/** PaymentAdditionalInfoPayerRequest class. */
+/**
+ * Extended payer information included in the additional-info section of a payment request.
+ * Provides enriched buyer data such as registration history and purchase behavior, which
+ * is used by MercadoPago's fraud-prevention engine to improve approval rates.
+ */
 @Getter
 @Builder
-public class PaymentAdditionalInfoPayerRequest{
-  /** Payer first name. */
+public class PaymentAdditionalInfoPayerRequest {
+  /** First name of the payer. */
   private final String firstName;
 
-  /** Payer last name. */
+  /** Last name of the payer. */
   private final String lastName;
 
-  /** Payer phone. */
+  /** Payer's phone information. */
   private final PhoneRequest phone;
 
-  /** Payer address. */
+  /** Payer's address information. */
   private final AddressRequest address;
 
-  /** Payer registration date. */
+  /** Date when the payer registered on the merchant's platform. */
   private final OffsetDateTime registrationDate;
 
-  /** Payer authentication type. */
+  /** Authentication method used by the payer (e.g. "gmail", "facebook", "native"). */
   private final String authenticationType;
 
-  /** If payer is prime user. */
+  /** Whether the payer is a prime/premium subscriber on the merchant's platform. */
   private final boolean isPrimeUser;
 
-  /** If is first online purchase. */
+  /** Whether this is the payer's first online purchase on the merchant's platform. */
   private final boolean isFirstPurchaseOnline;
 
-  /** Date of last purchase. */
+  /** Date and time of the payer's last purchase on the merchant's platform. */
   private final OffsetDateTime lastPurchase;
 
-  /** Payer's personal identification. */
+  /** Personal identification document of the payer (e.g. CPF, DNI). */
   private final IdentificationRequest identification;
 }

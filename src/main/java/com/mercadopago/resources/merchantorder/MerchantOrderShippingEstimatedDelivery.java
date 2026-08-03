@@ -3,15 +3,22 @@ package com.mercadopago.resources.merchantorder;
 import java.time.OffsetDateTime;
 import lombok.Getter;
 
-/** Estimated delivery time information. */
+/**
+ * Represents estimated delivery information for a shipping option in the MercadoPago API.
+ *
+ * <p>Provides the estimated delivery date and a time window (from/to) within which the shipment
+ * is expected to arrive.
+ *
+ * @see MerchantOrderShippingOption
+ */
 @Getter
 public class MerchantOrderShippingEstimatedDelivery {
-  /** Estimated delivery date. */
+  /** Estimated date of delivery. */
   private OffsetDateTime date;
 
-  /** Estimated lower delivery time. */
+  /** Start of the estimated delivery time window. */
   private String timeFrom;
 
-  /** Estimated upper delivery time. */
+  /** End of the estimated delivery time window. */
   private String timeTo;
 }

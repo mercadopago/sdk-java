@@ -22,21 +22,42 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 
-/** Client that use the Preapproval APIs. */
+/**
+ * Client for the MercadoPago Subscriptions (Preapproval) API.
+ *
+ * <p>Provides operations to create, retrieve, update, and search preapprovals (subscriptions).
+ * A preapproval authorises recurring charges against a payer's payment method over a defined
+ * billing period.
+ *
+ * <p>Usage example:
+ * <pre>{@code
+ * PreapprovalClient client = new PreapprovalClient();
+ * Preapproval subscription = client.create(preapprovalCreateRequest);
+ * Preapproval updated = client.update(subscription.getId(), preapprovalUpdateRequest);
+ * }</pre>
+ *
+ * @see <a href="https://www.mercadopago.com/developers/en/reference/subscriptions/resource">
+ *     Subscriptions API reference</a>
+ */
 public class PreapprovalClient extends MercadoPagoClient {
+
+  /** Class-level logger for preapproval/subscription operations. */
   private static final Logger LOGGER = Logger.getLogger(PreapprovalClient.class.getName());
 
+  /** URL template for single-preapproval endpoints (e.g. {@code /preapproval/{id}}). */
   private static final String URL_WITH_ID = "/preapproval/%s";
 
-  /** Default constructor. Uses the default http client used by the SDK. */
+  /**
+   * Default constructor. Uses the default HTTP client provided by {@link MercadoPagoConfig}.
+   */
   public PreapprovalClient() {
     this(MercadoPagoConfig.getHttpClient());
   }
 
   /**
-   * Constructor used for providing a custom http client.
+   * Constructs a {@code PreapprovalClient} with a custom HTTP client.
    *
-   * @param httpClient httpClient
+   * @param httpClient the {@link MPHttpClient} implementation used to execute HTTP requests
    */
   public PreapprovalClient(MPHttpClient httpClient) {
     super(httpClient);
@@ -47,29 +68,32 @@ public class PreapprovalClient extends MercadoPagoClient {
   }
 
   /**
-   * Get a Preapproval by your ID.
+   * Retrieves a preapproval (subscription) by its unique identifier.
    *
-   * @param id preapproval id.
-   * @return Preapproval pre approval information
-   * @throws MPException an error if the request fails
+   * @param id the unique identifier of the preapproval
+   * @return the requested {@link Preapproval}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public Preapproval get(String id) throws MPException, MPApiException {
     return this.get(id, null);
   }
 
   /**
-   * Get a Preapproval by your ID.
+   * Retrieves a preapproval (subscription) by its unique identifier with custom request options.
    *
-   * @param id preapprovalId.
-   * @param requestOptions metadata to customize the request
-   * @return Preapproval pre approval information
-   * @throws MPException an error if the request fails
+   * @param id the unique identifier of the preapproval
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the requested {@link Preapproval}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public Preapproval get(String id, MPRequestOptions requestOptions)
       throws MPException, MPApiException {
     LOGGER.info("Sending get preapproval request");
     MPResponse response =
-        send(String.format(URL_WITH_ID, id), HttpMethod.GET, null, null, requestOptions);
+        send(String.format(URL_WITH_ID, encodePathParam(id)), HttpMethod.GET, null, null, requestOptions);
 
     Preapproval result = deserializeFromJson(Preapproval.class, response.getContent());
     result.setResponse(response);
@@ -78,23 +102,28 @@ public class PreapprovalClient extends MercadoPagoClient {
   }
 
   /**
-   * Creates a Preapproval.
+   * Creates a new preapproval (subscription).
    *
-   * @param request attributes used to create a preapproval
-   * @return Preapproval pre approval information
-   * @throws MPException an error if the request fails
+   * @param request the {@link PreapprovalCreateRequest} with subscription details (reason, amount,
+   *     frequency, etc.)
+   * @return the created {@link Preapproval}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public Preapproval create(PreapprovalCreateRequest request) throws MPException, MPApiException {
     return this.create(request, null);
   }
 
   /**
-   * Creates a Preapproval.
+   * Creates a new preapproval (subscription) with custom request options.
    *
-   * @param request attributes used to create a preapproval
-   * @param requestOptions metadata to customize the request
-   * @return Preapproval pre approval information
-   * @throws MPException an error if the request fails
+   * @param request the {@link PreapprovalCreateRequest} with subscription details (reason, amount,
+   *     frequency, etc.)
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the created {@link Preapproval}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public Preapproval create(PreapprovalCreateRequest request, MPRequestOptions requestOptions)
       throws MPException, MPApiException {
@@ -109,12 +138,13 @@ public class PreapprovalClient extends MercadoPagoClient {
   }
 
   /**
-   * Updates a Preapproval.
+   * Updates an existing preapproval (subscription).
    *
-   * @param id preapprovalId
-   * @param request attributes used for the update
-   * @return Preapproval pre approval information
-   * @throws MPException an error if the request fails
+   * @param id the unique identifier of the preapproval to update
+   * @param request the {@link PreapprovalUpdateRequest} with the updated subscription attributes
+   * @return the updated {@link Preapproval}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public Preapproval update(String id, PreapprovalUpdateRequest request)
       throws MPException, MPApiException {
@@ -122,13 +152,15 @@ public class PreapprovalClient extends MercadoPagoClient {
   }
 
   /**
-   * Updates a Preapproval.
+   * Updates an existing preapproval (subscription) with custom request options.
    *
-   * @param id preapprovalId
-   * @param request attributes used for the update
-   * @param requestOptions metadata to customize the request
-   * @return Preapproval pre approval information
-   * @throws MPException an error if the request fails
+   * @param id the unique identifier of the preapproval to update
+   * @param request the {@link PreapprovalUpdateRequest} with the updated subscription attributes
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the updated {@link Preapproval}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public Preapproval update(
       String id, PreapprovalUpdateRequest request, MPRequestOptions requestOptions)
@@ -136,7 +168,7 @@ public class PreapprovalClient extends MercadoPagoClient {
     LOGGER.info("Sending update preapproval request");
     MPResponse response =
         send(
-            String.format(URL_WITH_ID, id),
+            String.format(URL_WITH_ID, encodePathParam(id)),
             HttpMethod.PUT,
             serializeToJson(request),
             null,
@@ -149,11 +181,13 @@ public class PreapprovalClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for search preapprovals.
+   * Searches for preapprovals (subscriptions) matching the specified criteria.
    *
-   * @param request attributes used for the search
-   * @return list of results
-   * @throws MPException an error if the request fails
+   * @param request the {@link MPSearchRequest} containing search filters and pagination parameters
+   * @return an {@link MPResultsResourcesPage} of {@link Preapproval} with matching results and
+   *     pagination metadata
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public MPResultsResourcesPage<Preapproval> search(MPSearchRequest request)
       throws MPException, MPApiException {
@@ -161,12 +195,16 @@ public class PreapprovalClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for search preapprovals.
+   * Searches for preapprovals (subscriptions) matching the specified criteria with custom request
+   * options.
    *
-   * @param request attributes used for the search
-   * @param requestOptions metadata to customize the request
-   * @return list of results
-   * @throws MPException an error if the request fails
+   * @param request the {@link MPSearchRequest} containing search filters and pagination parameters
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return an {@link MPResultsResourcesPage} of {@link Preapproval} with matching results and
+   *     pagination metadata
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public MPResultsResourcesPage<Preapproval> search(
       MPSearchRequest request, MPRequestOptions requestOptions) throws MPException, MPApiException {

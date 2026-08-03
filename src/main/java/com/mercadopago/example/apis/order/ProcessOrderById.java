@@ -9,7 +9,7 @@ import com.mercadopago.resources.order.Order;
 /**
  * Mercado Pago Process Order.
  *
- * @see <a href="https://mercadopago.com/developers/en/reference/order/online/process-order/post">Documentation</a>
+ * @see <a href="https://www.mercadopago.com/developers/en/reference/online-payments/checkout-api/process-order/post">Documentation</a>
  */
 public class ProcessOrderById {
 

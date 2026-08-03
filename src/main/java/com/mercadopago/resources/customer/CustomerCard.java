@@ -5,49 +5,59 @@ import java.time.OffsetDateTime;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
-/** Customer card details. */
+/**
+ * Represents a saved card associated with a customer in the MercadoPago API.
+ *
+ * <p>Contains card details such as expiration date, first/last digits, payment method, issuer,
+ * cardholder information, and security code metadata. Saved cards enable returning customers to
+ * complete payments without re-entering their card data.
+ *
+ * @see Customer
+ * @see <a href="https://www.mercadopago.com.br/developers/en/reference/cards/_customers_customer_id_cards/post">
+ *     Customer Cards API Reference</a>
+ */
 @Getter
 @EqualsAndHashCode(callSuper = true)
 public class CustomerCard extends MPResource {
-  /** Id of the card. */
+  /** Unique identifier of the card. */
   private String id;
 
-  /** Id of the customer. */
+  /** Identifier of the customer who owns this card. */
   private String customerId;
 
-  /** Month the card expires. */
+  /** Expiration month of the card (1-12). */
   private Integer expirationMonth;
 
-  /** Year the card expires. */
+  /** Expiration year of the card (four-digit format). */
   private Integer expirationYear;
 
-  /** First six digits of the card. */
+  /** First six digits of the card number (BIN). */
   private String firstSixDigits;
 
-  /** Last four digits of the card. */
+  /** Last four digits of the card number. */
   private String lastFourDigits;
 
-  /** Data related to the chosen payment method. */
+  /** Payment method information associated with this card. */
   private CustomerCardPaymentMethod paymentMethod;
 
-  /** Security code of the card. */
+  /** Security code metadata of the card (length and location). */
   private CustomerCardSecurityCode securityCode;
 
-  /** Card issuer. */
+  /** Issuer (financial institution) of the card. */
   private CustomerCardIssuer issuer;
 
-  /** Data related to the holder of the card, usually the customer. */
+  /** Cardholder information including name and identification. */
   private CustomerCardCardholder cardholder;
 
-  /** Creation date of the record. */
+  /** Date and time when the card record was created. */
   private OffsetDateTime dateCreated;
 
-  /** Date the record was last updated. */
+  /** Date and time when the card record was last updated. */
   private OffsetDateTime dateLastUpdated;
 
-  /** Id of the user. */
+  /** Identifier of the user associated with this card. */
   private String userId;
 
-  /** Flag indicating if this is a record from production or test environment. */
+  /** Whether this card was saved in production (live) mode. */
   private boolean liveMode;
 }

@@ -4,14 +4,17 @@ import java.math.BigDecimal;
 import lombok.Builder;
 import lombok.Getter;
 
-/** PaymentFeeRequest class. */
+/**
+ * Request object representing a fee rule applied to a payment, such as
+ * a late-payment fine or interest charge. Used within {@link PaymentRulesRequest}.
+ */
 @Getter
 @Builder
 public class PaymentFeeRequest {
 
-  /** Fee type. */
+  /** Fee type (e.g. "percentage" or "fixed"). */
   private String type;
 
-  /** Fee value. */
+  /** Fee value, interpreted as a percentage or fixed amount depending on type. */
   private BigDecimal value;
 }

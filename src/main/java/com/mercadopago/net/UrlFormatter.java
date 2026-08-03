@@ -10,16 +10,37 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 
-/** UrlFormatter class. */
+/**
+ * Utility class for building fully-qualified API request URLs for the MercadoPago SDK.
+ *
+ * <p>Handles two key responsibilities:
+ * <ul>
+ *   <li><strong>Base URL prepending</strong> -- relative paths (those not starting with
+ *       {@code "https"}) are automatically prefixed with
+ *       {@link com.mercadopago.MercadoPagoConfig#BASE_URL}.</li>
+ *   <li><strong>Query parameter encoding</strong> -- key-value pairs from the query parameter
+ *       map are URL-encoded (UTF-8) and appended to the URL.</li>
+ * </ul>
+ *
+ * @see MPRequest
+ * @see com.mercadopago.MercadoPagoConfig#BASE_URL
+ */
 public class UrlFormatter {
 
   /**
-   * Method responsible for format a url and add query params.
+   * Formats a request URL by prepending the MercadoPago base URL (when the path is relative)
+   * and appending URL-encoded query parameters.
    *
-   * @param path path
-   * @param queryParams queryParams
-   * @return url formatted
-   * @throws MPException exception
+   * <p>If the path already starts with {@code "https"}, it is treated as an absolute URL and the
+   * base URL is not prepended. Query parameters are only appended if the resulting URL does not
+   * already contain a query string.
+   *
+   * @param path        the API endpoint path (e.g., {@code "/v1/payments"}) or a fully-qualified
+   *                    URL
+   * @param queryParams a map of query parameter names to values to append, or {@code null} if
+   *                    no parameters are needed
+   * @return the fully-formatted URL string with base URL and encoded query parameters
+   * @throws MPException if the URL is malformed or if UTF-8 encoding is not supported
    */
   public static String format(String path, Map<String, Object> queryParams) throws MPException {
     StringBuilder builder = new StringBuilder();

@@ -22,17 +22,42 @@ import java.util.Objects;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 
-/** Client responsible for performing oauth authorization. */
+/**
+ * Client for the MercadoPago OAuth 2.0 API.
+ *
+ * <p>Provides operations for the OAuth authorization flow used in marketplace and platform
+ * integrations: generating authorization URLs, creating credentials from authorization codes,
+ * and refreshing expired tokens.
+ *
+ * <p>Usage example:
+ * <pre>{@code
+ * OauthClient client = new OauthClient();
+ * String authUrl = client.getAuthorizationURL(appId, redirectUri);
+ * // After user authorizes, exchange the code for credentials:
+ * CreateOauthCredential credential = client.createCredential(authorizationCode, redirectUri);
+ * }</pre>
+ *
+ * @see <a
+ *     href="https://www.mercadopago.com.br/developers/en/reference/oauth/_oauth_token/post">
+ *     OAuth API reference</a>
+ */
 public class OauthClient extends MercadoPagoClient {
+
+  /** Class-level logger for OAuth operations. */
   private static final Logger LOGGER = Logger.getLogger(OauthClient.class.getName());
 
+  /** Internal client used to retrieve user information for building authorization URLs. */
   private final UserClient userClient;
 
+  /** Base host for MercadoPago OAuth authorization endpoints. */
   private final String authHost = "https://auth.mercadopago.com";
 
+  /** Relative path for the OAuth token endpoint. */
   private final String path = "/oauth/token";
 
-  /** Default constructor. Uses the default http client used by the SDK. */
+  /**
+   * Default constructor. Uses the default HTTP client provided by {@link MercadoPagoConfig}.
+   */
   public OauthClient() {
     this(MercadoPagoConfig.getHttpClient());
     StreamHandler streamHandler = getStreamHandler();
@@ -42,9 +67,11 @@ public class OauthClient extends MercadoPagoClient {
   }
 
   /**
-   * Constructor used for providing a custom http client.
+   * Constructs an {@code OauthClient} with a custom HTTP client.
    *
-   * @param httpClient http client
+   * <p>Also initialises the internal {@link UserClient} with the same HTTP client.
+   *
+   * @param httpClient the {@link MPHttpClient} implementation used to execute HTTP requests
    */
   public OauthClient(MPHttpClient httpClient) {
     super(httpClient);
@@ -52,12 +79,16 @@ public class OauthClient extends MercadoPagoClient {
   }
 
   /**
-   * Get URL for Oauth authorization.
+   * Builds the OAuth authorization URL that the seller must visit to grant access.
    *
-   * @param appId Id of the app
-   * @param redirectUri URL for redirection after authorization
-   * @return URL to perform authorization
-   * @throws MPException an error if the request fails
+   * <p>Internally fetches the authenticated user's country to construct the correct
+   * country-specific authorization host.
+   *
+   * @param appId the application ID (client_id) registered in MercadoPago
+   * @param redirectUri the URL to which the user is redirected after authorizing
+   * @return the full authorization URL, or {@code null} if the user's country cannot be determined
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public String getAuthorizationURL(String appId, String redirectUri)
       throws MPException, MPApiException {
@@ -65,13 +96,18 @@ public class OauthClient extends MercadoPagoClient {
   }
 
   /**
-   * Get URL for Oauth authorization.
+   * Builds the OAuth authorization URL with custom request options.
    *
-   * @param appId Id of the app
-   * @param redirectUri URL for redirection after authorization
-   * @param requestOptions metadata to customize the request
-   * @return URL to perform authorization
-   * @throws MPException an error if the request fails
+   * <p>Internally fetches the authenticated user's country to construct the correct
+   * country-specific authorization host.
+   *
+   * @param appId the application ID (client_id) registered in MercadoPago
+   * @param redirectUri the URL to which the user is redirected after authorizing
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the full authorization URL, or {@code null} if the user's country cannot be determined
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    */
   public String getAuthorizationURL(
       String appId, String redirectUri, MPRequestOptions requestOptions)
@@ -96,13 +132,19 @@ public class OauthClient extends MercadoPagoClient {
   }
 
   /**
-   * Create Oauth credentials to operate on behalf of a seller. Go <a
-   * href=https://www.mercadopago.com.br/developers/en/guides/security/oauth>here</a> to learn more.
+   * Creates OAuth credentials by exchanging an authorization code for access and refresh tokens.
    *
-   * @param authorizationCode authorization code received from calling getAuthorizationURL
-   * @param redirectUri the redirectUri received from calling getAuthorizationURL
-   * @return the Oauth credentials
-   * @throws MPException an error if the request fails
+   * <p>Used in the marketplace authorization flow to operate on behalf of a seller. See the
+   * <a href="https://www.mercadopago.com.br/developers/en/guides/security/oauth">OAuth guide</a>
+   * for more details.
+   *
+   * @param authorizationCode the authorization code received after the seller grants access via the
+   *     authorization URL
+   * @param redirectUri the same redirect URI used when generating the authorization URL
+   * @return the {@link CreateOauthCredential} containing access token, refresh token, and
+   *     expiration
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/oauth/_oauth_token/post">api
    *     docs</a>
@@ -113,14 +155,21 @@ public class OauthClient extends MercadoPagoClient {
   }
 
   /**
-   * Create Oauth credentials to operate on behalf of a seller. Go <a
-   * href=https://www.mercadopago.com.br/developers/en/guides/security/oauth>here</a> to learn more.
+   * Creates OAuth credentials with custom request options by exchanging an authorization code.
    *
-   * @param authorizationCode authorization code received from calling getAuthorizationURL
-   * @param redirectUri the redirectUri received from calling getAuthorizationURL
-   * @param requestOptions metadata to customize the request
-   * @return the Oauth credentials
-   * @throws MPException an error if the request fails
+   * <p>Used in the marketplace authorization flow to operate on behalf of a seller. See the
+   * <a href="https://www.mercadopago.com.br/developers/en/guides/security/oauth">OAuth guide</a>
+   * for more details.
+   *
+   * @param authorizationCode the authorization code received after the seller grants access via the
+   *     authorization URL
+   * @param redirectUri the same redirect URI used when generating the authorization URL
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the {@link CreateOauthCredential} containing access token, refresh token, and
+   *     expiration
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/oauth/_oauth_token/post">api
    *     docs</a>
@@ -148,11 +197,12 @@ public class OauthClient extends MercadoPagoClient {
   }
 
   /**
-   * Refresh Oauth credentials.
+   * Refreshes OAuth credentials using a previously obtained refresh token.
    *
-   * @param refreshToken refresh token received when you create credentials
-   * @return new Oauth credentials
-   * @throws MPException an error if the request fails
+   * @param refreshToken the refresh token received during credential creation
+   * @return a new {@link RefreshOauthCredential} containing a fresh access token and refresh token
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/oauth/_oauth_token/post">api
    *     docs</a>
@@ -163,12 +213,14 @@ public class OauthClient extends MercadoPagoClient {
   }
 
   /**
-   * Refresh Oauth credentials.
+   * Refreshes OAuth credentials with custom request options.
    *
-   * @param refreshToken refresh token received when you create credentials
-   * @param requestOptions metadata to customize the request
-   * @return new Oauth credentials
-   * @throws MPException an error if the request fails
+   * @param refreshToken the refresh token received during credential creation
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return a new {@link RefreshOauthCredential} containing a fresh access token and refresh token
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/oauth/_oauth_token/post">api
    *     docs</a>

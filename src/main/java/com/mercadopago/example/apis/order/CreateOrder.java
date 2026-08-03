@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Mercado Pago Create Order transaction.
  *
- * @see <a href="https://mercadopago.com/developers/en/reference/order/online-payments/create/post">Documentation</a>.
+ * @see <a href="https://www.mercadopago.com/developers/en/reference/online-payments/checkout-api/create-order/post">Documentation</a>.
  */
 public class CreateOrder {
 

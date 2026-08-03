@@ -22,21 +22,43 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 
-/** MerchantOrderClient class. */
+/**
+ * Client for the MercadoPago Merchant Orders API.
+ *
+ * <p>Provides operations to create, retrieve, update, and search merchant orders. Merchant orders
+ * group one or more payments and can be associated with preferences, shipments, or external
+ * references.
+ *
+ * <p>Usage example:
+ * <pre>{@code
+ * MerchantOrderClient client = new MerchantOrderClient();
+ * MerchantOrder order = client.create(merchantOrderCreateRequest);
+ * MerchantOrder retrieved = client.get(order.getId());
+ * }</pre>
+ *
+ * @see <a
+ *     href="https://www.mercadopago.com.br/developers/en/reference/merchant_orders/_merchant_orders/post">
+ *     Merchant Orders API reference</a>
+ */
 public class MerchantOrderClient extends MercadoPagoClient {
+
+  /** Class-level logger for merchant order operations. */
   private static final Logger LOGGER = Logger.getLogger(MerchantOrderClient.class.getName());
 
+  /** URL template for single-merchant-order endpoints (e.g. {@code /merchant_orders/{id}}). */
   private static final String URL_WITH_ID = "/merchant_orders/%s";
 
-  /** Default constructor. Uses the default http client used by the SDK. */
+  /**
+   * Default constructor. Uses the default HTTP client provided by {@link MercadoPagoConfig}.
+   */
   public MerchantOrderClient() {
     this(MercadoPagoConfig.getHttpClient());
   }
 
   /**
-   * Constructor used for providing a custom http client.
+   * Constructs a {@code MerchantOrderClient} with a custom HTTP client.
    *
-   * @param httpClient httpClient
+   * @param httpClient the {@link MPHttpClient} implementation used to execute HTTP requests
    */
   public MerchantOrderClient(MPHttpClient httpClient) {
     super(httpClient);
@@ -47,11 +69,12 @@ public class MerchantOrderClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for getting merchant order.
+   * Retrieves a merchant order by its unique identifier.
    *
-   * @param id merchant order id
-   * @return merchant order information
-   * @throws MPException an error if the request fails
+   * @param id the unique identifier of the merchant order
+   * @return the requested {@link MerchantOrder}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/merchant_orders/_merchant_orders_id/get">api
    *     docs</a>
@@ -61,12 +84,14 @@ public class MerchantOrderClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for getting merchant order.
+   * Retrieves a merchant order by its unique identifier with custom request options.
    *
-   * @param id merchant order id
-   * @param requestOptions metadata to customize the request
-   * @return merchant order information
-   * @throws MPException an error if the request fails
+   * @param id the unique identifier of the merchant order
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the requested {@link MerchantOrder}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/merchant_orders/_merchant_orders_id/get">api
    *     docs</a>
@@ -89,11 +114,13 @@ public class MerchantOrderClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for creating merchant order.
+   * Creates a new merchant order.
    *
-   * @param request attributes used to create merchant order
-   * @return merchant order information
-   * @throws MPException an error if the request fails
+   * @param request the {@link MerchantOrderCreateRequest} with order details (items, preference
+   *     id, etc.)
+   * @return the created {@link MerchantOrder}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/merchant_orders/_merchant_orders/post">api
    *     docs</a>
@@ -104,12 +131,15 @@ public class MerchantOrderClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for creating merchant order with request options.
+   * Creates a new merchant order with custom request options.
    *
-   * @param request attributes used to create merchant order
-   * @param requestOptions metadata to customize the request
-   * @return merchant order information
-   * @throws MPException an error if the request fails
+   * @param request the {@link MerchantOrderCreateRequest} with order details (items, preference
+   *     id, etc.)
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the created {@link MerchantOrder}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/merchant_orders/_merchant_orders/post">api
    *     docs</a>
@@ -133,12 +163,13 @@ public class MerchantOrderClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for creating merchant order.
+   * Updates an existing merchant order.
    *
-   * @param request attributes used to update merchant order
-   * @param id merchant order id
-   * @return merchant order information
-   * @throws MPException an error if the request fails
+   * @param id the unique identifier of the merchant order to update
+   * @param request the {@link MerchantOrderUpdateRequest} with the updated attributes
+   * @return the updated {@link MerchantOrder}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/merchant_orders/_merchant_orders_id/put">api
    *     docs</a>
@@ -149,13 +180,15 @@ public class MerchantOrderClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for creating merchant order with request options.
+   * Updates an existing merchant order with custom request options.
    *
-   * @param request attributes used to update merchant order
-   * @param id merchant order id
-   * @param requestOptions metadata to customize the request
-   * @return merchant order response
-   * @throws MPException an error if the request fails
+   * @param id the unique identifier of the merchant order to update
+   * @param request the {@link MerchantOrderUpdateRequest} with the updated attributes
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the updated {@link MerchantOrder}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/merchant_orders/_merchant_orders_id/put">api
    *     docs</a>
@@ -180,11 +213,13 @@ public class MerchantOrderClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for search merchant order.
+   * Searches for merchant orders matching the specified criteria.
    *
-   * @param request attributes used to search merchant order
-   * @return list of results
-   * @throws MPException an error if the request fails
+   * @param request the {@link MPSearchRequest} containing search filters and pagination parameters
+   * @return an {@link MPElementsResourcesPage} of {@link MerchantOrder} with matching results and
+   *     pagination metadata
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/merchant_orders/_merchant_orders_search/get">api
    *     docs</a>
@@ -195,12 +230,15 @@ public class MerchantOrderClient extends MercadoPagoClient {
   }
 
   /**
-   * Method responsible for search merchant order.
+   * Searches for merchant orders matching the specified criteria with custom request options.
    *
-   * @param request attributes used to search merchant order
-   * @param requestOptions metadata to customize the request
-   * @return list of results
-   * @throws MPException an error if the request fails
+   * @param request the {@link MPSearchRequest} containing search filters and pagination parameters
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return an {@link MPElementsResourcesPage} of {@link MerchantOrder} with matching results and
+   *     pagination metadata
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
    * @see <a
    *     href="https://www.mercadopago.com.br/developers/en/reference/merchant_orders/_merchant_orders_search/get">api
    *     docs</a>

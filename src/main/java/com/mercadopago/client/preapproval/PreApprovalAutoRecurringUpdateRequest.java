@@ -5,16 +5,21 @@ import java.time.OffsetDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
-/** Recurring data. */
+/**
+ * Auto-recurring billing configuration used when updating an existing preapproval (subscription).
+ * Allows modification of the amount and date range for recurring charges.
+ *
+ * @see com.mercadopago.client.preapproval.PreapprovalUpdateRequest
+ */
 @Getter
 @Builder
 public class PreApprovalAutoRecurringUpdateRequest {
-  /** Recurring amount. */
+  /** Updated amount charged on each recurring cycle. */
   private final BigDecimal transactionAmount;
 
-  /** Recurring start date. */
+  /** Updated date when the recurring billing starts. */
   private final OffsetDateTime startDate;
 
-  /** Recurring end date. */
+  /** Updated date when the recurring billing ends. */
   private final OffsetDateTime endDate;
 }

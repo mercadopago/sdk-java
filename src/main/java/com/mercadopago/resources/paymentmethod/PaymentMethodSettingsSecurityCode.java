@@ -2,15 +2,22 @@ package com.mercadopago.resources.paymentmethod;
 
 import lombok.Getter;
 
-/** Security code settings. */
+/**
+ * Resource that defines security code (CVV/CVC) settings for a MercadoPago payment method.
+ *
+ * <p>Specifies whether the security code is mandatory, its expected length, and where
+ * it is located on the physical card (front or back).
+ *
+ * @see PaymentMethodSettings#getSecurityCode()
+ */
 @Getter
 public class PaymentMethodSettingsSecurityCode {
-  /** Whether the security code is mandatory or not. */
+  /** Whether the security code is mandatory or optional (e.g. mandatory, optional). */
   private String mode;
 
-  /** Security code length. */
+  /** Expected number of digits in the security code (typically 3 or 4). */
   private int length;
 
-  /** Whether the security code is located in the back or in the front of the card. */
+  /** Physical location of the security code on the card (e.g. back, front). */
   private String cardLocation;
 }

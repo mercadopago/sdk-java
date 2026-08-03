@@ -4,28 +4,30 @@ import lombok.Builder;
 import lombok.Getter;
 
 /**
- * Credential information to perform a create credential request. Go to <a
- * href="https://www.mercadopago.com.br/developers/en/guides/security/oauth">this page</a> to learn
- * more.
+ * Request DTO used to exchange an authorization code for OAuth access and refresh tokens. This
+ * is part of the OAuth 2.0 authorization code flow, which allows your application to act on
+ * behalf of a seller after they grant access through the Mercado Pago authorization URL.
+ *
+ * @see <a href="https://www.mercadopago.com.br/developers/en/guides/security/oauth">OAuth Guide</a>
  */
 @Getter
 @Builder
 public class CreateOauthCredentialRequest {
   /**
-   * Specify type of operation to perform to get your credentials. This is a fixed parameter with an
-   * authorization_code value.
+   * Grant type for the OAuth token request. Fixed as {@code "authorization_code"} for the
+   * authorization code exchange flow.
    */
   private final String grantType = "authorization_code";
   /**
-   * Private key to be used in some plugins to generate payments. You can get it in Your
-   * credentials.
+   * Application secret key (client_secret) used to authenticate the token request. Obtained from
+   * the Mercado Pago developer credentials panel.
    */
   private final String clientSecret;
-  /** Unique ID that identifies your integration. You can get it in Your credentials. */
+  /** Application ID (client_id) that uniquely identifies your integration. */
   private final String clientId;
-  /** The authorization code you get in the authorization url for linking. */
+  /** Authorization code received via the redirect URL after the seller grants permission. */
   private final String code;
 
-  /** This is the URL you set up in the Redirect URL field in your application. */
+  /** Redirect URI configured in the application settings, used to validate the token exchange. */
   private final String redirectUri;
 }

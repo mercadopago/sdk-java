@@ -6,36 +6,45 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import lombok.Getter;
 
-/** PaymentRefund class. */
+/**
+ * Resource that represents a refund applied to a MercadoPago payment.
+ *
+ * <p>A refund can be total or partial, allowing the merchant to return funds to the payer.
+ * Each refund is linked to the original payment and tracks its own status, amount, and
+ * creation date.
+ *
+ * @see Payment
+ * @see <a href="https://www.mercadopago.com.br/developers/en/reference/chargebacks/_payments_id_refunds/post">Refunds API reference</a>
+ */
 @Getter
 public class PaymentRefund extends MPResource {
-  /** Refund id. */
+  /** Unique identifier of this refund. */
   private Long id;
 
-  /** ID of the refunded payment. */
+  /** Identifier of the original payment that was refunded. */
   private Long paymentId;
 
-  /** Amount refunded. */
+  /** Amount that was refunded to the payer. */
   private BigDecimal amount;
 
-  /** Adjustment amount. */
+  /** Adjustment amount applied to the refund (e.g. rounding differences). */
   private BigDecimal adjustmentAmount;
 
-  /** Refund status. */
+  /** Current status of the refund (e.g. approved, in_process). */
   private String status;
 
-  /** Refund mode. */
+  /** Mode of the refund indicating how it was processed. */
   private String refundMode;
 
-  /** Date of creation. */
+  /** Date and time when the refund was created. */
   private OffsetDateTime dateCreated;
 
-  /** Refund reason. */
+  /** Reason provided by the merchant for issuing this refund. */
   private String reason;
 
-  /** Unique sequence number. */
+  /** Unique sequence number that identifies this refund transaction. */
   private String uniqueSequenceNumber;
 
-  /** Source of the refund. */
+  /** Source that originated the refund (e.g. collector, admin). */
   private Source source;
 }

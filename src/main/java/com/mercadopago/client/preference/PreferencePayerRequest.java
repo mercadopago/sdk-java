@@ -9,43 +9,48 @@ import java.util.Date;
 import lombok.Builder;
 import lombok.Getter;
 
-/** Payer information. */
+/**
+ * Payer (buyer) information for a checkout preference, including personal details, contact
+ * information, and purchase history indicators used for fraud prevention.
+ *
+ * @see com.mercadopago.client.preference.PreferenceRequest
+ */
 @Getter
 @Builder
 public class PreferencePayerRequest {
-  /** Payer's name. */
+  /** Payer's first name. */
   private final String name;
 
-  /** Payer's surname. */
+  /** Payer's last name. */
   private final String surname;
 
-  /** Payer's email. */
+  /** Payer's email address. */
   private final String email;
 
-  /** Payer's phone. */
+  /** Payer's phone contact information. */
   private final PhoneRequest phone;
 
-  /** Payer's identification. */
+  /** Payer's identification document details. */
   private final IdentificationRequest identification;
 
-  /** Payer's address. */
+  /** Payer's address information. */
   private final AddressRequest address;
 
-  /** Date of creation of the payer user. */
+  /** Date when the payer's account was created. */
   private final OffsetDateTime dateCreated;
 
-  /** Payer's authentication type. */
+  /** Authentication type used by the payer (e.g., Gmail, Facebook, native). */
   private final String authenticationType;
 
-  /** Indicates if the payer is a prime user. */
+  /** Whether the payer has a prime/loyalty membership. */
   private final boolean isPrimeUser;
 
-  /** Indicates if it's the payer's first purchase online. */
+  /** Whether this is the payer's first online purchase. */
   private final boolean isFirstPurchaseOnline;
 
-  /** Registration date of the payer. */
+  /** Date when the payer registered on the platform. */
   private final OffsetDateTime registrationDate;
 
-  /** Date of the last purchase made by the payer. */
+  /** Date of the payer's most recent purchase. */
   private final OffsetDateTime lastPurchase;
 }

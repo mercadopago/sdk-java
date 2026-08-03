@@ -11,7 +11,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
+
 import static org.mockito.Mockito.doReturn;
 
 import com.google.gson.JsonElement;
@@ -294,6 +295,50 @@ public class PaymentClientTest extends BaseClientTest {
     assertNotNull(paymentCancelled.getResponse());
     assertEquals(OK, paymentCancelled.getResponse().getStatusCode());
     assertEquals("cancelled", paymentCancelled.getStatus());
+  }
+
+  @Test
+  public void updateSuccess() throws IOException, MPException, MPApiException {
+
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentCancelledJson, OK);
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    PaymentUpdateRequest updateRequest =
+        PaymentUpdateRequest.builder().status("cancelled").build();
+    Payment updatedPayment = client.update(paymentTestId, updateRequest);
+
+    JsonElement requestPayload =
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement("payment/payment_update.json");
+
+    assertEquals(requestPayloadMock, requestPayload);
+    assertNotNull(updatedPayment.getResponse());
+    assertEquals(OK, updatedPayment.getResponse().getStatusCode());
+    assertEquals("cancelled", updatedPayment.getStatus());
+  }
+
+  @Test
+  public void updateWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
+
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentCancelledJson, OK);
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    PaymentUpdateRequest updateRequest =
+        PaymentUpdateRequest.builder().status("cancelled").build();
+    Payment updatedPayment = client.update(paymentTestId, updateRequest, buildRequestOptions());
+
+    JsonElement requestPayload =
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement("payment/payment_update.json");
+
+    assertEquals(requestPayloadMock, requestPayload);
+    assertNotNull(updatedPayment.getResponse());
+    assertEquals(OK, updatedPayment.getResponse().getStatusCode());
+    assertEquals("cancelled", updatedPayment.getStatus());
   }
 
   @Test

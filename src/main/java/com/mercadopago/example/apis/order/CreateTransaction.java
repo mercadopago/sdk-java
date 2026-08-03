@@ -13,7 +13,7 @@ import java.util.*;
 /**
  * Mercado Pago Create Order transaction.
  *
- * @see <a href="https://mercadopago.com/developers/en/reference/order/online-payments/add-transaction/post">Documentation</a>
+ * @see <a href="https://www.mercadopago.com/developers/en/reference/online-payments/checkout-api/add-transaction-order/post">Documentation</a>
  */
 public class CreateTransaction{
 

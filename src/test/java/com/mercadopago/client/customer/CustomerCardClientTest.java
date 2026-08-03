@@ -3,7 +3,7 @@ package com.mercadopago.client.customer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 
 import com.mercadopago.BaseClientTest;
@@ -92,6 +92,37 @@ public class CustomerCardClientTest extends BaseClientTest {
         .execute(any(HttpRequestBase.class), any(HttpContext.class));
     CustomerCard card =
         cardClient.create(customerId, buildCustomerCardCreateRequest(), buildRequestOptions());
+
+    assertNotNull(card);
+    assertCustomerCardFields(card);
+  }
+
+  @Test
+  public void updateCardSuccess() throws IOException, MPException, MPApiException {
+    HttpResponse httpResponse =
+        MockHelper.generateHttpResponseFromFile(responseFileSingleCard, HttpStatus.OK);
+    httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
+
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+    CustomerCard card = cardClient.update(customerId, cardId, buildCustomerCardCreateRequest());
+
+    assertNotNull(card);
+    assertCustomerCardFields(card);
+  }
+
+  @Test
+  public void updateCardWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
+    HttpResponse httpResponse =
+        MockHelper.generateHttpResponseFromFile(responseFileSingleCard, HttpStatus.OK);
+    httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
+
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+    CustomerCard card =
+        cardClient.update(customerId, cardId, buildCustomerCardCreateRequest(), buildRequestOptions());
 
     assertNotNull(card);
     assertCustomerCardFields(card);

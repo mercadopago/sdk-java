@@ -1,0 +1,19 @@
+{
+  "paging": {
+    "total": 10,
+    "total_pages": 2,
+    "limit": 5,
+    "offset": 0
+  },
+  "data": [
+    {
+      "id": "123",
+      "type": "online",
+      "processing_mode": "automatic",
+      "status": "processed",
+      "status_detail": "accredited",
+      "total_amount": "200.00",
+      "external_reference": "ext_ref_1234"
+    }
+  ]
+}

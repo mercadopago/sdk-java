@@ -3,28 +3,34 @@ package com.mercadopago.client.preapproval;
 import lombok.Builder;
 import lombok.Getter;
 
-/** Data to create a Preapproval. */
+/**
+ * Request object to create a new preapproval (subscription) in MercadoPago. Contains payer
+ * details, seller information, and auto-recurring billing configuration.
+ *
+ * @see com.mercadopago.client.preapproval.PreApprovalAutoRecurringCreateRequest
+ * @see com.mercadopago.client.preapproval.PreapprovalClient
+ */
 @Getter
 @Builder
 public class PreapprovalCreateRequest {
-  /** Payer email. */
+  /** Email address of the payer (subscriber). */
   private final String payerEmail;
 
-  /** Return URL. */
+  /** URL to redirect the user after the preapproval flow. */
   private final String backUrl;
 
-  /** Seller ID. */
+  /** Unique identifier of the seller (collector). */
   private final String collectorId;
 
-  /** Preapproval title. */
+  /** Title or reason describing the subscription. */
   private final String reason;
 
-  /** Preapproval reference value. */
+  /** External reference to synchronize with your system. */
   private final String externalReference;
 
-  /** Preapproval status. */
+  /** Initial status of the preapproval. */
   private final String status;
 
-  /** Recurring data. */
+  /** Auto-recurring billing configuration for the subscription. */
   private final PreApprovalAutoRecurringCreateRequest autoRecurring;
 }

@@ -2,21 +2,25 @@ package com.mercadopago.resources.order;
 
 import lombok.Getter;
 
-/** OrderRoute class. */
+/**
+ * Resource representing travel route information for a MercadoPago Order item.
+ * Used in travel-related transactions to describe the itinerary, including
+ * departure and arrival locations, times, and the carrier company.
+ */
 @Getter
 public class OrderRoute {
-    /** Departure city. */
+    /** Name of the departure city or airport code. */
     private String departure;
 
-    /** Destination city. */
+    /** Name of the destination city or airport code. */
     private String destination;
 
-    /** Departure date and time. */
+    /** ISO 8601 date-time of the scheduled departure. */
     private String departureDateTime;
 
-    /** Arrival date and time. */
+    /** ISO 8601 date-time of the scheduled arrival. */
     private String arrivalDateTime;
 
-    /** Company name. */
+    /** Name of the transport company or airline operating this route. */
     private String company;
 }

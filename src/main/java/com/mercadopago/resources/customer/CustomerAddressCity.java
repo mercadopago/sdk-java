@@ -2,12 +2,19 @@ package com.mercadopago.resources.customer;
 
 import lombok.Getter;
 
-/** City information. */
+/**
+ * Represents city information within a customer's address in the MercadoPago API.
+ *
+ * <p>Contains the city identifier and name as part of the geographic breakdown of a customer
+ * address.
+ *
+ * @see CustomerAddress
+ */
 @Getter
 public class CustomerAddressCity {
-  /** City id. */
+  /** Unique identifier of the city. */
   private String id;
 
-  /** City name. */
+  /** Name of the city. */
   private String name;
 }

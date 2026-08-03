@@ -4,57 +4,67 @@ import com.mercadopago.net.MPResource;
 import java.time.OffsetDateTime;
 import lombok.Getter;
 
-/** Preapproval resource. */
+/**
+ * Resource representing a MercadoPago subscription (preapproval).
+ *
+ * <p>A preapproval authorizes the seller to collect recurring payments from a payer according to
+ * the billing configuration defined in {@link PreapprovalAutoRecurring}. The lifecycle of a
+ * subscription includes creation, activation via the checkout link ({@code initPoint}), and
+ * ongoing automated billing until cancellation or expiration.
+ *
+ * @see PreapprovalAutoRecurring
+ * @see com.mercadopago.client.preapproval.PreapprovalClient
+ */
 @Getter
 public class Preapproval extends MPResource {
-  /** Preapproval ID. */
+  /** Unique identifier of the preapproval (subscription). */
   private String id;
 
-  /** Payer ID. */
+  /** Identifier of the payer who authorized the recurring charges. */
   private Long payerId;
 
-  /** Payer email. */
+  /** Email address of the payer associated with this subscription. */
   private String payerEmail;
 
-  /** Return URL. */
+  /** URL the payer is redirected to after completing the subscription flow. */
   private String backUrl;
 
-  /** Seller ID. */
+  /** Identifier of the seller (collector) who receives the recurring payments. */
   private Long collectorId;
 
-  /** Application ID. */
+  /** Identifier of the application that created this subscription. */
   private Long applicationId;
 
-  /** Preapproval status. */
+  /** Current status of the subscription (e.g., pending, authorized, paused, cancelled). */
   private String status;
 
-  /** Preapproval title. */
+  /** Title or reason describing the purpose of the subscription. */
   private String reason;
 
-  /** Preapproval reference value. */
+  /** External reference for correlating this subscription with the integrator's system. */
   private String externalReference;
 
-  /** Date of the next payment debit. */
+  /** Scheduled date of the next automatic payment debit. */
   private OffsetDateTime nextPaymentDate;
 
-  /** Creation date. */
+  /** Timestamp when the subscription was created. */
   private OffsetDateTime dateCreated;
 
-  /** Last modified date. */
+  /** Timestamp when the subscription was last modified. */
   private OffsetDateTime lastModified;
 
-  /** Preapproval checkout link. */
+  /** Production checkout URL where the payer authorizes the subscription. */
   private String initPoint;
 
-  /** Preapproval sandbox checkout link. */
+  /** Sandbox checkout URL for testing the subscription flow. */
   private String sandboxInitPoint;
 
-  /** Payment method ID. */
+  /** Identifier of the payment method used for recurring charges. */
   private String paymentMethodId;
 
-  /** Recurring data. */
+  /** Recurring billing configuration including frequency, currency, and amount. */
   private PreapprovalAutoRecurring autoRecurring;
 
-  /** Version. */
+  /** Optimistic concurrency control version number. */
   private Long version;
 }

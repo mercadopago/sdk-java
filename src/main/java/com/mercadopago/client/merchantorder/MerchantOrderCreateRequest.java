@@ -4,37 +4,43 @@ import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 
-/** Parameters for create a Merchant Order. */
+/**
+ * Request DTO used to create a new Merchant Order. A merchant order groups one or more payments
+ * for a set of items, enabling the merchant to track fulfillment, shipments, and payment
+ * collection for a complete purchase operation.
+ *
+ * @see <a href="https://www.mercadopago.com.br/developers/en/reference/merchant_orders">Merchant Orders API Reference</a>
+ */
 @Getter
 @Builder
 public class MerchantOrderCreateRequest {
-  /** Payment preference identifier associated to the merchant order. */
+  /** Checkout preference ID that links this order to a payment preference. */
   private final String preferenceId;
 
-  /** Application ID. */
+  /** Application ID that originated this merchant order. */
   private final String applicationId;
 
-  /** Country identifier that merchant order belongs to. */
+  /** Mercado Libre site ID indicating the country of operation (e.g., "MLA", "MLB"). */
   private final String siteId;
 
-  /** Payer information. */
+  /** Payer information associated with this order. */
   private final MerchantOrderPayerRequest payer;
 
-  /** Sponsor ID. */
+  /** Sponsor ID for marketplace or platform integrations. */
   private final String sponsorId;
 
-  /** Items information. */
+  /** List of items included in this merchant order. */
   private final List<MerchantOrderItemRequest> items;
 
-  /** URL where you'd like to receive a payment notification. */
+  /** Webhook URL to receive payment and order status notifications. */
   private final String notificationUrl;
 
-  /** Additional information. */
+  /** Free-text field for additional information about the order. */
   private final String additionalInfo;
 
-  /** Reference you can synchronize with your payment system. */
+  /** External reference ID to correlate this order with the merchant's own system. */
   private final String externalReference;
 
-  /** Origin of the payment. */
+  /** Marketplace identifier indicating the origin of the payment. */
   private final String marketplace;
 }

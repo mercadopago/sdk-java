@@ -6,14 +6,18 @@ import java.util.Map;
 import lombok.Builder;
 import lombok.Getter;
 
-/** Responsible for setting date range for getting payment intent list. */
+/**
+ * Request object to filter the list of Point payment intents by date range.
+ *
+ * @see com.mercadopago.client.point.PointClient
+ */
 @Getter
 @Builder
 public class PointPaymentIntentListRequest {
-  /** Initial date. */
+  /** Start date for filtering payment intents. */
   private final LocalDate startDate;
 
-  /** End date. */
+  /** End date for filtering payment intents. */
   private final LocalDate endDate;
 
   /**

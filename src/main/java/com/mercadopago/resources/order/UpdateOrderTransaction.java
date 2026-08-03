@@ -3,9 +3,12 @@ package com.mercadopago.resources.order;
 import com.mercadopago.net.MPResource;
 import lombok.Getter;
 
-/** UpdateOrderTransaction class. */
+/**
+ * Resource representing the response returned when updating a transaction
+ * on an existing MercadoPago Order. Contains the updated payment method details.
+ */
 @Getter
 public class UpdateOrderTransaction extends MPResource {
-    /** Payment method information. */
+    /** Updated payment method details for the order transaction. */
     private OrderPaymentMethod paymentMethod;
 }

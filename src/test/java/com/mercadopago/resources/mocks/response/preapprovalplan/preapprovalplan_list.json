@@ -1,0 +1,10 @@
+{
+  "paging": { "total": 1, "limit": 30, "offset": 0 },
+  "results": [
+    {
+      "id": "plan-abc-123",
+      "reason": "Monthly yoga subscription",
+      "status": "active"
+    }
+  ]
+}

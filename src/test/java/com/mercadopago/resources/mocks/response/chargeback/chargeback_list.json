@@ -1,0 +1,12 @@
+{
+  "paging": { "total": 1, "limit": 30, "offset": 0 },
+  "results": [
+    {
+      "id": "CB-001-2022",
+      "payment_id": 19951521071,
+      "status": "in_review",
+      "amount": 100.00,
+      "currency_id": "BRL"
+    }
+  ]
+}

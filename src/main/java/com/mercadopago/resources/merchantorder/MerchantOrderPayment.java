@@ -4,42 +4,49 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import lombok.Getter;
 
-/** Payment information. */
+/**
+ * Represents a payment associated with a merchant order in the MercadoPago API.
+ *
+ * <p>Contains payment details such as transaction amount, status, currency, approval date, and
+ * refund information. A merchant order may have multiple payments.
+ *
+ * @see MerchantOrder
+ */
 @Getter
 public class MerchantOrderPayment {
-  /** Payment ID. */
+  /** Unique identifier of the payment. */
   private Long id;
 
-  /** Product cost. */
+  /** Transaction amount (product cost) of the payment. */
   private BigDecimal transactionAmount;
 
-  /** Total amount paid. */
+  /** Total amount paid including shipping and other charges. */
   private BigDecimal totalPaidAmount;
 
-  /** Shipping fee. */
+  /** Shipping cost included in the payment. */
   private BigDecimal shippingCost;
 
-  /** ID of the currency used in payment. */
+  /** Currency identifier in ISO 4217 format (e.g., BRL, ARS, USD). */
   private String currencyId;
 
-  /** Payment status. */
+  /** Current status of the payment (e.g., approved, pending, rejected). */
   private String status;
 
-  /** Gives more detailed information on the current state or rejection cause. */
+  /** Detailed information about the payment status or rejection cause. */
   private String statusDetails;
 
-  /** Operation type. */
+  /** Type of operation (e.g., regular_payment, money_transfer). */
   private String operationType;
 
-  /** Approval date. */
+  /** Date and time when the payment was approved. */
   private OffsetDateTime dateApproved;
 
-  /** Date of creation. */
+  /** Date and time when the payment was created. */
   private OffsetDateTime dateCreated;
 
-  /** Last modified date. */
+  /** Date and time when the payment was last modified. */
   private OffsetDateTime lastModified;
 
-  /** Amount refunded in this payment. */
+  /** Total amount refunded from this payment. */
   private BigDecimal amountRefunded;
 }

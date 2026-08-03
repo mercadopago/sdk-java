@@ -1,31 +1,39 @@
 package com.mercadopago.resources.payment;
 
-/** PaymentStatus class. */
+/**
+ * Constants representing all possible statuses of a MercadoPago payment.
+ *
+ * <p>Use these constants to compare against the {@code status} field of a {@link Payment}
+ * resource instead of hard-coding string values. Each constant corresponds to a stage
+ * in the payment lifecycle.
+ *
+ * @see Payment#getStatus()
+ */
 public class PaymentStatus {
-  /** The payment has been approved and accredited. */
+  /** The payment has been approved and the funds have been accredited to the collector. */
   public static final String APPROVED = "approved";
 
-  /** The user has not yet completed the payment process. */
+  /** The user has not yet completed the payment process (e.g. waiting for bank transfer or ticket payment). */
   public static final String PENDING = "pending";
 
-  /** The payment has been authorized but not captured yet. */
+  /** The payment has been authorized by the card issuer but the funds have not yet been captured. */
   public static final String AUTHORIZED = "authorized";
 
-  /** Payment is being reviewed. */
+  /** The payment is being reviewed by MercadoPago’s fraud prevention system. */
   public static final String IN_PROCESS = "in_process";
 
-  /** Users have initiated a dispute. */
+  /** A dispute has been initiated by the buyer and the payment is under mediation. */
   public static final String IN_MEDIATION = "in_mediation";
 
-  /** Payment was rejected. The user may retry payment. */
+  /** The payment was rejected by the payment processor or issuer. The buyer may retry. */
   public static final String REJECTED = "rejected";
 
-  /** Payment was cancelled by one of the parties or because time for payment has expired. */
+  /** The payment was cancelled by one of the parties or because the expiration time elapsed. */
   public static final String CANCELLED = "cancelled";
 
-  /** Payment was refunded to the user. */
+  /** The payment was fully refunded to the buyer. */
   public static final String REFUNDED = "refunded";
 
-  /** Was made a chargeback in the buyer’s credit card. */
+  /** A chargeback was initiated on the buyer’s credit card by the issuing bank. */
   public static final String CHARGED_BACK = "charged_back";
 }

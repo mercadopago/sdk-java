@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Mercado Pago Capture Order.
  *
- * @see <a href="https://mercadopago.com/developers/en/reference/order/online-payments/capture/post">Documentation</a>
+ * @see <a href="https://www.mercadopago.com/developers/en/reference/online-payments/checkout-api/capture-order/post">Documentation</a>
  */
 public class CaptureOrder {
 
@@ -41,7 +41,7 @@ public class CaptureOrder {
         OrderCreateRequest request = OrderCreateRequest.builder()
                 .type("online")
                 .processingMode("automatic")
-                .captureMode("manual")
+                .captureMode("automatic_async")
                 .totalAmount("1000.00")
                 .externalReference("ext_ref")
                 .payer(OrderPayerRequest.builder().email("{{PAYER_EMAIL}}").build())

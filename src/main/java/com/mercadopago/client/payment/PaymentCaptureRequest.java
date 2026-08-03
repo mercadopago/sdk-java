@@ -4,13 +4,17 @@ import java.math.BigDecimal;
 import lombok.Builder;
 import lombok.Getter;
 
-/** PaymentCaptureRequest class. */
+/**
+ * Request object used to capture a previously authorized (reserved) payment.
+ * The capture flag is always set to {@code true}. An optional transaction
+ * amount can be specified to perform a partial capture.
+ */
 @Getter
 @Builder
 public class PaymentCaptureRequest {
-  /** Capture true. */
+  /** Capture flag, always set to {@code true} to confirm the capture. */
   private final boolean capture = true;
 
-  /** The amount to capture. */
+  /** Amount to capture; if {@code null}, the full authorized amount is captured. */
   private final BigDecimal transactionAmount;
 }

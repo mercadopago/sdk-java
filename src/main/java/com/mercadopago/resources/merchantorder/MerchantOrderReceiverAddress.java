@@ -2,51 +2,59 @@ package com.mercadopago.resources.merchantorder;
 
 import lombok.Getter;
 
-/** Shipping address of a Merchant Order. */
+/**
+ * Represents the receiver's shipping address for a merchant order in the MercadoPago API.
+ *
+ * <p>Contains the full destination address for shipment delivery, including street details,
+ * apartment, floor, geographic coordinates, and hierarchical geographic data (city, state,
+ * country).
+ *
+ * @see MerchantOrderShipment
+ */
 @Getter
 public class MerchantOrderReceiverAddress {
-  /** Receiver address ID. */
+  /** Unique identifier of the receiver address. */
   private Long id;
 
-  /** Street name and number of receiver address. */
+  /** Full address line (street name and number combined). */
   private String addressLine;
 
-  /** Apartment. */
+  /** Apartment or unit number. */
   private String apartment;
 
-  /** City information. */
+  /** City information of the receiver address. */
   private MerchantOrderReceiverAddressCity city;
 
-  /** State information. */
+  /** State or province information of the receiver address. */
   private MerchantOrderReceiverAddressState state;
 
-  /** Country information. */
+  /** Country information of the receiver address. */
   private MerchantOrderReceiverAddressCountry country;
 
-  /** Comment about receiver address. */
+  /** Additional comments or delivery instructions. */
   private String comment;
 
-  /** Contact information. */
+  /** Contact name or information for the receiver. */
   private String contact;
 
-  /** Postal code. */
+  /** Postal or zip code of the receiver address. */
   private String zipCode;
 
-  /** Street name. */
+  /** Street name of the receiver address. */
   private String streetName;
 
-  /** Street number. */
+  /** Street number of the receiver address. */
   private String streetNumber;
 
-  /** Floor. */
+  /** Floor number within the building. */
   private String floor;
 
-  /** Phone. */
+  /** Contact phone number at the receiver address. */
   private String phone;
 
-  /** Latitude. */
+  /** Geographic latitude coordinate of the address. */
   private String latitude;
 
-  /** Longitude. */
+  /** Geographic longitude coordinate of the address. */
   private String longitude;
 }

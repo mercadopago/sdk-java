@@ -5,43 +5,47 @@ import java.time.OffsetDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
-/** PaymentItemRequest class. */
+/**
+ * Request object describing an individual item included in a payment.
+ * Sent inside the additional-info section to provide detailed product data
+ * that supports fraud-prevention analysis and improves the payer experience.
+ */
 @Getter
 @Builder
 public class PaymentItemRequest {
-  /** Item code. */
+  /** Unique item code or SKU in the merchant's catalog. */
   private final String id;
 
-  /** Item name. */
+  /** Display name of the item. */
   private final String title;
 
-  /** Type of the item. */
+  /** Type classification of the item (e.g. "electronics", "tickets"). */
   private final String type;
 
-  /** Long item description. */
+  /** Detailed description of the item. */
   private final String description;
 
-  /** Image URL. */
+  /** URL of the item's image. */
   private final String pictureUrl;
 
-  /** Category of the item. */
+  /** Category identifier for the item in the merchant's catalog. */
   private final String categoryId;
 
-  /** Currency of the unit price. */
+  /** ISO 4217 currency code for the unit price. */
   private final String currencyId;
 
-  /** Item's quantity. */
+  /** Quantity of this item being purchased. */
   private final Integer quantity;
 
-  /** Unit price. */
+  /** Unit price of the item. */
   private final BigDecimal unitPrice;
 
-  /** Item information related to the category. */
+  /** Category-specific descriptor with details such as passenger or route information. */
   private final PaymentCategoryDescriptorRequest categoryDescriptor;
 
-  /** True if you purchase the item with warranty, false if not. */
+  /** Whether the item is purchased with warranty coverage. */
   private final boolean warranty;
 
-  /** Event date. */
+  /** Date of the event associated with the item (e.g. concert, flight). */
   private final OffsetDateTime eventDate;
 }

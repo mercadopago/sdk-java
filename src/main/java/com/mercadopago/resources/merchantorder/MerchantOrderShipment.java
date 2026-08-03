@@ -5,51 +5,58 @@ import java.util.List;
 import java.util.Map;
 import lombok.Getter;
 
-/** Shipment information. */
+/**
+ * Represents a shipment associated with a merchant order in the MercadoPago API.
+ *
+ * <p>Contains shipping logistics information including type, mode, status, items being shipped,
+ * sender/receiver details, delivery address, and selected shipping option.
+ *
+ * @see MerchantOrder
+ */
 @Getter
 public class MerchantOrderShipment {
-  /** Shipping ID. */
+  /** Unique identifier of the shipment. */
   private Long id;
 
-  /** Shipping type. */
+  /** Type of shipping (e.g., custom, mercadoenvios). */
   private String shippingType;
 
-  /** Shipping mode. */
+  /** Shipping mode (e.g., me1, me2, not_specified). */
   private String shippingMode;
 
-  /** Shipping picking type. */
+  /** Picking type for the shipment (e.g., fulfillment, cross_docking). */
   private String pickingType;
 
-  /** Shipping status. */
+  /** Current status of the shipment (e.g., pending, shipped, delivered). */
   private String status;
 
-  /** Shipping sub status. */
+  /** Sub-status providing additional detail about the shipment status. */
   private String shippingSubstatus;
 
-  /** Shipping items. */
+  /** List of items included in this shipment as key-value maps. */
   private List<Map<String, Object>> items;
 
-  /** Date of creation. */
+  /** Date and time when the shipment was created. */
   private OffsetDateTime dateCreated;
 
-  /** Last modified date. */
+  /** Date and time when the shipment was last modified. */
   private OffsetDateTime lastModified;
 
-  /** First printed date. */
+  /** Date and time when the shipping label was first printed. */
   private OffsetDateTime dateFirstPrinted;
 
-  /** Shipping service ID. */
+  /** Identifier of the shipping service used. */
   private String serviceId;
 
-  /** Sender ID. */
+  /** Identifier of the sender (seller). */
   private Long senderId;
 
-  /** Receiver ID. */
+  /** Identifier of the receiver (buyer). */
   private Long receiverId;
 
-  /** Shipping address. */
+  /** Destination address for the shipment. */
   private MerchantOrderReceiverAddress receiverAddress;
 
-  /** Shipping options. */
+  /** Selected shipping option with cost and delivery details. */
   private MerchantOrderShippingOption shippingOption;
 }

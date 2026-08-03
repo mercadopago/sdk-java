@@ -12,7 +12,7 @@ import java.util.Map;
  * Mercado Pago Total Refund Order.
  *
  * @see <a href=
- *      "https://mercadopago.com/developers/en/reference/order/online-payments/refund/post">Documentation</a>
+ *      "https://www.mercadopago.com/developers/en/reference/online-payments/checkout-api/refund-order/post">Documentation</a>
  */
 public class RefundTotal {
     public static void main(String[] args) {

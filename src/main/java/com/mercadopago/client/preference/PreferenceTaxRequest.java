@@ -4,13 +4,17 @@ import java.math.BigDecimal;
 import lombok.Builder;
 import lombok.Getter;
 
-/** Tax from preference. */
+/**
+ * Tax item applied to a checkout preference, specifying the tax type and its monetary value.
+ *
+ * @see com.mercadopago.client.preference.PreferenceRequest
+ */
 @Getter
 @Builder
 public class PreferenceTaxRequest {
-  /** Tax type. */
+  /** Type of tax (e.g., IVA, INC). */
   private final String type;
 
-  /** Tax value. */
+  /** Monetary value of the tax. */
   private final BigDecimal value;
 }

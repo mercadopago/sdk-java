@@ -4,34 +4,40 @@ import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 
-/** Parameters for update a Merchant Order. */
+/**
+ * Request DTO used to update an existing Merchant Order. Allows modifying order attributes such
+ * as items, shipments, notification settings, and external references after the order has been
+ * created.
+ *
+ * @see <a href="https://www.mercadopago.com.br/developers/en/reference/merchant_orders">Merchant Orders API Reference</a>
+ */
 @Getter
 @Builder
 public class MerchantOrderUpdateRequest {
-  /** Country identifier that merchant order belongs to. */
+  /** Mercado Libre site ID indicating the country of operation (e.g., "MLA", "MLB"). */
   private final String siteId;
 
-  /** Payer information. */
+  /** Updated payer information associated with this order. */
   private final MerchantOrderPayerRequest payer;
 
-  /** Sponsor ID. */
+  /** Sponsor ID for marketplace or platform integrations. */
   private final String sponsorId;
 
-  /** Items information. */
+  /** Updated list of items included in this merchant order. */
   private final List<MerchantOrderItemRequest> items;
 
-  /** Shipments information. */
+  /** List of shipments associated with this merchant order. */
   private final List<MerchantOrderShipmentRequest> shipments;
 
-  /** URL where you'd like to receive a payment notification. */
+  /** Webhook URL to receive payment and order status notifications. */
   private final String notificationUrl;
 
-  /** Additional information. */
+  /** Free-text field for additional information about the order. */
   private final String additionalInfo;
 
-  /** Reference you can synchronize with your payment system. */
+  /** External reference ID to correlate this order with the merchant's own system. */
   private final String externalReference;
 
-  /** Origin of the payment. */
+  /** Marketplace identifier indicating the origin of the payment. */
   private final String marketplace;
 }
