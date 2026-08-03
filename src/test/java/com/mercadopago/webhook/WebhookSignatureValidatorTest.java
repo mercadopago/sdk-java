@@ -121,7 +121,7 @@ class WebhookSignatureValidatorTest {
   // case 8
   @Test
   void timestampOutsideToleranceThrows() {
-    String staleTs = String.valueOf(Instant.now().toEpochMilli() - 30 * 60 * 1000L);
+    String staleTs = String.valueOf(Instant.now().getEpochSecond() - 30 * 60L);
     String h = computeHash(DATA_ID_LOWER, REQUEST_ID, staleTs, SECRET);
     MPInvalidWebhookSignatureException ex = assertThrows(MPInvalidWebhookSignatureException.class,
         () -> WebhookSignatureValidator.validate(
@@ -131,7 +131,7 @@ class WebhookSignatureValidatorTest {
 
   @Test
   void timestampWithinTolerancePasses() {
-    String currentTs = String.valueOf(Instant.now().toEpochMilli());
+    String currentTs = String.valueOf(Instant.now().getEpochSecond());
     String h = computeHash(DATA_ID_LOWER, REQUEST_ID, currentTs, SECRET);
     assertDoesNotThrow(() ->
         WebhookSignatureValidator.validate(
@@ -186,6 +186,15 @@ class WebhookSignatureValidatorTest {
         () -> WebhookSignatureValidator.validate(
             header, REQUEST_ID, DATA_ID_LOWER, SECRET, null, List.of("v1"), null));
     assertEquals(SignatureFailureReason.MISSING_HASH, ex.getReason());
+  }
+
+  @Test
+  void timestampInSecondsWithinOneHourTolerancePasses() {
+    String tsSeconds = String.valueOf(Instant.now().getEpochSecond());
+    String h = computeHash(DATA_ID_LOWER, REQUEST_ID, tsSeconds, SECRET);
+    assertDoesNotThrow(() ->
+        WebhookSignatureValidator.validate(
+            buildHeader(h, tsSeconds), REQUEST_ID, DATA_ID_LOWER, SECRET, Duration.ofHours(1)));
   }
 
   @Test
