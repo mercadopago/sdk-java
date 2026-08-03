@@ -298,6 +298,50 @@ public class PaymentClientTest extends BaseClientTest {
   }
 
   @Test
+  public void updateSuccess() throws IOException, MPException, MPApiException {
+
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentCancelledJson, OK);
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    PaymentUpdateRequest updateRequest =
+        PaymentUpdateRequest.builder().status("cancelled").build();
+    Payment updatedPayment = client.update(paymentTestId, updateRequest);
+
+    JsonElement requestPayload =
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement("payment/payment_update.json");
+
+    assertEquals(requestPayloadMock, requestPayload);
+    assertNotNull(updatedPayment.getResponse());
+    assertEquals(OK, updatedPayment.getResponse().getStatusCode());
+    assertEquals("cancelled", updatedPayment.getStatus());
+  }
+
+  @Test
+  public void updateWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
+
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentCancelledJson, OK);
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    PaymentUpdateRequest updateRequest =
+        PaymentUpdateRequest.builder().status("cancelled").build();
+    Payment updatedPayment = client.update(paymentTestId, updateRequest, buildRequestOptions());
+
+    JsonElement requestPayload =
+        generateJsonElementFromUriRequest(HTTP_CLIENT_MOCK.getRequestPayload());
+    JsonElement requestPayloadMock = generateJsonElement("payment/payment_update.json");
+
+    assertEquals(requestPayloadMock, requestPayload);
+    assertNotNull(updatedPayment.getResponse());
+    assertEquals(OK, updatedPayment.getResponse().getStatusCode());
+    assertEquals("cancelled", updatedPayment.getStatus());
+  }
+
+  @Test
   public void captureSuccess() throws IOException, MPException, MPApiException {
 
     HttpResponse httpResponse = generateHttpResponseFromFile(paymentCapturedJson, OK);
