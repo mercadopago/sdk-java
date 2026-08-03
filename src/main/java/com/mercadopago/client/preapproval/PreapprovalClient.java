@@ -12,6 +12,7 @@ import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.HttpMethod;
+import com.mercadopago.net.MPAutoPagingIterable;
 import com.mercadopago.net.MPHttpClient;
 import com.mercadopago.net.MPResponse;
 import com.mercadopago.net.MPResultsResourcesPage;
@@ -178,5 +179,33 @@ public class PreapprovalClient extends MercadoPagoClient {
     result.setResponse(response);
 
     return result;
+  }
+
+  /**
+   * Returns a lazy iterable that auto-fetches all pages of preapprovals matching the search criteria.
+   *
+   * @param request search filters
+   * @return an {@link Iterable} of {@link Preapproval} backed by {@link MPAutoPagingIterable}
+   * @throws MPException    if an error occurs while fetching
+   * @throws MPApiException if the API returns a non-success status code
+   */
+  public Iterable<Preapproval> searchAll(MPSearchRequest request)
+      throws MPException, MPApiException {
+    return searchAll(request, null);
+  }
+
+  /**
+   * Returns a lazy iterable that auto-fetches all pages with custom request options.
+   *
+   * @param request        search filters
+   * @param requestOptions optional overrides; may be {@code null}
+   * @return an {@link Iterable} of {@link Preapproval} backed by {@link MPAutoPagingIterable}
+   * @throws MPException    if an error occurs while fetching
+   * @throws MPApiException if the API returns a non-success status code
+   */
+  public Iterable<Preapproval> searchAll(MPSearchRequest request, MPRequestOptions requestOptions)
+      throws MPException, MPApiException {
+    return new MPAutoPagingIterable<>(
+        (req, opts) -> this.search(req, opts), request, requestOptions, Preapproval.class);
   }
 }
