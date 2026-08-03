@@ -155,6 +155,47 @@ public class PaymentClient extends MercadoPagoClient {
   }
 
   /**
+   * Updates an existing payment.
+   *
+   * @param id the unique identifier of the payment to update
+   * @param request the {@link PaymentUpdateRequest} with fields to update
+   * @return the updated {@link Payment}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
+   */
+  public Payment update(Long id, PaymentUpdateRequest request) throws MPException, MPApiException {
+    return this.update(id, request, null);
+  }
+
+  /**
+   * Updates an existing payment with custom request options.
+   *
+   * @param id the unique identifier of the payment to update
+   * @param request the {@link PaymentUpdateRequest} with fields to update
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the updated {@link Payment}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
+   */
+  public Payment update(Long id, PaymentUpdateRequest request, MPRequestOptions requestOptions)
+      throws MPException, MPApiException {
+    LOGGER.info("Sending update payment request");
+    MPResponse response =
+        send(
+            String.format(URL_WITH_ID, id.toString()),
+            HttpMethod.PUT,
+            Serializer.serializeToJson(request),
+            new HashMap<>(),
+            requestOptions);
+
+    Payment result = deserializeFromJson(Payment.class, response.getContent());
+    result.setResponse(response);
+
+    return result;
+  }
+
+  /**
    * Cancels a pending payment by setting its status to {@code cancelled}.
    *
    * @param id the unique identifier of the payment to cancel

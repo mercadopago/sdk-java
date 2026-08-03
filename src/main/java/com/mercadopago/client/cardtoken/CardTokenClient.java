@@ -123,4 +123,42 @@ public class CardTokenClient extends MercadoPagoClient {
     cardToken.setResponse(response);
     return cardToken;
   }
+
+  /**
+   * Creates a new card token from raw card number and expiration data.
+   *
+   * @param request the {@link CardTokenRawRequest} with card number, expiration date, security
+   *     code, and cardholder details
+   * @return the created {@link CardToken} containing the token identifier
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
+   */
+  public CardToken create(CardTokenRawRequest request) throws MPException, MPApiException {
+    return this.create(request, null);
+  }
+
+  /**
+   * Creates a new card token from raw card number and expiration data with custom request options.
+   *
+   * @param request the {@link CardTokenRawRequest} with card number, expiration date, security
+   *     code, and cardholder details
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the created {@link CardToken} containing the token identifier
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
+   */
+  public CardToken create(CardTokenRawRequest request, MPRequestOptions requestOptions)
+      throws MPException, MPApiException {
+    MPResponse response =
+        send(
+            "/v1/card_tokens",
+            HttpMethod.POST,
+            Serializer.serializeToJson(request),
+            null,
+            requestOptions);
+    CardToken cardToken = Serializer.deserializeFromJson(CardToken.class, response.getContent());
+    cardToken.setResponse(response);
+    return cardToken;
+  }
 }

@@ -183,6 +183,57 @@ public class CustomerCardClient extends MercadoPagoClient {
   }
 
   /**
+   * Updates a card associated with a customer.
+   *
+   * @param customerId the unique identifier of the customer
+   * @param cardId the unique identifier of the card to update
+   * @param request the {@link CustomerCardCreateRequest} with updated card details
+   * @return the updated {@link CustomerCard}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
+   */
+  public CustomerCard update(String customerId, String cardId, CustomerCardCreateRequest request)
+      throws MPException, MPApiException {
+    return this.update(customerId, cardId, request, null);
+  }
+
+  /**
+   * Updates a card associated with a customer with custom request options.
+   *
+   * @param customerId the unique identifier of the customer
+   * @param cardId the unique identifier of the card to update
+   * @param request the {@link CustomerCardCreateRequest} with updated card details
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @return the updated {@link CustomerCard}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
+   */
+  public CustomerCard update(
+      String customerId,
+      String cardId,
+      CustomerCardCreateRequest request,
+      MPRequestOptions requestOptions)
+      throws MPException, MPApiException {
+    LOGGER.info("Sending update customer card request");
+    JsonObject payload = Serializer.serializeToJson(request);
+    MPRequest mpRequest =
+        MPRequest.buildRequest(
+            String.format(
+                "/v1/customers/%s/cards/%s",
+                encodePathParam(customerId), encodePathParam(cardId)),
+            HttpMethod.PUT,
+            payload,
+            null,
+            requestOptions);
+    MPResponse response = send(mpRequest);
+
+    CustomerCard card = Serializer.deserializeFromJson(CustomerCard.class, response.getContent());
+    card.setResponse(response);
+    return card;
+  }
+
+  /**
    * Lists all cards belonging to a customer.
    *
    * @param customerId the unique identifier of the customer

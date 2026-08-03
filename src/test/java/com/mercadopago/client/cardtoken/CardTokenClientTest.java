@@ -110,6 +110,54 @@ public class CardTokenClientTest extends BaseClientTest {
     assertCardTokenFields(token);
   }
 
+  @Test
+  public void createCardTokenRawSuccess()
+      throws IOException, MPException, MPApiException, ParseException {
+    HttpResponse httpResponse =
+        MockHelper.generateHttpResponseFromFile(responseFileCardToken, HttpStatus.OK);
+    httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
+
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+    CardToken token = tokenClient.create(buildCardTokenRawRequest());
+
+    assertNotNull(token);
+    assertCardTokenFields(token);
+  }
+
+  @Test
+  public void createCardTokenRawWithRequestOptionsSuccess()
+      throws IOException, MPException, MPApiException, ParseException {
+    MPRequestOptions requestOptions =
+        MPRequestOptions.builder()
+            .accessToken("abc")
+            .connectionTimeout(DEFAULT_TIMEOUT)
+            .connectionRequestTimeout(DEFAULT_TIMEOUT)
+            .socketTimeout(DEFAULT_TIMEOUT)
+            .build();
+    HttpResponse httpResponse =
+        MockHelper.generateHttpResponseFromFile(responseFileCardToken, HttpStatus.OK);
+    httpResponse.setHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
+
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+    CardToken token = tokenClient.create(buildCardTokenRawRequest(), requestOptions);
+
+    assertNotNull(token);
+    assertCardTokenFields(token);
+  }
+
+  private CardTokenRawRequest buildCardTokenRawRequest() {
+    return CardTokenRawRequest.builder()
+        .cardNumber("4111111111111111")
+        .expirationMonth(11)
+        .expirationYear(2025)
+        .securityCode("123")
+        .build();
+  }
+
   private CardTokenRequest buildCardTokenRequest() {
     return CardTokenRequest.builder()
         .cardId(cardId)

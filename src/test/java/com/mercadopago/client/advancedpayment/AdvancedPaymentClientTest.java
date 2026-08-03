@@ -71,6 +71,43 @@ class AdvancedPaymentClientTest extends BaseClientTest {
   }
 
   @Test
+  void updateSuccess() throws IOException, MPException, MPApiException {
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentBaseJson, OK);
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    AdvancedPaymentUpdateRequest request = AdvancedPaymentUpdateRequest.builder()
+        .capture(true)
+        .build();
+
+    AdvancedPayment payment = client.update(20458724L, request);
+
+    assertNotNull(payment.getResponse());
+    assertEquals(OK, payment.getResponse().getStatusCode());
+    assertEquals(20458724L, payment.getId());
+    assertEquals("approved", payment.getStatus());
+  }
+
+  @Test
+  void updateWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentBaseJson, OK);
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    AdvancedPaymentUpdateRequest request = AdvancedPaymentUpdateRequest.builder()
+        .capture(true)
+        .build();
+
+    AdvancedPayment payment = client.update(20458724L, request, buildRequestOptions());
+
+    assertNotNull(payment.getResponse());
+    assertEquals(OK, payment.getResponse().getStatusCode());
+    assertEquals(20458724L, payment.getId());
+  }
+
+  @Test
   void searchSuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse = generateHttpResponseFromFile(paymentListJson, OK);
     doReturn(httpResponse)
