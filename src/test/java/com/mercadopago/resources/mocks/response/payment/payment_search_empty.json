@@ -1,0 +1,8 @@
+{
+  "paging": {
+    "total": 102,
+    "limit": 5,
+    "offset": 100
+  },
+  "results": []
+}
