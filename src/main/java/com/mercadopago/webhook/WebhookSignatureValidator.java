@@ -158,7 +158,7 @@ public final class WebhookSignatureValidator {
     }
 
     if (tolerance != null) {
-      long tsMs = Long.parseLong(parsed.timestamp);
+      long tsMs = Long.parseLong(parsed.timestamp) * 1000L;
       long nowMs = nowSupplier.get().toEpochMilli();
       long drift = Math.abs(nowMs - tsMs);
       if (drift > tolerance.toMillis()) {
