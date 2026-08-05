@@ -1,6 +1,7 @@
 package com.mercadopago.example.apis.order;
 
 import com.mercadopago.MercadoPagoConfig;
+import com.mercadopago.client.common.AddressRequest;
 import com.mercadopago.client.common.IdentificationRequest;
 import com.mercadopago.client.order.*;
 import com.mercadopago.core.MPRequestOptions;
@@ -44,7 +45,7 @@ public class CreateOrderCheckoutPro {
                                 .type("CPF")
                                 .number("12345678909")
                                 .build())
-                        .address(OrderPayerAddressRequest.builder()
+                        .address(AddressRequest.builder()
                                 .zipCode("01310-100")
                                 .streetName("Av. Paulista")
                                 .streetNumber("1000")

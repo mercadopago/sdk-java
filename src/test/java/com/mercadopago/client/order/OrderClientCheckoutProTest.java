@@ -7,6 +7,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mercadopago.BaseClientTest;
 import com.mercadopago.MercadoPagoConfig;
+import com.mercadopago.client.common.AddressRequest;
 import com.mercadopago.client.common.IdentificationRequest;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
@@ -272,7 +273,7 @@ class OrderClientCheckoutProTest extends BaseClientTest {
                                 .type("CPF")
                                 .number("12345678909")
                                 .build())
-                        .address(OrderPayerAddressRequest.builder()
+                        .address(AddressRequest.builder()
                                 .zipCode("01310-100")
                                 .streetName("Av. Paulista")
                                 .streetNumber("1000")
