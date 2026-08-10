@@ -69,6 +69,25 @@ class PreApprovalPlanClientTest extends BaseClientTest {
   }
 
   @Test
+  void updateSuccess() throws IOException, MPException, MPApiException {
+    HttpResponse httpResponse = generateHttpResponseFromFile(planBaseJson, OK);
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    PreApprovalPlanUpdateRequest request = PreApprovalPlanUpdateRequest.builder()
+        .reason("Updated yoga subscription")
+        .build();
+
+    PreApprovalPlan plan = client.update("plan-abc-123", request);
+
+    assertNotNull(plan.getResponse());
+    assertEquals(OK, plan.getResponse().getStatusCode());
+    assertEquals("plan-abc-123", plan.getId());
+    assertEquals("active", plan.getStatus());
+  }
+
+  @Test
   void searchSuccess() throws IOException, MPException, MPApiException {
     HttpResponse httpResponse = generateHttpResponseFromFile(planListJson, OK);
     doReturn(httpResponse)

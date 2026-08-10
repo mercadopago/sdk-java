@@ -246,4 +246,22 @@ class PreapprovalClientTest extends BaseClientTest {
         .autoRecurring(autoRecurring)
         .build();
   }
+
+  @Test
+  void searchAllReturnsIterable() throws IOException, MPException, MPApiException {
+    MPSearchRequest searchRequest = MPSearchRequest.builder().limit(10).offset(0).build();
+    Iterable<Preapproval> result = client.searchAll(searchRequest);
+
+    assertNotNull(result);
+    assertNotNull(result.iterator());
+  }
+
+  @Test
+  void searchAllWithRequestOptionsReturnsIterable() throws IOException, MPException, MPApiException {
+    MPSearchRequest searchRequest = MPSearchRequest.builder().limit(10).offset(0).build();
+    Iterable<Preapproval> result = client.searchAll(searchRequest, buildRequestOptions());
+
+    assertNotNull(result);
+    assertNotNull(result.iterator());
+  }
 }

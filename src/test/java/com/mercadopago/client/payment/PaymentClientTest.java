@@ -973,4 +973,56 @@ public class PaymentClientTest extends BaseClientTest {
         .additionalInfo(additionalInfo)
         .build();
   }
+
+  @Test
+  public void captureAmountSuccess() throws IOException, MPException, MPApiException {
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentCapturedJson, OK);
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    BigDecimal captureAmount = new BigDecimal("75.00");
+    Payment paymentCaptured = client.capture(paymentTestId, captureAmount);
+
+    assertNotNull(paymentCaptured.getResponse());
+    assertEquals(OK, paymentCaptured.getResponse().getStatusCode());
+    assertTrue(paymentCaptured.isCaptured());
+  }
+
+  @Test
+  public void captureAmountWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentCapturedJson, OK);
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    BigDecimal captureAmount = new BigDecimal("75.00");
+    Payment paymentCaptured = client.capture(paymentTestId, captureAmount, buildRequestOptions());
+
+    assertNotNull(paymentCaptured.getResponse());
+    assertEquals(OK, paymentCaptured.getResponse().getStatusCode());
+  }
+
+  @Test
+  public void searchAllReturnsIterable() throws IOException, MPException, MPApiException {
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentSearchJson, OK);
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    MPSearchRequest searchRequest = MPSearchRequest.builder().limit(5).offset(0).build();
+    Iterable<Payment> result = client.searchAll(searchRequest);
+
+    assertNotNull(result);
+    assertNotNull(result.iterator());
+  }
+
+  @Test
+  public void searchAllWithRequestOptionsReturnsIterable() throws IOException, MPException, MPApiException {
+    MPSearchRequest searchRequest = MPSearchRequest.builder().limit(5).offset(0).build();
+    Iterable<Payment> result = client.searchAll(searchRequest, buildRequestOptions());
+
+    assertNotNull(result);
+    assertNotNull(result.iterator());
+  }
 }

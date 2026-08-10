@@ -9,6 +9,7 @@ import static org.mockito.Mockito.doReturn;
 import com.mercadopago.BaseClientTest;
 import com.mercadopago.client.common.IdentificationRequest;
 import com.mercadopago.client.common.PhoneRequest;
+import com.mercadopago.client.customer.CustomerCardCreateRequest;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.helper.MockHelper;
@@ -419,5 +420,51 @@ public class CustomerClientTest extends BaseClientTest {
     assertEquals("123", customer.getAddresses().get(0).getStreetNumber());
     assertEquals("01313000", customer.getAddresses().get(0).getZipCode());
     assertFalse(customer.getLiveMode());
+  }
+
+  private CustomerCardCreateRequest buildCardRequest() {
+    return CustomerCardCreateRequest.builder().token("tok_abc").build();
+  }
+
+  @Test
+  public void searchAllReturnsIterable() throws MPException, MPApiException, ParseException, IOException {
+    MPSearchRequest searchRequest = MPSearchRequest.builder().limit(10).offset(0).build();
+
+    Iterable<Customer> result = customerClient.searchAll(searchRequest);
+
+    assertNotNull(result);
+    assertNotNull(result.iterator());
+  }
+
+  @Test
+  public void updateCardSuccess() throws MPException, MPApiException, IOException {
+    HttpResponse httpResponse =
+        MockHelper.generateHttpResponseFromFile("/card/card_single.json", HttpStatus.OK);
+    httpResponse.setHeader(org.apache.http.HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
+
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    CustomerCard card = customerClient.updateCard(customerId, "1562188766852", buildCardRequest());
+
+    assertNotNull(card);
+    assertEquals("1562188766852", card.getId());
+  }
+
+  @Test
+  public void updateCardWithRequestOptionsSuccess() throws MPException, MPApiException, IOException {
+    HttpResponse httpResponse =
+        MockHelper.generateHttpResponseFromFile("/card/card_single.json", HttpStatus.OK);
+    httpResponse.setHeader(org.apache.http.HttpHeaders.CONTENT_TYPE, APPLICATION_JSON);
+
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    CustomerCard card = customerClient.updateCard(customerId, "1562188766852", buildCardRequest(), buildRequestOptions());
+
+    assertNotNull(card);
+    assertEquals("1562188766852", card.getId());
   }
 }

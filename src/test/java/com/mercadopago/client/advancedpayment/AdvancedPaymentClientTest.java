@@ -122,4 +122,86 @@ class AdvancedPaymentClientTest extends BaseClientTest {
     assertEquals(1, result.getPaging().getTotal());
     assertEquals(20458724L, result.getResults().get(0).getId());
   }
+
+  @Test
+  void captureSuccess() throws IOException, MPException, MPApiException {
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentBaseJson, OK);
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    AdvancedPayment payment = client.capture(20458724L);
+
+    assertNotNull(payment.getResponse());
+    assertEquals(OK, payment.getResponse().getStatusCode());
+    assertEquals(20458724L, payment.getId());
+  }
+
+  @Test
+  void captureWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentBaseJson, OK);
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    AdvancedPayment payment = client.capture(20458724L, buildRequestOptions());
+
+    assertNotNull(payment.getResponse());
+    assertEquals(OK, payment.getResponse().getStatusCode());
+  }
+
+  @Test
+  void cancelSuccess() throws IOException, MPException, MPApiException {
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentBaseJson, OK);
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    AdvancedPayment payment = client.cancel(20458724L);
+
+    assertNotNull(payment.getResponse());
+    assertEquals(OK, payment.getResponse().getStatusCode());
+    assertEquals(20458724L, payment.getId());
+  }
+
+  @Test
+  void cancelWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentBaseJson, OK);
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    AdvancedPayment payment = client.cancel(20458724L, buildRequestOptions());
+
+    assertNotNull(payment.getResponse());
+    assertEquals(OK, payment.getResponse().getStatusCode());
+  }
+
+  @Test
+  void updateReleaseDateSuccess() throws IOException, MPException, MPApiException {
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentBaseJson, OK);
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    AdvancedPayment payment = client.updateReleaseDate(20458724L, "2024-12-31");
+
+    assertNotNull(payment.getResponse());
+    assertEquals(OK, payment.getResponse().getStatusCode());
+    assertEquals(20458724L, payment.getId());
+  }
+
+  @Test
+  void updateReleaseDateWithRequestOptionsSuccess() throws IOException, MPException, MPApiException {
+    HttpResponse httpResponse = generateHttpResponseFromFile(paymentBaseJson, OK);
+    doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    AdvancedPayment payment = client.updateReleaseDate(20458724L, "2024-12-31", buildRequestOptions());
+
+    assertNotNull(payment.getResponse());
+    assertEquals(OK, payment.getResponse().getStatusCode());
+  }
+
 }
