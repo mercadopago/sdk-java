@@ -59,6 +59,25 @@
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.8.1</version>
+                <executions>
+                    <execution>
+                        <id>build-classpath</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>build-classpath</goal>
+                        </goals>
+                        <configuration>
+                            <outputProperty>project.compile.classpath</outputProperty>
+                            <includeScope>compile</includeScope>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>3.2.8</version>
                 <executions>
@@ -180,6 +199,8 @@
                                 <argument>-jar</argument>
                                 <argument>${settings.localRepository}/org/projectlombok/lombok/${lombok.version}/lombok-${lombok.version}.jar</argument>
                                 <argument>delombok</argument>
+                                <argument>--classpath</argument>
+                                <argument>${project.compile.classpath}</argument>
                                 <argument>${project.basedir}/src/main/java</argument>
                                 <argument>-d</argument>
                                 <argument>${project.build.directory}/delombok</argument>
