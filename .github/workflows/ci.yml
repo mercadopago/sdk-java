@@ -27,10 +27,11 @@ jobs:
           distribution: "temurin"
 
       - name: Compile
-        run: mvn compile --no-transfer-progress -Dlombok.delombok.skip=true
+        run: mvn compile --no-transfer-progress
 
       - name: Run unit tests
-        run: mvn test --no-transfer-progress -Dtest="**/*Test" -DfailIfNoTests=false -Dlombok.delombok.skip=true
+        run: mvn test --no-transfer-progress -Dtest="**/*Test" -DfailIfNoTests=false
+
 
       - name: Dependency review
         if: github.event_name == 'pull_request'
