@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 This project follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.0] - 2026-08-11
+
+### Added
+- **Automatic Payments example**: two-step recurring flow ([#386](https://github.com/mercadopago/sdk-java/pull/386))
+- **Order model**: reuse `client/common` types in `OrderPayerRequest`, add `country` to `AddressRequest`, restore `currency` field position in `OrderCreateRequest` ([#386](https://github.com/mercadopago/sdk-java/pull/386))
+
+### Fixed
+- **Stored credential**: rename `prevTransactionRef` to `previousTransactionReference` ([#386](https://github.com/mercadopago/sdk-java/pull/386))
+- Deprecated `Matchers` replaced with `ArgumentMatchers` in unit tests ([#386](https://github.com/mercadopago/sdk-java/pull/386))
+
+### CI
+- Standardize CI/CD workflows ([#399](https://github.com/mercadopago/sdk-java/pull/399))
+- Add mock-based unit tests ([#399](https://github.com/mercadopago/sdk-java/pull/399))
+- Skip lombok-maven-plugin delombok in CI to support Java 17 and 21 ([#399](https://github.com/mercadopago/sdk-java/pull/399))
+
 ## [3.4.0] - 2026-08-04
 
 ### Added
