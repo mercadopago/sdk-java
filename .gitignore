@@ -34,3 +34,6 @@ gradle-app.setting
 ### Docs
 *.html
 docs/
+
+### Local SDD workspace
+meli/
