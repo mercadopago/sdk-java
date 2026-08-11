@@ -566,4 +566,33 @@ class OrderClientTest extends BaseClientTest {
     Assertions.assertEquals(10, result.getPaging().getTotal());
     Assertions.assertEquals(1, result.getData().size());
   }
+
+  @Test
+  void cancelSuccess() throws MPException, MPApiException, IOException {
+    HttpResponse httpResponse =
+        generateHttpResponseFromFile(CREATE_ORDER_RESPONSE_FILE, HttpStatus.OK);
+    Mockito.doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    Order result = client.cancel("123");
+
+    Assertions.assertNotNull(result);
+    Assertions.assertEquals(HttpStatus.OK, result.getResponse().getStatusCode());
+    Assertions.assertEquals("123", result.getId());
+  }
+
+  @Test
+  void cancelWithRequestOptionsSuccess() throws MPException, MPApiException, IOException {
+    HttpResponse httpResponse =
+        generateHttpResponseFromFile(CREATE_ORDER_RESPONSE_FILE, HttpStatus.OK);
+    Mockito.doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    Order result = client.cancel("123", buildRequestOptions());
+
+    Assertions.assertNotNull(result);
+    Assertions.assertEquals(HttpStatus.OK, result.getResponse().getStatusCode());
+  }
 }
