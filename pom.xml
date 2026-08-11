@@ -106,6 +106,7 @@
                 <configuration>
                     <source>1.8</source>
                     <doclint>none</doclint>
+                    <sourcepath>${project.build.directory}/delombok</sourcepath>
                     <outputDirectory>${project.basedir}/docs</outputDirectory>
                 </configuration>
                 <executions>
@@ -163,20 +164,27 @@
             </plugin>
 
             <plugin>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok-maven-plugin</artifactId>
-                <version>1.18.20.0</version>
-                <configuration>
-                    <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
-                    <outputDirectory>${project.build.directory}/delombok</outputDirectory>
-                    <addOutputDirectory>false</addOutputDirectory>
-                </configuration>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.4.1</version>
                 <executions>
                     <execution>
+                        <id>delombok</id>
                         <phase>generate-sources</phase>
                         <goals>
-                            <goal>delombok</goal>
+                            <goal>exec</goal>
                         </goals>
+                        <configuration>
+                            <executable>java</executable>
+                            <arguments>
+                                <argument>-jar</argument>
+                                <argument>${settings.localRepository}/org/projectlombok/lombok/${lombok.version}/lombok-${lombok.version}.jar</argument>
+                                <argument>delombok</argument>
+                                <argument>${project.basedir}/src/main/java</argument>
+                                <argument>-d</argument>
+                                <argument>${project.build.directory}/delombok</argument>
+                            </arguments>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -193,6 +201,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <lombok.version>1.18.46</lombok.version>
     </properties>
 
     <dependencies>
@@ -260,7 +269,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.46</version>
+            <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
 
