@@ -23,6 +23,8 @@ public class PaymentTransactionDataRequest {
   private PaymentPaymentReferenceRequest paymentReference;
   /** Billing date for the current invoice period (e.g. "2023-01-15"). */
   private String billingDate;
+  /** Legacy card-network transaction identifier within transaction data. */
+  private String networkTransactionId;
   /**
    * Whether this is the first transaction for a CREDENTIAL_ON_FILE payment.
    * Replaces the legacy {@code firstTimeUse} field in new integrations.
