@@ -53,6 +53,9 @@ public class PaymentTransactionData {
   /** Billing date for subscription or recurring payment invoices. */
   private String billingDate;
 
+  /** Legacy card-network transaction identifier within transaction data. */
+  private String networkTransactionId;
+
   /**
    * Whether this is the first transaction for a CREDENTIAL_ON_FILE payment.
    * Replaces the legacy {@code firstTimeUse} field in new integrations.
