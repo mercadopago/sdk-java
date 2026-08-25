@@ -1,5 +1,6 @@
 package com.mercadopago.resources.order;
 
+import com.google.gson.annotations.SerializedName;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -25,4 +26,7 @@ public class OrderStoredCredential {
 
     /** Whether this is the first payment in a series using stored credentials. */
     private Boolean firstPayment;
+
+    @SerializedName("previous_transaction_reference")
+    private String previousTransactionReference;
 }
