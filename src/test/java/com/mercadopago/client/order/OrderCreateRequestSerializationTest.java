@@ -2,6 +2,7 @@ package com.mercadopago.client.order;
 
 import com.google.gson.JsonObject;
 import com.mercadopago.serialization.Serializer;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -115,5 +116,23 @@ class OrderCreateRequestSerializationTest {
         // Unset optional fields must be omitted from the body.
         Assertions.assertFalse(json.has("currency"));
         Assertions.assertFalse(json.has("integration_data"));
+    }
+
+    @Test
+    void automaticPaymentsSubscriptionSerializesWithItsNestedFields() {
+        OrderAutomaticPaymentsRequest request =
+                OrderAutomaticPaymentsRequest.builder()
+                        .subscription(
+                                Map.of(
+                                        "id", "subscription-1",
+                                        "sequence", Map.of("number", 1, "total", 12),
+                                        "invoice", Map.of("id", "invoice-1", "period", Map.of("interval", 1, "type", "month"))))
+                        .build();
+
+        JsonObject subscription = Serializer.serializeToJson(request).getAsJsonObject("subscription");
+
+        Assertions.assertEquals("subscription-1", subscription.get("id").getAsString());
+        Assertions.assertEquals(12, subscription.getAsJsonObject("sequence").get("total").getAsInt());
+        Assertions.assertEquals("month", subscription.getAsJsonObject("invoice").getAsJsonObject("period").get("type").getAsString());
     }
 }
