@@ -1,5 +1,7 @@
 package com.mercadopago.client.payment;
 
+import com.mercadopago.resources.payment.PaymentNetworkData;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -13,4 +15,5 @@ import lombok.Getter;
 public class PaymentNetworkTransactionDataRequest {
   /** Network transaction identifier assigned by the card brand (Visa/Mastercard). */
   private final String networkTransactionId;
-} 
+  private final PaymentNetworkData networkData;
+}

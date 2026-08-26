@@ -4,6 +4,6 @@ import lombok.Getter;
 
 @Getter
 public class PaymentNetworkData {
-  private String networkTransactionId;
+  private String transactionId;
   private String transactionLinkId;
 }
