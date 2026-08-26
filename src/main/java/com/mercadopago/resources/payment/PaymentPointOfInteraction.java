@@ -28,5 +28,4 @@ public class PaymentPointOfInteraction {
   /** Transaction-level data from the interaction channel (e.g. QR code, ticket URL). */
   private PaymentTransactionData transactionData;
 
-  private PaymentNetworkData networkData;
 }

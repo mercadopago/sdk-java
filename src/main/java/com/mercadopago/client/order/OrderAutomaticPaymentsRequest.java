@@ -2,6 +2,7 @@ package com.mercadopago.client.order;
 
 import lombok.Builder;
 import lombok.Getter;
+import java.util.Map;
 
 // API version: 1ff4822a-2dfd-4393-800e-a562edb3fe32
 
@@ -24,4 +25,7 @@ public class OrderAutomaticPaymentsRequest {
 
   /** Due date for the payment, in ISO 8601 format. */
   private String dueDate;
+
+  /** Subscription metadata (id, sequence, and invoice) for the automatic payment. */
+  private Map<String, Object> subscription;
 }

@@ -23,6 +23,5 @@ public class PaymentPointOfInteractionRequest {
   /** Transaction data associated with the point of interaction. */
   private final PaymentTransactionDataRequest transactionData;
 
-  private final PaymentNetworkDataRequest networkData;
 
 }

@@ -1,6 +1,5 @@
 package com.mercadopago.resources.payment;
 
-import com.mercadopago.client.payment.PaymentNetworkTransactionDataRequest;
 import lombok.Getter;
 
 /**
@@ -25,6 +24,6 @@ public class PaymentExpanded {
   @Getter
   public static class Gateway {
     /** Network transaction data reference from the payment gateway. */
-    private PaymentNetworkTransactionDataRequest reference;
+    private PaymentGatewayReference reference;
   }
 } 

@@ -13,4 +13,4 @@ import lombok.Getter;
 public class PaymentNetworkTransactionDataRequest {
   /** Network transaction identifier assigned by the card brand (Visa/Mastercard). */
   private final String networkTransactionId;
-} 
+}
