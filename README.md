@@ -4,8 +4,8 @@
   <p><strong>The official Mercado Pago SDK for Java applications.</strong></p>
   <p>Integrate Mercado Pago payments with a Java client published to Maven Central.</p>
   <p>
-    <a href="https://github.com/mercadopago/sdk-java/actions/workflows/ci.yml"><img src="assets/badges/ci.svg" alt="CI workflow" /></a>
-    <a href="#installation"><img src="assets/badges/package.svg" alt="Maven package" /></a>
+    <a href="https://github.com/mercadopago/sdk-java/actions/workflows/ci.yml"><img src="https://github.com/mercadopago/sdk-java/actions/workflows/ci.yml/badge.svg?branch=master" alt="CI status" /></a>
+    <a href="#installation"><img src="assets/badges/package.svg" alt="Maven package version" /></a>
     <img src="assets/badges/runtime.svg" alt="Java 8 or later" />
     <a href="LICENSE"><img src="assets/badges/license.svg" alt="MIT license" /></a>
   </p>
