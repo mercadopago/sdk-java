@@ -1,0 +1,29 @@
+# Mercado Pago SDK for Java
+
+Official server-side Java SDK for Mercado Pago APIs.
+
+## Start here
+- [README](README.md)
+- [Documentation index](guides/README.md)
+- [Examples](src/main/java/com/mercadopago/example/README.md)
+
+## Recommended integration path
+- [Orders-first examples](src/main/java/com/mercadopago/example/README.md#orders-first)
+- [Request options and retries](guides/request-options.md)
+- [Error handling](guides/error-handling.md)
+
+## Operational guides
+- [Request options and retries](guides/request-options.md)
+- [Error handling](guides/error-handling.md)
+- [Webhook validation](guides/webhooks.md)
+- [Troubleshooting](guides/troubleshooting.md)
+
+## Supported examples
+- [Orders](src/main/java/com/mercadopago/example/apis/order/)
+- [Checkout Pro preferences](src/main/java/com/mercadopago/example/apis/preference/)
+- [Subscription plans](src/main/java/com/mercadopago/example/apis/preapprovalplan/)
+
+## Canonical sources
+- [Installation](README.md#installation)
+- [Mercado Pago API reference](https://www.mercadopago.com/developers/en/reference)
+- [Source repository](https://github.com/mercadopago/sdk-java)
