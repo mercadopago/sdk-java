@@ -1,9 +1,23 @@
-# Mercado Pago SDK for Java
+<div align="center">
+  <img src="assets/mercado-pago.svg" alt="Mercado Pago" width="120" />
+  <h1>Mercado Pago SDK for Java</h1>
+  <p><strong>The official Mercado Pago SDK for Java applications.</strong></p>
+  <p>Integrate Mercado Pago payments with a Java client published to Maven Central.</p>
+  <p>
+    <a href="https://github.com/mercadopago/sdk-java/actions/workflows/ci.yml"><img src="https://github.com/mercadopago/sdk-java/actions/workflows/ci.yml/badge.svg?branch=master" alt="CI status" /></a>
+    <a href="#installation"><img src="assets/badges/package.svg" alt="Maven package version" /></a>
+    <img src="assets/badges/runtime.svg" alt="Java 8 or later" />
+    <a href="LICENSE"><img src="assets/badges/license.svg" alt="MIT license" /></a>
+  </p>
+  <p>
+    <a href="#installation">Installation</a> ·
+    <a href="#getting-started">Getting started</a> ·
+    <a href="#documentation">Documentation</a> ·
+    <a href="#contributing">Contributing</a>
+  </p>
+</div>
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.mercadopago/sdk-java.svg)](https://search.maven.org/search?q=g:com.mercadopago%20AND%20a:sdk-java)
-![APM](https://img.shields.io/apm/l/vim-mode)
-
-The official [Mercado Pago](https://www.mercadopago.com/developers/en/guides) Java client library.
+---
 
 ## 💡 Requirements
 
@@ -159,11 +173,9 @@ public class CustomHttpClient implements MPHttpClient {
 
 ## 📚 Documentation
 
-See our documentation for more details.
-
-- Mercado Pago reference API. [Portuguese](https://www.mercadopago.com/developers/pt/reference)
-  / [English](https://www.mercadopago.com/developers/en/reference)
-  / [Spanish](https://www.mercadopago.com/developers/es/reference)
+- [SDK guides](guides/README.md): request options, errors, webhooks, and production guidance.
+- [Examples](src/main/java/com/mercadopago/example/README.md): integration flows supported by this SDK.
+- [API reference](https://www.mercadopago.com/developers/en/reference): request fields and response schemas.
 
 ## 🤝 Contributing
 
