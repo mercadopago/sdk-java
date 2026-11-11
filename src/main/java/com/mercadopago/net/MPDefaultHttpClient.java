@@ -6,7 +6,10 @@ import static com.mercadopago.net.HttpStatus.FORBIDDEN;
 import static com.mercadopago.net.HttpStatus.INTERNAL_SERVER_ERROR;
 import static com.mercadopago.net.HttpStatus.TOO_MANY_REQUESTS;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPApiException;
@@ -115,8 +118,6 @@ public class MPDefaultHttpClient implements MPHttpClient {
 
   /** Log format pattern for HTTP header key-value pairs. */
   private static final String HEADER_LOG_FORMAT = "%s: %s%s";
-
-  private static final String API_ERROR_MESSAGE = "Api error. Check response for details";
 
   private static final String RETRY_AFTER_HEADER = "Retry-After";
 
@@ -312,22 +313,67 @@ public class MPDefaultHttpClient implements MPHttpClient {
 
   private static MPApiException buildApiException(int status, MPResponse response) {
     MPResponse sanitized = sanitizeResponse(response);
+    String message = apiErrorMessage(status, sanitized);
     switch (status) {
-      case 400: return new MPBadRequestException(API_ERROR_MESSAGE, sanitized);
-      case 401: return new MPAuthenticationException(API_ERROR_MESSAGE, sanitized);
-      case 402: return new MPPaymentException(API_ERROR_MESSAGE, sanitized);
-      case 403: return new MPForbiddenException(API_ERROR_MESSAGE, sanitized);
-      case 404: return new MPNotFoundException(API_ERROR_MESSAGE, sanitized);
-      case 409: return new MPIdempotencyException(API_ERROR_MESSAGE, sanitized);
-      case 422: return new MPValidationException(API_ERROR_MESSAGE, sanitized);
-      case 423: return new MPResourceLockedException(API_ERROR_MESSAGE, sanitized);
-      case 424: return new MPDependencyException(API_ERROR_MESSAGE, sanitized);
-      case 429: return new MPRateLimitException(API_ERROR_MESSAGE, sanitized,
+      case 400: return new MPBadRequestException(message, sanitized);
+      case 401: return new MPAuthenticationException(message, sanitized);
+      case 402: return new MPPaymentException(message, sanitized);
+      case 403: return new MPForbiddenException(message, sanitized);
+      case 404: return new MPNotFoundException(message, sanitized);
+      case 409: return new MPIdempotencyException(message, sanitized);
+      case 422: return new MPValidationException(message, sanitized);
+      case 423: return new MPResourceLockedException(message, sanitized);
+      case 424: return new MPDependencyException(message, sanitized);
+      case 429: return new MPRateLimitException(message, sanitized,
           extractRetryAfterSeconds(response));
       default:
         return status >= 500
-            ? new MPServerException(API_ERROR_MESSAGE, sanitized)
-            : new MPApiException(API_ERROR_MESSAGE, sanitized);
+            ? new MPServerException(message, sanitized)
+            : new MPApiException(message, sanitized);
+    }
+  }
+
+  private static String apiErrorMessage(int status, MPResponse response) {
+    List<String> messages = new ArrayList<>();
+    if (response != null && response.getContent() != null) {
+      try {
+        JsonElement parsed = JsonParser.parseString(response.getContent());
+        if (parsed.isJsonObject()) {
+          JsonObject body = parsed.getAsJsonObject();
+          addErrorText(messages, body.get("message"));
+          addErrorText(messages, body.get("error"));
+          JsonElement errors = body.get("errors");
+          if (errors != null && errors.isJsonArray()) {
+            for (JsonElement entry : errors.getAsJsonArray()) {
+              if (entry.isJsonObject()) {
+                JsonObject error = entry.getAsJsonObject();
+                addErrorText(messages, error.get("code"));
+                addErrorText(messages, error.get("message"));
+                JsonElement details = error.get("details");
+                if (details != null && details.isJsonArray()) {
+                  for (JsonElement detail : details.getAsJsonArray()) {
+                    addErrorText(messages, detail);
+                  }
+                }
+              }
+            }
+          }
+        }
+      } catch (JsonParseException | IllegalStateException ignored) {
+        // The complete response remains available through getApiResponse().
+      }
+    }
+    String prefix = "API error (HTTP " + status + ")";
+    return messages.isEmpty() ? prefix + ". Check response for details"
+        : prefix + ": " + String.join("; ", messages);
+  }
+
+  private static void addErrorText(List<String> messages, JsonElement value) {
+    if (value != null && value.isJsonPrimitive() && value.getAsJsonPrimitive().isString()) {
+      String text = value.getAsString();
+      if (!text.trim().isEmpty()) {
+        messages.add(text);
+      }
     }
   }
 
