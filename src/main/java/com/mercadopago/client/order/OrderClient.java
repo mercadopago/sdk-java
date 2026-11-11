@@ -66,6 +66,9 @@ public class OrderClient extends MercadoPagoClient {
   /** URL template for a specific transaction within an order. */
   private static final String URL_TRANSACTION_WITH_ID = URL_WITH_ID + "/transactions/%s";
 
+  /** URL template for the order event simulation endpoint. */
+  private static final String URL_EVENTS = URL_WITH_ID + "/events";
+
   /**
    * Default constructor. Uses the default HTTP client provided by {@link MercadoPagoConfig}.
    */
@@ -534,6 +537,46 @@ public class OrderClient extends MercadoPagoClient {
     result.setResponse(response);
 
     return result;
+  }
+
+  /**
+   * Simulates an event for an order (e.g., payment status change).
+   *
+   * @param orderId the unique identifier of the order
+   * @param request the {@link OrderSimulateEventRequest} containing the event details
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
+   */
+  public void simulateEvent(String orderId, OrderSimulateEventRequest request)
+      throws MPException, MPApiException {
+    this.simulateEvent(orderId, request, null);
+  }
+
+  /**
+   * Simulates an event for an order with custom request options.
+   *
+   * @param orderId the unique identifier of the order
+   * @param request the {@link OrderSimulateEventRequest} containing the event details
+   * @param requestOptions optional {@link MPRequestOptions} to override access token, headers, or
+   *     timeouts for this single request; may be {@code null}
+   * @throws MPException if a transport-level or SDK-internal error occurs
+   * @throws MPApiException if the API returns a non-successful HTTP status code
+   * @throws IllegalArgumentException if {@code orderId} is blank or {@code null}
+   */
+  public void simulateEvent(String orderId, OrderSimulateEventRequest request, MPRequestOptions requestOptions)
+      throws MPException, MPApiException {
+    LOGGER.info("Sending order simulate event request");
+
+    validateOrderID(orderId);
+
+    MPRequest mpRequest =
+        MPRequest.builder()
+            .uri(String.format("/v1/orders/%s/events", encodePathParam(orderId)))
+            .method(HttpMethod.POST)
+            .payload(Serializer.serializeToJson(request))
+            .build();
+
+    send(mpRequest, requestOptions);
   }
 
   /**
