@@ -1,0 +1,39 @@
+{
+  "paging": {
+    "total": 1,
+    "limit": 10,
+    "offset": 0
+  },
+  "results": [
+    {
+      "id": 2435301,
+      "name": "Official Store",
+      "date_created": "2019-01-10T10:10:10.000-04:00",
+      "business_hours": {
+        "monday": [
+          {
+            "open": "08:00",
+            "close": "15:00"
+          }
+        ],
+        "tuesday": [
+          {
+            "open": "08:00",
+            "close": "15:00"
+          }
+        ]
+      },
+      "location": {
+        "address_line": "Av. das Nações Unidas, 3003",
+        "reference": "3rd floor",
+        "city": {
+          "id": "TUxCQ0dVQTM4NzE",
+          "name": "São Paulo"
+        },
+        "latitude": -23.5967,
+        "longitude": -46.6842,
+        "open_hours": "08:00 - 15:00"
+      }
+    }
+  ]
+}
