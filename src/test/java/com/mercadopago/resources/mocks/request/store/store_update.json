@@ -1,0 +1,22 @@
+{
+  "name": "Updated Store Name",
+  "business_hours": {
+    "monday": {
+      "open": "08:00",
+      "close": "15:00"
+    },
+    "tuesday": {
+      "open": "08:00",
+      "close": "15:00"
+    }
+  },
+  "location": {
+    "address_line": "Av. das Nações Unidas, 3003",
+    "reference": "Mercado Pago",
+    "city": {
+      "id": "TUxCQ0FQRTE4ZjE"
+    },
+    "latitude": -23.5967334,
+    "longitude": -46.6875492
+  }
+}

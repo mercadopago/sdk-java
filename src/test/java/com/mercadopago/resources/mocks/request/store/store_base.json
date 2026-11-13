@@ -1,0 +1,57 @@
+{
+  "name": "Store Name",
+  "business_hours": {
+    "monday": [
+      {
+        "open": "08:00",
+        "close": "15:00"
+      }
+    ],
+    "tuesday": [
+      {
+        "open": "08:00",
+        "close": "15:00"
+      }
+    ],
+    "wednesday": [
+      {
+        "open": "08:00",
+        "close": "15:00"
+      }
+    ],
+    "thursday": [
+      {
+        "open": "08:00",
+        "close": "15:00"
+      }
+    ],
+    "friday": [
+      {
+        "open": "08:00",
+        "close": "15:00"
+      }
+    ],
+    "saturday": [
+      {
+        "open": "08:00",
+        "close": "13:00"
+      }
+    ],
+    "sunday": [
+      {
+        "open": "10:00",
+        "close": "12:00"
+      }
+    ]
+  },
+  "location": {
+    "address_line": "Av. das Nações Unidas, 3003",
+    "city": "Osasco",
+    "state_name": "São Paulo",
+    "reference": "3rd floor",
+    "zip_code": "06233-200",
+    "latitude": -23.5313,
+    "longitude": -46.6899
+  },
+  "external_id": "ST0001"
+}

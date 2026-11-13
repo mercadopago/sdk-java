@@ -177,6 +177,16 @@ public class CustomHttpClient implements MPHttpClient {
 - [Examples](src/main/java/com/mercadopago/example/README.md): integration flows supported by this SDK.
 - [API reference](https://www.mercadopago.com/developers/en/reference): request fields and response schemas.
 
+## 🏪 Stores
+
+The Stores API lets you manage physical stores. Runnable examples live in
+[`src/main/java/com/mercadopago/example/store/`](src/main/java/com/mercadopago/example/store/):
+[CreateStore](src/main/java/com/mercadopago/example/store/CreateStore.java),
+[GetStore](src/main/java/com/mercadopago/example/store/GetStore.java),
+[SearchStores](src/main/java/com/mercadopago/example/store/SearchStores.java),
+[UpdateStore](src/main/java/com/mercadopago/example/store/UpdateStore.java), and
+[DeleteStore](src/main/java/com/mercadopago/example/store/DeleteStore.java).
+
 ## 🤝 Contributing
 
 All contributions are welcome, ranging from people wanting to triage issues, others wanting to write documentation, to

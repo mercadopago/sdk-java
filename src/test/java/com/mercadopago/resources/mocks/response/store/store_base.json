@@ -1,0 +1,37 @@
+{
+  "id": 11167890000,
+  "name": "Test store",
+  "date_created": "2022-01-10T10:10:10.000-04:00",
+  "business_hours": {
+    "monday": {
+      "open": "08:00",
+      "close": "18:00"
+    },
+    "tuesday": {
+      "open": "08:00",
+      "close": "18:00"
+    },
+    "wednesday": {
+      "open": "08:00",
+      "close": "18:00"
+    },
+    "thursday": {
+      "open": "08:00",
+      "close": "18:00"
+    },
+    "friday": {
+      "open": "08:00",
+      "close": "18:00"
+    }
+  },
+  "external_id": "MDE-00000001",
+  "location": {
+    "address_line": "Av. das Nações Unidas, 3003",
+    "reference": "Mercado Pago",
+    "city": "São Paulo",
+    "state": "SP",
+    "zip_code": "04551-000",
+    "latitude": -23.596574,
+    "longitude": -46.688098
+  }
+}
