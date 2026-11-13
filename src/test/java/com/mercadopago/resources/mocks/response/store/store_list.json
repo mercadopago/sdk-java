@@ -1,0 +1,83 @@
+{
+  "total": 2,
+  "next_offset": 2,
+  "elements": [
+    {
+      "id": 1234567,
+      "user_id": 471763245,
+      "name": "Official Store",
+      "date_created": "2022-01-10T10:10:10.000-00:00",
+      "business_hours": {
+        "monday": [
+          {
+            "open": "08:00",
+            "close": "15:00"
+          }
+        ],
+        "tuesday": [
+          {
+            "open": "08:00",
+            "close": "15:00"
+          }
+        ],
+        "wednesday": [
+          {
+            "open": "08:00",
+            "close": "15:00"
+          }
+        ],
+        "thursday": [
+          {
+            "open": "08:00",
+            "close": "15:00"
+          }
+        ],
+        "friday": [
+          {
+            "open": "08:00",
+            "close": "15:00"
+          }
+        ]
+      },
+      "external_id": "store-123",
+      "location": {
+        "address_line": "Av. das Nações Unidas, 3003",
+        "reference": "Floor 12",
+        "city": "São Paulo",
+        "state": "SP",
+        "zip_code": "06233-200",
+        "latitude": -23.6104,
+        "longitude": -46.6972
+      }
+    },
+    {
+      "id": 30147862,
+      "name": "Updated Store",
+      "date_created": "2022-02-03T17:09:52.992+00:00",
+      "business_hours": {
+        "monday": [
+          {
+            "open": "09:00",
+            "close": "18:00"
+          }
+        ],
+        "tuesday": [
+          {
+            "open": "09:00",
+            "close": "18:00"
+          }
+        ]
+      },
+      "external_id": "STORE-02",
+      "location": {
+        "address_line": "Street, 123",
+        "reference": null,
+        "city": "City",
+        "state": "ST",
+        "zip_code": "06000000",
+        "latitude": -23.5,
+        "longitude": -46.6
+      }
+    }
+  ]
+}
