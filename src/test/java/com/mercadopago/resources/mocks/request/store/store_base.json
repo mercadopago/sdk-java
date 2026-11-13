@@ -1,0 +1,56 @@
+{
+  "name": "Official Store",
+  "business_hours": {
+    "monday": [
+      {
+        "open": "08:00",
+        "close": "12:00"
+      },
+      {
+        "open": "14:00",
+        "close": "18:00"
+      }
+    ],
+    "tuesday": [
+      {
+        "open": "08:00",
+        "close": "18:00"
+      }
+    ],
+    "wednesday": [
+      {
+        "open": "08:00",
+        "close": "18:00"
+      }
+    ],
+    "thursday": [
+      {
+        "open": "08:00",
+        "close": "18:00"
+      }
+    ],
+    "friday": [
+      {
+        "open": "08:00",
+        "close": "18:00"
+      }
+    ]
+  },
+  "external_id": "A12S34",
+  "location": {
+    "address_line": "Av. das Nações Unidas, 3003",
+    "reference": "Mercado Pago",
+    "city": {
+      "id": "TUxBQlNBTzQzNTVa",
+      "name": "Santo André"
+    },
+    "latitude": -23.5967371,
+    "longitude": -46.6865163,
+    "open_hours": "08:00 - 18:00",
+    "zip_code": "06233-200",
+    "country_name": "Brasil",
+    "state_name": "São Paulo",
+    "street_name": "Av. das Nações Unidas",
+    "street_number": "3003"
+  }
+}
