@@ -1,0 +1,80 @@
+{
+  "id": 3021063929,
+  "name": "Updated Store Name",
+  "date_created": "2022-02-03T17:09:52.992-04:00",
+  "business_hours": {
+    "monday": [
+      {
+        "open": "08:00",
+        "close": "15:00"
+      }
+    ],
+    "tuesday": [
+      {
+        "open": "08:00",
+        "close": "15:00"
+      }
+    ],
+    "wednesday": [
+      {
+        "open": "08:00",
+        "close": "15:00"
+      }
+    ],
+    "thursday": [
+      {
+        "open": "08:00",
+        "close": "15:00"
+      }
+    ],
+    "friday": [
+      {
+        "open": "08:00",
+        "close": "15:00"
+      }
+    ]
+  },
+  "external_id": "main-store-update",
+  "location": {
+    "address_line": "Updated Street Name, 303, updated neighborhood",
+    "reference": "Updated Front of the store",
+    "city": {
+      "id": "TUAbQo6sBWL0",
+      "name": "Palermo"
+    },
+    "latitude": -34.5711558,
+    "longitude": -58.4231926,
+    "open_hours": {
+      "monday": [
+        {
+          "open": "09:00",
+          "close": "17:00"
+        }
+      ],
+      "tuesday": [
+        {
+          "open": "09:00",
+          "close": "17:00"
+        }
+      ],
+      "wednesday": [
+        {
+          "open": "09:00",
+          "close": "17:00"
+        }
+      ],
+      "thursday": [
+        {
+          "open": "09:00",
+          "close": "17:00"
+        }
+      ],
+      "friday": [
+        {
+          "open": "09:00",
+          "close": "17:00"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "name": "Updated Store Name",
+  "location": {
+    "address_line": "Av. das Nações Unidas, 3003",
+    "city": "Osasco",
+    "state": "SP",
+    "zip_code": "06233-200",
+    "country_code": "BR",
+    "latitude": -23.5223,
+    "longitude": -46.7987,
+    "reference": "Bosque dos Eucaliptos"
+  },
+  "business_hours": {
+    "monday": {
+      "open": "08:00",
+      "close": "18:00"
+    },
+    "tuesday": {
+      "open": "08:00",
+      "close": "18:00"
+    },
+    "wednesday": {
+      "open": "08:00",
+      "close": "18:00"
+    },
+    "thursday": {
+      "open": "08:00",
+      "close": "18:00"
+    },
+    "friday": {
+      "open": "08:00",
+      "close": "18:00"
+    }
+  }
+}
