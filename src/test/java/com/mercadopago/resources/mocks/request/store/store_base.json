@@ -1,0 +1,27 @@
+{
+  "name": "Official Store",
+  "business_hours": {
+    "monday": {
+      "open": "08:00",
+      "close": "15:00"
+    },
+    "tuesday": {
+      "open": "08:00",
+      "close": "15:00"
+    },
+    "friday": {
+      "open": "09:00",
+      "close": "14:00"
+    }
+  },
+  "location": {
+    "address_line": "Av. das Nações Unidas, 3003",
+    "reference": "MercadoPago HQ",
+    "city": "São Paulo",
+    "state": "SP",
+    "zip_code": "06233-200",
+    "latitude": -23.5966366,
+    "longitude": -46.6863892
+  },
+  "external_id": "MP0001"
+}
