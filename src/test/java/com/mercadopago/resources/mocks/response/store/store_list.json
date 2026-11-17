@@ -1,0 +1,39 @@
+{
+  "paging": {
+    "total": 1,
+    "limit": 30,
+    "offset": 0
+  },
+  "results": [
+    {
+      "id": 30198274,
+      "name": "Official Store",
+      "date_created": "2022-01-10T10:10:10.000-00:00",
+      "date_last_updated": "2022-01-10T10:10:10.000-00:00",
+      "business_hours": {
+        "monday": [
+          {
+            "open": "08:00",
+            "close": "15:00"
+          }
+        ],
+        "tuesday": [
+          {
+            "open": "08:00",
+            "close": "15:00"
+          }
+        ]
+      },
+      "location": {
+        "address_line": "Av. das Nações Unidas, 3003",
+        "reference": "MercadoPago",
+        "city": "São Paulo",
+        "state": "SP",
+        "zip_code": "06233-200",
+        "latitude": -23.5888,
+        "longitude": -46.6784
+      },
+      "external_id": "store_001"
+    }
+  ]
+}
