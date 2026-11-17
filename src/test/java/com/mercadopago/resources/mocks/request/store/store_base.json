@@ -1,0 +1,11 @@
+{
+  "name": "Official Store",
+  "businessHours": {
+    "monday": "08:00-18:00",
+    "tuesday": "08:00-18:00"
+  },
+  "location": {
+    "addressLine": "Av. das Nações Unidas 3003",
+    "zipCode": "06233200"
+  }
+}
