@@ -1,0 +1,28 @@
+{
+  "id": 456,
+  "user_id": 798798399,
+  "name": "Test Store",
+  "date_created": "2022-01-10T10:10:10.000-04:00",
+  "business_hours": {
+    "monday": {
+      "open": "08:00",
+      "close": "18:00"
+    },
+    "tuesday": {
+      "open": "08:00",
+      "close": "18:00"
+    }
+  },
+  "location": {
+    "address_line": "Av. das Nações Unidas, 3003",
+    "reference": "Floor 10",
+    "city": {
+      "id": "BR-SP-44",
+      "name": "São Paulo"
+    },
+    "latitude": -23.5967023,
+    "longitude": -46.6879273,
+    "zip_code": "04547000"
+  },
+  "external_id": "STORE-001"
+}
