@@ -1,0 +1,70 @@
+{
+  "name": "Official Store",
+  "user_id": 123,
+  "business_hours": {
+    "monday": [
+      {
+        "open": "08:00",
+        "close": "12:00"
+      },
+      {
+        "open": "14:00",
+        "close": "18:00"
+      }
+    ],
+    "tuesday": [
+      {
+        "open": "08:00",
+        "close": "12:00"
+      },
+      {
+        "open": "14:00",
+        "close": "18:00"
+      }
+    ],
+    "wednesday": [
+      {
+        "open": "08:00",
+        "close": "12:00"
+      },
+      {
+        "open": "14:00",
+        "close": "18:00"
+      }
+    ],
+    "thursday": [
+      {
+        "open": "08:00",
+        "close": "12:00"
+      },
+      {
+        "open": "14:00",
+        "close": "18:00"
+      }
+    ],
+    "friday": [
+      {
+        "open": "08:00",
+        "close": "12:00"
+      },
+      {
+        "open": "14:00",
+        "close": "18:00"
+      }
+    ]
+  },
+  "external_id": "MT_store_01",
+  "location": {
+    "address_line": "Av Casas Novas nº 15 wp",
+    "reference": "Mercado novo",
+    "latitude": -23.5817273,
+    "longitude": -46.6532865,
+    "open_hours": {
+      "monday": "08:00-12:00",
+      "tuesday": "08:00-12:00",
+      "wednesday": "08:00-12:00",
+      "thursday": "08:00-12:00",
+      "friday": "08:00-12:00"
+    }
+  }
+}
