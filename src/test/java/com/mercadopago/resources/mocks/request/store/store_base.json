@@ -1,0 +1,23 @@
+{
+  "name": "Test Store",
+  "business_hours": {
+    "monday": {
+      "open": "08:00",
+      "close": "18:00"
+    },
+    "tuesday": {
+      "open": "08:00",
+      "close": "18:00"
+    }
+  },
+  "location": {
+    "address_line": "Av. das Nações Unidas, 3003",
+    "reference": "Floor 10",
+    "city": {
+      "id": "BR-SP-44"
+    },
+    "latitude": -23.5888848,
+    "longitude": -46.6787167,
+    "zip_code": "06233200"
+  }
+}

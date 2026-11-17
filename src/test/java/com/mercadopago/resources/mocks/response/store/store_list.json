@@ -1,0 +1,25 @@
+{
+  "paging": {
+    "total": 1,
+    "limit": 30,
+    "offset": 0
+  },
+  "results": [
+    {
+      "id": 4018801790,
+      "name": "Official Store",
+      "date_created": "2022-01-10T10:10:10.000-00:00",
+      "date_last_updated": "2022-01-10T10:10:10.000-00:00",
+      "location": {
+        "address_line": "Av. das Nações Unidas, 3003",
+        "city": "São Paulo",
+        "state": "SP",
+        "zip_code": "06233-200",
+        "latitude": -23.6116,
+        "longitude": -46.6975
+      },
+      "external_id": "STORE-001",
+      "user_id": 810882223
+    }
+  ]
+}
