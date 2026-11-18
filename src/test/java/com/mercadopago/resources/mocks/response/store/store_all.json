@@ -1,0 +1,103 @@
+{
+  "paging": {
+    "total": 2,
+    "limit": 30,
+    "offset": 0
+  },
+  "results": [
+    {
+      "id": 4488810,
+      "name": "Official Store",
+      "date_creation": "2021-10-15T09:30:04.000-03:00",
+      "business_hours": {
+        "monday": [
+          {
+            "open": "08:00",
+            "close": "15:00"
+          }
+        ],
+        "tuesday": [
+          {
+            "open": "08:00",
+            "close": "15:00"
+          }
+        ],
+        "wednesday": [
+          {
+            "open": "08:00",
+            "close": "15:00"
+          }
+        ],
+        "thursday": [
+          {
+            "open": "08:00",
+            "close": "15:00"
+          }
+        ],
+        "friday": [
+          {
+            "open": "08:00",
+            "close": "15:00"
+          }
+        ]
+      },
+      "location": {
+        "address_line": "Av. das Nações Unidas, 3003",
+        "reference": "Floor 12",
+        "city": "Sao Paulo",
+        "state": "BR-SP",
+        "zip_code": "06233200",
+        "latitude": -23.596,
+        "longitude": -46.688
+      },
+      "external_id": "STORE001"
+    },
+    {
+      "id": 4488811,
+      "name": "Updated Store",
+      "date_creation": "2021-10-15T09:30:04.000-03:00",
+      "business_hours": {
+        "monday": [
+          {
+            "open": "09:00",
+            "close": "18:00"
+          }
+        ],
+        "tuesday": [
+          {
+            "open": "09:00",
+            "close": "18:00"
+          }
+        ],
+        "wednesday": [
+          {
+            "open": "09:00",
+            "close": "18:00"
+          }
+        ],
+        "thursday": [
+          {
+            "open": "09:00",
+            "close": "18:00"
+          }
+        ],
+        "friday": [
+          {
+            "open": "09:00",
+            "close": "18:00"
+          }
+        ]
+      },
+      "location": {
+        "address_line": "Test Address 123",
+        "reference": "Store reference",
+        "city": "Sao Paulo",
+        "state": "BR-SP",
+        "zip_code": "47807078",
+        "latitude": -23.596,
+        "longitude": -46.638
+      },
+      "external_id": "STORE002"
+    }
+  ]
+}
