@@ -1,0 +1,42 @@
+{
+  "paging": {
+    "total": 1,
+    "limit": 30,
+    "offset": 0
+  },
+  "results": [
+    {
+      "id": 823549964,
+      "name": "Test Store",
+      "user_id": 823549964,
+      "external_id": "1234",
+      "date_creation": "2022-02-03T17:09:52.992+00:00",
+      "business_hours": {
+        "monday": {
+          "open": "08:00",
+          "close": "18:00"
+        },
+        "tuesday": {
+          "open": "08:00",
+          "close": "18:00"
+        }
+      },
+      "location": {
+        "address_line": "Avenida das Nações Unidas, 3003",
+        "reference": "Floor 12",
+        "city": {
+          "id": null,
+          "name": "Barueri"
+        },
+        "state": {
+          "id": null,
+          "name": "São Paulo"
+        },
+        "zip_code": "06233200",
+        "latitude": -23.5313,
+        "longitude": -46.6384,
+        "open_hours": null
+      }
+    }
+  ]
+}

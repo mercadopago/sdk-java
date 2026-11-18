@@ -1,0 +1,44 @@
+{
+  "id": 78058384,
+  "name": "Test Store",
+  "date_created": "2022-01-10T10:10:10.000+00:00",
+  "user_id": 823549964,
+  "external_id": "store_001",
+  "location": {
+    "address_line": "Av. das Nações Unidas, 3003",
+    "street_name": "Av. das Nações Unidas",
+    "street_number": "3003",
+    "zip_code": "06233-200",
+    "city_name": "São Paulo",
+    "state_name": "SP",
+    "country_name": "Brasil",
+    "latitude": -23.6123,
+    "longitude": -46.6991
+  },
+  "business_hours": {
+    "monday": {
+      "open": "09:00",
+      "close": "18:00"
+    },
+    "tuesday": {
+      "open": "09:00",
+      "close": "18:00"
+    },
+    "wednesday": {
+      "open": "09:00",
+      "close": "18:00"
+    },
+    "thursday": {
+      "open": "09:00",
+      "close": "18:00"
+    },
+    "friday": {
+      "open": "09:00",
+      "close": "18:00"
+    },
+    "saturday": {
+      "open": "09:00",
+      "close": "13:00"
+    }
+  }
+}
