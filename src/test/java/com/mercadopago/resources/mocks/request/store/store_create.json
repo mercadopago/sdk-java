@@ -1,0 +1,29 @@
+{
+  "name": "Official Store",
+  "location": {
+    "street_number": "1010",
+    "street_name": "Some Street",
+    "city_name": "Some City",
+    "state_name": "Some State",
+    "latitude": -23.5,
+    "longitude": -46.6,
+    "reference": "Some Reference",
+    "zip_code": "11111-111",
+    "floor": "1",
+    "apartment": "101"
+  },
+  "business_hours": {
+    "monday": [
+      {
+        "from": "09:00",
+        "to": "18:00"
+      }
+    ],
+    "tuesday": [
+      {
+        "from": "09:00",
+        "to": "18:00"
+      }
+    ]
+  }
+}

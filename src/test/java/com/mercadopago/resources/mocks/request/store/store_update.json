@@ -1,0 +1,36 @@
+{
+  "name": "Test Store",
+  "business_hours": {
+    "monday": {
+      "open": "09:00",
+      "close": "18:00"
+    },
+    "tuesday": {
+      "open": "09:00",
+      "close": "18:00"
+    },
+    "wednesday": {
+      "open": "09:00",
+      "close": "18:00"
+    },
+    "thursday": {
+      "open": "09:00",
+      "close": "18:00"
+    },
+    "friday": {
+      "open": "09:00",
+      "close": "18:00"
+    }
+  },
+  "location": {
+    "address_line": "Viña del Mar 5620",
+    "city_name": "Mar del Plata",
+    "state_name": "Buenos Aires",
+    "zip_code": "7600",
+    "country_name": "Argentina",
+    "latitude": -38.0092854,
+    "longitude": -57.5481595,
+    "reference": "Frente a la plaza"
+  },
+  "external_id": "external-id-123"
+}

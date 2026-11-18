@@ -1,0 +1,41 @@
+{
+  "id": "243918025",
+  "name": "Updated Store",
+  "date_created": "2022-01-10T10:10:10.000+00:00",
+  "business_hours": {
+    "monday": {
+      "open": "08:00",
+      "close": "18:00"
+    },
+    "tuesday": {
+      "open": "08:00",
+      "close": "18:00"
+    },
+    "wednesday": {
+      "open": "08:00",
+      "close": "18:00"
+    },
+    "thursday": {
+      "open": "08:00",
+      "close": "18:00"
+    },
+    "friday": {
+      "open": "08:00",
+      "close": "18:00"
+    },
+    "saturday": {
+      "open": "08:00",
+      "close": "12:00"
+    }
+  },
+  "location": {
+    "address_line": "Av. das Nações Unidas, 3003",
+    "reference": "Tower B",
+    "city": "São Paulo",
+    "state": "SP",
+    "zip_code": "06233-200",
+    "latitude": -23.6108,
+    "longitude": -46.6975
+  },
+  "external_id": "store_001"
+}
