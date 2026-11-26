@@ -595,4 +595,55 @@ class OrderClientTest extends BaseClientTest {
     Assertions.assertNotNull(result);
     Assertions.assertEquals(HttpStatus.OK, result.getResponse().getStatusCode());
   }
+
+  @Test
+  void simulateEventSuccess() throws MPException, MPApiException, IOException {
+    HttpResponse httpResponse = MockHelper.generateHttpResponse(HttpStatus.NO_CONTENT);
+    Mockito.doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    String orderId = "123";
+    OrderSimulateEventRequest request =
+        OrderSimulateEventRequest.builder().status("processed").build();
+
+    Assertions.assertDoesNotThrow(() -> client.simulateEvent(orderId, request));
+
+    ArgumentCaptor<HttpRequestBase> requestCaptor = ArgumentCaptor.forClass(HttpRequestBase.class);
+    Mockito.verify(HTTP_CLIENT).execute(requestCaptor.capture(), any(HttpContext.class));
+
+    HttpRequestBase httpRequest = requestCaptor.getValue();
+    Assertions.assertEquals("POST", httpRequest.getMethod());
+    Assertions.assertTrue(httpRequest.getURI().toString().contains("/v1/orders/123/events"));
+
+    JsonObject body = MockHelper.generateJsonElementFromUriRequest(httpRequest).getAsJsonObject();
+    Assertions.assertEquals("processed", body.get("status").getAsString());
+  }
+
+  @Test
+  void simulateEventWithRequestOptionsSuccess() throws MPException, MPApiException, IOException {
+    HttpResponse httpResponse = MockHelper.generateHttpResponse(HttpStatus.NO_CONTENT);
+    Mockito.doReturn(httpResponse)
+        .when(HTTP_CLIENT)
+        .execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+    String orderId = "123";
+    OrderSimulateEventRequest request =
+        OrderSimulateEventRequest.builder()
+            .status("processed")
+            .paymentMethodType("credit_card")
+            .installments(3)
+            .paymentMethodId("visa")
+            .statusDetail("accredited")
+            .build();
+
+    Assertions.assertDoesNotThrow(() -> client.simulateEvent(orderId, request, buildRequestOptions()));
+
+    ArgumentCaptor<HttpRequestBase> requestCaptor = ArgumentCaptor.forClass(HttpRequestBase.class);
+    Mockito.verify(HTTP_CLIENT).execute(requestCaptor.capture(), any(HttpContext.class));
+
+    HttpRequestBase httpRequest = requestCaptor.getValue();
+    Assertions.assertEquals("POST", httpRequest.getMethod());
+    Assertions.assertTrue(httpRequest.getURI().toString().contains("/v1/orders/123/events"));
+  }
 }
