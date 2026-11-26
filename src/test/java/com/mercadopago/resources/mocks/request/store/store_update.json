@@ -1,0 +1,65 @@
+{
+  "name": "Updated Store",
+  "business_hours": {
+    "monday": [
+      {
+        "open": "08:00",
+        "close": "12:00"
+      },
+      {
+        "open": "14:00",
+        "close": "18:00"
+      }
+    ],
+    "tuesday": [
+      {
+        "open": "08:00",
+        "close": "12:00"
+      },
+      {
+        "open": "14:00",
+        "close": "18:00"
+      }
+    ],
+    "wednesday": [
+      {
+        "open": "08:00",
+        "close": "12:00"
+      },
+      {
+        "open": "14:00",
+        "close": "18:00"
+      }
+    ],
+    "thursday": [
+      {
+        "open": "08:00",
+        "close": "12:00"
+      },
+      {
+        "open": "14:00",
+        "close": "18:00"
+      }
+    ],
+    "friday": [
+      {
+        "open": "08:00",
+        "close": "12:00"
+      },
+      {
+        "open": "14:00",
+        "close": "18:00"
+      }
+    ]
+  },
+  "location": {
+    "address_line": "Av. das Nações Unidas, 3003",
+    "reference": "Mercado Pago",
+    "city": "São Paulo",
+    "state": "SP",
+    "zip_code": "06233-200",
+    "neighborhood": "Bonfim",
+    "latitude": -23.5967136,
+    "longitude": -46.6880447
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "id": 960798,
+  "user_id": 539675046,
+  "name": "Official Store",
+  "date_created": "2022-01-10T10:10:10.000+00:00",
+  "business_hours": {
+    "monday": {
+      "open": "08:00",
+      "close": "18:00"
+    },
+    "tuesday": {
+      "open": "08:00",
+      "close": "18:00"
+    }
+  },
+  "location": {
+    "address_line": "Av. das Nações Unidas, 3003",
+    "reference": "Floor 12",
+    "city": "Sao Paulo",
+    "state": "BR-SP",
+    "zip_code": "06233200",
+    "latitude": -23.6108,
+    "longitude": -46.6975
+  },
+  "external_id": "store_001"
+}
